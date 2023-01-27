@@ -1,15 +1,14 @@
 type TParserParams = {
-    // Кол-во постов к парсу на каждой странице
-    parseTo: number;
     // какую страницу парсить
     page: number;
+    excludeWordsInTitle: string[];
 }
 
 type TParser = {
     parserType: TParserTypes;
     name: string;
     url: string;
-    fileOrFunction: string | ((params:TParserParams) => TParserResult);
+    fileUrl: string;
 }
 
 export enum TParserTypes {
@@ -29,8 +28,9 @@ export enum TParserResultTypes {
 }
 
 type TGenericParserResult<T extends TParserResultTypes> = {
-    type: T;
-} & TParserResultDescription<T>;
+    type: T,
+    posts:TParserResultDescription<T>[];
+}
 
 
 type TGrant<T extends TParserResultTypes = TParserResultTypes> = T extends  TParserResultTypes.grant ? {
@@ -52,7 +52,7 @@ type TInternship<T extends TParserResultTypes = TParserResultTypes>  = T extends
 
 } : never;
 
-type TParserResultDescription<T extends TParserResultTypes = TParserResultTypes> =
+type TParserResultDescription<T extends TParserResultTypes> =
     T extends TParserResultTypes.grant ? TGrant :
     T extends TParserResultTypes.vacancy ? TVacancy :
     T extends TParserResultTypes.internship ? TInternship :
