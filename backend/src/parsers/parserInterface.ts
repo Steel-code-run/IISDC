@@ -18,7 +18,8 @@ const callNodeTsParser: TCallParser = (params):TParserResult => {
 
     return {
         type: type,
-        posts: result.posts
+        posts: result.posts,
+        parseErrors: result.parseErrors
     }
 }
 

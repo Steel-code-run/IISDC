@@ -30,6 +30,7 @@ export enum TParserResultTypes {
 type TGenericParserResult<T extends TParserResultTypes> = {
     type: T,
     posts:TParserResultDescription<T>[];
+    parseErrors: string[];
 }
 
 

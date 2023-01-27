@@ -3,6 +3,7 @@ const page = process.argv[2];
 console.log(
     JSON.stringify({
         type: "grant",
+        parseErrors: ["Ошибка 20000000000000"],
         posts: [
             {
                 direction: "direction",
