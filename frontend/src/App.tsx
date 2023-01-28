@@ -1,10 +1,12 @@
 import React from 'react';
 import './App.css';
+import Search from "./components/UI/Search/Search";
 
 function App() {
   return (
     <div className="App" data-testid="App">
-      hello gays
+      <Search list={['testtesttesttesttesttesttesttesttesttesttesttesttest', 'testtesttest', 'asdasd', 'rrrrra']}/>
+
     </div>
   );
 }

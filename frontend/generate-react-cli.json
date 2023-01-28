@@ -31,7 +31,7 @@
         "component": "src/templates/default/TemplateName.tsx",
         "style": "src/templates/default/TemplateName.module.scss"
       },
-      "path": "src/UI",
+      "path": "src/components/UI",
       "withStyle": true,
       "withTest": true,
       "withStory": false,
