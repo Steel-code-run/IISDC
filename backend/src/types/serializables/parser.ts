@@ -1,7 +1,6 @@
 type TParserParams = {
     // какую страницу парсить
     page: number;
-    excludeWordsInTitle: string[];
 }
 
 type TParser = {
