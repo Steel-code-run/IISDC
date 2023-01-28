@@ -1,5 +1,6 @@
-import {TCallParser, TParserResult, TParserResultTypes, TParserTypes} from "~/src/types/serializables/parser";
+import {TCallParser, TParserResult, TParserTypes} from "~/src/types/serializables/parser";
 import {execSync} from "child_process";
+import {isParserResultType} from "~/src/types/typeGuards";
 
 
 const callNodeTsParser: TCallParser = (params):TParserResult => {
@@ -11,11 +12,9 @@ const callNodeTsParser: TCallParser = (params):TParserResult => {
 
     const result = JSON.parse(execSync(execString).toString());
 
-    const type = result.type as TParserResultTypes;
-
-    if (!(type in TParserResultTypes))
+    const type = result.type;
+    if (!isParserResultType(type))
         throw new Error('Unknown parser result type')
-
     return {
         type: type,
         posts: result.posts,

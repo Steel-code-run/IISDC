@@ -12,8 +12,8 @@ type TParser = {
 }
 
 export enum TParserTypes {
-    "ts-node",
-    "python",
+    "ts-node"= "ts-node",
+    "python" = "python"
 }
 
 type TCallParserParams = {
@@ -21,20 +21,22 @@ type TCallParserParams = {
     parser: TParser;
 } & Partial<TParserParams>;
 
-export enum TParserResultTypes {
-    "grant", // грант
-    "vacancy", // вакансия
-    "internship" // стажировка
+
+export enum TParserResultType {
+    "grant" = "grant", // грант
+    "vacancy" = "vacancy", // вакансия
+    "internship" = "internship", // стажировка
+    "competition" = "competition", // школьная олимпиада
 }
 
-type TGenericParserResult<T extends TParserResultTypes> = {
+type TGenericParserResult<T extends TParserResultType> = {
     type: T,
     posts:TParserResultDescription<T>[];
     parseErrors: string[];
 }
 
 
-type TGrant<T extends TParserResultTypes = TParserResultTypes> = T extends  TParserResultTypes.grant ? {
+type TGrant<T extends TParserResultType = TParserResultType> = T extends  TParserResultType.grant ? {
     direction: string; // Направление гранта
     organization: string; // организация-грантодатель
     timeOfStart: string; // время начала подачи заявки
@@ -45,24 +47,31 @@ type TGrant<T extends TParserResultTypes = TParserResultTypes> = T extends  TPar
     link: string; // ссылка на грант
 } : never;
 
-type TVacancy<T extends TParserResultTypes = TParserResultTypes>  = T extends  TParserResultTypes.vacancy ?{
+type TVacancy<T extends TParserResultType = TParserResultType>  = T extends  TParserResultType.vacancy ?{
 
 } : never;
 
-type TInternship<T extends TParserResultTypes = TParserResultTypes>  = T extends  TParserResultTypes.internship ?{
+type TInternship<T extends TParserResultType = TParserResultType>  = T extends  TParserResultType.internship ?{
 
 } : never;
 
-type TParserResultDescription<T extends TParserResultTypes> =
-    T extends TParserResultTypes.grant ? TGrant :
-    T extends TParserResultTypes.vacancy ? TVacancy :
-    T extends TParserResultTypes.internship ? TInternship :
+type TCompetition<T extends TParserResultType = TParserResultType>  = T extends  TParserResultType.competition ?{
+
+} : never;
+
+type TParserResultDescription<T extends TParserResultType> =
+    T extends TParserResultType.grant ? TGrant :
+    T extends TParserResultType.vacancy ? TVacancy :
+    T extends TParserResultType.internship ? TInternship :
+    T extends TParserResultType.competition ? TCompetition :
     never;
 
-type TParserResultGrant = TGenericParserResult<TParserResultTypes.grant>
-type TParserResultTVacancy = TGenericParserResult<TParserResultTypes.vacancy>
-type TParserResultTInternship = TGenericParserResult<TParserResultTypes.internship>
+type TParserResultGrant = TGenericParserResult<TParserResultType.grant>
+type TParserResultTVacancy = TGenericParserResult<TParserResultType.vacancy>
+type TParserResultTInternship = TGenericParserResult<TParserResultType.internship>
+type TParserResultTCompetition = TGenericParserResult<TParserResultType.competition>
 
-export type TCallParser = (params: TCallParserParams) => TParserResultGrant | TParserResultTVacancy | TParserResultTInternship;
+export type TParserResult = TParserResultGrant | TParserResultTVacancy | TParserResultTInternship | TParserResultTCompetition;
 
-export type TParserResult = TParserResultGrant | TParserResultTVacancy | TParserResultTInternship;
+export type TCallParser = (params: TCallParserParams) => TParserResult;
+
