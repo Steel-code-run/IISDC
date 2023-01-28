@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Steel-code-run/IISDC/issues"
   },
-  "homepage": "https://github.com/Steel-code-run/IISDC#readme"
+  "homepage": "https://github.com/Steel-code-run/IISDC#readme",
+  "devDependencies": {
+    "husky": "^8.0.3"
+  }
 }
