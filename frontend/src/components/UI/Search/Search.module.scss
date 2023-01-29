@@ -19,7 +19,6 @@
     top: 60px;
     left: 0;
     width: 100%;
-    max-height: 300px;
     overflow-y: auto;
     background-color: #fff;
     box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.1);
@@ -32,8 +31,11 @@
 
     padding: 10px;
 
+    height: auto;
+    max-height: 240px;
+
     &__item {
-    text-align: start;
+      text-align: start;
       width: 100%;
       cursor: pointer;
       padding: 5px 10px;
@@ -41,6 +43,12 @@
       word-break: break-all;
 
     }
+    &__searchEmpty {
+      text-align: start;
+      width: 100%;
+      cursor: default;
+    }
+
     &__item:hover {
       background-color: #f5f6fa;
       border-radius: 4px;

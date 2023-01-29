@@ -5,7 +5,7 @@ import Search from "./components/UI/Search/Search";
 function App() {
   return (
     <div className="App" data-testid="App">
-      <Search list={['testtesttesttesttesttesttesttesttesttesttesttesttest', 'testtesttest', 'asdasd', 'rrrrra']}/>
+      <Search list={['информационные технологии', 'гуманитарные науки', 'архитектура','гуманитарные науки', 'архитектура','экономика', 'агрономия', 'математика']}/>
 
     </div>
   );

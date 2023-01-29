@@ -9,6 +9,23 @@ export const postsApi = createApi({
             query: () => 'posts',
         }),
 
+        updatePost: builder.mutation({
+            query: (post) => ({
+                url: `posts/${post.id}`,
+                method: 'PUT',
+                body: post
+            })
+        }),
+
+        directions: builder.query({
+            query: () => 'getGrantDirections',
+        }),
+
+        countPosts: builder.query({
+            query: () => 'countPosts',
+        }),
+
+
     })
 });
 
