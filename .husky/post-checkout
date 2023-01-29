@@ -4,3 +4,6 @@
 npm i --force
 cd backend
 npm i --force
+cd src/parser/nodejs
+npm i --force
+
