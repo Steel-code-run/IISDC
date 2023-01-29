@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import router from '~/src/router/defaultRouter';
 import {__projectPath} from "~/src/utils/projectPath";
+import {frequentlyInitTelegramBot, sendTelegramMessage} from "~/src/telegram/telegram";
 
 dotenv.config({ path: __projectPath + `\\..\\.env.${process.env.NODE_ENV}` });
 
@@ -18,3 +19,5 @@ app.use(cors(corsOptions));
 app.listen(port, () => {
 	console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
+
+frequentlyInitTelegramBot()

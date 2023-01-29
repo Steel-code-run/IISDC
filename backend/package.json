@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "jest",
-		"dev": "set \"NODE_ENV=development\" && nodemon src/app.ts"
+		"dev": "set \"NODE_ENV=development\" && nodemon src/app.ts --watch **.*"
 	},
 	"author": "",
 	"license": "ISC",
