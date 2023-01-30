@@ -6,8 +6,15 @@ export type TPostsChannelParams = {
     offset?: number;
 }
 
+export type TPostsChannel = {
+    text: string;
+    html: string;
+    date: string;
+    id: string;
+}
 
-export const getPostsChannel = async ({nameUrl, limit = 10, offset = 0}: TPostsChannelParams) => {
+
+export const getPostsChannel = async ({nameUrl, limit = 10, offset = 0}: TPostsChannelParams):Promise<TPostsChannel[]> => {
     const options = {
         method: 'GET',
         url: 'https://telegram92.p.rapidapi.com/api/history/chat',
@@ -18,5 +25,12 @@ export const getPostsChannel = async ({nameUrl, limit = 10, offset = 0}: TPostsC
         }
     };
     const response = await axios.request(options);
-    return response.data;
+    return response.data.messages.map((post: any) => {
+        return {
+            text: post.text,
+            html: post.html,
+            date: post.date,
+            id: post.id,
+        }
+    });
 }
