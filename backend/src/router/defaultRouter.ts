@@ -7,12 +7,13 @@ const router = Router();
 router.get('/', (reg, res) => {
 	const result = callParser({
 		parser: {
-			fileUrl: __projectPath + '\\parsers\\nodejs\\RSCI\\grants.ts',
+			fileUrl: __projectPath + '\\parsers\\nodejs\\cptgrantov\\parser.ts',
 			parserType: TParserTypes['ts-node'],
 			url: 'https://rsci.ru/grants/',
 			name: 'RSCI_grants',
 		},
 	});
+
 	res.json(result);
 });
 
