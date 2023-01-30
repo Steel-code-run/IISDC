@@ -4,8 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import router from '~/src/router/defaultRouter';
 import {__projectPath} from "~/src/utils/projectPath";
-import {frequentlyInitTelegramBot, sendTelegramMessage} from "~/src/telegram/telegram";
-import {createUsersDataTable, getUsers} from "~/src/API/sqlite/users/users";
+import {frequentlyInitTelegramBot} from "~/src/telegram/telegram";
 
 dotenv.config({ path: __projectPath + `\\..\\.env.${process.env.NODE_ENV}` });
 const app = express();
@@ -21,4 +20,3 @@ app.listen(port, () => {
 });
 frequentlyInitTelegramBot()
 
-getUsers()

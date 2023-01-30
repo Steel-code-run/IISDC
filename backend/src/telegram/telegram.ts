@@ -1,6 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
 import dotenv from 'dotenv';
-import { ISendTelegramMessage } from '~/src/types/fsm';
+import { ISendTelegramMessage } from '~/src/types/serializables';
 import {__projectPath} from "~/src/utils/projectPath";
 import {consoleLog} from "~/src/utils/consoleLog";
 
@@ -34,7 +34,7 @@ export function frequentlyInitTelegramBot(){
 		throw new Error('Telegram have error in initialization');
 	bot.getMe().then(()=>{
 		consoleLog("Telegram bot is authorized")
-	}).catch((e)=>{
+	}).catch(()=>{
 		consoleLog("Telegram bot is not authorized. Trying to reinitialize in 10 seconds")
 		setTimeout(()=>frequentlyInitTelegramBot(),10000)
 	})
