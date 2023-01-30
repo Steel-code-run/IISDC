@@ -1,12 +1,16 @@
-import React, { FC } from 'react';
-import styles from './Box.module.scss';
+import React, {FC} from 'react';
+import styles from './TemplateName.module.scss';
 
-export interface TemplateNameProps {}
+export interface TemplateNameProps {
+}
 
-const TemplateName: FC<TemplateNameProps> = () => (
-	<div className={styles.templateName} data-testid="Box">
-		TemplateName Component
-	</div>
-);
+const TemplateName: FC<TemplateNameProps> = () => {
+    return (
+        <div className={styles.templateName} data-testid="TemplateName">
+            TemplateName Component
+        </div>
+
+    )
+};
 
 export default TemplateName;
