@@ -41,7 +41,7 @@ type TGrant<T extends TParserResultType = TParserResultType> =
 				timeOfStart: string; // время начала подачи заявки
 				summary: string; // сумма гранта
 				timeOfEnd: string; // время окончания подачи заявки
-				description: string; // заметки к гранту
+				directionForSpent: string; // заметки к гранту
 				fullText: string; // полное описание
 				link: string; // ссылка на грант
 		  }
