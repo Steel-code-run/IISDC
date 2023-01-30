@@ -8,9 +8,8 @@ console.log(
 			{
 				direction: 'direction',
 				organization: 'organization',
-				timeOfStart: 'timeOfStart',
 				summary: 'summary',
-				timeOfEnd: 'timeOfEnd',
+				deadline: 'timeOfEnd',
 				directionForSpent: 'directionForSpent',
 				fullText: 'fullText',
 				link: 'link',
@@ -18,9 +17,8 @@ console.log(
 			{
 				direction: 'direction',
 				organization: 'organization',
-				timeOfStart: 'timeOfStart',
 				summary: 'summary',
-				timeOfEnd: 'timeOfEnd',
+				deadline: 'timeOfEnd',
 				directionForSpent: 'directionForSpent',
 				fullText: 'fullText',
 				link: 'link',
