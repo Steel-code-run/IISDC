@@ -5,9 +5,9 @@ import dotenv from 'dotenv';
 import router from '~/src/router/defaultRouter';
 import {__projectPath} from "~/src/utils/projectPath";
 import {frequentlyInitTelegramBot, sendTelegramMessage} from "~/src/telegram/telegram";
+import {createUsersDataTable, getUsers} from "~/src/API/sqlite/users/users";
 
 dotenv.config({ path: __projectPath + `\\..\\.env.${process.env.NODE_ENV}` });
-
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -19,5 +19,6 @@ app.use(cors(corsOptions));
 app.listen(port, () => {
 	console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
-
 frequentlyInitTelegramBot()
+
+getUsers()
