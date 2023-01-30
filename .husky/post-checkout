@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm i --force
+cd backend
+npm i --force
+cd src/parsers/nodejs
+npm i --force
+

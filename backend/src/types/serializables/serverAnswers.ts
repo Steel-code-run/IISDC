@@ -1,7 +1,9 @@
 type TDefaultAnswer = {
-    status: number;
-    message: string;
-    data: { [key: string]: any } | null;
-}
+	status: number;
+	message: string;
+	data: { [key: string]: any } | null;
+};
 
-export type TGenerateAnswer = (params? :Partial<TDefaultAnswer> ) => TDefaultAnswer;
+export type TGenerateAnswer = (
+	params?: Partial<TDefaultAnswer>
+) => TDefaultAnswer;
