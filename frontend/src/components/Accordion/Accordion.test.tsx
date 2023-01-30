@@ -4,11 +4,11 @@ import '@testing-library/jest-dom/extend-expect';
 import Accordion from './Accordion';
 
 describe('<Accordion />', () => {
-  test('it should mount', () => {
-    render(<Accordion />);
-    
-    const accordion = screen.getByTestId('Accordion');
+	test('it should mount', () => {
+		render(<Accordion />);
 
-    expect(accordion).toBeInTheDocument();
-  });
+		const accordion = screen.getByTestId('Accordion');
+
+		expect(accordion).toBeInTheDocument();
+	});
 });

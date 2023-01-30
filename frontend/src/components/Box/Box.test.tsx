@@ -4,11 +4,11 @@ import '@testing-library/jest-dom/extend-expect';
 import Box from './Box';
 
 describe('<Box />', () => {
-  test('it should mount', () => {
-    render(<Box />);
-    
-    const box = screen.getByTestId('Box');
+	test('it should mount', () => {
+		render(<Box />);
 
-    expect(box).toBeInTheDocument();
-  });
+		const box = screen.getByTestId('Box');
+
+		expect(box).toBeInTheDocument();
+	});
 });

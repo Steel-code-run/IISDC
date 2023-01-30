@@ -1,19 +1,9 @@
-import {createSlice} from "@reduxjs/toolkit";
-
+import { createSlice } from '@reduxjs/toolkit';
 
 export const TemplateNameSlice = createSlice({
-    name: 'direction',
-    initialState: {
+	name: 'direction',
+	initialState: {},
+	reducers: {},
+});
 
-    },
-    reducers: {
-
-    }
-})
-
-
-export default TemplateNameSlice.reducer
-
-
-
-
+export default TemplateNameSlice.reducer;
