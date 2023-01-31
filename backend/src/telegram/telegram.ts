@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 import { ISendTelegramMessage } from '~/src/types/serializables';
 import {__projectPath} from "~/src/utils/projectPath";
 import {consoleLog} from "~/src/utils/consoleLog";
-
-dotenv.config({ path: __projectPath + `\\..\\.env.${process.env.NODE_ENV}` });
+import * as path from "path";
+dotenv.config({path:path.join(__projectPath,'../',`.env.${process.env.NODE_ENV}`)});
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 

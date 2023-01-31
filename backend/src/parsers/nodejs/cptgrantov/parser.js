@@ -12,39 +12,39 @@ const exceptionWords = ['вебинар', 'вебинара', 'вебинару'
     'вебинаре', 'вебинары', 'вебинаров', 'вебинарам', 'вебинары', 'вебинарами', 'вебинарах',
     'Традиционная образовательная подборка: ']
 
-const isFilterPosts = (posts: TPostsChannel[]) => {
-    return posts.filter((post: TPostsChannel) => {
-        return keyWords.some((keyWord: string) => {
+const isFilterPosts = (posts) => {
+    return posts.filter((post) => {
+        return keyWords.some((keyWord) => {
             return post.text.toLowerCase().includes(keyWord.toLowerCase())
         })
     })
-        .filter((post: TPostsChannel) => {
-            return exceptionWords.every((exceptionWord: string) => {
+        .filter((post) => {
+            return exceptionWords.every((exceptionWord) => {
                 return !post.text.toLowerCase().includes(exceptionWord.toLowerCase())
             })
         })
 }
 
-const getDirection = (post: TPostsChannel) => {
+const getDirection = (post) => {
     const regExp = /(в области|по направлению|по следующим направлениям) .*?(?=\d|\.)/gim;
     const result = post.text.match(regExp);
     return result ? result[0] : '';
 
 }
 
-const getOrganization = (post: TPostsChannel) => {
+const getOrganization = (post) => {
     const regExp = /(?<=Организатор: ).*?(?=$)/gim;
     const result = post.text.match(regExp);
     return result ? result[0] : '';
 }
 
-const getDeadline = (post: TPostsChannel) => {
+const getDeadline = (post) => {
     const regExp = /(?<=Дедлайн: ).*?(?=$)/gim;
     const result = post.text.match(regExp);
     return result ? result[0] : '';
 }
 
-const getSummary = (post: TPostsChannel) => {
+const getSummary = (post) => {
     const regExp = /(?:\d{1,6} ){1,4}(рублей|руб\.*|миллионов|млн\.*) *(рублей|руб\.*)* *(ежегодно|ежемесячно|в год| раз в месяц| раз в год)*/gmi;
     const result = post.text.match(regExp);
     return result ? result[0] : '';
@@ -59,7 +59,7 @@ getPostsChannel(options)
             JSON.stringify({
                 type: 'grant',
                 parseErrors: ['Ошибка 20000000000000'],
-                posts: filterPosts.map((post: TPostsChannel) => {
+                posts: filterPosts.map((post) => {
                     return {
                         direction: getDirection(post),
                         organization: getOrganization(post),

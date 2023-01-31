@@ -5,11 +5,10 @@ import dotenv from 'dotenv';
 import router from '~/src/router/defaultRouter';
 import {__projectPath} from "~/src/utils/projectPath";
 import {frequentlyInitTelegramBot} from "~/src/telegram/telegram";
-
-dotenv.config({ path: __projectPath + `\\..\\.env.${process.env.NODE_ENV}` });
+import path from 'path';
+dotenv.config({path:path.join(__projectPath,'../',`.env.${process.env.NODE_ENV}`)});
 const app = express();
-const port = process.env.PORT || 3001;
-
+const port = process.env.PORT || 3003;
 const corsOptions = {
 	credentials: true, //access-control-allow-credentials:true
 };

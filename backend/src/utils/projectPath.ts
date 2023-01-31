@@ -1,1 +1,4 @@
-export const __projectPath = __dirname.split('\\').slice(0, -1).join('\\');
+import * as path from "path"
+
+export const __projectPath = path.join(__dirname, "../")
+
