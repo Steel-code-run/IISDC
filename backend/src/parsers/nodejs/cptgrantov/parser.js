@@ -1,4 +1,4 @@
-import {getPostsChannel, TPostsChannel} from "./getPostsChannel";
+import {getPostsChannel} from "./getPostsChannel";
 
 const options = {
     nameUrl: 'https://t.me/cptgrantov',

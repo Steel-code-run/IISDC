@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-
-
 export const getPostsChannel = async ({nameUrl, limit = 10, offset = 0}) => {
     const options = {
         method: 'GET',
