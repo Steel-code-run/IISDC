@@ -13,6 +13,7 @@ const callNodeTsParser: TCallParser = (params): TParserResult => {
 
 	execString += ` ${params.page}`;
 
+	console.log(execString);
 	const result = JSON.parse(execSync(execString).toString());
 
 	const type = result.type;

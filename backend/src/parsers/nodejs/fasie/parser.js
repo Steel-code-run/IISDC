@@ -36,6 +36,7 @@ const exceptionWords = [
 	'посетили ',
 	'посетит ',
 	'встреча ',
+	'финал',
 ];
 
 const keyWords = [
@@ -85,15 +86,25 @@ const getTextPosts = (jsdom, querySelector) => {
 	);
 };
 
+const getSummaryGrant = (jsdom, querySelector) => {
+	const fullText = getTextPosts(jsdom, querySelector);
+	const regex =
+		/(?<=Максимальный размер гранта | Сумма гранта | грант до | грант в ).*/gi;
+	const result = fullText.match(regex);
+
+	return result ? result[0].replaceAll(/^- |^– /g, '') : '';
+};
+
 const getInfoPosts = (links) => {
 	return links.map(async (link) => {
 		const jsdom = await getHTML(link);
 		const { title, date, text } = querySelectors;
 
 		return {
-			title: getNamePosts(jsdom, title),
-			date: getDatesPosts(jsdom, date),
-			text: getTextPosts(jsdom, text).replaceAll('\n', ''),
+			namePost: getNamePosts(jsdom, title),
+			dateCreationPost: getDatesPosts(jsdom, date),
+			summary: getSummaryGrant(jsdom, text),
+			fullText: getTextPosts(jsdom, text).replaceAll('\n', ''),
 			link,
 		};
 	});
@@ -113,22 +124,32 @@ const getPostLazyLoading = async (totalPosts, url, querySelectors) => {
 const filterPosts = (posts) => {
 	return posts
 		.filter((post) => {
-			const { title } = post;
+			const { namePost } = post;
 
 			return keyWords.some(
-				(word) => title.toLowerCase().includes(word)
+				(word) => namePost.toLowerCase().includes(word)
 				// text.toLowerCase().includes(word)
 			);
 		})
 		.filter((post) => {
-			const { title } = post;
+			const { namePost } = post;
 
 			return exceptionWords.every((word) => {
-				return !title.toLowerCase().includes(word);
+				return !namePost.toLowerCase().includes(word);
 			});
 		});
 };
 
 const gottenPosts = await getPostLazyLoading(10, url, querySelectors);
 
-console.log(filterPosts(gottenPosts), filterPosts(gottenPosts).length);
+try {
+	console.log(
+		JSON.stringify({
+			type: 'grant',
+			parseErrors: ['Ошибка 20000000000000'],
+			posts: filterPosts(gottenPosts),
+		})
+	);
+} catch (error) {
+	console.log(error);
+}

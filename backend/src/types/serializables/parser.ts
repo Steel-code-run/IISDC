@@ -36,11 +36,13 @@ type TGenericParserResult<T extends TParserResultType> = {
 type TGrant<T extends TParserResultType = TParserResultType> =
 	T extends TParserResultType.grant
 		? {
-				direction: string; // Направление гранта
-				organization: string; // организация-грантодатель
-				deadline: string; // дедлайн
-				summary: string; // сумма гранта
-				directionForSpent: string; // заметки к гранту
+				namePost: string; // название гранта
+				dateCreationPost: string; // дата создания гранта
+				direction?: string; // Направление гранта
+				organization?: string; // организация-грантодатель
+				deadline?: string; // дедлайн
+				summary?: string; // сумма гранта
+				directionForSpent?: string; // заметки к гранту
 				fullText: string; // полное описание
 				link: string; // ссылка на грант
 		  }
