@@ -1,0 +1,10 @@
+{
+    "name": "@iisdc/parser",
+    "version": "1.0.0",
+    "dependencies": {
+        "@iisdc/types":"1.0.0"
+    },
+    "scripts": {
+        "build":""
+    }
+}

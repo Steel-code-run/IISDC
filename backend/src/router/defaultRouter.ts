@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { callParser } from '~/src/parsers/parserInterface';
-import { TParserTypes } from '~/src/types/serializables/parser';
+import { callParser } from '@iisdc/parser';
+import { TParserTypes } from '@iisdc/types';
 import { __projectPath } from '~/src/utils/projectPath';
 import * as path from "path"
 
@@ -8,7 +8,7 @@ const router = Router();
 router.get('/', (reg, res) => {
 	const result = callParser({
 		parser: {
-			fileUrl: path.join(__projectPath, "parsers", "nodejs", "cptgrantov", "parser.js"),
+			fileUrl: path.join("RSCI"),
 			// fileUrl: __projectPath + '\\parsers\\nodejs\\cptgrantov\\parser.ts',
 			parserType: TParserTypes['ts-node'],
 			url: 'https://rsci.ru/grants/',
