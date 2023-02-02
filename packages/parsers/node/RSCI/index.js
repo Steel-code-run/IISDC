@@ -24,3 +24,4 @@ console.log(JSON.stringify({
         },
     ],
 }));
+//# sourceMappingURL=index.js.map
