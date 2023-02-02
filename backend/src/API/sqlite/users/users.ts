@@ -1,7 +1,7 @@
 import {__projectPath} from "~/src/utils/projectPath";
 import * as path from "path";
 import {consoleLog} from "~/src/utils/consoleLog";
-import {IUser, IUserOperation} from "~/src/types/serializables/users";
+import {IUser, IUserOperation} from "@iisdc/types";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','users.db'));
 
 

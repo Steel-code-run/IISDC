@@ -1,23 +1,37 @@
 {
-	"name": "iisdc",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"pretty": "prettier -w **/*"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/Steel-code-run/IISDC.git"
-	},
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/Steel-code-run/IISDC/issues"
-	},
-	"homepage": "https://github.com/Steel-code-run/IISDC#readme",
-	"devDependencies": {
-		"husky": "^8.0.3",
-		"prettier": "^2.8.3"
-	}
+  "name": "iisdc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "./packages/*",
+    "./frontend",
+    "./backend"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:backend" : "cd ./backend && npm run dev",
+    "dev:frontend" : "cd ./frontend && npm run start",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" ",
+    "build:packages":"tsc",
+    "build:frontend":"cd frontend && npm run build",
+    "build:backend":"cd backend && npm run build",
+    "build": "npm run build:packages && npm run build:frontend && npm run build:backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Steel-code-run/IISDC.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Steel-code-run/IISDC/issues"
+  },
+  "homepage": "https://github.com/Steel-code-run/IISDC#readme",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "_moduleAliases": {
+    "~": "./backend"
+}
 }

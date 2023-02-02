@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"sourceMap": true,
+		"target": "ESNext",
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"strict": true,
+		"useUnknownInCatchVariables": false,
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": false,
+		"downlevelIteration": true,
+		"baseUrl": ".",
+		"paths": {
+			"~/src/*": ["src/*"],
+			"~/assets/*": ["assets/*"]
+		}
+	},
+	"include": ["packages"],
+	"exclude": ["node_modules","frontend"]
+}

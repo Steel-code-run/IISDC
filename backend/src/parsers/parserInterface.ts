@@ -2,9 +2,9 @@ import {
 	TCallParser,
 	TParserResult,
 	TParserTypes,
-} from '~/src/types/serializables/parser';
+} from '@iisdc/types';
 import { execSync } from 'child_process';
-import { isParserResultType } from '~/src/types/typeGuards';
+import { isParserResultType } from '@iisdc/types';
 
 const callNodeTsParser: TCallParser = (params): TParserResult => {
 	let execString = `ts-node ${params.parser.fileUrl}`;
