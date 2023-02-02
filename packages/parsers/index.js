@@ -9,7 +9,7 @@ const child_process_1 = require("child_process");
 const types_2 = require("@iisdc/types");
 const path_1 = __importDefault(require("path"));
 const callNodeTsParser = (params) => {
-    let execString = `ts-node  ${path_1.default.join(__dirname, "node", params.parser.fileUrl)}`;
+    let execString = `node  ${path_1.default.join(__dirname, "node", params.parser.fileUrl)}`;
     if (!params.page)
         params.page = 1;
     execString += ` ${params.page}`;
@@ -38,3 +38,4 @@ const callParser = (params) => {
     }
 };
 exports.callParser = callParser;
+//# sourceMappingURL=index.js.map

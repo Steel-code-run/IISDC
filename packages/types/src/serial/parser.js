@@ -13,3 +13,4 @@ var TParserResultType;
     TParserResultType["internship"] = "internship";
     TParserResultType["competition"] = "competition";
 })(TParserResultType = exports.TParserResultType || (exports.TParserResultType = {}));
+//# sourceMappingURL=parser.js.map
