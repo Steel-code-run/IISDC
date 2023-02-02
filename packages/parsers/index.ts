@@ -4,10 +4,11 @@ import {
 	TParserTypes,
 } from '@iisdc/types';
 import { execSync } from 'child_process';
-import { isParserResultType } from '@iisdc/types';
+import { isParserResultType } from  "@iisdc/types"
+import path from 'path';
 
 const callNodeTsParser: TCallParser = (params): TParserResult => {
-	let execString = `ts-node ${params.parser.fileUrl}`;
+	let execString = `node  ${path.join(__dirname,"node",params.parser.fileUrl)}`;
 
 	if (!params.page) params.page = 1;
 

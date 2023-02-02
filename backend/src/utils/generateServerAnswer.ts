@@ -1,4 +1,4 @@
-import { TGenerateAnswer } from '~/src/types/serializables/serverAnswers';
+import { TGenerateAnswer } from '@iisdc/types';
 
 export const generateSuccessfulAnswer: TGenerateAnswer = (params) => {
 	return {
