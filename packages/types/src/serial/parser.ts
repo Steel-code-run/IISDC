@@ -37,7 +37,7 @@ type TGrant<T extends TParserResultType = TParserResultType> =
 	T extends TParserResultType.grant
 		? {
 				namePost: string; // название гранта
-				dateCreationPost: string; // дата создания гранта
+				dateCreationPost?: string; // дата создания гранта
 				direction?: string; // Направление гранта
 				organization?: string; // организация-грантодатель
 				deadline?: string; // дедлайн

@@ -7,7 +7,7 @@ const router = Router();
 router.get('/', (reg, res) => {
 	const result = callParser({
 		parser: {
-			fileUrl: path.join("fasie"),
+			fileUrl: path.join("integraciya"),
 			// fileUrl: __projectPath + '\\parsers\\nodejs\\cptgrantov\\parser.ts',
 			parserType: TParserTypes['ts-node'],
 			url: 'https://rsci.ru/grants/',
