@@ -2,7 +2,7 @@ import React, {FC, useEffect} from 'react';
 import styles from './Search.module.scss';
 
 export interface SearchProps {
-    list: string[]
+    list?: string[]
 }
 
 const Search: FC<SearchProps> = ({list = []}) => {
