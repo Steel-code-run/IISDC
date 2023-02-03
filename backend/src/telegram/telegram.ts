@@ -1,9 +1,9 @@
 import TelegramBot from 'node-telegram-bot-api';
 import dotenv from 'dotenv';
-import { ISendTelegramMessage } from '~/src/types/serializables';
-import {__projectPath} from "~/src/utils/projectPath";
-import {consoleLog} from "~/src/utils/consoleLog";
 import * as path from "path";
+import {ISendTelegramMessage} from "../types/serializables";
+import {consoleLog} from "../utils/consoleLog";
+import {__projectPath} from "../utils/projectPath";
 dotenv.config({path:path.join(__projectPath,'../',`.env.${process.env.NODE_ENV}`)});
 
 const token = process.env.TELEGRAM_BOT_TOKEN;

@@ -30,8 +30,5 @@
   "homepage": "https://github.com/Steel-code-run/IISDC#readme",
   "devDependencies": {
     "concurrently": "^7.6.0"
-  },
-  "_moduleAliases": {
-    "~": "./backend"
-}
+  }
 }
