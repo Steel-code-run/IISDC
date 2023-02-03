@@ -9,14 +9,13 @@
     "./backend"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:backend": "cd ./backend && npm run test",
     "dev:backend" : "cd ./backend && npm run dev",
     "dev:frontend" : "cd ./frontend && npm run start",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" ",
     "build:packages":"tsc",
     "build:frontend":"cd frontend && npm run build",
     "build:backend":"cd backend && npm run build",
-    "build": "npm run build:packages && npm run build:frontend && npm run build:backend"
   },
   "repository": {
     "type": "git",

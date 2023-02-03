@@ -1,11 +1,12 @@
 import {describe,test, expect,beforeAll} from '@jest/globals';
+
+import * as process from "process";
 import {
     createUsersDataTable,
     deleteUsersDataTable,
     getUsers,
     isUsersDataTableExist
-} from "~/src/API/sqlite/users/users";
-import * as process from "process";
+} from "../../src/API/sqlite/users/users";
 
 
 
