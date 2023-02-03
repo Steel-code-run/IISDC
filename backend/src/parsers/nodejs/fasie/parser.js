@@ -1,4 +1,4 @@
-import { getHTML } from '../utils/getHTML.js';
+const {getHTML} = require('../utils/getHTML');
 
 const url = 'https://fasie.ru/press/';
 const baseUrl = 'https://fasie.ru';
@@ -110,10 +110,10 @@ const getInfoPosts = (links) => {
 	});
 };
 
-const getPostLazyLoading = async (totalPosts, url, querySelectors) => {
+const getPostLazyLoading = async (totalPage, url, querySelectors) => {
 	const posts = [];
 
-	for (let i = 0; i < totalPosts; i++) {
+	for (let i = 0; i < totalPage; i++) {
 		const jsdom = await getHTML(`${url}?ajax=Y&PAGEN_1=${i}`);
 		const links = getLinksPosts(jsdom, querySelectors.link);
 		posts.push(...(await Promise.all(getInfoPosts(links))).slice(0, -1));

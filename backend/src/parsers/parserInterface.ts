@@ -1,10 +1,5 @@
-import {
-	TCallParser,
-	TParserResult,
-	TParserTypes,
-} from '@iisdc/types';
-import { execSync } from 'child_process';
-import { isParserResultType } from '@iisdc/types';
+import {isParserResultType, TCallParser, TParserResult, TParserTypes,} from '@iisdc/types';
+import {execSync} from 'child_process';
 
 const callNodeTsParser: TCallParser = (params): TParserResult => {
 	let execString = `ts-node ${params.parser.fileUrl}`;
@@ -13,7 +8,6 @@ const callNodeTsParser: TCallParser = (params): TParserResult => {
 
 	execString += ` ${params.page}`;
 
-	console.log(execString);
 	const result = JSON.parse(execSync(execString).toString());
 
 	const type = result.type;

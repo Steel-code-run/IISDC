@@ -1,6 +1,6 @@
-import axios from 'axios';
+const axios = require('axios').default;
 
-export const getPostsChannel = async ({ nameUrl, limit = 10, offset = 0 }) => {
+module.exports = getPostsChannel = async ({ nameUrl, limit = 10, offset = 0 }) => {
 	const options = {
 		method: 'GET',
 		url: 'https://telegram92.p.rapidapi.com/api/history/chat',

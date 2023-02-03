@@ -1,4 +1,4 @@
-import { getPostsChannel } from './getPostsChannel.js';
+const getPostsChannel = require('././getPostsChannel');
 
 const options = {
 	nameUrl: 'https://t.me/cptgrantov',
