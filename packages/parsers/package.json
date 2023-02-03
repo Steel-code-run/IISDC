@@ -2,7 +2,13 @@
     "name": "@iisdc/parser",
     "version": "1.0.0",
     "dependencies": {
-        "@iisdc/types":"1.0.0"
+        "@iisdc/types":"1.0.0",
+        "@types/jsdom": "^20.0.1",
+        "@types/needle": "^3.2.0",
+        "dotenv": "^16.0.3",
+        "axios": "^1.2.6",
+        "jsdom": "^21.1.0",
+        "needle": "^3.2.0"
     },
     "scripts": {
         "build":""

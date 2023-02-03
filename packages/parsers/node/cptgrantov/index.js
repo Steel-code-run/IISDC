@@ -1,4 +1,4 @@
-const getPostsChannel = require('././getPostsChannel');
+const getPostsChannel = require('./getPostsChannel');
 
 const options = {
 	nameUrl: 'https://t.me/cptgrantov',

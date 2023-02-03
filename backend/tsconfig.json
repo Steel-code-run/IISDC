@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"outDir": "./dist",
 		"sourceMap": true,
 		"target": "ESNext",
 		"skipLibCheck": true,
@@ -12,11 +13,7 @@
 		"isolatedModules": false,
 		"downlevelIteration": true,
 		"baseUrl": ".",
-		"paths": {
-			"~/src/*": ["src/*"],
-			"~/assets/*": ["assets/*"]
-		}
 	},
-	"include": ["./src/**/*", "./tests/**/*"],
+	"include": ["./src/**/*"],
 	"exclude": ["node_modules", "dist", "src/**/*.js"]
 }

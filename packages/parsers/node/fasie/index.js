@@ -140,16 +140,18 @@ const filterPosts = (posts) => {
 		});
 };
 
-const gottenPosts = await getPostLazyLoading(10, url, querySelectors);
+(async function main(){
+	const gottenPosts = await getPostLazyLoading(10, url, querySelectors);
 
-try {
-	console.log(
-		JSON.stringify({
-			type: 'grant',
-			parseErrors: ['Ошибка 20000000000000'],
-			posts: filterPosts(gottenPosts),
-		})
-	);
-} catch (error) {
-	console.log(error);
-}
+	try {
+		console.log(
+			JSON.stringify({
+				type: 'grant',
+				parseErrors: ['Ошибка 20000000000000'],
+				posts: filterPosts(gottenPosts),
+			})
+		);
+	} catch(error) {
+		console.log(error);
+	}
+})()
