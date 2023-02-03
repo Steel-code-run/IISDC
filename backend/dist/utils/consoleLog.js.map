@@ -1,1 +1,0 @@
-{"version":3,"file":"consoleLog.js","sourceRoot":"","sources":["../../src/utils/consoleLog.ts"],"names":[],"mappings":";;;AAAA,SAAgB,UAAU,CAAC,OAAe;IACtC,MAAM,IAAI,GAAG,IAAI,IAAI,EAAE,CAAC,cAAc,CAAC,OAAO,CAAC,CAAA;IAE/C,OAAO,CAAC,GAAG,CAAC,GAAG,IAAI,IAAI,GAAG,OAAO,CAAC,CAAA;AACtC,CAAC;AAJD,gCAIC"}
