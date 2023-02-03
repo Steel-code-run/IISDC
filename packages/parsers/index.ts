@@ -8,7 +8,7 @@ import { isParserResultType } from  "@iisdc/types"
 import path from 'path';
 
 const callNodeTsParser: TCallParser = (params): TParserResult => {
-	let execString = `node  ${path.join(__dirname,"node",params.parser.fileUrl)}`;
+	let execString = `node  ${path.join(__dirname,"src","node",params.parser.fileUrl)}`;
 
 	if (!params.page) params.page = 1;
 
