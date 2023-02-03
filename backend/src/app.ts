@@ -1,11 +1,10 @@
-import 'module-alias/register';
 import express from 'express';
 import cors from "cors";
 import dotenv from 'dotenv';
-import router from '~/src/router/defaultRouter';
-import {__projectPath} from "~/src/utils/projectPath";
-import {frequentlyInitTelegramBot} from "~/src/telegram/telegram";
 import path from 'path';
+import {__projectPath} from "./utils/projectPath";
+import router from "./router/defaultRouter";
+import {frequentlyInitTelegramBot} from "./telegram/telegram";
 console.log(path.join(__projectPath,'../',`.env.${process.env.NODE_ENV}`))
 dotenv.config({path:path.join(__projectPath,'../',`.env.${process.env.NODE_ENV}`)});
 const app = express();
