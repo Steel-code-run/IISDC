@@ -8,7 +8,7 @@ router.get('/', (reg, res) => {
 	try {
 		const result = callParser({
 			parser: {
-				fileUrl: path.join("fasie"),
+				fileUrl: path.join("fadm.gov"),
 				// fileUrl: __projectPath + '\\parsers\\nodejs\\cptgrantov\\parser.ts',
 				parserType: TParserTypes['ts-node'],
 				url: 'https://rsci.ru/grants/',
@@ -18,7 +18,7 @@ router.get('/', (reg, res) => {
 
 		res.json(result);
 	} catch (e){
-		res.status(500).json(e.toString());
+		res.status(500).json(e);
 	}
 
 });
