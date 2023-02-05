@@ -3,14 +3,15 @@ const page = process.argv[2] || 1;
 const {getHTML} = require('../../utils/getHTML');
 const {keyWords, exceptionWords} = require('../../utils/wordsForParsers');
 
-const url = 'https://fadm.gov.ru/news/';
-const baseUrl = 'https://fadm.gov.ru';
+const url = 'https://integraciya.org/konkursy/';
+const baseUrl = 'https://integraciya.org';
 
 const querySelectors = {
-    title: 'h2.news__title',
-    link: 'a.news-mini.news-catalog__mini',
-    date: 'span.date',
-    text: 'div.news__wrap',
+    title: 'strong.name',
+    link: 'a.contest_a',
+    // date: 'span.ico_clock b',
+    text: 'table.contest_more_cont tbody tr td ~ td',
+    deadline: 'div.date2'
 };
 
 
@@ -21,23 +22,28 @@ const getNamePosts = (jsdom, querySelector) => {
 };
 
 const getLinksPosts = (jsdom, querySelector) => {
-
     return Array.from(
         jsdom.window.document.querySelectorAll(querySelector)
     ).map((link) => baseUrl + link.getAttribute('href'));
 };
 
-const getDatesPosts = (jsdom, querySelector) => {
-    return (
-        jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
-    );
-};
+// const getDatesPosts = (jsdom, querySelector) => {
+//     return (
+//         jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
+//     );
+// };
 
 const getTextPosts = (jsdom, querySelector) => {
     return (
         jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
     );
 };
+
+const getDeadlinePosts = (jsdom, querySelector) => {
+    return (
+        jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
+    );
+}
 
 const getSummaryGrant = (jsdom, querySelector) => {
     const fullText = getTextPosts(jsdom, querySelector);
@@ -51,28 +57,17 @@ const getSummaryGrant = (jsdom, querySelector) => {
 const getInfoPosts = (links) => {
     return links.map(async (link) => {
         const jsdom = await getHTML(link);
-        const { title, date, text } = querySelectors;
+        const { title, text, deadline } = querySelectors;
 
         return {
             namePost: getNamePosts(jsdom, title),
-            dateCreationPost: getDatesPosts(jsdom, date),
+            // dateCreationPost: getDatesPosts(jsdom, date),
             summary: getSummaryGrant(jsdom, text),
+            deadline: getDeadlinePosts(jsdom, deadline),
             fullText: getTextPosts(jsdom, text).replaceAll('\n', ''),
             link,
         };
     });
-};
-
-const getPostLazyLoading = async (totalPage, url, querySelectors) => {
-    const posts = [];
-
-    for (let i = 0; i < totalPage; i++) {
-        const jsdom = await getHTML(`${url}?PAGEN_1=${i}`);
-
-        const links = getLinksPosts(jsdom, querySelectors.link);
-        posts.push(...(await Promise.all(getInfoPosts(links))).slice(0, -1));
-    }
-    return posts;
 };
 
 const filterPosts = (posts) => {
@@ -94,10 +89,10 @@ const filterPosts = (posts) => {
         });
 };
 
-
-
 (async function main(){
-    const gottenPosts = await getPostLazyLoading(page, url, querySelectors);
+    const jsdom = await getHTML(url);
+    const links = getLinksPosts(jsdom, querySelectors.link);
+    const gottenPosts = await Promise.all(getInfoPosts(links));
 
     try {
         console.log(
@@ -111,6 +106,3 @@ const filterPosts = (posts) => {
         console.log(error);
     }
 })()
-
-
-
