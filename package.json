@@ -15,7 +15,7 @@
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" ",
     "build:packages":"tsc",
     "build:frontend":"cd frontend && npm run build",
-    "build:backend":"cd backend && npm run build",
+    "build:backend":"cd backend && npm run build"
   },
   "repository": {
     "type": "git",

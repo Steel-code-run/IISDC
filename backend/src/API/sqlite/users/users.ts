@@ -1,5 +1,5 @@
 import * as path from "path";
-import {IUser, IUserOperation} from "@iisdc/types";
+import {IUser, IUserWithPassword} from "@iisdc/types";
 import {consoleLog} from "../../../utils/consoleLog";
 import {__projectPath} from "../../../utils/projectPath";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','users.db'));
@@ -41,26 +41,26 @@ export const deleteUsersDataTable = ()=>{
     }
 }
 
-export const getUser = ({name,id,password}:Partial<IUserOperation>) => {
 
-    if ((name === undefined) && (password === undefined) && (id === undefined))
-        throw new Error("name and password and id are undefined")
-
-    if (name !== undefined)
-        if (name.length < 1)
-            throw new Error("name is empty")
-
-    if (password !== undefined)
-        if (password.length < 1)
-            throw new Error("password is empty")
-
+export const getUserByNameAndPassword = ({name,password}:IUserWithPassword):IUserWithPassword => {
     try {
         const stmt = db.prepare('SELECT * FROM usersData WHERE ' +
             'name = ? AND ' +
-            'id = ? AND ' +
             'password = ?' +
             ';')
-        return stmt.all(name,id,password)
+        return stmt.all(name,password)[0]
+    }
+    catch (e) {
+        consoleLog("from "+__filename +"\n" +e)
+        throw new Error(e)
+    }
+}
+export const getUserByName = ({name}:IUserWithPassword|IUser):IUserWithPassword => {
+    try {
+        const stmt = db.prepare('SELECT * FROM usersData WHERE ' +
+            'name = ?' +
+            ';')
+        return stmt.all(name)[0]
     }
     catch (e) {
         consoleLog("from "+__filename +"\n" +e)
@@ -68,7 +68,20 @@ export const getUser = ({name,id,password}:Partial<IUserOperation>) => {
     }
 }
 
-export const getUsers = ({name,id,password}:Partial<IUserOperation> = {},limit?:number) => {
+export const getUserByID = ({id}:IUserWithPassword| IUser):IUserWithPassword => {
+    try {
+        const stmt = db.prepare('SELECT * FROM usersData WHERE ' +
+            'id = ? ' +
+            ';')
+        return stmt.all(id)[0]
+    }
+    catch (e) {
+        consoleLog("from "+__filename +"\n" +e)
+        throw new Error(e)
+    }
+}
+
+export const getUsers = ({name,id,password}:Partial<IUserWithPassword> = {},limit?:number) => {
     if (limit === undefined)
         limit = 10
 
@@ -96,11 +109,7 @@ export const getUsers = ({name,id,password}:Partial<IUserOperation> = {},limit?:
     }
 }
 
-export const insertUser = ({name,password}:IUser) => {
-    if (name.length < 3)
-        throw new Error("name must be at least 3 characters long")
-    if (password.length < 6)
-        throw new Error("password must be at least 6 characters long")
+export const insertUser = ({name,password}:IUserWithPassword) => {
 
     try {
         return db.prepare(`INSERT INTO usersData (name,password) VALUES ('${name}','${password}');`).run()

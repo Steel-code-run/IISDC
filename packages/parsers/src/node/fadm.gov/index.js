@@ -163,7 +163,7 @@ const page = process.argv[2] || 1;
 // })()
 //
 
-const {getHTML} = require('../utils/getHTML');
+const {getHTML} = require('../../utils/getHTML');
 
 const url = 'https://fadm.gov.ru/news/';
 const baseUrl = 'https://fadm.gov.ru';
