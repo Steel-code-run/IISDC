@@ -6,16 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.callParser = void 0;
 const types_1 = require("@iisdc/types");
 const child_process_1 = require("child_process");
-const types_2 = require("@iisdc/types");
 const path_1 = __importDefault(require("path"));
 const callNodeTsParser = (params) => {
     // console.log(process.env.NODE_ENV)
     let execString;
     try {
-        if (process.env.NODE_ENV === 'development')
-            execString = `ts-node  ${path_1.default.join(__dirname, "src", "node", params.parser.fileUrl)}`;
-        else
-            execString = `node  ${path_1.default.join(__dirname, "src", "node", params.parser.fileUrl)}`;
+        execString = `node  ${path_1.default.join(__dirname, "src", "node", params.parser.fileUrl)}`;
     }
     catch (e) {
         throw new Error('Errors with parser file path');
@@ -24,13 +20,9 @@ const callNodeTsParser = (params) => {
         params.page = 1;
     execString += ` ${params.page}`;
     const result = JSON.parse((0, child_process_1.execSync)(execString).toString());
-    const type = result.type;
-    if (!(0, types_2.isParserResultType)(type))
-        throw new Error('Unknown parser result type');
-    return {
-        type: type,
-        posts: result.posts,
-    };
+    if (!(0, types_1.isTParserResult)(result))
+        throw new Error('Parser result is not valid');
+    return result;
 };
 // const callPythonParser: TCallParser = (params):TParserResult => {
 //
@@ -38,7 +30,7 @@ const callNodeTsParser = (params) => {
 // }
 const callParser = (params) => {
     switch (params.parser.parserType) {
-        case types_1.TParserTypes['ts-node']:
+        case types_1.TParserType.nodejs:
             return callNodeTsParser(params);
         // case TParserTypes.python:
         //     return callPythonParser(params);

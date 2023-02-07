@@ -1,83 +1,136 @@
-type TParserParams = {
-	// какую страницу парсить
-	page: number;
-};
 
-type TParser = {
-	parserType: TParserTypes;
+
+export type TParser = {
+	parserType: TParserType;
 	name: string;
 	url: string;
 	fileUrl: string;
+	enabled: string;
 };
 
-export enum TParserTypes {
-	'ts-node' = 'ts-node',
+export enum TParserType {
+	'nodejs' = 'nodejs',
 	'python' = 'python',
 }
 
-type TCallParserParams = {
-	// информация о парсере
+export type TParserCallParams = {
+	// парсер
 	parser: TParser;
-} & Partial<TParserParams>;
-
-export enum TParserResultType {
-	'grant' = 'grant', // грант
-	'vacancy' = 'vacancy', // вакансия
-	'internship' = 'internship', // стажировка
-	'competition' = 'competition', // школьная олимпиада
-}
-
-type TGenericParserResult<T extends TParserResultType> = {
-	type: T;
-	posts: TParserResultDescription<T>[];
+	// какую страницу парсить
+	page?: number;
 };
 
-type TGrant<T extends TParserResultType = TParserResultType> =
-	T extends TParserResultType.grant
-		? {
-				namePost: string; // название гранта
-				dateCreationPost?: string; // дата создания гранта
-				direction?: string; // Направление гранта
-				organization?: string; // организация-грантодатель
-				deadline?: string; // дедлайн
-				summary?: string; // сумма гранта
-				directionForSpent?: string; // заметки к гранту
-				fullText: string; // полное описание
-				link: string; // ссылка на грант
-		  }
-		: never;
+export enum TPostType {
+	// грант
+	'grant' = 'grant',
+	// вакансия
+	'vacancy' = 'vacancy',
+	// стажировка
+	'internship' = 'internship',
+	// школьная олимпиада
+	'competition' = 'competition',
+}
 
-type TVacancy<T extends TParserResultType = TParserResultType> =
-	T extends TParserResultType.vacancy ? {} : never;
+type TGrant = {
+	// название гранта
+	namePost: string;
+	// дата создания гранта
+	dateCreationPost: string;
+	// Направление гранта
+	direction: string;
+	// организация-грантодатель
+	organization: string;
+	// дедлайн
+	deadline: string;
+	// сумма гранта
+	summary: string;
+	// заметки к гранту
+	directionForSpent: string;
+	// полный текст
+	fullText: string;
+	// ссылка на грант
+	link: string;
+}
 
-type TInternship<T extends TParserResultType = TParserResultType> =
-	T extends TParserResultType.internship ? {} : never;
+type TVacancy = {
+	// Направление
+	direction: string;
+	//требования
+	requirements: string;
+	// обязанности
+	responsibilities: string;
+	// условия
+	conditions: string;
+	// Зарплата
+	salary: string;
+	// полный текст
+	fullText: string;
+	// название поста
+	namePost:string;
+	// дата создания гранта
+	dateCreationPost: string;
+	// организация
+	organization: string;
+	// ссылка
+	link: string;
+}
 
-type TCompetition<T extends TParserResultType = TParserResultType> =
-	T extends TParserResultType.competition ? {} : never;
+type TInternship = {
+	//требования
+	requirements: string;
+	// обязанности
+	responsibilities: string;
+	// условия
+	conditions: string;
+	// Зарплата
+	salary: string;
+	// Направление
+	direction: string;
+	// полный текст
+	fullText: string;
+	// название поста
+	namePost:string;
+	// дата создания гранта
+	dateCreationPost: string;
+	// организация
+	organization: string;
+	// ссылка
+	link: string;
 
-type TParserResultDescription<T extends TParserResultType> =
-	T extends TParserResultType.grant
-		? TGrant
-		: T extends TParserResultType.vacancy
-		? TVacancy
-		: T extends TParserResultType.internship
-		? TInternship
-		: T extends TParserResultType.competition
-		? TCompetition
-		: never;
 
-type TParserResultGrant = TGenericParserResult<TParserResultType.grant>;
-type TParserResultTVacancy = TGenericParserResult<TParserResultType.vacancy>;
-type TParserResultTInternship =
-	TGenericParserResult<TParserResultType.internship>;
-type TParserResultTCompetition =
-	TGenericParserResult<TParserResultType.competition>;
+}
 
-export type TParserResult =
-	| TParserResultGrant
-	| TParserResultTVacancy
-	| TParserResultTInternship
-	| TParserResultTCompetition;
+type TCompetition = {
+	// дедлайн
+	deadline: string;
+	// Направление
+	direction: string;
+	// полный текст
+	fullText: string;
+	// название поста
+	namePost:string;
+	// дата создания гранта
+	dateCreationPost: string;
+	// организация
+	organization: string;
+	// ссылка
+	link: string;
 
-export type TCallParser = (params: TCallParserParams) => TParserResult;
+
+}
+
+export type TPost<T extends  TPostType> = {
+	postType : T;
+	postDescription:
+		T extends TPostType.grant ? TGrant :
+		T extends TPostType.vacancy ? TVacancy :
+		T extends TPostType.internship ? TInternship :
+		T extends TPostType.competition ? TCompetition :
+			never;
+}
+
+export type TParserResult = (TPost<TPostType.grant> |
+	TPost<TPostType.internship> |
+	TPost<TPostType.competition> |
+	TPost<TPostType.vacancy>)[];
+
