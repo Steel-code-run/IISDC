@@ -17,9 +17,6 @@ const callNodeTsParser = (params:TParserCallParams): TParserResult => {
 		throw new Error('Errors with parser file path');
 	}
 
-
-	if (!params.page) params.page = 1;
-
 	execString += ` ${params.page}`;
 
 	const result = JSON.parse(execSync(execString).toString());

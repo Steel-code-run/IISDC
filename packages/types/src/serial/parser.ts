@@ -17,7 +17,7 @@ export type TParserCallParams = {
 	// парсер
 	parser: TParser;
 	// какую страницу парсить
-	page?: number;
+	page: number;
 };
 
 export enum TPostType {
@@ -31,7 +31,7 @@ export enum TPostType {
 	'competition' = 'competition',
 }
 
-type TGrant = {
+export type TGrant = {
 	// название гранта
 	namePost: string;
 	// дата создания гранта
@@ -52,7 +52,7 @@ type TGrant = {
 	link: string;
 }
 
-type TVacancy = {
+export type TVacancy = {
 	// Направление
 	direction: string;
 	//требования
@@ -75,7 +75,7 @@ type TVacancy = {
 	link: string;
 }
 
-type TInternship = {
+export type TInternship = {
 	//требования
 	requirements: string;
 	// обязанности
@@ -100,7 +100,7 @@ type TInternship = {
 
 }
 
-type TCompetition = {
+export type TCompetition = {
 	// дедлайн
 	deadline: string;
 	// Направление

@@ -1,22 +1,26 @@
-import {TParser} from "@iisdc/types";
+import {TParser, TParserCallParams} from "@iisdc/types";
 
-type parsersQueue = TParser[];
+const parsersCallQueue: TParserCallParams[] = [];
 
-const queue: parsersQueue = [];
 
 // парсеры в очереди не будут повторяться
-export const parsersQueuePush = (parser: TParser) => {
-    if (queue.find(p => p.name === parser.name)) return;
-    queue.push(parser);
-}
-export const parsersQueueShift = ():TParser|undefined => {
-    return queue.shift()
+export const parserCallQueuePush = (parser: TParser, page:number = 1) => {
+    if (parsersCallQueue.find(p => p.parser.name === parser.name)) return;
+    parsersCallQueue.push({parser, page});
 }
 
-export const parsersQueueIsEmpty = () => {
-    return queue.length === 0;
+export const parserCallQueueShift = ():TParserCallParams|undefined => {
+    return parsersCallQueue.shift()
 }
 
-export const parsersQueuePushMany = (parsers: TParser[]) => {
-    parsers.forEach(parser => parsersQueuePush(parser));
+export const parserCallQueueIsEmpty = () => {
+    return parsersCallQueue.length === 0;
+}
+/*
+    * Добавляет в очередь парсеры, которые еще не были добавлены
+    * @param parsers - массив парсеров
+    * @param page - страница, которую нужно парсить
+ */
+export const parserCallQueuePushMany = (parsers: TParser[], page:number = 1) => {
+    parsers.forEach(parser => parserCallQueuePush(parser, page));
 }

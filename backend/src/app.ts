@@ -7,8 +7,8 @@ import defaultRouter from "./router/defaultRouter";
 import {frequentlyInitTelegramBot} from "./telegram/telegram";
 import {setUser} from "./auth/middleware";
 import privateRouter from "./router/privateRouter";
-import {createParsersTable, isParsersTableExist} from "./API/sqlite/parser/parser";
 import {enableParsing} from "./model/parsing";
+import {configureAll} from "./model/configureDataBase";
 dotenv.config({path:path.join(__projectPath,'../',`.env.${process.env.NODE_ENV}`)});
 const app = express();
 const port = process.env.PORT || 3003;
@@ -23,5 +23,9 @@ app.use(privateRouter)
 app.listen(port, () => {
 	console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
-frequentlyInitTelegramBot()
-enableParsing()
+
+configureAll()
+setTimeout(()=>{
+	frequentlyInitTelegramBot()
+	enableParsing()
+},3000)

@@ -1,10 +1,10 @@
 import * as path from "path";
-import {IUser, IUserWithPassword, TParser} from "@iisdc/types";
+import {TParser} from "@iisdc/types";
 import {consoleLog} from "../../../utils/consoleLog";
 import {__projectPath} from "../../../utils/projectPath";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
-export const createParsersTable = ()=>{
+export const createTable = ()=>{
     try {
         db.prepare('CREATE TABLE parsers(' +
             'id INTEGER PRIMARY KEY AUTOINCREMENT,' +
@@ -22,10 +22,10 @@ export const createParsersTable = ()=>{
     return true
 }
 
-export const dropParsersTable = ()=>{
+export const dropTable = ()=>{
 
     try {
-        if (isParsersTableExist())
+        if (isTableExist())
         db.prepare('DROP TABLE parsers;').run()
     }
     catch (e) {
@@ -35,7 +35,7 @@ export const dropParsersTable = ()=>{
     return true
 }
 
-export const isParsersTableExist = ()=>{
+export const isTableExist = ()=>{
     try {
         return db.prepare('SELECT name FROM sqlite_master WHERE type=\'table\' ' +
             'AND name=\'parsers\';').all().length > 0
