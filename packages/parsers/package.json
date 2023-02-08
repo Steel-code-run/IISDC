@@ -1,7 +1,7 @@
 {
     "name": "@iisdc/parser",
     "version": "1.0.0",
-    "main": "index.ts",
+    "main": "index.js",
     "dependencies": {
         "@iisdc/types":"1.0.0",
         "@types/jsdom": "^20.0.1",
