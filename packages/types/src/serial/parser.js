@@ -1,15 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TParserResultType = exports.TParserTypes = void 0;
-var TParserTypes;
-(function (TParserTypes) {
-    TParserTypes["ts-node"] = "ts-node";
-    TParserTypes["python"] = "python";
-})(TParserTypes = exports.TParserTypes || (exports.TParserTypes = {}));
-var TParserResultType;
-(function (TParserResultType) {
-    TParserResultType["grant"] = "grant";
-    TParserResultType["vacancy"] = "vacancy";
-    TParserResultType["internship"] = "internship";
-    TParserResultType["competition"] = "competition";
-})(TParserResultType = exports.TParserResultType || (exports.TParserResultType = {}));
+exports.TPostType = exports.TParserType = void 0;
+var TParserType;
+(function (TParserType) {
+    TParserType["nodejs"] = "nodejs";
+    TParserType["python"] = "python";
+})(TParserType = exports.TParserType || (exports.TParserType = {}));
+var TPostType;
+(function (TPostType) {
+    // грант
+    TPostType["grant"] = "grant";
+    // вакансия
+    TPostType["vacancy"] = "vacancy";
+    // стажировка
+    TPostType["internship"] = "internship";
+    // школьная олимпиада
+    TPostType["competition"] = "competition";
+})(TPostType = exports.TPostType || (exports.TPostType = {}));
