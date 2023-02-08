@@ -1,9 +1,10 @@
 export type IUser ={
+    id: number;
     name: string;
-    password: string;
 
 }
 
-export type IUserOperation = {
-    id: number;
-}  & IUser
+export type IUserWithPassword = {
+    password: string;
+
+} & IUser
