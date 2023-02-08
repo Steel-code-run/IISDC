@@ -8,7 +8,18 @@ import { isParserResultType } from  "@iisdc/types"
 import path from 'path';
 
 const callNodeTsParser: TCallParser = (params): TParserResult => {
-	let execString = `node  ${path.join(__dirname,"src","node",params.parser.fileUrl)}`;
+	// console.log(process.env.NODE_ENV)
+
+	let execString;
+	try {
+		if (process.env.NODE_ENV === 'development')
+			execString = `ts-node  ${path.join(__dirname,"src","node",params.parser.fileUrl)}`
+		else
+			execString = `node  ${path.join(__dirname,"src","node",params.parser.fileUrl)}`
+	} catch (e) {
+		throw new Error('Errors with parser file path');
+	}
+
 
 	if (!params.page) params.page = 1;
 
@@ -22,7 +33,6 @@ const callNodeTsParser: TCallParser = (params): TParserResult => {
 	return {
 		type: type,
 		posts: result.posts,
-		parseErrors: result.parseErrors,
 	};
 };
 
