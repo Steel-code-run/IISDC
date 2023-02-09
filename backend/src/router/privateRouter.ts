@@ -51,7 +51,8 @@ privateRouter.post("/getParsers",(req:ICustomRequest,res)=>{
         return;
     }
 
-    res.json(generateAnswer({message:answerMessage.success,data: sqliteParser.getParsers()}))
+    const limit = req.body.limit;
+    res.json(generateAnswer({message:answerMessage.success,data: sqliteParser.getParsers(limit)}))
 })
 privateRouter.post("/getParsersQueue",(req:ICustomRequest,res) => {
     if (!isUserCanEnter(req,res)){
@@ -133,6 +134,8 @@ privateRouter.post("/getUsers",(req:ICustomRequest,res) => {
         password: req.body.password
     }
 
-    res.json(generateAnswer({message:answerMessage.success,data:sqliteUsers.getUsers(user)}))
+    const limit = req.body.limit;
+
+    res.json(generateAnswer({message:answerMessage.success,data:sqliteUsers.getUsers(user,limit)}))
 })
 export default privateRouter

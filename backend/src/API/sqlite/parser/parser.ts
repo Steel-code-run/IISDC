@@ -56,7 +56,7 @@ export const addParser = (parser: TParser)=>{
 export const getParsers = (limit?:number, orderBy:string="DESC")=>{
 
     if (limit === undefined)
-        limit = 1000
+        limit = 10
     let query = `SELECT * FROM parsers ORDER BY id ${orderBy} LIMIT ? ;`
     try {
         return db.prepare(query).all(limit)
