@@ -17,7 +17,6 @@ export const createTable = ()=>{
     }
     catch (e) {
         consoleLog("from "+__filename +"\n" +"createParsersTable error")
-        throw new Error(e)
     }
     return true
 }
@@ -30,7 +29,6 @@ export const dropTable = ()=>{
     }
     catch (e) {
         consoleLog("from "+__filename +"\n" +"dropParsersTable error")
-        throw new Error(e)
     }
     return true
 }
@@ -42,7 +40,6 @@ export const isTableExist = ()=>{
     }
     catch (e) {
         consoleLog("from "+__filename +"\n" + "isParsersTableExist error")
-        throw new Error(e)
     }
 }
 
@@ -53,16 +50,27 @@ export const addParser = (parser: TParser)=>{
     }
     catch (e) {
         consoleLog("from "+__filename +"\n" + "addParser error")
+    }
+}
+
+export const getParsers = (limit?:number, orderBy:string="DESC")=>{
+
+    if (limit === undefined)
+        limit = 1000
+    let query = `SELECT * FROM parsers ORDER BY id ${orderBy} LIMIT ? ;`
+    try {
+        return db.prepare(query).all(limit)
+    }
+    catch (e) {
+        consoleLog("from "+__filename +"\n" + e.message)
         throw new Error(e)
     }
 }
 
-export const getParsers = ()=>{
+export const getParser = (id: number)=>{
     try {
-        return db.prepare('SELECT * FROM parsers;').all()
-    }
-    catch (e) {
-        consoleLog("from "+__filename +"\n" +e)
-        throw new Error(e)
+        return db.prepare('SELECT * FROM parsers WHERE id = ?;').get(id) as TParser
+    }   catch (e) {
+        consoleLog("from "+__filename +"\n" + e.message)
     }
 }

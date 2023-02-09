@@ -7,6 +7,8 @@ var answerMessage;
     answerMessage["unknownError"] = "unknown error";
     answerMessage["unauthorized"] = "unauthorized";
     answerMessage["userNotFound"] = "User not found";
-    answerMessage["wrongPasswordOrEmail"] = "Wrong password or email";
+    answerMessage["wrongPasswordOrEmailOrName"] = "Wrong password or name or email";
     answerMessage["userAlreadyExists"] = "User already exists";
+    answerMessage["insufficientRole"] = "Insufficient role";
 })(answerMessage = exports.answerMessage || (exports.answerMessage = {}));
+//# sourceMappingURL=serverAnswers.js.map

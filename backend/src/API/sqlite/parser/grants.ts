@@ -2,6 +2,8 @@ import * as path from "path";
 import {consoleLog} from "../../../utils/consoleLog";
 import {__projectPath} from "../../../utils/projectPath";
 import {TGrant } from "@iisdc/types";
+import createWhereQuery from "../../../helpers/createWhereQuery";
+import createInsertQuery from "../../../helpers/createInsertQuery";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
 export const createTable = ()=>{
@@ -62,29 +64,39 @@ export const isGrantExist = (namePost: string, dateCreationPost:string)=>{
 }
 export const addGrant = (grant: TGrant)=>{
     try {
-        db.prepare('INSERT INTO grants(' +
-            'namePost,' +
-            'dateCreationPost,' +
-            'direction,' +
-            'organization,' +
-            'deadline,' +
-            'summary,' +
-            'directionForSpent,' +
-            'fullText,' +
-            'link' +
-            ') VALUES (?,?,?,?,?,?,?,?,?);').run(
-                grant.namePost,
-                grant.dateCreationPost,
-                grant.direction,
-                grant.organization,
-                grant.deadline,
-                grant.summary,
-                grant.directionForSpent,
-                grant.fullText,
-                grant.link)
+        if (grant.namePost === undefined || grant.dateCreationPost === undefined)
+            throw new Error("namePost or dateCreationPost is undefined")
+
+        let query = "INSERT INTO grants " + createInsertQuery(grant);
+
+        db.prepare(query).run()
 
     } catch (e) {
-        consoleLog("from "+__filename +"\n" + "Error in addGrant")
+        consoleLog("from "+__filename +"\n" + e.message)
+        throw new Error(e)
+    }
+}
+
+export const getGrants = (grant:Partial<TGrant> = {},limit?:number, orderBy:string = "DESC")=>{
+    let query = 'SELECT * FROM grants ';
+    query += createWhereQuery(grant,{namePost:grant.namePost});
+    query += ` ORDER BY id ${orderBy} LIMIT ? ;`
+    if (limit === undefined)
+        limit = 10
+    try {
+        return db.prepare(query).all(limit)
+    }
+    catch (e) {
+        consoleLog("from "+__filename +" getGrants\n" + e.message)
+        throw new Error(e)
+    }
+}
+
+export const deleteGrant = (id:number)=>{
+    try {
+        db.prepare('DELETE FROM grants WHERE id=?;').run(id)
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + e.message)
         throw new Error(e)
     }
 }

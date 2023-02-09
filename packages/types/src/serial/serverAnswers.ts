@@ -8,8 +8,9 @@ export enum answerMessage  {
 	"unknownError"= "unknown error",
 	"unauthorized"= "unauthorized",
 	"userNotFound"= "User not found",
-	"wrongPasswordOrEmail"= "Wrong password or email",
+	"wrongPasswordOrEmailOrName"= "Wrong password or name or email",
 	"userAlreadyExists"= "User already exists",
+	"insufficientRole" = "Insufficient role",
 }
 
 
