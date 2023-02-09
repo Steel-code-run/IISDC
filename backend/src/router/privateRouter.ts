@@ -13,10 +13,6 @@ function isUserCanEnter(req:ICustomRequest,res:Response,minRole:UserRole = UserR
         res.json(generateAnswer({message: answerMessage.unauthorized}));
         return false;
     }
-    if (user.id < 0) {
-        res.json(generateAnswer({message: answerMessage.unauthorized}));
-        return false;
-    }
     if (user.role === undefined) {
         res.json(generateAnswer({message: answerMessage.insufficientRole}));
         return false;
@@ -124,6 +120,8 @@ privateRouter.post("/deleteGrant",(req:ICustomRequest,res) => {
 })
 
 privateRouter.post("/getUsers",(req:ICustomRequest,res) => {
+    console.log(req.user)
+
     if (!isUserCanEnter(req,res)){
         return;
     }

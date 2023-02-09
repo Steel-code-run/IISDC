@@ -20,7 +20,6 @@ export function setUser(req:ICustomRequest, res:Response, next:NextFunction) {
     }
 
     const decodedToken = verifyToken(token);
-
     if (decodedToken === undefined) {
         req.user = questUser;
         next();
