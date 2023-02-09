@@ -53,8 +53,8 @@ defaultRouter.post('/register', (req, res) => {
 		return;
 	}
 
+	insertUser(userWithPassword);
 	res.json(generateAnswer({message: answerMessage.success}));
-
 });
 
 
