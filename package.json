@@ -10,12 +10,13 @@
   ],
   "scripts": {
     "test:backend": "cd ./backend && npm run test",
-    "dev:backend" : "cd ./backend && npm run dev",
-    "dev:frontend" : "cd ./frontend && npm run start",
+    "dev:backend": "cd ./backend && npm run dev",
+    "dev:frontend": "cd ./frontend && npm run start",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" ",
-    "build:packages":"tsc",
-    "build:frontend":"cd frontend && npm run build",
-    "build:backend":"cd backend && npm run build"
+    "dev:built:frontend": "cd ./frontend/build && serve",
+    "dev:built:backend": "cd ./backend && cross-env NODE_ENV=development node src/app.js",
+    "dev:built": "concurrently \"npm run dev:built:backend\" \"npm run dev:built:frontend\" ",
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,11 @@
     "url": "https://github.com/Steel-code-run/IISDC/issues"
   },
   "homepage": "https://github.com/Steel-code-run/IISDC#readme",
-  "devDependencies": {
+  "dependencies": {
     "concurrently": "^7.6.0"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^6.0.0-alpha.1"
   }
 }

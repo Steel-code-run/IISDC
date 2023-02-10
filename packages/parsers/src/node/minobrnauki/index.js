@@ -1,6 +1,14 @@
-const page = process.argv[2] || 1;
+import {exceptionWords} from "../../utils/wordsForParsers.js";
+import {getHTML} from '../../utils/getHTML.js';
+import {
+    defineTypePost,
+    getDataBySelector,
+    getLinksPDF,
+    getLinksPosts,
+    getSummaryGrant
+} from '../../utils/methodsParser.js';
 
-const {getHTML} = require('../../utils/getHTML');
+const page = process.argv[2] || 1;
 
 const url = 'https://minobrnauki.gov.ru/grants/grants/';
 const baseUrl = 'https://minobrnauki.gov.ru';
@@ -13,161 +21,106 @@ const querySelectors = {
     linkPDF: 'div.post-body a:not([href="/grants/grants/"])',
 };
 
-const exceptionWords = [
-    'результаты',
-    'результат',
-    'результатам',
-    'результату',
-    'результатов',
-    'итоги',
-    'подведены итоги',
-    'итог',
-    'вебинар',
-    'вебинары',
-    'победитель',
-    'победители',
-    'победителя',
-    'победителей',
-    'победителю',
-    'победителям',
-    'победителем',
-    'победителе',
-    'победителями',
-    'победителях',
-    'посетил ',
-    'посетила ',
-    'посетили ',
-    'посетит ',
-    'встреча ',
-    'финал',
-];
-
-const keyWords = [
-    'гранты',
-    'грант ',
-    'гранту',
-    'грантам',
-    'грантом',
-    'гранте',
-    'приём заявок',
-    'прием заявок',
-    'запуск конкурса',
-    'конкурс ',
-    'конкурсы ',
-    'конкурса',
-    'конкурсу',
-    'конкурсом',
-    'конкурсе',
-    'конкурсам',
-    'конкурсами',
-    'конкурсах',
-    'конкурсов',
-    'на реализацию',
-];
-
-const getNamePosts = (jsdom, querySelector) => {
-    return (
-        jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
-    );
-};
-
-const getLinksPosts = (jsdom, querySelector) => {
-    return Array.from(
-        jsdom.window.document.querySelectorAll(querySelector)
-    ).map((link) => baseUrl + link.getAttribute('href'));
-};
-
-const getLinksPDF = (jsdom, querySelector) => {
-    return Array.from(
-        jsdom.window.document.querySelectorAll(querySelector)
-    ).map((link) => {
-        if(link.getAttribute('href').includes('http')) return link.getAttribute('href');
-        return baseUrl + link.getAttribute('href');
-    });
-};
-
-const getDatesPosts = (jsdom, querySelector) => {
-    return (
-        jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
-    );
-};
-
-const getTextPosts = (jsdom, querySelector) => {
-    return (
-        jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
-    );
-};
-
-const getSummaryGrant = (jsdom, querySelector) => {
-    const fullText = getTextPosts(jsdom, querySelector);
-    const regex =
-        /(?<=Максимальный размер гранта | Сумма гранта | грант до | грант в ).*/gi;
-    const result = fullText.match(regex);
-
-    return result ? result[0].replaceAll(/^- |^– /g, '') : '';
-};
 
 const getInfoPosts = (links) => {
     return links.map(async (link) => {
         const jsdom = await getHTML(link);
-        const { title, date, text, linkPDF } = querySelectors;
+        const {title, date, text, linkPDF} = querySelectors;
 
-        return {
-            namePost: getNamePosts(jsdom, title),
-            dateCreationPost: getDatesPosts(jsdom, date),
-            summary: getSummaryGrant(jsdom, text),
-            fullText: getTextPosts(jsdom, text).replaceAll('\n', ''),
-            linkPDF: getLinksPDF(jsdom, linkPDF),
-            link,
-        };
+        switch(defineTypePost(getDataBySelector(jsdom, title))) {
+            case 'grant':
+                return {
+                    postType: 'grant',
+                    postDescription: {
+                        namePost: getDataBySelector(jsdom, title),
+                        dateCreationPost: getDataBySelector(jsdom, date),
+                        summary: getSummaryGrant(jsdom, text),
+                        fullText: getDataBySelector(jsdom, text).replaceAll('\n', ''),
+                        linkPDF: getLinksPDF(jsdom, linkPDF, baseUrl),
+                        link,
+                    },
+
+                };
+            case 'competition':
+                return {
+                    postType: 'competition',
+                    postDescription: {
+                        namePost: getDataBySelector(jsdom, title),
+                        dateCreationPost: getDataBySelector(jsdom, date),
+                        deadline: getDataBySelector(jsdom, text),
+                        direction: getDataBySelector(jsdom, text),
+                        fullText: getDataBySelector(jsdom, text).replaceAll('\n', ''),
+                        link,
+                    },
+                };
+            case 'vacancy':
+                return {
+                    postType: 'vacancy',
+                    postDescription: {
+                        namePost: getDataBySelector(jsdom, title),
+                        dateCreationPost: getDataBySelector(jsdom, date),
+                        direction: getDataBySelector(jsdom, text),
+                        fullText: getDataBySelector(jsdom, text).replaceAll('\n', ''),
+                        organization: "Организация",
+                        conditions: "Условия",
+                        requirements: "Требования",
+                        responsibilities: "Обязанности",
+                        salary: "Зарплата",
+                        link,
+                    },
+                };
+            case 'internship':
+                return {
+                    postType: 'internship',
+                    postDescription: {
+                        namePost: getDataBySelector(jsdom, title),
+                        dateCreationPost: getDataBySelector(jsdom, date),
+                        direction: getDataBySelector(jsdom, text),
+                        fullText: getDataBySelector(jsdom, text).replaceAll('\n', ''),
+                        organization: "Организация",
+                        conditions: "Условия",
+                        requirements: "Требования",
+                        responsibilities: "Обязанности",
+                        salary: "Зарплата",
+                        link,
+                    },
+                };
+            case 'other':
+                return {
+                    postType: 'other',
+                }
+        }
+
+
     });
 };
 
-// const getPostLazyLoading = async (totalPage, url, querySelectors) => {
-//     const posts = [];
-//
-//     for (let i = 0; i < totalPage; i++) {
-//         const jsdom = await getHTML(`${url}?ajax=Y&PAGEN_1=${i}`);
-//         const links = getLinksPosts(jsdom, querySelectors.link);
-//         posts.push(...(await Promise.all(getInfoPosts(links))).slice(0, -1));
-//     }
-//     return posts;
-// };
-
 const filterPosts = (posts) => {
     return posts
+        .filter((post) => post.postType !== 'other')
         .filter((post) => {
-            const { namePost } = post;
-
-            return keyWords.some(
-                (word) => namePost.toLowerCase().includes(word)
-                // text.toLowerCase().includes(word)
-            );
-        })
-        .filter((post) => {
-            const { namePost } = post;
+            const {namePost} = post.postDescription;
 
             return exceptionWords.every((word) => {
+                if(namePost.toLowerCase().includes(word)) {
+                    console.log(namePost, 'contains', word);
+                }
                 return !namePost.toLowerCase().includes(word);
             });
-        });
+        })
 };
 
-(async function main(){
+(async function main() {
     const jsdom = await getHTML(url);
-    const links = getLinksPosts(jsdom, querySelectors.link);
+    const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
 
-    const gottenPosts = await Promise.all(getInfoPosts(links));
+    const receivedPosts = await Promise.all(getInfoPosts(links));
 
     try {
         console.log(
-            JSON.stringify({
-                type: 'grant',
-                parseErrors: ['Ошибка 20000000000000'],
-                posts: gottenPosts,
-            })
+            JSON.stringify(filterPosts(receivedPosts), null, 2)
         );
-    } catch(error) {
+    } catch (error) {
         console.log(error);
     }
 })()

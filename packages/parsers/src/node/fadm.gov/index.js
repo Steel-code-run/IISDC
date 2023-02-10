@@ -1,7 +1,12 @@
 const page = process.argv[2] || 1;
 
-const {getHTML} = require('../../utils/getHTML');
+const {getHTML} = require('../../utils/getHTML.js');
 const {keyWords, exceptionWords} = require('../../utils/wordsForParsers');
+const {getUserByName} = require("@iisdc/backend/src/API/sqlite/users/users");
+const {
+    getSummaryGrant,
+    getLinksPosts, getDataBySelector
+} = require("../../utils/methodsParser");
 
 const url = 'https://fadm.gov.ru/news/';
 const baseUrl = 'https://fadm.gov.ru';
@@ -13,51 +18,16 @@ const querySelectors = {
     text: 'div.news__wrap',
 };
 
-
-const getNamePosts = (jsdom, querySelector) => {
-    return (
-        jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
-    );
-};
-
-const getLinksPosts = (jsdom, querySelector) => {
-
-    return Array.from(
-        jsdom.window.document.querySelectorAll(querySelector)
-    ).map((link) => baseUrl + link.getAttribute('href'));
-};
-
-const getDatesPosts = (jsdom, querySelector) => {
-    return (
-        jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
-    );
-};
-
-const getTextPosts = (jsdom, querySelector) => {
-    return (
-        jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
-    );
-};
-
-const getSummaryGrant = (jsdom, querySelector) => {
-    const fullText = getTextPosts(jsdom, querySelector);
-    const regex =
-        /(?<=Максимальный размер гранта | Сумма гранта | грант до | грант в ).*/gi;
-    const result = fullText.match(regex);
-
-    return result ? result[0].replaceAll(/^- |^– /g, '') : '';
-};
-
 const getInfoPosts = (links) => {
     return links.map(async (link) => {
         const jsdom = await getHTML(link);
-        const { title, date, text } = querySelectors;
+        const {title, date, text} = querySelectors;
 
         return {
-            namePost: getNamePosts(jsdom, title),
-            dateCreationPost: getDatesPosts(jsdom, date),
+            namePost: getDataBySelector(jsdom, title),
+            dateCreationPost: getDataBySelector(jsdom, date),
             summary: getSummaryGrant(jsdom, text),
-            fullText: getTextPosts(jsdom, text).replaceAll('\n', ''),
+            fullText: getDataBySelector(jsdom, text).replaceAll('\n', ''),
             link,
         };
     });
@@ -69,7 +39,7 @@ const getPostLazyLoading = async (totalPage, url, querySelectors) => {
     for (let i = 0; i < totalPage; i++) {
         const jsdom = await getHTML(`${url}?PAGEN_1=${i}`);
 
-        const links = getLinksPosts(jsdom, querySelectors.link);
+        const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
         posts.push(...(await Promise.all(getInfoPosts(links))).slice(0, -1));
     }
     return posts;
@@ -78,7 +48,7 @@ const getPostLazyLoading = async (totalPage, url, querySelectors) => {
 const filterPosts = (posts) => {
     return posts
         .filter((post) => {
-            const { namePost } = post;
+            const {namePost} = post;
 
             return keyWords.some(
                 (word) => namePost.toLowerCase().includes(word)
@@ -86,7 +56,7 @@ const filterPosts = (posts) => {
             );
         })
         .filter((post) => {
-            const { namePost } = post;
+            const {namePost} = post;
 
             return exceptionWords.every((word) => {
                 return !namePost.toLowerCase().includes(word);
@@ -95,8 +65,7 @@ const filterPosts = (posts) => {
 };
 
 
-
-(async function main(){
+(async function main() {
     const gottenPosts = await getPostLazyLoading(page, url, querySelectors);
 
     try {
@@ -107,7 +76,7 @@ const filterPosts = (posts) => {
                 posts: filterPosts(gottenPosts),
             })
         );
-    } catch(error) {
+    } catch (error) {
         console.log(error);
     }
 })()

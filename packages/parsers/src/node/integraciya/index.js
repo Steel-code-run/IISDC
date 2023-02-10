@@ -1,7 +1,10 @@
+import {exceptionWords, keyWords} from "../../utils/wordsForParsers.js";
+import {getHTML} from '../../utils/getHTML.js';
+import {defineTypePost, getDataBySelector, getLinksPosts, getSummaryGrant} from '../../utils/methodsParser.js';
+
+
 const page = process.argv[2] || 1;
 
-const {getHTML} = require('../../utils/getHTML');
-const {keyWords, exceptionWords} = require('../../utils/wordsForParsers');
 
 const url = 'https://integraciya.org/konkursy/';
 const baseUrl = 'https://integraciya.org';
@@ -15,73 +18,91 @@ const querySelectors = {
 };
 
 
-const getNamePosts = (jsdom, querySelector) => {
-    return (
-        jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
-    );
-};
-
-const getLinksPosts = (jsdom, querySelector) => {
-    return Array.from(
-        jsdom.window.document.querySelectorAll(querySelector)
-    ).map((link) => baseUrl + link.getAttribute('href'));
-};
-
-// const getDatesPosts = (jsdom, querySelector) => {
-//     return (
-//         jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
-//     );
-// };
-
-const getTextPosts = (jsdom, querySelector) => {
-    return (
-        jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
-    );
-};
-
-const getDeadlinePosts = (jsdom, querySelector) => {
-    return (
-        jsdom.window.document.querySelector(querySelector)?.textContent ?? ''
-    );
-}
-
-const getSummaryGrant = (jsdom, querySelector) => {
-    const fullText = getTextPosts(jsdom, querySelector);
-    const regex =
-        /(?<=Максимальный размер гранта | Сумма гранта | грант до | грант в ).*/gi;
-    const result = fullText.match(regex);
-
-    return result ? result[0].replaceAll(/^- |^– /g, '') : '';
-};
-
 const getInfoPosts = (links) => {
     return links.map(async (link) => {
         const jsdom = await getHTML(link);
-        const { title, text, deadline } = querySelectors;
+        const {title, date, text, deadline} = querySelectors;
 
-        return {
-            namePost: getNamePosts(jsdom, title),
-            // dateCreationPost: getDatesPosts(jsdom, date),
-            summary: getSummaryGrant(jsdom, text),
-            deadline: getDeadlinePosts(jsdom, deadline),
-            fullText: getTextPosts(jsdom, text).replaceAll('\n', ''),
-            link,
-        };
+        switch(defineTypePost(getDataBySelector(jsdom, title))) {
+            case 'grant':
+                return {
+                    postType: 'grant',
+                    postDescription: {
+                        namePost: getDataBySelector(jsdom, title),
+                        dateCreationPost: getDataBySelector(jsdom, date),
+                        summary: getSummaryGrant(jsdom, text),
+                        fullText: getDataBySelector(jsdom, text).replaceAll('\n', ''),
+                        deadline: getDataBySelector(jsdom, deadline),
+                        link,
+                    },
+
+                };
+            case 'competition':
+                return {
+                    postType: 'competition',
+                    postDescription: {
+                        namePost: getDataBySelector(jsdom, title),
+                        dateCreationPost: getDataBySelector(jsdom, date),
+                        deadline: getDataBySelector(jsdom, deadline),
+                        direction: 'направление',
+                        fullText: getDataBySelector(jsdom, text).replaceAll('\n', ''),
+                        link,
+                    },
+                };
+            case 'vacancy':
+                return {
+                    postType: 'vacancy',
+                    postDescription: {
+                        namePost: getDataBySelector(jsdom, title),
+                        dateCreationPost: getDataBySelector(jsdom, date),
+                        direction: getDataBySelector(jsdom, text),
+                        fullText: getDataBySelector(jsdom, text).replaceAll('\n', ''),
+                        organization: "Организация",
+                        conditions: "Условия",
+                        requirements: "Требования",
+                        responsibilities: "Обязанности",
+                        salary: "Зарплата",
+                        link,
+                    },
+                };
+            case 'internship':
+                return {
+                    postType: 'internship',
+                    postDescription: {
+                        namePost: getDataBySelector(jsdom, title),
+                        dateCreationPost: getDataBySelector(jsdom, date),
+                        direction: getDataBySelector(jsdom, text),
+                        fullText: getDataBySelector(jsdom, text).replaceAll('\n', ''),
+                        organization: "Организация",
+                        conditions: "Условия",
+                        requirements: "Требования",
+                        responsibilities: "Обязанности",
+                        salary: "Зарплата",
+                        link,
+                    },
+                };
+            case 'other':
+                return {
+                    postType: 'other',
+                }
+        }
+
+
     });
 };
 
 const filterPosts = (posts) => {
     return posts
+        .filter((post) => post.postType !== 'other')
         .filter((post) => {
-            const { namePost } = post;
+            const {namePost} = post.postDescription;
 
             return keyWords.some(
                 (word) => namePost.toLowerCase().includes(word)
-                // text.toLowerCase().includes(word)
             );
         })
         .filter((post) => {
-            const { namePost } = post;
+            const {namePost} = post.postDescription;
 
             return exceptionWords.every((word) => {
                 return !namePost.toLowerCase().includes(word);
@@ -89,20 +110,17 @@ const filterPosts = (posts) => {
         });
 };
 
-(async function main(){
+(async function main() {
     const jsdom = await getHTML(url);
-    const links = getLinksPosts(jsdom, querySelectors.link);
-    const gottenPosts = await Promise.all(getInfoPosts(links));
+    const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
+
+    const receivedPosts = await Promise.all(getInfoPosts(links));
 
     try {
         console.log(
-            JSON.stringify({
-                type: 'grant',
-                parseErrors: ['Ошибка 20000000000000'],
-                posts: filterPosts(gottenPosts),
-            })
+            JSON.stringify(filterPosts(receivedPosts), null, 2)
         );
-    } catch(error) {
+    } catch (error) {
         console.log(error);
     }
 })()
