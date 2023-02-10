@@ -1,4 +1,5 @@
-const getPostsChannel = require('./getPostsChannel');
+import {getPostsChannel} from "./getPostsChannel.js";
+import {defineTypeDescriptionTelegram, defineTypePost, getNamePost} from "../../utils/methodsParser.js";
 
 const options = {
 	nameUrl: 'https://t.me/cptgrantov',
@@ -25,82 +26,37 @@ const exceptionWords = [
 
 const isFilterPosts = (posts) => {
 	return posts
+		.filter((post) => post.postType !== 'other')
 		.filter((post) => {
 			return keyWords.some((keyWord) => {
-				return post.text.toLowerCase().includes(keyWord.toLowerCase());
+				return post.postDescription.fullText.toLowerCase().includes(keyWord.toLowerCase());
 			});
 		})
 		.filter((post) => {
 			return exceptionWords.every((exceptionWord) => {
-				return !post.text
+				return !post.postDescription.fullText
 					.toLowerCase()
 					.includes(exceptionWord.toLowerCase());
 			});
 		});
 };
 
-const getDateCreationPost = (post) => {
-	const time = new Date(post.date * 1000).getTime();
-	return new Date(time).toLocaleDateString('ru-RU', {
-		year: 'numeric',
-		month: 'numeric',
-		day: 'numeric',
+
+const getInfoPost = (data) => {
+	return data.map((post) => {
+		const typePost = defineTypePost(getNamePost(post));
+		return defineTypeDescriptionTelegram(typePost, post, options.nameUrl + '/' + post.id);
+
+
 	});
-};
-
-const getDirection = (post) => {
-	const regExp =
-		/(в области|по направлению|по следующим направлениям) .*?(?=\d|\.)/gim;
-	const result = post.text.match(regExp);
-	return result ? result[0] : '';
-};
-
-const getNamePost = (post) => {
-	const regExp = /^.*/gi;
-	const result = post.text.match(regExp);
-	return result ? result[0] : '';
-};
-
-const getOrganization = (post) => {
-	const regExp = /(?<=Организатор: ).*?(?=$)/gim;
-	const result = post.text.match(regExp);
-	return result ? result[0] : '';
-};
-
-const getDeadline = (post) => {
-	const regExp = /(?<=Дедлайн: ).*?(?=$)/gim;
-	const result = post.text.match(regExp);
-	return result ? result[0] : '';
-};
-
-const getSummary = (post) => {
-	const regExp =
-		/(?:\d{1,6} ){1,4}(рублей|руб\.*|миллионов|млн\.*) *(рублей|руб\.*)* *(ежегодно|ежемесячно|в год| раз в месяц| раз в год)*/gim;
-	const result = post.text.match(regExp);
-	return result ? result[0] : '';
-};
+}
 
 getPostsChannel(options)
 	.then((data) => {
-		const filterPosts = isFilterPosts(data);
-		console.log(
-			JSON.stringify({
-				type: 'grant',
-				parseErrors: ['Ошибка 20000000000000'],
-				posts: filterPosts.map((post) => {
-					return {
-						namePost: getNamePost(post),
-						dateCreationPost: getDateCreationPost(post),
-						direction: getDirection(post),
-						organization: getOrganization(post),
-						summary: getSummary(post),
-						deadline: getDeadline(post),
-						fullText: post.html,
-						link: options.nameUrl + '/' + post.id,
-					};
-				}),
-			})
-		);
+		const receivedPosts = getInfoPost(data);
+		const filterPosts = isFilterPosts(receivedPosts);
+		console.log(filterPosts);
+
 	})
 	.catch((err) => {
 		console.log(err);

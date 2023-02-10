@@ -46,11 +46,11 @@ export const definePostDescription = (postType, jsdom, querySelectors, link) => 
             return {
                 postType: 'grant',
                 postDescription: {
-                    namePost: getDataBySelector(jsdom, querySelectors.title),
-                    dateCreationPost: getDataBySelector(jsdom, querySelectors.date),
-                    summary: getSummaryGrant(jsdom, querySelectors.text),
-                    fullText: getDataBySelector(jsdom, querySelectors.text).replaceAll('\n', ''),
-                    deadline: getDataBySelector(jsdom, querySelectors.deadline),
+                    namePost: getDataBySelector(jsdom, querySelectors?.title),
+                    dateCreationPost: getDataBySelector(jsdom, querySelectors?.date),
+                    summary: getSummaryGrant(jsdom, querySelectors?.text),
+                    fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
+                    deadline: getDataBySelector(jsdom, querySelectors?.deadline),
                     link,
                 },
 
@@ -59,11 +59,11 @@ export const definePostDescription = (postType, jsdom, querySelectors, link) => 
             return {
                 postType: 'competition',
                 postDescription: {
-                    namePost: getDataBySelector(jsdom, querySelectors.title),
-                    dateCreationPost: getDataBySelector(jsdom, querySelectors.date),
-                    deadline: getDataBySelector(jsdom, querySelectors.deadline),
+                    namePost: getDataBySelector(jsdom, querySelectors?.title),
+                    dateCreationPost: getDataBySelector(jsdom, querySelectors?.date),
+                    deadline: getDataBySelector(jsdom, querySelectors?.deadline),
                     direction: 'направление',
-                    fullText: getDataBySelector(jsdom, querySelectors.text).replaceAll('\n', ''),
+                    fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
                     link,
                 },
             };
@@ -71,10 +71,10 @@ export const definePostDescription = (postType, jsdom, querySelectors, link) => 
             return {
                 postType: 'vacancy',
                 postDescription: {
-                    namePost: getDataBySelector(jsdom, querySelectors.title),
-                    dateCreationPost: getDataBySelector(jsdom, querySelectors.date),
-                    direction: getDataBySelector(jsdom, querySelectors.text),
-                    fullText: getDataBySelector(jsdom, querySelectors.text).replaceAll('\n', ''),
+                    namePost: getDataBySelector(jsdom, querySelectors?.title),
+                    dateCreationPost: getDataBySelector(jsdom, querySelectors?.date),
+                    direction: getDataBySelector(jsdom, querySelectors?.text),
+                    fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
                     organization: "Организация",
                     conditions: "Условия",
                     requirements: "Требования",
@@ -87,10 +87,10 @@ export const definePostDescription = (postType, jsdom, querySelectors, link) => 
             return {
                 postType: 'internship',
                 postDescription: {
-                    namePost: getDataBySelector(jsdom, querySelectors.title),
-                    dateCreationPost: getDataBySelector(jsdom, querySelectors.date),
-                    direction: getDataBySelector(jsdom, querySelectors.text),
-                    fullText: getDataBySelector(jsdom, querySelectors.text).replaceAll('\n', ''),
+                    namePost: getDataBySelector(jsdom, querySelectors?.title),
+                    dateCreationPost: getDataBySelector(jsdom, querySelectors?.date),
+                    direction: getDataBySelector(jsdom, querySelectors?.text),
+                    fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
                     organization: "Организация",
                     conditions: "Условия",
                     requirements: "Требования",
@@ -103,5 +103,120 @@ export const definePostDescription = (postType, jsdom, querySelectors, link) => 
             return {
                 postType: 'other',
             }
+    }
+}
+
+
+//Telegram
+
+export const getDateCreationPost = (post) => {
+    const time = new Date(post.date * 1000).getTime();
+    return new Date(time).toLocaleDateString('ru-RU', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+    });
+};
+
+export const getDirection = (post) => {
+    const regExp =
+        /(в области|по направлению|по следующим направлениям) .*?(?=\d|\.)/gim;
+    const result = post.text.match(regExp);
+    return result ? result[0] : '';
+};
+
+export const getNamePost = (post) => {
+    const regExp = /^.*/gi;
+    const result = post.text.match(regExp);
+    return result ? result[0] : '';
+};
+
+export const getOrganization = (post) => {
+    const regExp = /(?<=Организатор: ).*?(?=$)/gim;
+    const result = post.text.match(regExp);
+    return result ? result[0] : '';
+};
+
+export const getDeadline = (post) => {
+    const regExp = /(?<=Дедлайн: ).*?(?=$)/gim;
+    const result = post.text.match(regExp);
+    return result ? result[0] : '';
+};
+
+export const getSummary = (post) => {
+    const regExp =
+        /(?:\d{1,6} ){1,4}(рублей|руб\.*|миллионов|млн\.*) *(рублей|руб\.*)* *(ежегодно|ежемесячно|в год| раз в месяц| раз в год)*/gim;
+    const result = post.text.match(regExp);
+    return result ? result[0] : '';
+};
+
+export const defineTypeDescriptionTelegram = (postType, post, link) => {
+    switch(postType) {
+        case 'grant':
+            return {
+                postType: 'grant',
+                postDescription: {
+                    namePost: getNamePost(post),
+                    dateCreationPost: getDateCreationPost(post),
+                    summary: getSummary(post),
+                    fullText: post.text,
+                    deadline: getDeadline(post),
+                    organization: getOrganization(post),
+                    direction: getDirection(post),
+                    directionForSpent: "",
+                    link,
+                },
+            };
+        case 'competition':
+            return {
+                postType: 'competition',
+                postDescription: {
+                    namePost: getNamePost(post),
+                    dateCreationPost: getDateCreationPost(post),
+                    deadline: getDeadline(post),
+                    direction: getDirection(post),
+                    fullText: post.text,
+                    link,
+                    organization: getOrganization(post),
+
+                },
+            };
+        case 'vacancy':
+            return {
+                postType: 'vacancy',
+                postDescription: {
+                    namePost: getNamePost(post),
+                    dateCreationPost: getDateCreationPost(post),
+                    direction: getDirection(post),
+                    fullText: post.text,
+                    organization: getOrganization(post),
+                    conditions: "",
+                    requirements: "",
+                    responsibilities: "",
+                    salary: "",
+                    link,
+                }
+            };
+        case 'internship':
+            return {
+                postType: 'internship',
+                postDescription: {
+                    direction: getDirection(post),
+                    requirements: "",
+                    responsibilities: "",
+                    conditions: "",
+                    salary: "",
+                    fullText: post.text,
+                    namePost: getNamePost(post),
+                    dateCreationPost: getDateCreationPost(post),
+                    organization: getOrganization(post),
+                    link,
+                }
+            };
+        case 'other':
+            return {
+                postType: 'other',
+            }
+
     }
 }
