@@ -12,3 +12,4 @@ function getHTML(url) {
     });
 }
 exports.getHTML = getHTML;
+//# sourceMappingURL=getHTML.js.map

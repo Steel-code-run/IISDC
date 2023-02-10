@@ -24,3 +24,7 @@ export const parserCallQueueIsEmpty = () => {
 export const parserCallQueuePushMany = (parsers: TParser[], page:number = 1) => {
     parsers.forEach(parser => parserCallQueuePush(parser, page));
 }
+
+export const showParsersCallQueue = () => {
+    return parsersCallQueue.slice()
+}

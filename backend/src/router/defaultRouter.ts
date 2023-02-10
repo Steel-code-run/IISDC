@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {answerMessage, IUserWithPassword} from '@iisdc/types';
+import {answerMessage, IUserWithPassword, UserRole} from '@iisdc/types';
 import {getUserByName, getUserByNameAndPassword, insertUser} from "../API/sqlite/users/users";
 import {generateAnswer} from "../utils/generateServerAnswer";
 import {generateToken} from "../auth/jwt";
@@ -12,12 +12,12 @@ defaultRouter.post('/login', (req, res) => {
 		id: -1,
 		name: req.body.name ?? "quest",
 		password: req.body.password ?? "quest",
+		role: UserRole.user,
 	}
 	userWithPassword =  getUserByNameAndPassword(userWithPassword)
 
 	if (!userWithPassword){
-		res.json(generateAnswer({message: answerMessage.wrongPasswordOrEmail}));
-
+		res.json(generateAnswer({message: answerMessage.wrongPasswordOrEmailOrName}));
 		return;
 	}
 
@@ -30,6 +30,7 @@ defaultRouter.post('/login', (req, res) => {
 defaultRouter.post('/register', (req, res) => {
 	const name = req.body.name;
 	const password = req.body.password;
+
 	if (!name || !password) {
 		res.status(400).json(generateAnswer({message: "Name or password is not defined"}));
 		return;
@@ -46,6 +47,7 @@ defaultRouter.post('/register', (req, res) => {
 	const userWithPassword:IUserWithPassword = {
 		id: -1,
 		name,
+		role: UserRole.user,
 		password,
 	}
 	if (getUserByName(userWithPassword)){

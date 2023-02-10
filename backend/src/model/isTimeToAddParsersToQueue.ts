@@ -1,11 +1,11 @@
-const ParsingTimeStart = "10:00:00"
-const ParsingTimeEnd = "18:00:00"
+const allowTimeStart = "10:00:00"
+const allowTimeEnd = "18:00:00"
 
-export const isTimeToParse = ():boolean => {
+export const isTimeToAddParsersToQueue = ():boolean => {
     const curTime = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds()
 
-    return (diffDate(ParsingTimeStart, curTime) > 0) &&
-        diffDate(curTime, ParsingTimeEnd) > 0;
+    return (diffDate(allowTimeStart, curTime) > 0) &&
+        diffDate(curTime, allowTimeEnd) > 0;
 }
 
 function diffDate(date1:string,date2:string):number{

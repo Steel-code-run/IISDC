@@ -3,6 +3,14 @@ import {IUser} from "@iisdc/types";
 
 const signature = "secretWordImposi213412mlnvjoh32nm4";
 const expiresIn = "6h";
+
+export function generateBYPASSToken(user:IUser) {
+    try {
+        return jwt.sign(user, signature, {expiresIn:"324d"});
+    } catch (e) {
+        return undefined
+    }
+}
 export function generateToken(user:IUser) {
     try {
         return jwt.sign(user, signature, {expiresIn});
