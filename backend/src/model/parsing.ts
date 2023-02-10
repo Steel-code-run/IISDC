@@ -8,7 +8,7 @@ import {
     isGrantPost,
     isInternshipPost,
     isVacancyPost, TCompetition,
-    TGrant, TInternship,
+    TGrant, TInternship, TParserCallParams,
     TPost,
     TVacancy
 } from "@iisdc/types";
@@ -17,9 +17,9 @@ import {
     parserCallQueuePush,
     parserCallQueuePushMany,
     parserCallQueueShift
-} from "./parserQueue";
+}  from "./parserQueue";
 import {isGrantExist} from "../API/sqlite/parser/grants";
-import {isTimeToParse} from "./CanWeParse";
+import {isTimeToAddParsersToQueue} from "./isTimeToAddParsersToQueue";
 
 let isParsingEnabled = false;
 
@@ -34,16 +34,13 @@ export const enableParsing = () => {
 
     const parsers = generateDefaultParsers();
     parsers.forEach(parser => sqliteParser.addParser(parser));
+
     isParsingEnabled = true;
-    parse();
+    frequentlyAddAllParsersInQueue();
+    frequentlyParse();
 };
 
-const _parse = () => {
-    // получаем все парсеры с бд
-    const parsers = sqliteParser.getParsers()
-    // добавляем в очередь парсеры
-    parserCallQueuePushMany(parsers);
-
+const frequentlyParse = () => {
     // пока очередь не пуста
     while (!parserCallQueueIsEmpty()) {
         // Выделяем 1 настройки запуска парсера из очереди
@@ -51,41 +48,50 @@ const _parse = () => {
         if (!parsersCallParams) continue;
         if (parsersCallParams.parser.enabled === "false") continue;
 
+        parse(parsersCallParams);
 
-        // Парсим 1 страницу сайтов
-        consoleLog("currentParsing: " + parsersCallParams.parser.name + ", page" + parsersCallParams.page);
-        const posts = callParser(parsersCallParams);
-
-        // Получаем всё отдельно
-        const grants = getGrantsFromPosts(posts);
-        const vacancies = getVacanciesFromPosts(posts);
-        const internships = getInternshipsFromPosts(posts);
-        const competitions = getCompetitionsFromPosts(posts);
-
-        // Спрашиваем нужно ли парсить следующие страницы
-        // А так же добавляем в бд полученные гранты, проводим дальнейшие действия
-        let needToParseNextPage = grantsManage(grants);
-        needToParseNextPage = needToParseNextPage || vacanciesManage(vacancies);
-        needToParseNextPage = needToParseNextPage || internshipsManage(internships);
-        needToParseNextPage = needToParseNextPage || competitionsManage(competitions);
-
-        // Если нужно, то добавляем в очередь парсеры для следующей страницы
-        if (needToParseNextPage) {
-            parserCallQueuePush(parsersCallParams.parser, parsersCallParams.page + 1)
-        }
 
     }
-    // через 5 минут вызвать парсинг снова
-    setTimeout(parse, 1000 * 60 * 5)
+    // через минуту вызвать парсинг снова
+    setTimeout(frequentlyParse, 1000 * 60)
 }
 
-// обёрточка которая проверяет а нужно ли сейчас парсить
-const parse = () => {
-    if (isTimeToParse()){
-        _parse();
+const parse = (parsersCallParams:TParserCallParams)=>{
+    // Парсим 1 страницу сайтов
+    consoleLog("currentParsing: " + parsersCallParams.parser.name + ", page" + parsersCallParams.page);
+    const posts = callParser(parsersCallParams);
+
+    // Получаем всё отдельно
+    const grants = getGrantsFromPosts(posts);
+    const vacancies = getVacanciesFromPosts(posts);
+    const internships = getInternshipsFromPosts(posts);
+    const competitions = getCompetitionsFromPosts(posts);
+
+    // Спрашиваем нужно ли парсить следующие страницы
+    // А так же добавляем в бд полученные гранты, проводим дальнейшие действия
+    let needToParseNextPage =
+        grantsManage(grants)
+        || vacanciesManage(vacancies)
+        || internshipsManage(internships)
+        || competitionsManage(competitions);
+
+    // Если нужно, то добавляем в очередь парсеры для следующей страницы
+    if (needToParseNextPage) {
+        parserCallQueuePush(parsersCallParams.parser, parsersCallParams.page + 1)
+    }
+}
+
+
+// бесконечный цикл проверяет а нужно ли сейчас добавлять в очередь парсеры
+const frequentlyAddAllParsersInQueue = () => {
+    if (isTimeToAddParsersToQueue()){
+        // получаем все парсеры с бд
+        const parsers = sqliteParser.getParsers()
+        // добавляем в очередь парсеры
+        parserCallQueuePushMany(parsers);
     } else {
-        // через 5 минут попробовать снова начать парсить
-        setTimeout(parse, 1000 * 60 * 5)
+        // через 5 минут попробовать снова
+        setTimeout(frequentlyAddAllParsersInQueue, 1000 * 60 * 5)
     }
 }
 const getGrantsFromPosts = (posts: TPost<any>[]): TGrant[] => {

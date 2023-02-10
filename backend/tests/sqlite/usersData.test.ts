@@ -2,10 +2,10 @@ import {describe,test, expect,beforeAll} from '@jest/globals';
 
 import * as process from "process";
 import {
-    createUsersDataTable,
-    deleteUsersDataTable,
+    createTable,
+    deleteTable,
     getUsers,
-    isUsersDataTableExist
+    isTableExist
 } from "../../src/API/sqlite/users/users";
 
 
@@ -14,18 +14,18 @@ if (process.env.BYPASS_TESTS === "true") {
     describe('sqlite: usersData', () => {
 
         beforeAll(()=>{
-            if (isUsersDataTableExist())
-                deleteUsersDataTable()
+            if (isTableExist())
+                deleteTable()
 
         })
 
         test("table is not exist", () => {
-            expect(isUsersDataTableExist()).toBe(false)
+            expect(isTableExist()).toBe(false)
         })
 
         test("table is exist", () => {
-            createUsersDataTable()
-            expect(isUsersDataTableExist()).toBe(true)
+            createTable()
+            expect(isTableExist()).toBe(true)
         })
 
         test("table must be empty", () => {

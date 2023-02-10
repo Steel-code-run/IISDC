@@ -61,3 +61,4 @@ const result = [
     }
 ];
 console.log(JSON.stringify(result));
+//# sourceMappingURL=index.js.map
