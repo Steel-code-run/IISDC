@@ -40,7 +40,7 @@ export const defineTypePost = (namePost) => {
     return 'other';
 }
 
-export const definePostDescription = (postType, jsdom, querySelectors, link) => {
+export const definePostDescription = (postType, jsdom, querySelectors, link, url) => {
     switch (postType) {
         case 'grant':
             return {
@@ -51,6 +51,7 @@ export const definePostDescription = (postType, jsdom, querySelectors, link) => 
                     summary: getSummaryGrant(jsdom, querySelectors?.text),
                     fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
                     deadline: getDataBySelector(jsdom, querySelectors?.deadline),
+                    linkPDF: getLinksPDF(jsdom, querySelectors?.linkPDF, url),
                     link,
                 },
 

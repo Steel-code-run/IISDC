@@ -20,7 +20,7 @@ const getInfoPosts = (links) => {
         const {title} = querySelectors;
 
         const namePost = getDataBySelector(jsdom, title);
-        return definePostDescription(defineTypePost(namePost), jsdom, querySelectors, link);
+        return definePostDescription(defineTypePost(namePost), jsdom, querySelectors, link, baseUrl);
 
 
     });

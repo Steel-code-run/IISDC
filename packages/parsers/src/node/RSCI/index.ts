@@ -14,7 +14,8 @@ const result:TParserResult = [
 			link: "Ссылка",
 			organization: "Организация",
 			summary: "Краткое описание",
-			directionForSpent: "Направление для расходования"
+			directionForSpent: "Направление для расходования",
+			linkPDF: "Ссылка на PDF",
 		},
 	},
 	{
