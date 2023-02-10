@@ -1,13 +1,10 @@
+import {exceptionWords, keyWords} from "../../utils/wordsForParsers.js";
+import {getHTML} from '../../utils/getHTML.js';
+import {definePostDescription, defineTypePost, getDataBySelector, getLinksPosts} from '../../utils/methodsParser.js';
+
+
 const page = process.argv[2] || 1;
 
-const {getHTML} = require('../../utils/getHTML.js');
-const {keyWords, exceptionWords} = require('../../utils/wordsForParsers');
-const {
-    getSummaryGrant,
-    getLinksPosts, getDataBySelector
-} = require("../../utils/methodsParser");
-
-console.log(keyWords);
 
 const url = 'https://fasie.ru/press/';
 const baseUrl = 'https://fasie.ru';
@@ -22,15 +19,10 @@ const querySelectors = {
 const getInfoPosts = (links) => {
     return links.map(async (link) => {
         const jsdom = await getHTML(link);
-        const {title, date, text} = querySelectors;
+        const {title} = querySelectors;
 
-        return {
-            namePost: getDataBySelector(jsdom, title),
-            dateCreationPost: getDataBySelector(jsdom, date),
-            summary: getSummaryGrant(jsdom, text),
-            fullText: getDataBySelector(jsdom, text).replaceAll('\n', ''),
-            link,
-        };
+        const namePost = getDataBySelector(jsdom, title);
+        return definePostDescription(defineTypePost(namePost), jsdom, querySelectors, link);
     });
 };
 
@@ -38,7 +30,7 @@ const getPostLazyLoading = async (totalPage, url, querySelectors) => {
     const posts = [];
 
     for (let i = 0; i < totalPage; i++) {
-        const jsdom = await getHTML(`${url}?ajax=Y&PAGEN_1=${i}`);
+        const jsdom = await getHTML(`${url}?ajax=Y&ajax=Y&PAGEN_1=${i}`);
         const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
         posts.push(...(await Promise.all(getInfoPosts(links))).slice(0, -1));
     }
@@ -47,16 +39,16 @@ const getPostLazyLoading = async (totalPage, url, querySelectors) => {
 
 const filterPosts = (posts) => {
     return posts
+        .filter((post) => post.postType !== 'other')
         .filter((post) => {
-            const {namePost} = post;
+            const {namePost} = post.postDescription;
 
             return keyWords.some(
                 (word) => namePost.toLowerCase().includes(word)
-                // text.toLowerCase().includes(word)
             );
         })
         .filter((post) => {
-            const {namePost} = post;
+            const {namePost} = post.postDescription;
 
             return exceptionWords.every((word) => {
                 return !namePost.toLowerCase().includes(word);
@@ -65,15 +57,11 @@ const filterPosts = (posts) => {
 };
 
 (async function main() {
-    const gottenPosts = await getPostLazyLoading(page, url, querySelectors);
+    const receivedPosts = await getPostLazyLoading(page, url, querySelectors);
 
     try {
         console.log(
-            JSON.stringify({
-                type: 'grant',
-                parseErrors: ['Ошибка 20000000000000'],
-                posts: filterPosts(gottenPosts),
-            })
+            JSON.stringify(filterPosts(receivedPosts), null, 2)
         );
     } catch (error) {
         console.log(error);
