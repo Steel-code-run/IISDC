@@ -16,8 +16,6 @@ const callNodeTsParser = (params) => {
     catch (e) {
         throw new Error('Errors with parser file path');
     }
-    if (!params.page)
-        params.page = 1;
     execString += ` ${params.page}`;
     const result = JSON.parse((0, child_process_1.execSync)(execString).toString());
     if (!(0, types_1.isTParserResult)(result))
@@ -39,3 +37,4 @@ const callParser = (params) => {
     }
 };
 exports.callParser = callParser;
+//# sourceMappingURL=index.js.map
