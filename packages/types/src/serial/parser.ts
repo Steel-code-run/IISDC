@@ -50,6 +50,8 @@ export type TGrant = {
 	fullText: string;
 	// ссылка на грант
 	link: string;
+	// ссылка на PDF
+	linkPDF: string;
 }
 
 export type TVacancy = {

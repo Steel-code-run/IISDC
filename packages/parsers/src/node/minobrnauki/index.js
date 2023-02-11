@@ -1,17 +1,17 @@
-const {exceptionWords, keyWords} =  require("../../utils/wordsForParsers.js");
+const {exceptionWords} =  require("../../utils/wordsForParsers.js");
 const {getHTML} = require ('../../utils/getHTML.js');
 const {definePostDescription, defineTypePost, getDataBySelector, getLinksPosts} =require('../../utils/methodsParser.js');
 
 
-const url = 'https://integraciya.org/konkursy/';
-const baseUrl = 'https://integraciya.org';
+const url = 'https://minobrnauki.gov.ru/grants/grants/';
+const baseUrl = 'https://minobrnauki.gov.ru';
 
 const querySelectors = {
-    title: 'strong.name',
-    link: 'a.contest_a',
-    // date: 'span.ico_clock b',
-    text: 'table.contest_more_cont tbody tr td ~ td',
-    deadline: 'div.date2'
+    title: 'article.post h1',
+    link: 'a.grants-card',
+    date: 'span.post-date-day',
+    text: 'div.post-body div b',
+    linkPDF: 'div.post-body a:not([href="/grants/grants/"])',
 };
 
 
@@ -21,7 +21,8 @@ const getInfoPosts = (links) => {
         const {title} = querySelectors;
 
         const namePost = getDataBySelector(jsdom, title);
-        return definePostDescription(defineTypePost(namePost), jsdom, querySelectors, link);
+        return definePostDescription(defineTypePost(namePost), jsdom, querySelectors, link, baseUrl);
+
 
     });
 };
@@ -32,17 +33,13 @@ const filterPosts = (posts) => {
         .filter((post) => {
             const {namePost} = post.postDescription;
 
-            return keyWords.some(
-                (word) => namePost.toLowerCase().includes(word)
-            );
-        })
-        .filter((post) => {
-            const {namePost} = post.postDescription;
-
             return exceptionWords.every((word) => {
+                if(namePost.toLowerCase().includes(word)) {
+                    console.log(namePost, 'contains', word);
+                }
                 return !namePost.toLowerCase().includes(word);
             });
-        });
+        })
 };
 
 (async function main() {

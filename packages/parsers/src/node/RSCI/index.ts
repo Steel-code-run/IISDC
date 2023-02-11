@@ -6,7 +6,7 @@ const result:TParserResult = [
 	{
 		postType: TPostType.grant,
 		postDescription: {
-			namePost: "Название поста",
+			namePost: "Названи'е поста",
 			dateCreationPost: "Дата создания поста",
 			deadline: "Дедлайн",
 			direction: "Направление",
@@ -14,7 +14,8 @@ const result:TParserResult = [
 			link: "Ссылка",
 			organization: "Организация",
 			summary: "Краткое описание",
-			directionForSpent: "Направление для расходования"
+			directionForSpent: "Направление для расходования",
+			linkPDF: "Ссылка на PDF",
 		},
 	},
 	{

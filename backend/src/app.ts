@@ -11,7 +11,6 @@ import {enableParsing} from "./model/parsing";
 import {configureAll} from "./API/sqlite/configurateDataBase/configureDataBase";
 import {generateBYPASSToken} from "./auth/jwt";
 import {consoleLog} from "./utils/consoleLog";
-import {IUser, UserRole} from "@iisdc/types";
 dotenv.config({path:path.join(__projectPath,'../',`.env.${process.env.NODE_ENV}`)});
 const app = express();
 const port = process.env.PORT || 3003;

@@ -71,7 +71,9 @@ privateRouter.post("/getGrants",(req:ICustomRequest,res) => {
         summary: req.body.summary,
         directionForSpent: req.body.directionForSpent,
         fullText: req.body.fullText,
-        link: req.body.link
+        link: req.body.link,
+        linkPDF: req.body.linkPDF
+
     }
     const limit = req.body.limit;
     res.json(generateAnswer({message:answerMessage.success,data: sqliteGrants.getGrants(grant,limit)}))
@@ -90,7 +92,8 @@ privateRouter.post("/addGrant",(req:ICustomRequest,res) => {
         summary: req.body.summary,
         directionForSpent: req.body.directionForSpent,
         fullText: req.body.fullText,
-        link: req.body.link
+        link: req.body.link,
+        linkPDF: req.body.linkPDF
     }
     try {
         sqliteGrants.addGrant(grant)

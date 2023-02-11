@@ -6,7 +6,6 @@
 		"esModuleInterop": true,
 		"strict": true,
 		"useUnknownInCatchVariables": false,
-		"module": "CommonJS",
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"isolatedModules": false,

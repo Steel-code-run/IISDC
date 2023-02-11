@@ -37,4 +37,3 @@ const callParser = (params) => {
     }
 };
 exports.callParser = callParser;
-//# sourceMappingURL=index.js.map

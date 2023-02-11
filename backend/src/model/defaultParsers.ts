@@ -1,28 +1,34 @@
 import {TParser, TParserType} from "@iisdc/types";
 
 const parsersParams = [
-    // {
-    //     name:"cptgrantov",
-    //     url:"https://cptgrantov.ru/",
-    //     fileUrl:"cptgrantov",
-    //     parserType: TParserTypes["ts-node"]
-    // },
-    // {
-    //     name:"fadm.gov",
-    //     url:"https://fadm.gov/",
-    //     fileUrl:"fadm.gov",
-    //     parserType: TParserTypes["ts-node"]
-    // },
-    // {
-    //     name:"fasie",
-    //     url:"https://fasie.ru/",
-    //     fileUrl:"fasie",
-    //     parserType: TParserTypes["ts-node"]
-    // },
     {
-        name:"RSCI",
-        url:"https://RSCI.ru/",
-        fileUrl:"RSCI",
+        name:"cptgrantov",
+        url:"https://cptgrantov.ru/",
+        fileUrl:"cptgrantov",
+        parserType: TParserType["nodejs"]
+    },
+    {
+        name:"fadm.gov",
+        url:"https://fadm.gov/",
+        fileUrl:"fadm.gov",
+        parserType: TParserType["nodejs"]
+    },
+    {
+        name:"fasie",
+        url:"https://fasie.ru/",
+        fileUrl:"fasie",
+        parserType: TParserType["nodejs"]
+    },
+    {
+        name:"integraciya",
+        url:"https://integraciya.ru/",
+        fileUrl:"integraciya",
+        parserType: TParserType["nodejs"]
+    },
+    {
+        name:"minobrnauki",
+        url:"https://minobrnauki.ru/",
+        fileUrl:"minobrnauki",
         parserType: TParserType["nodejs"]
     },
 ]
