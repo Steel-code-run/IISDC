@@ -18,8 +18,12 @@ const callNodeTsParser = (params:TParserCallParams): TParserResult => {
 	}
 
 	execString += ` ${params.page}`;
-
-	const result = JSON.parse(execSync(execString).toString());
+	let result
+	try {
+		result = JSON.parse(execSync(execString).toString());
+	} catch (e) {
+		throw new Error('Errors with parser exec');
+	}
 
 	if (!isTParserResult(result))
 		throw new Error('Parser result is not valid');

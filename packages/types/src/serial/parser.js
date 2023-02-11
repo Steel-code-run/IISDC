@@ -17,4 +17,3 @@ var TPostType;
     // школьная олимпиада
     TPostType["competition"] = "competition";
 })(TPostType = exports.TPostType || (exports.TPostType = {}));
-//# sourceMappingURL=parser.js.map

@@ -7,10 +7,10 @@ import defaultRouter from "./router/defaultRouter";
 import {frequentlyInitTelegramBot} from "./telegram/telegram";
 import {setUser} from "./auth/middleware";
 import privateRouter from "./router/privateRouter";
-import {enableParsing} from "./model/parsing";
 import {configureAll} from "./API/sqlite/configurateDataBase/configureDataBase";
 import {generateBYPASSToken} from "./auth/jwt";
 import {consoleLog} from "./utils/consoleLog";
+import {enableParserScheduler} from "./model/parser";
 dotenv.config({path:path.join(__projectPath,'../',`.env.${process.env.NODE_ENV}`)});
 const app = express();
 const port = process.env.PORT || 3003;
@@ -26,12 +26,12 @@ app.use(setUser);
 app.use(defaultRouter);
 app.use(privateRouter)
 app.listen(port, () => {
-	console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+	consoleLog(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
 
 setTimeout(()=>{
 	frequentlyInitTelegramBot()
-	enableParsing()
+	enableParserScheduler()
 },3000)
 
 if (process.env.NODE_ENV === "development") {
@@ -40,5 +40,5 @@ if (process.env.NODE_ENV === "development") {
 		role: 999,
 		id: 2,
 	}
-	consoleLog("Bearer " + generateBYPASSToken(BYPASSUserIUser)!)
+	console.log("Bearer " + generateBYPASSToken(BYPASSUserIUser)!)
 }

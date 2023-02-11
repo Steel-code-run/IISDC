@@ -17,7 +17,13 @@ const callNodeTsParser = (params) => {
         throw new Error('Errors with parser file path');
     }
     execString += ` ${params.page}`;
-    const result = JSON.parse((0, child_process_1.execSync)(execString).toString());
+    let result;
+    try {
+        result = JSON.parse((0, child_process_1.execSync)(execString).toString());
+    }
+    catch (e) {
+        throw new Error('Errors with parser exec');
+    }
     if (!(0, types_1.isTParserResult)(result))
         throw new Error('Parser result is not valid');
     return result;
