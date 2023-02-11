@@ -4,13 +4,14 @@ import {__projectPath} from "../../../utils/projectPath";
 import {TGrant } from "@iisdc/types";
 import createWhereQuery from "../../../helpers/createWhereQuery";
 import createInsertQuery from "../../../helpers/createInsertQuery";
+import {shieldIt} from "@iisdc/utils";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
 export const createTable = ()=>{
     try {
         db.prepare('CREATE TABLE grants(' +
             'id INTEGER PRIMARY KEY AUTOINCREMENT,' +
-            'namePost STRING UNIQUE,' +
+            'namePost STRING,' +
             'dateCreationPost STRING,' +
             'direction STRING,' +
             'organization STRING,' +
@@ -18,7 +19,8 @@ export const createTable = ()=>{
             'summary STRING,' +
             'directionForSpent STRING,' +
             'fullText STRING,' +
-            'link STRING' +
+            'link STRING,' +
+            'linkPDF STRING' +
             ');').run()
     }
     catch (e) {
@@ -55,7 +57,7 @@ export const isTableExist = ()=>{
 export const isGrantExist = (namePost: string, dateCreationPost:string)=>{
     try {
         return db.prepare('SELECT * FROM grants WHERE namePost=?' +
-            ' AND dateCreationPost=?;').all(namePost,dateCreationPost).length > 0
+            ' AND dateCreationPost=?;').all(shieldIt(namePost),shieldIt(dateCreationPost)).length > 0
     }
     catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isGrantExist")
@@ -79,7 +81,7 @@ export const addGrant = (grant: TGrant)=>{
 
 export const getGrants = (grant:Partial<TGrant> = {},limit?:number, orderBy:string = "DESC")=>{
     let query = 'SELECT * FROM grants ';
-    query += createWhereQuery(grant,{namePost:grant.namePost});
+    query += createWhereQuery(grant,{namePost:grant.namePost,linkPDF:grant.linkPDF});
     query += ` ORDER BY id ${orderBy} LIMIT ? ;`
     if (limit === undefined)
         limit = 10

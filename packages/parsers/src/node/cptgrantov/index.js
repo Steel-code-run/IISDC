@@ -1,5 +1,5 @@
-import {getPostsChannel} from "./getPostsChannel.js";
-import {defineTypeDescriptionTelegram, defineTypePost, getNamePost} from "../../utils/methodsParser.js";
+const {getPostsChannel} =  require("./getPostsChannel.js");
+const {defineTypeDescriptionTelegram, defineTypePost, getNamePost} = require('../../utils/methodsParser.js');
 
 const options = {
 	nameUrl: 'https://t.me/cptgrantov',
@@ -55,7 +55,7 @@ getPostsChannel(options)
 	.then((data) => {
 		const receivedPosts = getInfoPost(data);
 		const filterPosts = isFilterPosts(receivedPosts);
-		console.log(filterPosts);
+		console.log(JSON.stringify(filterPosts));
 
 	})
 	.catch((err) => {

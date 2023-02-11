@@ -1,4 +1,4 @@
-export const exceptionWords = [
+const exceptionWords = [
     'результаты ',
     'результат ',
     'результатам ',
@@ -26,7 +26,7 @@ export const exceptionWords = [
     'финал',
 ];
 
-export const keyWords = [
+const keyWords = [
     'гранты',
     'грант ',
     'гранту',
@@ -49,4 +49,7 @@ export const keyWords = [
     'на реализацию',
 ];
 
-
+module.exports = {
+    exceptionWords,
+    keyWords,
+}

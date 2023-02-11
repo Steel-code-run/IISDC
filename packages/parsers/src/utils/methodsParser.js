@@ -1,9 +1,9 @@
-export const getLinksPosts = (jsdom, querySelector, url) => {
+const getLinksPosts = (jsdom, querySelector, url) => {
     return Array.from(
         jsdom.window.document.querySelectorAll(querySelector)
     ).map((link) => url + link.getAttribute('href'));
 };
-export const getLinksPDF = (jsdom, querySelector, url) => {
+const getLinksPDF = (jsdom, querySelector, url) => {
     return Array.from(
         jsdom.window.document.querySelectorAll(querySelector)
     ).map((link) => {
@@ -11,11 +11,11 @@ export const getLinksPDF = (jsdom, querySelector, url) => {
         return url + link.getAttribute('href');
     });
 };
-export const getDataBySelector = (jsdom, querySelector) => {
+const getDataBySelector = (jsdom, querySelector) => {
     return jsdom.window.document.querySelector(querySelector)?.textContent ?? '';
 }
 
-export const getSummaryGrant = (jsdom, querySelector) => {
+const getSummaryGrant = (jsdom, querySelector) => {
     const fullText = getDataBySelector(jsdom, querySelector);
     const regex =
         /(?<=Максимальный размер гранта | Сумма гранта | грант до | грант в ).*/gi;
@@ -24,7 +24,7 @@ export const getSummaryGrant = (jsdom, querySelector) => {
     return result ? result[0].replaceAll(/^- |^– /g, '') : '';
 };
 
-export const defineTypePost = (namePost) => {
+const defineTypePost = (namePost) => {
     const keyWords = {
         grant: ['грант', 'гранты', 'гранта', 'грантом', 'гранту', 'субсидия', 'субсидии', 'субсидию', 'субсидией', 'субсидию'],
         competition: ['конкурс', 'конкурсы', 'конкурса', 'конкурсом', 'конкурсу'],
@@ -40,7 +40,7 @@ export const defineTypePost = (namePost) => {
     return 'other';
 }
 
-export const definePostDescription = (postType, jsdom, querySelectors, link, url) => {
+const definePostDescription = (postType, jsdom, querySelectors, link, url) => {
     switch (postType) {
         case 'grant':
             return {
@@ -110,7 +110,7 @@ export const definePostDescription = (postType, jsdom, querySelectors, link, url
 
 //Telegram
 
-export const getDateCreationPost = (post) => {
+const getDateCreationPost = (post) => {
     const time = new Date(post.date * 1000).getTime();
     return new Date(time).toLocaleDateString('ru-RU', {
         year: 'numeric',
@@ -119,39 +119,39 @@ export const getDateCreationPost = (post) => {
     });
 };
 
-export const getDirection = (post) => {
+const getDirection = (post) => {
     const regExp =
         /(в области|по направлению|по следующим направлениям) .*?(?=\d|\.)/gim;
     const result = post.text.match(regExp);
     return result ? result[0] : '';
 };
 
-export const getNamePost = (post) => {
+const getNamePost = (post) => {
     const regExp = /^.*/gi;
     const result = post.text.match(regExp);
     return result ? result[0] : '';
 };
 
-export const getOrganization = (post) => {
+const getOrganization = (post) => {
     const regExp = /(?<=Организатор: ).*?(?=$)/gim;
     const result = post.text.match(regExp);
     return result ? result[0] : '';
 };
 
-export const getDeadline = (post) => {
+const getDeadline = (post) => {
     const regExp = /(?<=Дедлайн: ).*?(?=$)/gim;
     const result = post.text.match(regExp);
     return result ? result[0] : '';
 };
 
-export const getSummary = (post) => {
+const getSummary = (post) => {
     const regExp =
         /(?:\d{1,6} ){1,4}(рублей|руб\.*|миллионов|млн\.*) *(рублей|руб\.*)* *(ежегодно|ежемесячно|в год| раз в месяц| раз в год)*/gim;
     const result = post.text.match(regExp);
     return result ? result[0] : '';
 };
 
-export const defineTypeDescriptionTelegram = (postType, post, link) => {
+const defineTypeDescriptionTelegram = (postType, post, link) => {
     switch(postType) {
         case 'grant':
             return {
@@ -220,4 +220,20 @@ export const defineTypeDescriptionTelegram = (postType, post, link) => {
             }
 
     }
+}
+
+module.exports = {
+    getDirection,
+    defineTypePost,
+    defineTypeDescriptionTelegram,
+    getDataBySelector,
+    getSummaryGrant,
+    getSummary,
+    getOrganization,
+    getDeadline,
+    getNamePost,
+    getDateCreationPost,
+    getLinksPosts,
+    getLinksPDF,
+    definePostDescription,
 }

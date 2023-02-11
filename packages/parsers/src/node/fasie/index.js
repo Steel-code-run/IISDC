@@ -1,6 +1,6 @@
-import {exceptionWords, keyWords} from "../../utils/wordsForParsers.js";
-import {getHTML} from '../../utils/getHTML.js';
-import {definePostDescription, defineTypePost, getDataBySelector, getLinksPosts} from '../../utils/methodsParser.js';
+const {exceptionWords, keyWords} =  require("../../utils/wordsForParsers.js");
+const {getHTML} = require ('../../utils/getHTML.js');
+const {definePostDescription, defineTypePost, getDataBySelector, getLinksPosts} =require('../../utils/methodsParser.js');
 
 
 const page = process.argv[2] || 1;
@@ -61,7 +61,7 @@ const filterPosts = (posts) => {
 
     try {
         console.log(
-            JSON.stringify(filterPosts(receivedPosts), null, 2)
+            JSON.stringify(filterPosts(receivedPosts))
         );
     } catch (error) {
         console.log(error);

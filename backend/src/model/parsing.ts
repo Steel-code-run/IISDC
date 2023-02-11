@@ -8,7 +8,7 @@ import {
     isGrantPost,
     isInternshipPost,
     isVacancyPost, TCompetition,
-    TGrant, TInternship, TParserCallParams,
+    TGrant, TInternship, TParserCallParams, TParserResult,
     TPost,
     TVacancy
 } from "@iisdc/types";
@@ -20,6 +20,7 @@ import {
 }  from "./parserQueue";
 import {isGrantExist} from "../API/sqlite/parser/grants";
 import {isTimeToAddParsersToQueue} from "./isTimeToAddParsersToQueue";
+import {toNormalGrant} from "../helpers/toNormalGrant";
 
 let isParsingEnabled = false;
 
@@ -29,7 +30,7 @@ let isParsingEnabled = false;
     * Запускаем службу парсинга
 */
 export const enableParsing = () => {
-
+    frequentlyParse();
     if (isParsingEnabled) return;
 
     const parsers = generateDefaultParsers();
@@ -37,48 +38,56 @@ export const enableParsing = () => {
 
     isParsingEnabled = true;
     frequentlyAddAllParsersInQueue();
-    frequentlyParse();
+
 };
 
 const frequentlyParse = () => {
     // пока очередь не пуста
-    while (!parserCallQueueIsEmpty()) {
+    if (!parserCallQueueIsEmpty()){
         // Выделяем 1 настройки запуска парсера из очереди
         const parsersCallParams = parserCallQueueShift();
-        if (!parsersCallParams) continue;
-        if (parsersCallParams.parser.enabled === "false") continue;
-
-        parse(parsersCallParams);
-
-
+        if (parsersCallParams) {
+            if (parsersCallParams.parser.enabled !== "false"){
+                parse(parsersCallParams);
+            }
+        }
+        setTimeout(frequentlyParse, 1000)
     }
-    // через минуту вызвать парсинг снова
-    setTimeout(frequentlyParse, 1000 * 60)
+
+    // через 10 сек вызвать парсинг снова
+    setTimeout(frequentlyParse, 1000 * 10)
 }
 
 const parse = (parsersCallParams:TParserCallParams)=>{
     // Парсим 1 страницу сайтов
-    consoleLog("currentParsing: " + parsersCallParams.parser.name + ", page" + parsersCallParams.page);
-    const posts = callParser(parsersCallParams);
+    consoleLog("currentParsing: " + parsersCallParams.parser.name + ", page: " + parsersCallParams.page);
 
-    // Получаем всё отдельно
-    const grants = getGrantsFromPosts(posts);
-    const vacancies = getVacanciesFromPosts(posts);
-    const internships = getInternshipsFromPosts(posts);
-    const competitions = getCompetitionsFromPosts(posts);
+    try {
+        const posts = callParser(parsersCallParams);
+        // Получаем всё отдельно
+        const grants = getGrantsFromPosts(posts);
+        const vacancies = getVacanciesFromPosts(posts);
+        const internships = getInternshipsFromPosts(posts);
+        const competitions = getCompetitionsFromPosts(posts);
 
-    // Спрашиваем нужно ли парсить следующие страницы
-    // А так же добавляем в бд полученные гранты, проводим дальнейшие действия
-    let needToParseNextPage =
-        grantsManage(grants)
-        || vacanciesManage(vacancies)
-        || internshipsManage(internships)
-        || competitionsManage(competitions);
+        // Спрашиваем нужно ли парсить следующие страницы
+        // А так же добавляем в бд полученные гранты, проводим дальнейшие действия
+        let needToParseNextPage = grantsManage(grants)
+        needToParseNextPage = vacanciesManage(vacancies) || needToParseNextPage
+        needToParseNextPage = internshipsManage(internships) || needToParseNextPage
+        needToParseNextPage = competitionsManage(competitions) || needToParseNextPage
 
-    // Если нужно, то добавляем в очередь парсеры для следующей страницы
-    if (needToParseNextPage) {
-        parserCallQueuePush(parsersCallParams.parser, parsersCallParams.page + 1)
+        // Если нужно, то добавляем в очередь парсеры для следующей страницы
+        if (needToParseNextPage) {
+            if (parsersCallParams.page < 5) {
+                parserCallQueuePush(parsersCallParams.parser, parsersCallParams.page + 1)
+            }
+        }
+    } catch (e) {
+        consoleLog("Error in parse: " + parsersCallParams.parser.name + " " + e.message)
     }
+
+
 }
 
 
@@ -126,6 +135,7 @@ const getCompetitionsFromPosts = (posts: TPost<any>[]): TCompetition[] => {
     return competitions;
 }
 
+
 /*
     * Управление добавлением в бд
     * Если нашли совпадение в бд, то больше не парсим
@@ -133,13 +143,14 @@ const getCompetitionsFromPosts = (posts: TPost<any>[]): TCompetition[] => {
     * Возвращаем true, если нужно парсить следующую страницу
  */
 const grantsManage = (grants: TGrant[]) => {
-    let parseNextPage = true;
+    let parseNextPage = false;
     let newGrants = 0;
     for (let i = 0; i < grants.length; i++) {
         const grant = grants[i];
         if (!isGrantExist(grant.namePost, grant.dateCreationPost)) {
             // добавляем в бд
-            sqliteGrants.addGrant(grant);
+            sqliteGrants.addGrant(toNormalGrant(grant));
+            if (newGrants === 0) parseNextPage = true;
             newGrants++;
         } else {
             // Если нашли совпадение в бд, то больше не парсим

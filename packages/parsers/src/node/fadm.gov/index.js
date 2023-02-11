@@ -1,6 +1,6 @@
-import {exceptionWords, keyWords} from "../../utils/wordsForParsers.js";
-import {getHTMLByFadmGov} from '../../utils/getHTML.js';
-import {definePostDescription, defineTypePost, getDataBySelector, getLinksPosts} from '../../utils/methodsParser.js';
+const {exceptionWords, keyWords} =  require("../../utils/wordsForParsers.js");
+const {getHTMLByFadmGov} = require ('../../utils/getHTML.js');
+const {definePostDescription, defineTypePost, getDataBySelector, getLinksPosts} =require('../../utils/methodsParser.js');
 
 
 const page = process.argv[2] || 1;

@@ -1,6 +1,7 @@
-import {exceptionWords} from "../../utils/wordsForParsers.js";
-import {getHTML} from '../../utils/getHTML.js';
-import {definePostDescription, defineTypePost, getDataBySelector, getLinksPosts} from '../../utils/methodsParser.js';
+const {exceptionWords} =  require("../../utils/wordsForParsers.js");
+const {getHTML} = require ('../../utils/getHTML.js');
+const {definePostDescription, defineTypePost, getDataBySelector, getLinksPosts} =require('../../utils/methodsParser.js');
+
 
 const url = 'https://minobrnauki.gov.ru/grants/grants/';
 const baseUrl = 'https://minobrnauki.gov.ru';
