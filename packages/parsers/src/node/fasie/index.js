@@ -1,6 +1,11 @@
-const {exceptionWords, keyWords} =  require("../../utils/wordsForParsers.js");
-const {getHTML} = require ('../../utils/getHTML.js');
-const {definePostDescription, defineTypePost, getDataBySelector, getLinksPosts} =require('../../utils/methodsParser.js');
+const {exceptionWords, keyWords} = require("../../utils/wordsForParsers.js");
+const {getHTML} = require('../../utils/getHTML.js');
+const {
+    definePostDescription,
+    defineTypePost,
+    getDataBySelector,
+    getLinksPosts
+} = require('../../utils/methodsParser.js');
 
 
 const page = process.argv[2] || 1;
@@ -26,15 +31,11 @@ const getInfoPosts = (links) => {
     });
 };
 
-const getPostLazyLoading = async (totalPage, url, querySelectors) => {
-    const posts = [];
+const getPostLazyLoading = async (page, url, querySelectors) => {
+    const jsdom = await getHTML(`${url}?ajax=Y&ajax=Y&PAGEN_1=${page}`);
+    const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
 
-    for (let i = 0; i < totalPage; i++) {
-        const jsdom = await getHTML(`${url}?ajax=Y&ajax=Y&PAGEN_1=${i}`);
-        const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
-        posts.push(...(await Promise.all(getInfoPosts(links))).slice(0, -1));
-    }
-    return posts;
+    return [...(await Promise.all(getInfoPosts(links))).slice(0, -1)];
 };
 
 const filterPosts = (posts) => {
@@ -61,7 +62,7 @@ const filterPosts = (posts) => {
 
     try {
         console.log(
-            JSON.stringify(filterPosts(receivedPosts))
+            JSON.stringify(filterPosts(receivedPosts), null, 2)
         );
     } catch (error) {
         console.log(error);
