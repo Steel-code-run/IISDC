@@ -52,6 +52,8 @@ export type TGrant = {
 	link: string;
 	// ссылка на PDF
 	linkPDF: string;
+	// время парсинга
+	timeOfParse?: number;
 }
 
 export type TVacancy = {

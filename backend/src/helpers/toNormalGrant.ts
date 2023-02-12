@@ -11,12 +11,14 @@ const normalGrant:TGrant = {
     organization: "",
     summary: "",
     directionForSpent: "",
+    timeOfParse: 0,
 }
 
 export const toNormalGrant = (obj:any) => {
     for (let key in normalGrant) {
         if ((obj[key] === null) || (obj[key] === undefined)) obj[key] = ""
     }
+    obj.timeOfParse = new Date().getTime()
     return obj;
 }
 

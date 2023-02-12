@@ -18,4 +18,3 @@ const isInternshipPost = (post) => post.postType === parser_1.TPostType.internsh
 exports.isInternshipPost = isInternshipPost;
 const isCompetitionPost = (post) => post.postType === parser_1.TPostType.competition;
 exports.isCompetitionPost = isCompetitionPost;
-//# sourceMappingURL=typeGuards.js.map
