@@ -15,10 +15,12 @@ const normalGrant:TGrant = {
 }
 
 export const toNormalGrant = (obj:any) => {
+    let normalObject: any = {}
     for (let key in normalGrant) {
-        if ((obj[key] === null) || (obj[key] === undefined)) obj[key] = ""
+        if ((obj[key] === null) || (obj[key] === undefined)) normalObject[key] = ""
+        else normalObject[key] = obj[key]
     }
-    obj.timeOfParse = new Date().getTime()
-    return obj;
+    normalObject.timeOfParse = new Date().getTime()
+    return normalObject as TGrant;
 }
 

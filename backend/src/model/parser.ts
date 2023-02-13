@@ -1,5 +1,5 @@
 import * as sqliteParser from "../API/sqlite/parser/parser";
-import {parserCallQueuePush, parserCallQueuePushMany, parserCallQueueShift} from "./parserQueue";
+import {parserCallQueuePush, parserCallQueueShift} from "./parserQueue";
 import {generateDefaultParsers} from "./defaultParsers";
 import {
     isCompetitionPost, isGrantPost,
@@ -48,32 +48,30 @@ const parse = async(parsersCallParams:TParserCallParams)=>{
     // Парсим 1 страницу сайтов
     consoleLog("currentParsing: " + parsersCallParams.parser.name + ", page: " + parsersCallParams.page);
 
-    try {
-        const posts = callParser(parsersCallParams);
-        // Получаем всё отдельно
-        const grants = getGrantsFromPosts(posts);
-        const vacancies = getVacanciesFromPosts(posts);
-        const internships = getInternshipsFromPosts(posts);
-        const competitions = getCompetitionsFromPosts(posts);
+        return callParser(parsersCallParams).then((posts) => {
+            // Получаем всё отдельно
+            const grants = getGrantsFromPosts(posts);
+            const vacancies = getVacanciesFromPosts(posts);
+            const internships = getInternshipsFromPosts(posts);
+            const competitions = getCompetitionsFromPosts(posts);
 
-        // Спрашиваем нужно ли парсить следующие страницы
-        // А так же добавляем в бд полученные гранты, проводим дальнейшие действия
-        let needToParseNextPage = grantsManage(grants)
-        needToParseNextPage = vacanciesManage(vacancies) || needToParseNextPage
-        needToParseNextPage = internshipsManage(internships) || needToParseNextPage
-        needToParseNextPage = competitionsManage(competitions) || needToParseNextPage
+            // Спрашиваем нужно ли парсить следующие страницы
+            // А так же добавляем в бд полученные гранты, проводим дальнейшие действия
+            let needToParseNextPage = grantsManage(grants)
+            needToParseNextPage = vacanciesManage(vacancies) || needToParseNextPage
+            needToParseNextPage = internshipsManage(internships) || needToParseNextPage
+            needToParseNextPage = competitionsManage(competitions) || needToParseNextPage
 
-        // Если нужно, то добавляем в очередь парсеры для следующей страницы
-        if (needToParseNextPage) {
-            if (parsersCallParams.page < 5) {
-                parserCallQueuePush(parsersCallParams.parser, parsersCallParams.page + 1)
+            // Если нужно, то добавляем в очередь парсеры для следующей страницы
+            if (needToParseNextPage) {
+                if (parsersCallParams.page < 5) {
+                    parserCallQueuePush(parsersCallParams.parser, parsersCallParams.page + 1)
+                }
             }
-        }
-    } catch (e) {
-        consoleLog("Error in parsing: " + parsersCallParams.parser.name + ", page: " + parsersCallParams.page);
-        consoleLog(e);
-    }
-    return
+        }).catch((err) => {
+            consoleLog("Error in parsing: " + parsersCallParams.parser.name + ", page: " + parsersCallParams.page);
+            consoleLog(err);
+        })
 
 }
 

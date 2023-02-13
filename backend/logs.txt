@@ -1523,3 +1523,481 @@ currentParsing: cptgrantov, page: 2
 	vacancies got: 0
 	internships got: 0
 	competitions got: 3
+
+11.02.2023, 20:43:01 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+	new grants added in DB: 9
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+Telegram bot is authorized
+currentParsing: integraciya, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 9
+currentParsing: fasie, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 1
+currentParsing: fadm.gov, page: 1
+Error in parsing: fadm.gov, page: 1
+Error: Errors with parser exec
+currentParsing: cptgrantov, page: 1
+	new grants added in DB: 2
+	vacancies got: 0
+	internships got: 0
+	competitions got: 3
+currentParsing: minobrnauki, page: 2
+
+11.02.2023, 20:43:27 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+	new grants added in DB: 9
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+Telegram bot is authorized
+currentParsing: integraciya, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 9
+currentParsing: fasie, page: 1
+
+11.02.2023, 20:43:43 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+	new grants added in DB: 9
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+Telegram bot is authorized
+currentParsing: integraciya, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 9
+currentParsing: fasie, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 1
+currentParsing: fadm.gov, page: 1
+Error in parsing: fadm.gov, page: 1
+Error: Errors with parser exec
+currentParsing: cptgrantov, page: 1
+	new grants added in DB: 2
+	vacancies got: 0
+	internships got: 0
+	competitions got: 3
+currentParsing: minobrnauki, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+currentParsing: cptgrantov, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 3
+
+11.02.2023, 20:44:18 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+	new grants added in DB: 9
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+Telegram bot is authorized
+currentParsing: integraciya, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 9
+currentParsing: fasie, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 1
+currentParsing: fadm.gov, page: 1
+Error in parsing: fadm.gov, page: 1
+Error: Errors with parser exec
+currentParsing: cptgrantov, page: 1
+	new grants added in DB: 2
+	vacancies got: 0
+	internships got: 0
+	competitions got: 3
+currentParsing: minobrnauki, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+currentParsing: cptgrantov, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 3
+
+11.02.2023, 20:59:00 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+Error in parsing: minobrnauki, page: 1
+Error: Errors with parser exec
+
+13.02.2023, 17:25:14 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+	new grants added in DB: 9
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+Telegram bot is authorized
+currentParsing: integraciya, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 9
+currentParsing: fasie, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 1
+currentParsing: fadm.gov, page: 1
+Error in parsing: fadm.gov, page: 1
+Error: Errors with parser exec
+currentParsing: cptgrantov, page: 1
+	new grants added in DB: 2
+	vacancies got: 0
+	internships got: 0
+	competitions got: 2
+currentParsing: minobrnauki, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+currentParsing: cptgrantov, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 2
+
+13.02.2023, 18:19:13 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+	new grants added in DB: 9
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+Telegram bot is authorized
+currentParsing: integraciya, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 9
+currentParsing: fasie, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 1
+currentParsing: fadm.gov, page: 1
+Error in parsing: fadm.gov, page: 1
+Error: Errors with parser exec
+currentParsing: cptgrantov, page: 1
+	new grants added in DB: 2
+	vacancies got: 0
+	internships got: 0
+	competitions got: 2
+currentParsing: minobrnauki, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+currentParsing: cptgrantov, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 2
+
+13.02.2023, 21:28:49 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+Error in parsing: minobrnauki, page: 1
+Error: Errors with parser exec
+Telegram bot is authorized
+currentParsing: integraciya, page: 1
+Error in parsing: integraciya, page: 1
+Error: Errors with parser exec
+currentParsing: fasie, page: 1
+Error in parsing: fasie, page: 1
+Error: Errors with parser exec
+currentParsing: fadm.gov, page: 1
+Error in parsing: fadm.gov, page: 1
+Error: Errors with parser exec
+currentParsing: cptgrantov, page: 1
+Error in parsing: cptgrantov, page: 1
+Error: Errors with parser exec
+
+13.02.2023, 21:29:12 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+Error in parsing: minobrnauki, page: 1
+Error: Errors with parser exec
+Telegram bot is authorized
+currentParsing: integraciya, page: 1
+Error in parsing: integraciya, page: 1
+Error: Errors with parser exec
+currentParsing: fasie, page: 1
+Error in parsing: fasie, page: 1
+Error: Errors with parser exec
+currentParsing: fadm.gov, page: 1
+Error in parsing: fadm.gov, page: 1
+Error: Errors with parser exec
+currentParsing: cptgrantov, page: 1
+Error in parsing: cptgrantov, page: 1
+Error: Errors with parser exec
+
+13.02.2023, 21:30:03 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+	new grants added in DB: 9
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+Telegram bot is authorized
+currentParsing: integraciya, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 9
+currentParsing: fasie, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 1
+currentParsing: fadm.gov, page: 1
+	new grants added in DB: 4
+	vacancies got: 0
+	internships got: 0
+	competitions got: 2
+currentParsing: cptgrantov, page: 1
+	new grants added in DB: 2
+	vacancies got: 0
+	internships got: 0
+	competitions got: 2
+currentParsing: minobrnauki, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+currentParsing: fadm.gov, page: 2
+Error in parsing: fadm.gov, page: 2
+Error: Errors with parser exec
+currentParsing: cptgrantov, page: 2
+
+13.02.2023, 21:31:05 
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 2
+currentParsing: minobrnauki, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+currentParsing: integraciya, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 9
+currentParsing: fasie, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 1
+currentParsing: fadm.gov, page: 1
+Error in parsing: fadm.gov, page: 1
+Error: Errors with parser exec
+currentParsing: cptgrantov, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 2
+
+13.02.2023, 21:32:09 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+	new grants added in DB: 9
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+Telegram bot is authorized
+currentParsing: integraciya, page: 1
+
+13.02.2023, 21:33:25 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+	new grants added in DB: 9
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+Telegram bot is authorized
+currentParsing: integraciya, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 9
+currentParsing: fasie, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 1
+currentParsing: fadm.gov, page: 1
+
+13.02.2023, 21:34:49 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+	new grants added in DB: 9
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+Telegram bot is authorized
+currentParsing: integraciya, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 9
+currentParsing: fasie, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 1
+currentParsing: fadm.gov, page: 1
+Error in parsing: fadm.gov, page: 1
+Error: Errors with parser exec
+currentParsing: cptgrantov, page: 1
+	new grants added in DB: 2
+	vacancies got: 0
+	internships got: 0
+	competitions got: 2
+currentParsing: minobrnauki, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+currentParsing: cptgrantov, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 2
+
+13.02.2023, 21:52:29 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+Telegram bot is authorized
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+currentParsing: cptgrantov, page: 1
+	new grants added in DB: 9
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 9
+currentParsing: minobrnauki, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 1
+	new grants added in DB: 2
+	vacancies got: 0
+	internships got: 0
+	competitions got: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+Error in parsing: fadm.gov, page: 1
+Error: Command failed: node  C:\Users\shulg\WebstormProjects\IISDC\packages\parsers\src\node\fadm.gov 1
+node:internal/errors:718
+  const ex = new Error(msg);
+             ^
+
+Error: socket hang up
+    at connResetException (node:internal/errors:718:14)
+    at TLSSocket.socketCloseListener (node:_http_client:469:25)
+    at TLSSocket.emit (node:events:525:35)
+    at node:net:320:12
+    at TCP.done (node:_tls_wrap:588:7) {
+  code: 'ECONNRESET'
+}
+
+Node.js v18.13.0
+
+
+13.02.2023, 21:53:14 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+Telegram bot is authorized
+	new grants added in DB: 9
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+currentParsing: integraciya, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 9
+currentParsing: fasie, page: 1
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 1
+currentParsing: fadm.gov, page: 1
+Error in parsing: fadm.gov, page: 1
+Error: Command failed: node  C:\Users\shulg\WebstormProjects\IISDC\packages\parsers\src\node\fadm.gov 1
+node:internal/errors:718
+  const ex = new Error(msg);
+             ^
+
+Error: socket hang up
+    at connResetException (node:internal/errors:718:14)
+    at TLSSocket.socketCloseListener (node:_http_client:469:25)
+    at TLSSocket.emit (node:events:525:35)
+    at node:net:320:12
+    at TCP.done (node:_tls_wrap:588:7) {
+  code: 'ECONNRESET'
+}
+
+Node.js v18.13.0
+
+currentParsing: cptgrantov, page: 1
+	new grants added in DB: 2
+	vacancies got: 0
+	internships got: 0
+	competitions got: 2
+currentParsing: minobrnauki, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+currentParsing: cptgrantov, page: 2
+	new grants added in DB: 0
+	vacancies got: 0
+	internships got: 0
+	competitions got: 2
+
+13.02.2023, 21:57:53 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+Telegram bot is authorized
+	new grants added in DB: 9
+	vacancies got: 0
+	internships got: 0
+	competitions got: 0
+currentParsing: integraciya, page: 1

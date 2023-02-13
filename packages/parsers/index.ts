@@ -4,10 +4,12 @@ import {
 	TParserResult,
 	TParserType,
 } from '@iisdc/types';
-import { execSync } from 'child_process';
-import path from 'path';
 
-const callNodeTsParser = (params:TParserCallParams): TParserResult => {
+import path from 'path';
+import util from 'node:util';
+import { exec } from 'child_process';
+const execPromise = util.promisify(exec);
+const callNodeTsParser = (params:TParserCallParams): Promise<TParserResult> => {
 	// console.log(process.env.NODE_ENV)
 
 	let execString;
@@ -18,17 +20,14 @@ const callNodeTsParser = (params:TParserCallParams): TParserResult => {
 	}
 
 	execString += ` ${params.page}`;
-	let result
-	try {
-		result = JSON.parse(execSync(execString).toString());
-	} catch (e) {
-		throw new Error('Errors with parser exec');
-	}
 
-	if (!isTParserResult(result))
-		throw new Error('Parser result is not valid');
+	return execPromise(execString).then(({stdout}) => {
+		stdout = JSON.parse(stdout);
+		if (!isTParserResult(stdout))
+			throw new Error('Parser result is not valid');
+		return stdout;
+	})
 
-	return result;
 };
 
 // const callPythonParser: TCallParser = (params):TParserResult => {
@@ -36,7 +35,7 @@ const callNodeTsParser = (params:TParserCallParams): TParserResult => {
 //
 // }
 
-export const callParser = (params:TParserCallParams): TParserResult => {
+export const callParser = async (params:TParserCallParams): Promise<TParserResult> => {
 	switch (params.parser.parserType) {
 		case TParserType.nodejs:
 			return callNodeTsParser(params);

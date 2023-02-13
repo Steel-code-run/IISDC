@@ -221,7 +221,9 @@ const defineTypeDescriptionTelegram = (postType, post, link) => {
 
     }
 }
-
+const clearString = (string) => {
+    return string.replaceAll(/[\n\r\t]/g, '')
+}
 module.exports = {
     getDirection,
     defineTypePost,
@@ -236,4 +238,5 @@ module.exports = {
     getLinksPosts,
     getLinksPDF,
     definePostDescription,
+    clearString
 }

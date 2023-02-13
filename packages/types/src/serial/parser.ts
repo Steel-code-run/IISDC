@@ -44,7 +44,7 @@ export type TGrant = {
 	deadline: string;
 	// сумма гранта
 	summary: string;
-	// заметки к гранту
+	// направления расходов
 	directionForSpent: string;
 	// полный текст
 	fullText: string;
