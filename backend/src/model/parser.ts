@@ -15,8 +15,9 @@ import {competitionsManage, grantsManage, internshipsManage, vacanciesManage} fr
 import {activateAutomateAddingParsers} from "./automateAddingParsers";
 
 const parserOptions = {
-    isParsingNow: false,
     isFirstBoot: true,
+    parsersInThisMoment: 0,
+    maxParsersInThisMoment: 5,
 }
 
 export const enableParserScheduler = () => {
@@ -31,18 +32,18 @@ export const enableParserScheduler = () => {
 }
 
 const parserScheduler = async () => {
-    if (parserOptions.isParsingNow) return;
-    parserOptions.isParsingNow = true;
-    const parsersCallParams = parserCallQueueShift();
-    if (parsersCallParams) {
-        if (parsersCallParams.parser.enabled !== "false"){
-            await parse(parsersCallParams);
-            parserOptions.isParsingNow = false;
+    if (parserOptions.parsersInThisMoment < parserOptions.maxParsersInThisMoment) {
+        const parsersCallParams = parserCallQueueShift();
+        if (parsersCallParams) {
+            if (parsersCallParams.parser.enabled !== "false") {
+                parserOptions.parsersInThisMoment++;
+                parse(parsersCallParams).then(() => {
+                    parserOptions.parsersInThisMoment--;
+                });
+            }
         }
     }
-
-    setTimeout(parserScheduler, 1000 )
-
+    setTimeout(parserScheduler, 10 )
 }
 const parse = async(parsersCallParams:TParserCallParams)=>{
     // Парсим 1 страницу сайтов
@@ -57,10 +58,10 @@ const parse = async(parsersCallParams:TParserCallParams)=>{
 
             // Спрашиваем нужно ли парсить следующие страницы
             // А так же добавляем в бд полученные гранты, проводим дальнейшие действия
-            let needToParseNextPage = grantsManage(grants)
-            needToParseNextPage = vacanciesManage(vacancies) || needToParseNextPage
-            needToParseNextPage = internshipsManage(internships) || needToParseNextPage
-            needToParseNextPage = competitionsManage(competitions) || needToParseNextPage
+            let needToParseNextPage = grantsManage(grants,parsersCallParams)
+            needToParseNextPage = vacanciesManage(vacancies,parsersCallParams) || needToParseNextPage
+            needToParseNextPage = internshipsManage(internships,parsersCallParams) || needToParseNextPage
+            needToParseNextPage = competitionsManage(competitions,parsersCallParams) || needToParseNextPage
 
             // Если нужно, то добавляем в очередь парсеры для следующей страницы
             if (needToParseNextPage) {
@@ -68,9 +69,8 @@ const parse = async(parsersCallParams:TParserCallParams)=>{
                     parserCallQueuePush(parsersCallParams.parser, parsersCallParams.page + 1)
                 }
             }
-        }).catch((err) => {
+        }).catch(() => {
             consoleLog("Error in parsing: " + parsersCallParams.parser.name + ", page: " + parsersCallParams.page);
-            consoleLog(err);
         })
 
 }
