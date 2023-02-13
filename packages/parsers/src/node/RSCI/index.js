@@ -35,14 +35,14 @@ async function getPosts(page)  {
 		const fullText = getDataBySelector(additionalPage.window.document, querySelectors.fullText);
 
 
-		const type = getPostType(namePost);
-		if (type === 'grant') {
+		const postType = getPostType(namePost);
+
+		if (postType === 'grant') {
 			const deadline = getDataBySelector(additionalPage.window.document, querySelectors.fullText, fullTextRegExp.deadline);
 			const directionForSpent = getDataBySelector(additionalPage.window.document, querySelectors.fullText, fullTextRegExp.directionForSpent);
 			const summary = getDataBySelector(additionalPage.window.document, querySelectors.fullText, fullTextRegExp.summary);
 			// пдф почти всегда отсутствует, поэтому нету смысла её обрабатывать
 			// const linkPDF = ''
-
 			const post = definePost({
 				namePost,
 				dateCreationPost,
@@ -54,11 +54,10 @@ async function getPosts(page)  {
 				directionForSpent,
 				summary
 			});
-
 			posts.push(post)
 		}
 
-		if (type === 'competition') {
+		if (postType === 'competition') {
 			const deadline = getDataBySelector(additionalPage.window.document, querySelectors.fullText, fullTextRegExp.deadline);
 			const post = definePost({
 				namePost,
@@ -91,7 +90,7 @@ async function getPosts(page)  {
 		// 	});
 		// 	posts.push(post)
 		// }
-		if (type === "internship"){
+		if (postType === "internship"){
 			const requirements = getDataBySelector(additionalPage.window.document, querySelectors.fullText, fullTextRegExp.requirements);
 			const responsibilities = getDataBySelector(additionalPage.window.document, querySelectors.fullText, fullTextRegExp.responsibilities);
 			const conditions = getDataBySelector(additionalPage.window.document, querySelectors.fullText, fullTextRegExp.conditions);
@@ -112,10 +111,8 @@ async function getPosts(page)  {
 		}
 
 	}
-
-
 	return posts;
 }
 getPosts(Number(page)).then((posts) => {
-	console.log(JSON.stringify(posts));
+	console.log(JSON.stringify(posts.reverse()));
 });

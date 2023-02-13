@@ -1,7 +1,7 @@
-const grantRegExp = /грант[а-яa-zA-ZА-Я]*|субсид[а-яa-zA-ZА-Я]*/igm
-const competitionRegExp = /(конкурс[а-яa-zA-ZА-Я])*|(олимп[а-яa-zA-ZА-Я])*/igm
-const vacancyRegExp = /ваканс[а-яa-zA-ZА-Я]*/igm
-const internshipRegExp = /стажировк[а-яa-zA-ZА-Я]*/igm
+const grantRegExp = /((грант)|(субсид))/igm
+const competitionRegExp = /(конкурс)|(олимп)/gim;
+const vacancyRegExp = /(ваканс)/igm
+const internshipRegExp = /(стажировк)/igm
 
 const fullTextRegExp = {
     deadline :/(до|по) .*(\d{1,2}) ((янв|фев|мар|апр|май|июн|июл|авг|сент|окт|нояб|дек|)[а-яa-zA-ZА-Я]*)/gmi,
@@ -34,38 +34,44 @@ const getLink = (dom, selector) => {
 }
 
 const isGrant = (namePost) => {
-    return grantRegExp.test(namePost);
+    return namePost.toLowerCase().search(grantRegExp) !== -1;
 }
 
 const isCompetition = (namePost) => {
-    return competitionRegExp.test(namePost);
+    return namePost.toLowerCase().search(competitionRegExp) !== -1;
 }
 
 const isVacancy = (namePost) => {
-    return vacancyRegExp.test(namePost);
+    return namePost.toLowerCase().search(vacancyRegExp) !== -1;
 }
 
 const isInternship = (namePost) => {
-    return internshipRegExp.test(namePost);
+    return namePost.toLowerCase().search(internshipRegExp) !== -1;
 }
 
 const getPostType = (namePost) => {
-    if (isGrant(namePost))
+    if (isGrant(namePost)) {
         return 'grant';
-    if (isCompetition(namePost))
+    }
+    if (isCompetition(namePost)) {
         return 'competition';
-    if (isVacancy(namePost))
+    }
+    if (isVacancy(namePost)) {
         return 'vacancy';
-    if (isInternship(namePost))
+    }
+    if (isInternship(namePost)) {
         return 'internship';
+    }
     return 'other';
 }
 const clearString = (string) => {
     return string?.replaceAll(/[\n\r\t]/g, '') ?? ''
 }
 const definePost = (description = {}) => {
-    const postType = getPostType(description?.namePost);
-    switch (postType) {
+    if (!description.postType) {
+        description.postType = getPostType(description?.namePost);
+    }
+    switch (description.postType) {
         case 'grant':
             return {
                 postType: 'grant',
