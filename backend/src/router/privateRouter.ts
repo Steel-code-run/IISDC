@@ -10,6 +10,7 @@ const privateRouter = Router();
 import * as sqliteParser from "../API/sqlite/parser/parser";
 import {TBeautifulStats} from "@iisdc/types/src/serial/beautifulStats";
 import {count} from "../API/sqlite/parser/grants";
+import {toNormalCompetition, toNormalGrant} from "../helpers/toNormalPost";
 function isUserCanEnter(req:ICustomRequest,res:Response,minRole:UserRole = UserRole.user){
     const user = req.user;
     if (user === undefined) {
@@ -88,7 +89,7 @@ privateRouter.post("/addGrant",(req:ICustomRequest,res) => {
     if (!isUserCanEnter(req,res)){
         return;
     }
-    const grant:TGrant = {
+    const grant:TGrant = toNormalGrant({
         namePost: req.body.namePost,
         dateCreationPost: req.body.dateCreationPost,
         direction: req.body.direction,
@@ -99,7 +100,7 @@ privateRouter.post("/addGrant",(req:ICustomRequest,res) => {
         fullText: req.body.fullText,
         link: req.body.link,
         linkPDF: req.body.linkPDF
-    }
+    })
     try {
         sqliteGrants.addGrant(grant)
         res.json(generateAnswer({message:answerMessage.success,data:sqliteGrants.getGrants(grant)}))
@@ -174,5 +175,27 @@ privateRouter.post("/getCompetitions",(req:ICustomRequest,res) => {
     const timeOfParseTo = req.body.timeOfParseTo;
     const limit = req.body.limit;
     res.json(generateAnswer({message:answerMessage.success,data: sqliteCompetitions.getCompetitions(competition,limit,"DESC",timeOfParseSince,timeOfParseTo)}))
+})
+
+privateRouter.post("/addCompetition",(req:ICustomRequest,res) => {
+  if (!isUserCanEnter(req,res)){
+      return;
+  }
+    const competition:TCompetition = toNormalCompetition({
+        namePost: req.body.namePost,
+        dateCreationPost: req.body.dateCreationPost,
+        direction: req.body.direction,
+        organization: req.body.organization,
+        deadline: req.body.deadline,
+        fullText: req.body.fullText,
+        link: req.body.link,
+    })
+    try {
+        sqliteCompetitions.add(competition)
+        res.json(generateAnswer({message:answerMessage.success,data:sqliteCompetitions.getCompetitions(competition)}))
+    }
+    catch (e) {
+        res.json(generateAnswer({message:answerMessage.unknownError,data:{messageToHuman:e.message}}))
+    }
 })
 export default privateRouter
