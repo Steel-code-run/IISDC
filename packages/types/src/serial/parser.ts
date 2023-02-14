@@ -77,6 +77,8 @@ export type TVacancy = {
 	organization: string;
 	// ссылка
 	link: string;
+	// время парсинга
+	timeOfParse?: number;
 }
 
 export type TInternship = {
@@ -100,8 +102,8 @@ export type TInternship = {
 	organization: string;
 	// ссылка
 	link: string;
-
-
+	// время парсинга
+	timeOfParse?: number;
 }
 
 export type TCompetition = {
@@ -119,8 +121,8 @@ export type TCompetition = {
 	organization: string;
 	// ссылка
 	link: string;
-
-
+	// время парсинга
+	timeOfParse?: number;
 }
 
 export type TPost<T extends  TPostType> = {

@@ -1,9 +1,10 @@
 import {ICustomRequest} from "../types/request";
 import { generateAnswer } from "../utils/generateServerAnswer";
 import {Router, Response, json} from "express";
-import {answerMessage, IUserWithPassword, TGrant, UserRole} from "@iisdc/types";
+import {answerMessage, IUserWithPassword, TCompetition, TGrant, UserRole} from "@iisdc/types";
 import * as parserQueue from "../model/parserQueue";
 import * as sqliteGrants from "../API/sqlite/parser/grants";
+import * as sqliteCompetitions from "../API/sqlite/parser/competitions";
 import * as sqliteUsers from "../API/sqlite/users/users";
 const privateRouter = Router();
 import * as sqliteParser from "../API/sqlite/parser/parser";
@@ -127,8 +128,6 @@ privateRouter.post("/deleteGrant",(req:ICustomRequest,res) => {
 })
 
 privateRouter.post("/getUsers",(req:ICustomRequest,res) => {
-    console.log(req.user)
-
     if (!isUserCanEnter(req,res)){
         return;
     }
@@ -150,11 +149,30 @@ privateRouter.post("/getBeautifulStats", (req:ICustomRequest,res)=>{
     }
     const yesterday = new Date().getTime() - 86400000;
     const beautifulStats:TBeautifulStats = {
-        competitions: 0,
+        competitions: sqliteCompetitions.count({},10,"DESC",yesterday,undefined)[0]["COUNT(*)"],
         grants: sqliteGrants.count({},10,"DESC",yesterday,undefined)[0]["COUNT(*)"],
         internships: 0,
         vacancies: 0,
     }
     res.json(generateAnswer({message:answerMessage.success,data:beautifulStats}))
+})
+
+privateRouter.post("/getCompetitions",(req:ICustomRequest,res) => {
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+    const competition:TCompetition = {
+        namePost: req.body.namePost,
+        dateCreationPost: req.body.dateCreationPost,
+        direction: req.body.direction,
+        organization: req.body.organization,
+        deadline: req.body.deadline,
+        fullText: req.body.fullText,
+        link: req.body.link,
+    }
+    const timeOfParseSince = req.body.timeOfParseSince;
+    const timeOfParseTo = req.body.timeOfParseTo;
+    const limit = req.body.limit;
+    res.json(generateAnswer({message:answerMessage.success,data: sqliteCompetitions.getCompetitions(competition,limit,"DESC",timeOfParseSince,timeOfParseTo)}))
 })
 export default privateRouter
