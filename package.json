@@ -29,7 +29,9 @@
   },
   "homepage": "https://github.com/Steel-code-run/IISDC#readme",
   "dependencies": {
-    "concurrently": "^7.6.0"
+    "concurrently": "^7.6.0",
+    "react-hook-form": "^7.43.1",
+    "react-router-dom": "^6.8.1"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
