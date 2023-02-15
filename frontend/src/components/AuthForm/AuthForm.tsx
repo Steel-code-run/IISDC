@@ -4,19 +4,30 @@ import loginIcon from '../../assets/images/inputLoginIcon.svg';
 import passwordIcon from '../../assets/images/inputPasswordIcon.svg';
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 export interface AuthFormProps {
+}
+
+export interface IFormReceivedData {
+    login: string,
+    password: string
 }
 
 const AuthForm: FC<AuthFormProps> = () => {
     const {register, formState:{
         errors
-    }, handleSubmit} = useForm()
+    }, handleSubmit} = useForm<IFormReceivedData>()
     const navigate = useNavigate()
 
-    const onSubmit = (data: any) => {
-        console.log(data)
-        navigate('/home')
+    const onSubmit = async ({login, password}: IFormReceivedData) => {
+
+        const {data} = await axios.post('http://localhost:3003/login', {
+            name: login,
+            password: password
+        })
+        if(data.message === 'success') navigate('/home')
+        console.log('answer server: ', data.message)
     }
 
     return (
@@ -41,6 +52,11 @@ const AuthForm: FC<AuthFormProps> = () => {
                        className={styles.authForm__input__inputPassword} type="password" placeholder={'Пароль'}/>
                 </div>
             </div>
+            {
+                (errors?.login || errors?.password)
+                    ? <p className={styles.authForm__unvalidMessage}>Некорректные учетные данные</p>
+                    : null
+            }
 
             <button type={'submit'} className={styles.authForm__btnSubmit}>Продолжить</button>
 

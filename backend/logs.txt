@@ -3907,3 +3907,505 @@ cptgrantovvacancies got: 0
 cptgrantovinternships got: 0
 cptgrantovcompetitions got: 2
 Error in parsing: fadm.gov, page: 1
+
+15.02.2023, 23:17:01 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+Telegram bot is authorized
+Error in parsing: fadm.gov, page: 1
+currentParsing: cptgrantov, page: 1
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+minobrnaukinew grants added in DB: 9
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+currentParsing: minobrnauki, page: 2
+RSCInew grants added in DB: 3
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
+currentParsing: RSCI, page: 2
+cptgrantovnew grants added in DB: 3
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+currentParsing: cptgrantov, page: 2
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+RSCInew grants added in DB: 2
+RSCIvacancies got: 0
+RSCIinternships got: 0
+RSCIcompetitions got: 7
+currentParsing: RSCI, page: 3
+RSCInew grants added in DB: 2
+RSCIvacancies got: 0
+RSCIinternships got: 0
+RSCIcompetitions got: 6
+currentParsing: RSCI, page: 4
+RSCInew grants added in DB: 1
+RSCIvacancies got: 0
+RSCIinternships got: 0
+RSCIcompetitions got: 4
+currentParsing: RSCI, page: 5
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 0
+RSCIcompetitions got: 7
+
+15.02.2023, 23:18:05 
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+currentParsing: cptgrantov, page: 1
+Error in parsing: fadm.gov, page: 1
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+
+15.02.2023, 23:19:05 
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+Error in parsing: fadm.gov, page: 1
+currentParsing: cptgrantov, page: 1
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+
+15.02.2023, 23:20:05 
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+Error in parsing: fadm.gov, page: 1
+currentParsing: cptgrantov, page: 1
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+
+15.02.2023, 23:21:05 
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+currentParsing: cptgrantov, page: 1
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+Error in parsing: fadm.gov, page: 1
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+
+15.02.2023, 23:22:05 
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+currentParsing: cptgrantov, page: 1
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+Error in parsing: fadm.gov, page: 1
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+
+15.02.2023, 23:23:05 
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+Error in parsing: fadm.gov, page: 1
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+currentParsing: cptgrantov, page: 1
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+
+15.02.2023, 23:24:05 
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+currentParsing: cptgrantov, page: 1
+Error in parsing: fadm.gov, page: 1
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+
+15.02.2023, 23:24:48 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+Telegram bot is authorized
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+currentParsing: cptgrantov, page: 1
+Error in parsing: fadm.gov, page: 1
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+minobrnaukinew grants added in DB: 9
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+currentParsing: minobrnauki, page: 2
+RSCInew grants added in DB: 3
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
+currentParsing: RSCI, page: 2
+cptgrantovnew grants added in DB: 3
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+currentParsing: cptgrantov, page: 2
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+RSCInew grants added in DB: 2
+RSCIvacancies got: 0
+RSCIinternships got: 0
+RSCIcompetitions got: 7
+currentParsing: RSCI, page: 3
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+RSCInew grants added in DB: 2
+RSCIvacancies got: 0
+RSCIinternships got: 0
+RSCIcompetitions got: 6
+currentParsing: RSCI, page: 4
+RSCInew grants added in DB: 1
+RSCIvacancies got: 0
+RSCIinternships got: 0
+RSCIcompetitions got: 4
+currentParsing: RSCI, page: 5
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 0
+RSCIcompetitions got: 7
+
+15.02.2023, 23:25:51 
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+currentParsing: cptgrantov, page: 1
+Error in parsing: fadm.gov, page: 1
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+
+15.02.2023, 23:26:51 
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+currentParsing: cptgrantov, page: 1
+Error in parsing: fadm.gov, page: 1
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
+
+15.02.2023, 23:27:00 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+Telegram bot is authorized
+Error in parsing: fadm.gov, page: 1
+currentParsing: cptgrantov, page: 1
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+minobrnaukinew grants added in DB: 9
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+currentParsing: minobrnauki, page: 2
+RSCInew grants added in DB: 3
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
+currentParsing: RSCI, page: 2
+cptgrantovnew grants added in DB: 3
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+currentParsing: cptgrantov, page: 2
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+RSCInew grants added in DB: 2
+RSCIvacancies got: 0
+RSCIinternships got: 0
+RSCIcompetitions got: 7
+currentParsing: RSCI, page: 3
+RSCInew grants added in DB: 2
+RSCIvacancies got: 0
+RSCIinternships got: 0
+RSCIcompetitions got: 6
+currentParsing: RSCI, page: 4
+RSCInew grants added in DB: 1
+RSCIvacancies got: 0
+RSCIinternships got: 0
+RSCIcompetitions got: 4
+currentParsing: RSCI, page: 5
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 0
+RSCIcompetitions got: 7
+
+15.02.2023, 23:28:03 
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+currentParsing: cptgrantov, page: 1
+Error in parsing: fadm.gov, page: 1
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+
+15.02.2023, 23:29:03 
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+integraciyanew grants added in DB: 0
+integraciyavacancies got: 0
+integraciyainternships got: 0
+integraciyacompetitions got: 9
+currentParsing: cptgrantov, page: 1
+Error in parsing: fadm.gov, page: 1
+fasienew grants added in DB: 0
+fasievacancies got: 0
+fasieinternships got: 0
+fasiecompetitions got: 1
+minobrnaukinew grants added in DB: 0
+minobrnaukivacancies got: 0
+minobrnaukiinternships got: 0
+minobrnaukicompetitions got: 0
+cptgrantovnew grants added in DB: 0
+cptgrantovvacancies got: 0
+cptgrantovinternships got: 0
+cptgrantovcompetitions got: 2
+RSCInew grants added in DB: 0
+RSCIvacancies got: 0
+RSCIinternships got: 1
+RSCIcompetitions got: 5
