@@ -1,12 +1,11 @@
 import React from 'react';
 import './App.css';
-import Search from "./components/UI/Search/Search";
+import PageAuth from "./pages/PageAuth/PageAuth";
 
 function App() {
   return (
     <div className="App" data-testid="App">
-      <Search list={['информационные технологии', 'гуманитарные науки', 'архитектура','гуманитарные науки', 'архитектура','экономика', 'агрономия', 'математика']}/>
-
+        <PageAuth/>
     </div>
   );
 }
