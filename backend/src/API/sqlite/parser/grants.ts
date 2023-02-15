@@ -5,6 +5,7 @@ import {TGrant } from "@iisdc/types";
 import createWhereQuery from "../../../helpers/createWhereQuery";
 import createInsertQuery from "../../../helpers/createInsertQuery";
 import {shieldIt} from "@iisdc/utils";
+import createWhereTimeQuery from "../../../helpers/createWhereTimeQuery";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
 export const createTable = ()=>{
@@ -20,7 +21,8 @@ export const createTable = ()=>{
             'directionForSpent STRING,' +
             'fullText STRING,' +
             'link STRING,' +
-            'linkPDF STRING' +
+            'linkPDF STRING,' +
+            'timeOfParse DATETIME' +
             ');').run()
     }
     catch (e) {
@@ -79,9 +81,48 @@ export const addGrant = (grant: TGrant)=>{
     }
 }
 
-export const getGrants = (grant:Partial<TGrant> = {},limit?:number, orderBy:string = "DESC")=>{
-    let query = 'SELECT * FROM grants ';
+export const getGrants = (grant:Partial<TGrant> = {},
+                          limit?:number,
+                          orderBy:string = "DESC",
+                          timeOfParseSince?:number|string,
+                          timeOfParseTo?:number|string)=>
+    _getGrants(grant,limit,orderBy,timeOfParseSince,timeOfParseTo)
+
+export const deleteGrant = (id:number)=>{
+    try {
+        db.prepare('DELETE FROM grants WHERE id=?;').run(id)
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + e.message)
+        throw new Error(e)
+    }
+}
+
+export const count = (grant:Partial<TGrant> = {},
+                          limit?:number,
+                          orderBy:string = "DESC",
+                          timeOfParseSince?:number|string,
+                          timeOfParseTo?:number|string)=>
+    _getGrants(grant,limit,orderBy,timeOfParseSince,timeOfParseTo,"SELECT COUNT(*) FROM grants ")
+
+const _getGrants = (grant:Partial<TGrant> = {},
+                          limit?:number,
+                          orderBy:string = "DESC",
+                          timeOfParseSince?:number|string,
+                          timeOfParseTo?:number|string,
+                          startQueury:string = 'SELECT * FROM grants '
+)=>{
+    let query = startQueury;
     query += createWhereQuery(grant,{namePost:grant.namePost,linkPDF:grant.linkPDF});
+    let timeQuery = createWhereTimeQuery("timeOfParse", timeOfParseSince, timeOfParseTo);
+    if (timeQuery.length > 0){
+        if (query !== startQueury) {
+            query += " AND " + timeQuery;
+        }
+        query += " WHERE "+ timeQuery;
+
+    }
+
+
     query += ` ORDER BY id ${orderBy} LIMIT ? ;`
     if (limit === undefined)
         limit = 10
@@ -90,15 +131,6 @@ export const getGrants = (grant:Partial<TGrant> = {},limit?:number, orderBy:stri
     }
     catch (e) {
         consoleLog("from "+__filename +" getGrants\n" + e.message)
-        throw new Error(e)
-    }
-}
-
-export const deleteGrant = (id:number)=>{
-    try {
-        db.prepare('DELETE FROM grants WHERE id=?;').run(id)
-    } catch (e) {
-        consoleLog("from "+__filename +"\n" + e.message)
         throw new Error(e)
     }
 }

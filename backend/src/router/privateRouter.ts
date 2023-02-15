@@ -1,12 +1,14 @@
 import {ICustomRequest} from "../types/request";
 import { generateAnswer } from "../utils/generateServerAnswer";
-import {Router,Response} from "express";
+import {Router, Response, json} from "express";
 import {answerMessage, IUserWithPassword, TGrant, UserRole} from "@iisdc/types";
 import * as parserQueue from "../model/parserQueue";
 import * as sqliteGrants from "../API/sqlite/parser/grants";
 import * as sqliteUsers from "../API/sqlite/users/users";
 const privateRouter = Router();
 import * as sqliteParser from "../API/sqlite/parser/parser";
+import {TBeautifulStats} from "@iisdc/types/src/serial/beautifulStats";
+import {count} from "../API/sqlite/parser/grants";
 function isUserCanEnter(req:ICustomRequest,res:Response,minRole:UserRole = UserRole.user){
     const user = req.user;
     if (user === undefined) {
@@ -75,8 +77,10 @@ privateRouter.post("/getGrants",(req:ICustomRequest,res) => {
         linkPDF: req.body.linkPDF
 
     }
+    const timeOfParseSince = req.body.timeOfParseSince;
+    const timeOfParseTo = req.body.timeOfParseTo;
     const limit = req.body.limit;
-    res.json(generateAnswer({message:answerMessage.success,data: sqliteGrants.getGrants(grant,limit)}))
+    res.json(generateAnswer({message:answerMessage.success,data: sqliteGrants.getGrants(grant,limit,"DESC",timeOfParseSince,timeOfParseTo)}))
 })
 
 privateRouter.post("/addGrant",(req:ICustomRequest,res) => {
@@ -138,5 +142,19 @@ privateRouter.post("/getUsers",(req:ICustomRequest,res) => {
     const limit = req.body.limit;
 
     res.json(generateAnswer({message:answerMessage.success,data:sqliteUsers.getUsers(user,limit)}))
+})
+
+privateRouter.post("/getBeautifulStats", (req:ICustomRequest,res)=>{
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+    const yesterday = new Date().getTime() - 86400000;
+    const beautifulStats:TBeautifulStats = {
+        competitions: 0,
+        grants: sqliteGrants.count({},10,"DESC",yesterday,undefined)[0]["COUNT(*)"],
+        internships: 0,
+        vacancies: 0,
+    }
+    res.json(generateAnswer({message:answerMessage.success,data:beautifulStats}))
 })
 export default privateRouter

@@ -26,6 +26,12 @@ const parsersParams = [
         parserType: TParserType["nodejs"]
     },
     {
+        name:"RSCI",
+        url:"https://RSCI.ru/",
+        fileUrl:"RSCI",
+        parserType: TParserType["nodejs"]
+    },
+    {
         name:"minobrnauki",
         url:"https://minobrnauki.ru/",
         fileUrl:"minobrnauki",
