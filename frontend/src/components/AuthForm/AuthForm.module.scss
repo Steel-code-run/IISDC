@@ -63,8 +63,7 @@
 
     }
     &__inputLogin:-webkit-autofill , &__inputPassword:-webkit-autofill {
-      transition: all 5000s ease-in-out;
-
+      -webkit-box-shadow: inset 0 0 0 50px #fff !important;
     }
 
     &__inputIcon {
