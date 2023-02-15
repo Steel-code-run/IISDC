@@ -142,7 +142,8 @@
       font-size: 32px;
     }
 
-    &_input {
+    &__input {
+      max-width: 330px;
       &__inputLogin::placeholder, &__inputPassword::placeholder {
         font-size: 20px;
       }
