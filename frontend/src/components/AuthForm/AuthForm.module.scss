@@ -1,14 +1,15 @@
 .authForm {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
 
   &__title {
     align-self: center;
+    font-style: normal;
     font-weight: 800;
     font-size: 48px;
     line-height: 66px;
-
+    text-align: center;
     color: #3934A3;
   }
 
@@ -20,6 +21,8 @@
     line-height: 66px;
 
     color: #3934A3;
+    text-align: center;
+
 
   }
 
@@ -28,6 +31,7 @@
     flex-direction: inherit;
     gap: 20px 0;
     width: 100%;
+    align-items: center;
   }
 
   &__input {
@@ -56,6 +60,11 @@
       font-size: 24px;
       line-height: 33px;
       position: relative;
+
+    }
+    &__inputLogin:-webkit-autofill , &__inputPassword:-webkit-autofill {
+      transition: all 5000s ease-in-out;
+
     }
 
     &__inputIcon {
@@ -70,7 +79,7 @@
     margin-top: 25px;
 
     background: #7671DD;
-    border: 3px solid #3934A3;
+    border: 2px solid #3934A3;
     border-radius: 10px;
 
     font-weight: 700;
@@ -83,7 +92,12 @@
   }
 
   &__btnSubmit:active {
+    background: #008E72;
+    border: 2px solid #006551;
+  }
+  &__btnSubmit:hover {
     background: #00BA95;
+    border: 2px solid #006551;
   }
 
   &__footerForm {
@@ -115,4 +129,23 @@
   }
 
 
+}
+
+@media (max-width: 360px) {
+  .authForm {
+    &__title {
+      font-size: 36px;
+
+    }
+
+    &__typeForm {
+      font-size: 32px;
+    }
+
+    &_input {
+      &__inputLogin::placeholder, &__inputPassword::placeholder {
+        font-size: 20px;
+      }
+    }
+  }
 }

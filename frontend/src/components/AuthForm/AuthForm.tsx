@@ -22,12 +22,13 @@ const AuthForm: FC<AuthFormProps> = () => {
 
     const onSubmit = async ({login, password}: IFormReceivedData) => {
 
-        const {data} = await axios.post('http://localhost:3003/login', {
+        const answer = await axios.post('http://localhost:3003/login', {
             name: login,
-            password: password
+            password: password,
+            role: 1
         })
-        if(data.message === 'success') navigate('/home')
-        console.log('answer server: ', data.message)
+        if(answer.data.message === 'success') navigate('/home')
+        console.log('answer server: ', answer)
     }
 
     return (
