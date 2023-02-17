@@ -4,4 +4,4 @@
 /**/dist/
 /**/build/
 /**/built/
-/**/*.log
+/**/logs.txt
