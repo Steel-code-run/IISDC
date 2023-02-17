@@ -9,7 +9,7 @@ import {isUserCanEnter} from "../auth";
 import {answerMessage} from "@iisdc/types";
 
 const router = Router();
-router.post("/getBeautifulStats", (req:ICustomRequest,res)=>{
+router.post("/stats/getBeautifulStats", (req:ICustomRequest,res)=>{
     if (!isUserCanEnter(req,res)){
         return;
     }

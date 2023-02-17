@@ -8,6 +8,7 @@ import {
     universalIsPostExist,
     universalIsTableExist
 } from "./tableManipulations";
+import {consoleLog} from "../../../utils/consoleLog";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
 const tableName = "vacancies"
@@ -29,23 +30,43 @@ export const createTable = ()=>{
 }
 
 export const dropTable = ()=>{
-    return universalDropTable(db,tableName)
+    try {
+        return universalDropTable(db,tableName)
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in dropTable")
+    }
 }
 
 export const isTableExist = ()=>{
+    try {
     return universalIsTableExist(db, tableName)
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in isTableExist")
+    }
 }
 
 export const isVacancyExist = (post:TVacancy)=>{
-    return universalIsPostExist(db, tableName,post)
+    try {
+        return universalIsPostExist(db, tableName,post)
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in isVacancyExist")
+    }
 }
 
 export const add = (post: TVacancy)=>{
-    return universalAddPost(db,tableName,post)
+    try {
+        return universalAddPost(db,tableName,post)
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in add")
+    }
 }
 
 export const deleteVacancy = (id:number)=>{
-    universalDeletePost(db,tableName,id)
+    try {
+        universalDeletePost(db,tableName,id)
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in deleteVacancy")
+    }
 }
 
 export const count = (post:Partial<TVacancy> = {},
@@ -53,15 +74,20 @@ export const count = (post:Partial<TVacancy> = {},
                       orderBy:string = "DESC",
                       timeOfParseSince?:number|string,
                       timeOfParseTo?:number|string)=> {
-    return universalCount(
-        db,
-        tableName,
-        post,
-        limit,
-        orderBy,
-        timeOfParseSince,
-        timeOfParseTo
-    )
+    try {
+        return universalCount(
+            db,
+            tableName,
+            post,
+            limit,
+            orderBy,
+            timeOfParseSince,
+            timeOfParseTo
+        )
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in count")
+    }
+
 }
 
 export const getVacancies = (post:Partial<TVacancy> = {},
@@ -69,13 +95,18 @@ export const getVacancies = (post:Partial<TVacancy> = {},
                                 orderBy:string = "DESC",
                                 timeOfParseSince?:number|string,
                                 timeOfParseTo?:number|string)=> {
-    return universalGetPosts(
-        db,
-        tableName,
-        post,
-        limit,
-        orderBy,
-        timeOfParseSince,
-        timeOfParseTo
-    )
+    try {
+        return universalGetPosts(
+            db,
+            tableName,
+            post,
+            limit,
+            orderBy,
+            timeOfParseSince,
+            timeOfParseTo
+        )
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in getVacancies")
+    }
+
 }
