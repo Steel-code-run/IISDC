@@ -1,14 +1,15 @@
 import {ICustomRequest} from "../types/request";
-import { generateAnswer } from "../utils/generateServerAnswer";
-import {Router, Response, json} from "express";
+import {generateAnswer} from "../utils/generateServerAnswer";
+import {Response, Router} from "express";
 import {answerMessage, IUserWithPassword, TGrant, UserRole} from "@iisdc/types";
 import * as parserQueue from "../model/parserQueue";
 import * as sqliteGrants from "../API/sqlite/parser/grants";
 import * as sqliteUsers from "../API/sqlite/users/users";
-const privateRouter = Router();
 import * as sqliteParser from "../API/sqlite/parser/parser";
 import {TBeautifulStats} from "@iisdc/types/src/serial/beautifulStats";
-import {count} from "../API/sqlite/parser/grants";
+
+const privateRouter = Router();
+
 function isUserCanEnter(req:ICustomRequest,res:Response,minRole:UserRole = UserRole.user){
     const user = req.user;
     if (user === undefined) {
