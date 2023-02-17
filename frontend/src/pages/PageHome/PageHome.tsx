@@ -28,9 +28,8 @@ const PageHome: FC<PageHomeProps> = () => {
 
     return (
         <div className={styles.pageHome} data-testid="PageHome">
-            {JSON.stringify(posts, null, 10)}
+            {JSON.stringify(posts, null, 4)}
         </div>
-
     )
 };
 
