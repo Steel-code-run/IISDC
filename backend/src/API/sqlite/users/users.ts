@@ -91,7 +91,7 @@ export const getUsers = ({name,id,password}:Partial<IUserWithPassword> = {},limi
         limit = 10
 
     let query = 'SELECT * FROM usersData '
-    query+= createWhereQuery({name,id,password},{name})
+    query+= createWhereQuery({name,id,password},["name"])
     query+= ` ORDER BY id ${orderBy} LIMIT ? ;`
     console.log(query);
     try {

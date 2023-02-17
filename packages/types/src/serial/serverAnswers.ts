@@ -1,6 +1,6 @@
 export type TDefaultAnswer = {
 	message: answerMessage | string;
-	data?: { [key: string]: any } | null;
+	data?: { [key: string]: any } | null | string;
 };
 
 export enum answerMessage  {

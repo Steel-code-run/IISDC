@@ -18,7 +18,7 @@ export const createTable = ()=>{
             'fullText STRING,' +
             'link STRING,' +
             'organization STRING,' +
-            'timeOfParse STRING,' +
+            'timeOfParse DATETIME,' +
             'deadline STRING' +
             ');').run()
     }
@@ -103,7 +103,7 @@ const _getCompetitions = (competition:Partial<TCompetition> = {},
                     startQueury:string = 'SELECT * FROM competitions'
 )=>{
     let query = startQueury;
-    query += createWhereQuery(competition,{namePost:competition.namePost});
+    query += createWhereQuery(competition,["namePost"]);
     let timeQuery = createWhereTimeQuery("timeOfParse", timeOfParseSince, timeOfParseTo);
     if (timeQuery.length > 0){
         if (query !== startQueury) {

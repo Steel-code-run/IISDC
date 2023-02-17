@@ -53,6 +53,7 @@ export const competitionsManage = (competitions: TCompetition[], parsersCallPara
         const competition = competitions[i];
         if (!sqliteCompetitions.isCompetitionsExist(competition.namePost, competition.dateCreationPost)) {
             // добавляем в бд
+            competition.timeOfParse = new Date().getTime()
             sqliteCompetitions.add(toNormalCompetition(competition));
             if (newCompetitions === 0) parseNextPage = true;
             newCompetitions++;

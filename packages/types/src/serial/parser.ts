@@ -32,6 +32,7 @@ export enum TPostType {
 }
 
 export type TGrant = {
+	id?:number,
 	// название гранта
 	namePost: string;
 	// дата создания гранта
@@ -57,6 +58,7 @@ export type TGrant = {
 }
 
 export type TVacancy = {
+	id?:number,
 	// Направление
 	direction: string;
 	//требования
@@ -82,6 +84,7 @@ export type TVacancy = {
 }
 
 export type TInternship = {
+	id?:number,
 	//требования
 	requirements: string;
 	// обязанности
@@ -107,6 +110,7 @@ export type TInternship = {
 }
 
 export type TCompetition = {
+	id?:number,
 	// дедлайн
 	deadline: string;
 	// Направление

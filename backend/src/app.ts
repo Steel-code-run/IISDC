@@ -17,14 +17,18 @@ const port = process.env.PORT || 3003;
 const corsOptions = {
 	credentials: true, //access-control-allow-credentials:true
 };
+import vacancies from "./router/routes/vacancies";
+import stats from "./router/routes/stats";
 
 configureAll()
 
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(setUser);
+app.use(stats);
 app.use(defaultRouter);
 app.use(privateRouter)
+app.use(vacancies)
 app.listen(port, () => {
 	consoleLog(`⚡️[server]: Server is running at http://localhost:${port}`);
 });

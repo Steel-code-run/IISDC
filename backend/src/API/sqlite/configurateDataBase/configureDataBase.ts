@@ -2,6 +2,7 @@ import * as sqliteParser from "../parser/parser";
 import * as sqliteGrant from "../parser/grants";
 import * as sqliteUsers from "../users/users";
 import * as sqliteCompetitions from "../parser/competitions";
+import * as sqliteVacancies from "../parser/vacancies"
 import {createDefaultUsers} from "./createDefaultUsers";
 
 // Это в продакшен не пускать)
@@ -11,6 +12,7 @@ export const configureAll = () => {
     configureUsersTable();
     createDefaultUsers();
     configureCompetitionsTable();
+    configureVacanciesTable()
 }
 
 export const configureParserTable = () => {
@@ -31,15 +33,9 @@ export const configureUsersTable = () => {
 export const configureCompetitionsTable = () => {
     sqliteCompetitions.dropTable();
     sqliteCompetitions.createTable();
+}
 
-    sqliteCompetitions.add({
-        namePost: "Конкурс на лучшую статью",
-        dateCreationPost: "2020-01-01",
-        link: "https://www.google.com",
-        organization: "ООО Рога и копыта",
-        deadline: "2020-01-01",
-        fullText: "Конкурс на лучшую статью",
-        direction: "Конкурс на лучшую статью",
-        timeOfParse: new Date().getTime()
-    })
+export const configureVacanciesTable = () =>{
+    sqliteVacancies.dropTable();
+    sqliteVacancies.createTable();
 }

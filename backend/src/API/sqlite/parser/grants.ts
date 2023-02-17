@@ -112,7 +112,7 @@ const _getGrants = (grant:Partial<TGrant> = {},
                           startQueury:string = 'SELECT * FROM grants '
 )=>{
     let query = startQueury;
-    query += createWhereQuery(grant,{namePost:grant.namePost,linkPDF:grant.linkPDF});
+    query += createWhereQuery(grant,["namePost"]);
     let timeQuery = createWhereTimeQuery("timeOfParse", timeOfParseSince, timeOfParseTo);
     if (timeQuery.length > 0){
         if (query !== startQueury) {

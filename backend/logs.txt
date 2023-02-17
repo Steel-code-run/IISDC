@@ -4614,3 +4614,459 @@ Telegram bot is authorized
 17.02.2023, 04:00:37 
 ⚡️[server]: Server is running at http://localhost:3003
 Telegram bot is authorized
+
+17.02.2023, 04:06:03 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:07:16 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:08:03 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:08:40 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:15:33 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:15:48 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:19:22 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:20:19 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:20:52 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:21:47 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:23:08 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:24:49 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:25:35 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:27:31 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:28:31 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:29:09 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:29:44 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:33:21 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:34:16 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:35:18 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:36:56 
+⚡️[server]: Server is running at http://localhost:3003
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+Error in isGrantExist
+Telegram bot is authorized
+
+17.02.2023, 04:37:52 
+⚡️[server]: Server is running at http://localhost:3003
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+Error in isGrantExist
+Telegram bot is authorized
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+Error in isGrantExist
+
+17.02.2023, 04:38:48 
+⚡️[server]: Server is running at http://localhost:3003
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+Error in isGrantExist
+Telegram bot is authorized
+
+17.02.2023, 04:39:08 
+⚡️[server]: Server is running at http://localhost:3003
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+Error in isGrantExist
+Telegram bot is authorized
+
+17.02.2023, 04:39:30 
+⚡️[server]: Server is running at http://localhost:3003
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+Error in isGrantExist
+Telegram bot is authorized
+
+17.02.2023, 04:39:56 
+⚡️[server]: Server is running at http://localhost:3003
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+Error in isGrantExist
+Telegram bot is authorized
+
+17.02.2023, 04:40:14 
+⚡️[server]: Server is running at http://localhost:3003
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+Error in isGrantExist
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+Error in isGrantExist
+Telegram bot is authorized
+
+17.02.2023, 04:40:24 
+⚡️[server]: Server is running at http://localhost:3003
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+Error in isGrantExist
+Telegram bot is authorized
+
+17.02.2023, 04:40:53 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:41:07 
+⚡️[server]: Server is running at http://localhost:3003
+
+17.02.2023, 04:41:12 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:42:13 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:42:22 
+⚡️[server]: Server is running at http://localhost:3003
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+Error in isGrantExist
+Telegram bot is authorized
+
+17.02.2023, 04:42:36 
+⚡️[server]: Server is running at http://localhost:3003
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+namePost or dateCreationPost is undefined
+Telegram bot is authorized
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+namePost or dateCreationPost is undefined
+
+17.02.2023, 04:46:07 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:46:24 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:50:45 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:52:11 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:52:31 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:58:19 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:58:35 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:59:25 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:00:15 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:01:53 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:02:07 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:02:16 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:02:26 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:04:21 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:04:48 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:11:21 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:13:05 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:13:30 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:15:13 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:15:50 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:17:55 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:18:11 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:18:38 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:19:23 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:21:22 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:21:37 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:22:52 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:24:47 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:25:01 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:26:10 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:26:46 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:27:00 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:27:21 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:28:31 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+namePost or dateCreationPost is undefined
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+namePost or dateCreationPost is undefined
+
+17.02.2023, 05:29:22 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:29:59 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:30:39 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:31:01 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:31:56 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+namePost or dateCreationPost is undefined
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+namePost or dateCreationPost is undefined
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+namePost or dateCreationPost is undefined
+
+17.02.2023, 05:33:00 
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+namePost or dateCreationPost is undefined
+from C:\Users\shulg\WebstormProjects\IISDC\backend\src\API\sqlite\parser\vacancies.ts
+UNIQUE constraint failed: vacancies.id
+
+17.02.2023, 05:34:00 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:34:20 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:35:02 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:35:56 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:36:08 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:37:08 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:38:00 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:38:19 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:40:03 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:44:55 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:52:57 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:54:17 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:55:05 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:56:27 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:57:16 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:58:08 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:59:20 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 05:59:56 
+⚡️[server]: Server is running at http://localhost:3003
+
+17.02.2023, 06:00:05 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 06:00:35 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 06:04:37 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 06:05:39 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 06:07:05 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 06:07:33 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 06:08:32 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 06:08:43 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 06:09:01 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 06:14:11 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 06:16:10 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 06:17:40 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 06:18:52 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized

@@ -1,6 +1,6 @@
 import {ICustomRequest} from "../types/request";
 import { generateAnswer } from "../utils/generateServerAnswer";
-import {Router, Response, json} from "express";
+import {Router, Response, } from "express";
 import {answerMessage, IUserWithPassword, TCompetition, TGrant, UserRole} from "@iisdc/types";
 import * as parserQueue from "../model/parserQueue";
 import * as sqliteGrants from "../API/sqlite/parser/grants";
@@ -8,8 +8,6 @@ import * as sqliteCompetitions from "../API/sqlite/parser/competitions";
 import * as sqliteUsers from "../API/sqlite/users/users";
 const privateRouter = Router();
 import * as sqliteParser from "../API/sqlite/parser/parser";
-import {TBeautifulStats} from "@iisdc/types/src/serial/beautifulStats";
-import {count} from "../API/sqlite/parser/grants";
 import {toNormalCompetition, toNormalGrant} from "../helpers/toNormalPost";
 function isUserCanEnter(req:ICustomRequest,res:Response,minRole:UserRole = UserRole.user){
     const user = req.user;
@@ -144,19 +142,6 @@ privateRouter.post("/getUsers",(req:ICustomRequest,res) => {
     res.json(generateAnswer({message:answerMessage.success,data:sqliteUsers.getUsers(user,limit)}))
 })
 
-privateRouter.post("/getBeautifulStats", (req:ICustomRequest,res)=>{
-    if (!isUserCanEnter(req,res)){
-        return;
-    }
-    const yesterday = new Date().getTime() - 86400000;
-    const beautifulStats:TBeautifulStats = {
-        competitions: sqliteCompetitions.count({},10,"DESC",yesterday,undefined)[0]["COUNT(*)"],
-        grants: sqliteGrants.count({},10,"DESC",yesterday,undefined)[0]["COUNT(*)"],
-        internships: 0,
-        vacancies: 0,
-    }
-    res.json(generateAnswer({message:answerMessage.success,data:beautifulStats}))
-})
 
 privateRouter.post("/getCompetitions",(req:ICustomRequest,res) => {
     if (!isUserCanEnter(req,res)){
@@ -190,6 +175,7 @@ privateRouter.post("/addCompetition",(req:ICustomRequest,res) => {
         fullText: req.body.fullText,
         link: req.body.link,
     })
+    competition.timeOfParse = new Date().getTime()
     try {
         sqliteCompetitions.add(competition)
         res.json(generateAnswer({message:answerMessage.success,data:sqliteCompetitions.getCompetitions(competition)}))
@@ -198,4 +184,5 @@ privateRouter.post("/addCompetition",(req:ICustomRequest,res) => {
         res.json(generateAnswer({message:answerMessage.unknownError,data:{messageToHuman:e.message}}))
     }
 })
+
 export default privateRouter
