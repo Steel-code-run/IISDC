@@ -22,7 +22,7 @@ defaultRouter.post('/login', (req, res) => {
 	}
 
 	const token = generateToken(userWithPassword)
-	res.set("Authorization", "Bearer " + token);
+	res.header("Authorization", "Bearer " + token);
 	res.json(generateAnswer({message: answerMessage.success}));
 
 

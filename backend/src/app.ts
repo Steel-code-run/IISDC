@@ -15,7 +15,8 @@ dotenv.config({path:path.join(__projectPath,'../',`.env.${process.env.NODE_ENV}`
 const app = express();
 const port = process.env.PORT || 3003;
 const corsOptions = {
-	credentials: true, //access-control-allow-credentials:true
+	credentials: true, //access-control-allow-credentials:true,
+	exposedHeaders: 'Authorization'
 };
 
 configureAll()
