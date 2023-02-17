@@ -40,5 +40,6 @@ export const configureCompetitionsTable = () => {
         deadline: "2020-01-01",
         fullText: "Конкурс на лучшую статью",
         direction: "Конкурс на лучшую статью",
+        timeOfParse: new Date().getTime()
     })
 }

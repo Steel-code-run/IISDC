@@ -4606,3 +4606,11 @@ RSCI new grants added in DB: 0
 RSCI vacancies got: 0
 RSCI internships got: 0
 RSCI competitions got: 5
+
+17.02.2023, 03:59:04 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
+
+17.02.2023, 04:00:37 
+⚡️[server]: Server is running at http://localhost:3003
+Telegram bot is authorized
