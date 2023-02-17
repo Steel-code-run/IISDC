@@ -21,9 +21,9 @@ export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallPara
     let newGrants = 0;
     for (let i = 0; i < grants.length; i++) {
         const grant = grants[i];
-        if (!isGrantExist(grant.namePost, grant.dateCreationPost)) {
+        if (!isGrantExist(grant)) {
             // добавляем в бд
-            sqliteGrants.addGrant(toNormalGrant(grant));
+            sqliteGrants.add(toNormalGrant(grant));
             if (newGrants === 0) parseNextPage = true;
             newGrants++;
         } else {
@@ -51,7 +51,7 @@ export const competitionsManage = (competitions: TCompetition[], parsersCallPara
     let newCompetitions = 0;
     for (let i = 0; i < competitions.length; i++) {
         const competition = competitions[i];
-        if (!sqliteCompetitions.isCompetitionsExist(competition.namePost, competition.dateCreationPost)) {
+        if (!sqliteCompetitions.isCompetitionExist(competition)) {
             // добавляем в бд
             competition.timeOfParse = new Date().getTime()
             sqliteCompetitions.add(toNormalCompetition(competition));

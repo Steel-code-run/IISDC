@@ -5086,3 +5086,191 @@ Telegram bot is authorized
 17.02.2023, 06:29:21 
 ⚡️[server]: Server is running at http://localhost:3003
 Telegram bot is authorized
+
+17.02.2023, 06:34:27 
+⚡️[server]: Server is running at http://localhost:3003
+
+17.02.2023, 06:34:32 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+Telegram bot is authorized
+minobrnauki new grants added in DB: 9
+minobrnauki vacancies got: 0
+minobrnauki internships got: 0
+minobrnauki competitions got: 0
+RSCI new grants added in DB: 2
+RSCI vacancies got: 0
+RSCI internships got: 1
+RSCI competitions got: 5
+currentParsing: cptgrantov, page: 1
+currentParsing: minobrnauki, page: 2
+integraciya new grants added in DB: 0
+integraciya vacancies got: 0
+integraciya internships got: 0
+integraciya competitions got: 9
+currentParsing: RSCI, page: 2
+fasie new grants added in DB: 0
+fasie vacancies got: 0
+fasie internships got: 0
+fasie competitions got: 1
+fadm.gov new grants added in DB: 4
+fadm.gov vacancies got: 0
+fadm.gov internships got: 0
+fadm.gov competitions got: 2
+currentParsing: fadm.gov, page: 2
+cptgrantov new grants added in DB: 4
+cptgrantov vacancies got: 0
+cptgrantov internships got: 0
+cptgrantov competitions got: 2
+currentParsing: cptgrantov, page: 2
+Error in parsing: fadm.gov, page: 2
+cptgrantov new grants added in DB: 1
+cptgrantov vacancies got: 0
+cptgrantov internships got: 0
+cptgrantov competitions got: 2
+minobrnauki new grants added in DB: 0
+minobrnauki vacancies got: 0
+minobrnauki internships got: 0
+minobrnauki competitions got: 0
+RSCI new grants added in DB: 3
+RSCI vacancies got: 0
+RSCI internships got: 0
+RSCI competitions got: 6
+currentParsing: RSCI, page: 3
+RSCI new grants added in DB: 2
+RSCI vacancies got: 0
+RSCI internships got: 0
+RSCI competitions got: 6
+currentParsing: RSCI, page: 4
+RSCI new grants added in DB: 1
+RSCI vacancies got: 0
+RSCI internships got: 0
+RSCI competitions got: 6
+currentParsing: RSCI, page: 5
+RSCI new grants added in DB: 0
+RSCI vacancies got: 0
+RSCI internships got: 0
+RSCI competitions got: 6
+
+17.02.2023, 06:35:36 
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+RSCI new grants added in DB: 0
+RSCI vacancies got: 0
+RSCI internships got: 1
+RSCI competitions got: 5
+currentParsing: cptgrantov, page: 1
+integraciya new grants added in DB: 0
+integraciya vacancies got: 0
+integraciya internships got: 0
+integraciya competitions got: 9
+minobrnauki new grants added in DB: 0
+minobrnauki vacancies got: 0
+minobrnauki internships got: 0
+minobrnauki competitions got: 0
+cptgrantov new grants added in DB: 1
+cptgrantov vacancies got: 0
+cptgrantov internships got: 0
+cptgrantov competitions got: 2
+fasie new grants added in DB: 0
+fasie vacancies got: 0
+fasie internships got: 0
+fasie competitions got: 1
+Error in parsing: fadm.gov, page: 1
+
+17.02.2023, 06:36:36 
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+RSCI new grants added in DB: 0
+RSCI vacancies got: 0
+RSCI internships got: 1
+RSCI competitions got: 5
+currentParsing: cptgrantov, page: 1
+fasie new grants added in DB: 0
+fasie vacancies got: 0
+fasie internships got: 0
+fasie competitions got: 1
+cptgrantov new grants added in DB: 1
+cptgrantov vacancies got: 0
+cptgrantov internships got: 0
+cptgrantov competitions got: 2
+integraciya new grants added in DB: 0
+integraciya vacancies got: 0
+integraciya internships got: 0
+integraciya competitions got: 9
+minobrnauki new grants added in DB: 0
+minobrnauki vacancies got: 0
+minobrnauki internships got: 0
+minobrnauki competitions got: 0
+Error in parsing: fadm.gov, page: 1
+
+17.02.2023, 06:37:35 
+⚡️[server]: Server is running at http://localhost:3003
+currentParsing: minobrnauki, page: 1
+currentParsing: RSCI, page: 1
+currentParsing: integraciya, page: 1
+currentParsing: fasie, page: 1
+currentParsing: fadm.gov, page: 1
+Telegram bot is authorized
+RSCI new grants added in DB: 2
+RSCI vacancies got: 0
+RSCI internships got: 1
+RSCI competitions got: 5
+currentParsing: cptgrantov, page: 1
+integraciya new grants added in DB: 0
+integraciya vacancies got: 0
+integraciya internships got: 0
+integraciya competitions got: 9
+currentParsing: RSCI, page: 2
+fasie new grants added in DB: 0
+fasie vacancies got: 0
+fasie internships got: 0
+fasie competitions got: 1
+minobrnauki new grants added in DB: 9
+minobrnauki vacancies got: 0
+minobrnauki internships got: 0
+minobrnauki competitions got: 0
+currentParsing: minobrnauki, page: 2
+cptgrantov new grants added in DB: 4
+cptgrantov vacancies got: 0
+cptgrantov internships got: 0
+cptgrantov competitions got: 2
+currentParsing: cptgrantov, page: 2
+cptgrantov new grants added in DB: 1
+cptgrantov vacancies got: 0
+cptgrantov internships got: 0
+cptgrantov competitions got: 2
+RSCI new grants added in DB: 3
+RSCI vacancies got: 0
+RSCI internships got: 0
+RSCI competitions got: 6
+currentParsing: RSCI, page: 3
+minobrnauki new grants added in DB: 0
+minobrnauki vacancies got: 0
+minobrnauki internships got: 0
+minobrnauki competitions got: 0
+RSCI new grants added in DB: 2
+RSCI vacancies got: 0
+RSCI internships got: 0
+RSCI competitions got: 6
+currentParsing: RSCI, page: 4
+Error in parsing: fadm.gov, page: 1
+RSCI new grants added in DB: 1
+RSCI vacancies got: 0
+RSCI internships got: 0
+RSCI competitions got: 6
+currentParsing: RSCI, page: 5
+RSCI new grants added in DB: 0
+RSCI vacancies got: 0
+RSCI internships got: 0
+RSCI competitions got: 6

@@ -1,6 +1,6 @@
 import {parserCallQueuePushMany, showParsersCallQueue} from "./parserQueue";
 import * as sqliteParser from "../API/sqlite/parser/parser";
-const allowTimeStart = "10:00:00"
+const allowTimeStart = "0:00:00"
 const allowTimeEnd = "24:00:00"
 let isAutomateAddingParsersActivate = false
 export const isTimeToAddParsersToQueue = ():boolean => {

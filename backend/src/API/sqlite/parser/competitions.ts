@@ -1,13 +1,17 @@
 import * as path from "path";
 import {consoleLog} from "../../../utils/consoleLog";
 import {__projectPath} from "../../../utils/projectPath";
-import {shieldIt} from "@iisdc/utils";
-import createInsertQuery from "../../../helpers/createInsertQuery";
 import {TCompetition} from "@iisdc/types";
-import createWhereQuery from "../../../helpers/createWhereQuery";
-import createWhereTimeQuery from "../../../helpers/createWhereTimeQuery";
+import {
+    universalAddPost, universalCount,
+    universalDeletePost,
+    universalDropTable, universalGetPosts,
+    universalIsPostExist,
+    universalIsTableExist
+} from "./tableManipulations";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
+const tableName = "competitions"
 export const createTable = ()=>{
     try {
         db.prepare('CREATE TABLE competitions(' +
@@ -30,104 +34,83 @@ export const createTable = ()=>{
 }
 
 export const dropTable = ()=>{
-
     try {
-        if (isTableExist())
-            db.prepare('DROP TABLE competitions;').run()
+        return universalDropTable(db,tableName)
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in dropTable")
     }
-    catch (e) {
-        consoleLog("from "+__filename +"\n" +"dropParsersTable error")
-        throw new Error(e)
-    }
-    return true
 }
 
 export const isTableExist = ()=>{
     try {
-        return db.prepare('SELECT name FROM sqlite_master WHERE type=\'table\' ' +
-            'AND name=\'competitions\';').all().length > 0
-    }
-    catch (e) {
-        consoleLog("from "+__filename +"\n" + "Error in isTableExist")
-        throw new Error(e)
-    }
-}
-
-export const isCompetitionsExist = (namePost: string, dateCreationPost:string)=>{
-    try {
-        return db.prepare('SELECT * FROM competitions WHERE namePost=?' +
-            ' AND dateCreationPost=?;').all(shieldIt(namePost),shieldIt(dateCreationPost)).length > 0
-    }
-    catch (e) {
-        consoleLog("from "+__filename +"\n" + "Error in isGrantExist")
-        throw new Error(e)
-    }
-}
-
-export const add = (competition: TCompetition)=>{
-    try {
-        if (competition.namePost === undefined || competition.dateCreationPost === undefined)
-            throw new Error("namePost or dateCreationPost is undefined")
-
-        let query = "INSERT INTO competitions " + createInsertQuery(competition);
-
-        db.prepare(query).run()
-
+        return universalIsTableExist(db, tableName)
     } catch (e) {
-        consoleLog("from "+__filename +"\n" + e.message)
-        throw new Error(e)
+        consoleLog("from "+__filename +"\n" + "Error in isTableExist")
+    }
+}
+
+export const isCompetitionExist = (post:TCompetition)=>{
+    try {
+        return universalIsPostExist(db, tableName,post)
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in isVacancyExist")
+    }
+}
+
+export const add = (post: TCompetition)=>{
+    try {
+        return universalAddPost(db,tableName,post)
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in add")
     }
 }
 
 export const deleteCompetition = (id:number)=>{
     try {
-        db.prepare('DELETE FROM competitions WHERE id=?;').run(id)
+        universalDeletePost(db,tableName,id)
     } catch (e) {
-        consoleLog("from "+__filename +"\n" + e.message)
-        throw new Error(e)
+        consoleLog("from "+__filename +"\n" + "Error in deleteVacancy")
     }
 }
 
-export const count = (competition:Partial<TCompetition> = {},
+export const count = (post:Partial<TCompetition> = {},
                       limit?:number,
                       orderBy:string = "DESC",
                       timeOfParseSince?:number|string,
-                      timeOfParseTo?:number|string)=>
-    _getCompetitions(competition,limit,orderBy,timeOfParseSince,timeOfParseTo,"SELECT COUNT(*) FROM competitions ")
-
-const _getCompetitions = (competition:Partial<TCompetition> = {},
-                    limit?:number,
-                    orderBy:string = "DESC",
-                    timeOfParseSince?:number|string,
-                    timeOfParseTo?:number|string,
-                    startQueury:string = 'SELECT * FROM competitions'
-)=>{
-    let query = startQueury;
-    query += createWhereQuery(competition,["namePost"]);
-    let timeQuery = createWhereTimeQuery("timeOfParse", timeOfParseSince, timeOfParseTo);
-    if (timeQuery.length > 0){
-        if (query !== startQueury) {
-            query += " AND " + timeQuery;
-        }
-        query += " WHERE "+ timeQuery;
-
-    }
-
-    query += ` ORDER BY id ${orderBy} LIMIT ? ;`
-    if (limit === undefined)
-        limit = 10
+                      timeOfParseTo?:number|string)=> {
     try {
-        return db.prepare(query).all(limit)
+        return universalCount(
+            db,
+            tableName,
+            post,
+            limit,
+            orderBy,
+            timeOfParseSince,
+            timeOfParseTo
+        )
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in count")
     }
-    catch (e) {
-        consoleLog("from "+__filename +" getGrants\n" + e.message)
-        throw new Error(e)
-    }
+
 }
 
-export const getCompetitions = (competition:Partial<TCompetition> = {},
-                          limit?:number,
-                          orderBy:string = "DESC",
-                          timeOfParseSince?:number|string,
-                          timeOfParseTo?:number|string)=>
-    _getCompetitions(competition,limit,orderBy,timeOfParseSince,timeOfParseTo)
+export const getCompetitions = (post:Partial<TCompetition> = {},
+                             limit?:number,
+                             orderBy:string = "DESC",
+                             timeOfParseSince?:number|string,
+                             timeOfParseTo?:number|string)=> {
+    try {
+        return universalGetPosts(
+            db,
+            tableName,
+            post,
+            limit,
+            orderBy,
+            timeOfParseSince,
+            timeOfParseTo
+        )
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in getVacancies")
+    }
+
+}

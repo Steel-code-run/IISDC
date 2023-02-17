@@ -100,7 +100,7 @@ privateRouter.post("/addGrant",(req:ICustomRequest,res) => {
         linkPDF: req.body.linkPDF
     })
     try {
-        sqliteGrants.addGrant(grant)
+        sqliteGrants.add(grant)
         res.json(generateAnswer({message:answerMessage.success,data:sqliteGrants.getGrants(grant)}))
     }
     catch (e) {
