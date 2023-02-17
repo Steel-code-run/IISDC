@@ -11,14 +11,17 @@ const {
 const page = process.argv[2] || 1;
 
 
-const url = 'https://fasie.ru/press/';
-const baseUrl = 'https://fasie.ru';
+const url = 'https://sowa-ru.com/event/';
+const baseUrl = 'https://sowa-ru.com';
+
+
 
 const querySelectors = {
-    title: 'h1[itemprop="name"]',
-    link: 'ul.tile_blocks a',
-    date: 'span.ico_clock b',
-    text: 'div[itemprop="text"]',
+    title: 'h1.page-header-title',
+    link: 'a.kt-blocks-info-box-link-wrap info-box-link kt-blocks-info-box-media-align-top kt-info-halign-center',
+    // date: 'span.ico_clock b',
+    // text: 'div[itemprop="text"]',
+    deadline: 'div.elementor-text-editor.elementor-clearfix p',
 };
 
 const getInfoPosts = (links) => {
@@ -32,10 +35,11 @@ const getInfoPosts = (links) => {
 };
 
 const getPostLazyLoading = async (page, url, querySelectors) => {
-    const jsdom = await getHTML(`${url}?ajax=Y&ajax=Y&PAGEN_1=${page}`);
-    const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
+    const jsdom = await getHTML(`${url}page/${page}/?wpv_view_count=87565`);
+    const links = getLinksPosts(jsdom, querySelectors.link, '');
+    console.log(links)
 
-    return [...(await Promise.all(getInfoPosts(links))).slice(0, -1)];
+    return [...(await Promise.all(getInfoPosts(links)))];
 };
 
 const filterPosts = (posts) => {

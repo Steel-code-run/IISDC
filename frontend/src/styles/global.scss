@@ -1,0 +1,30 @@
+@import './fonts.scss';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+input, button {
+  outline: none;
+  border: none;
+
+}
+body {
+  font-family: Manrope, serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+ul, li {
+  list-style: none;
+}
+
