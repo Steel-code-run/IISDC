@@ -1,10 +1,10 @@
 import {Router} from "express";
-import {isUserCanEnter} from "../auth";
 import {generateAnswer} from "../../utils/generateServerAnswer";
 import {answerMessage, TVacancy} from "@iisdc/types";
 import {ICustomRequest} from "../../types/request";
 import * as sqliteVacancies from "../../API/sqlite/parser/vacancies";
 import {toNormalVacancy} from "../../helpers/toNormalPost";
+import {isUserCanEnter} from "../../auth/isUserCanEnter";
 
 function getVacancy (req:ICustomRequest) {
     const vacancy:TVacancy = {

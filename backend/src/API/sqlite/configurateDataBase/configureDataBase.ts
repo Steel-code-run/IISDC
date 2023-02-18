@@ -3,6 +3,7 @@ import * as sqliteGrant from "../parser/grants";
 import * as sqliteUsers from "../users/users";
 import * as sqliteCompetitions from "../parser/competitions";
 import * as sqliteVacancies from "../parser/vacancies"
+import * as sqliteInternships from "../parser/internships"
 import {createDefaultUsers} from "./createDefaultUsers";
 
 // Это в продакшен не пускать)
@@ -13,6 +14,7 @@ export const configureAll = () => {
     createDefaultUsers();
     configureCompetitionsTable();
     configureVacanciesTable()
+    configureInternshipsTable();
 }
 
 export const configureParserTable = () => {
@@ -38,4 +40,9 @@ export const configureCompetitionsTable = () => {
 export const configureVacanciesTable = () =>{
     sqliteVacancies.dropTable();
     sqliteVacancies.createTable();
+}
+
+export const configureInternshipsTable = () =>{
+    sqliteInternships.dropTable();
+    sqliteInternships.createTable();
 }

@@ -1,14 +1,14 @@
 import * as path from "path";
 import {__projectPath} from "../../../utils/projectPath";
 import {TVacancy} from "@iisdc/types";
+import {consoleLog} from "../../../utils/consoleLog";
 import {
-    universalAddPost, universalCount,
-    universalCreateTable, universalDeletePost,
-    universalDropTable, universalGetPosts,
+    universalAddPost,
+    universalCount,
+    universalCreateTable, universalDeletePost, universalDropTable, universalGetPosts,
     universalIsPostExist,
     universalIsTableExist
-} from "./tableManipulations";
-import {consoleLog} from "../../../utils/consoleLog";
+} from "../helpers/tableManipulations";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
 const tableName = "vacancies"
@@ -34,6 +34,7 @@ export const dropTable = ()=>{
         return universalDropTable(db,tableName)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in dropTable")
+        throw new Error(e)
     }
 }
 
@@ -42,6 +43,7 @@ export const isTableExist = ()=>{
     return universalIsTableExist(db, tableName)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isTableExist")
+        throw new Error(e)
     }
 }
 
@@ -50,6 +52,7 @@ export const isVacancyExist = (post:TVacancy)=>{
         return universalIsPostExist(db, tableName,post)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isVacancyExist")
+        throw new Error(e)
     }
 }
 
@@ -58,6 +61,7 @@ export const add = (post: TVacancy)=>{
         return universalAddPost(db,tableName,post)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in add")
+        throw new Error(e)
     }
 }
 
@@ -66,6 +70,7 @@ export const deleteVacancy = (id:number)=>{
         universalDeletePost(db,tableName,id)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in deleteVacancy")
+        throw new Error(e)
     }
 }
 
@@ -86,6 +91,7 @@ export const count = (post:Partial<TVacancy> = {},
         )
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in count")
+        throw new Error(e)
     }
 
 }
@@ -107,6 +113,7 @@ export const getVacancies = (post:Partial<TVacancy> = {},
         )
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in getVacancies")
+        throw new Error(e)
     }
 
 }

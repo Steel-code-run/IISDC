@@ -5,8 +5,8 @@ import * as sqliteGrants from "../../API/sqlite/parser/grants";
 import * as sqliteVacancies from "../../API/sqlite/parser/vacancies";
 import {generateAnswer} from "../../utils/generateServerAnswer";
 import {Router} from "express";
-import {isUserCanEnter} from "../auth";
 import {answerMessage} from "@iisdc/types";
+import {isUserCanEnter} from "../../auth/isUserCanEnter";
 
 const router = Router();
 router.post("/stats/getBeautifulStats", (req:ICustomRequest,res)=>{

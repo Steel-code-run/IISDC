@@ -1,7 +1,7 @@
 import {consoleLog} from "../../../utils/consoleLog";
-import createWhereQuery from "../../../helpers/createWhereQuery";
-import createInsertQuery from "../../../helpers/createInsertQuery";
-import createWhereTimeQuery from "../../../helpers/createWhereTimeQuery";
+import createInsertQuery from "../helpers/createInsertQuery";
+import createWhereTimeQuery from "../helpers/createWhereTimeQuery";
+import createWhereQuery from "../helpers/createWhereQuery";
 
 type TCreationObjectTable = {
     // key, options
@@ -95,10 +95,10 @@ _universalGetPosts(
     `SELECT COUNT(*) FROM ${tableName} `
     )
 
-const _universalGetPosts = (
+const _universalGetPosts = <T>(
     db:any,
     tableName:string,
-    post:Partial<any> = {},
+    post:Partial<T> = {},
     limit:number = 10,
     orderBy:string = "DESC",
     timeOfParseSince?:number|string,
@@ -108,7 +108,7 @@ const _universalGetPosts = (
     if (!query)
         query = `SELECT * FROM ${tableName} `
 
-    query += createWhereQuery(post,["namePost"]);
+    query += createWhereQuery(post,["namePost", "fullText"]);
     let timeQuery = createWhereTimeQuery("timeOfParse", timeOfParseSince, timeOfParseTo);
     if (timeQuery.length > 0){
         if (query !== query) {
@@ -120,7 +120,7 @@ const _universalGetPosts = (
 
     query += ` ORDER BY id ${orderBy} LIMIT ? ;`
     try {
-        return db.prepare(query).all(limit)
+        return db.prepare(query).all(limit) as T[]
     }
     catch (e) {
         consoleLog("from "+__filename +" getGrants\n" + e.message)
@@ -128,12 +128,12 @@ const _universalGetPosts = (
     }
 }
 
-export const universalGetPosts = (
+export const universalGetPosts = <T>(
     db:any,
     tableName:string,
-    post:Partial<any> = {},
+    post:Partial<T> = {},
     limit?:number,
     orderBy:string = "DESC",
     timeOfParseSince?:number|string,
     timeOfParseTo?:number|string) =>
-    _universalGetPosts(db,tableName,post,limit,orderBy,timeOfParseSince,timeOfParseTo)
+    _universalGetPosts(db,tableName,post,limit,orderBy,timeOfParseSince,timeOfParseTo) as T[]

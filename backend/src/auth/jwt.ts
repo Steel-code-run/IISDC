@@ -13,6 +13,8 @@ export function generateBYPASSToken(user:IUser) {
 }
 export function generateToken(user:IUser) {
     try {
+        delete user.password
+
         return jwt.sign(user, signature, {expiresIn});
     } catch (e) {
         return undefined
@@ -21,7 +23,7 @@ export function generateToken(user:IUser) {
 
 export function verifyToken(token:string) {
     try {
-        return jwt.verify(token, signature) as IUser;
+        return jwt.verify(token, signature);
     } catch (e) {
         return undefined
     }

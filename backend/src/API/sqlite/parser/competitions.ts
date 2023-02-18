@@ -3,12 +3,13 @@ import {consoleLog} from "../../../utils/consoleLog";
 import {__projectPath} from "../../../utils/projectPath";
 import {TCompetition} from "@iisdc/types";
 import {
-    universalAddPost, universalCount,
-    universalDeletePost,
-    universalDropTable, universalGetPosts,
+    universalAddPost,
+    universalCount, universalDeletePost, universalDropTable,
+    universalGetPosts,
     universalIsPostExist,
     universalIsTableExist
-} from "./tableManipulations";
+} from "../helpers/tableManipulations";
+
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
 const tableName = "competitions"
@@ -38,6 +39,7 @@ export const dropTable = ()=>{
         return universalDropTable(db,tableName)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in dropTable")
+        throw new Error(e)
     }
 }
 
@@ -46,6 +48,7 @@ export const isTableExist = ()=>{
         return universalIsTableExist(db, tableName)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isTableExist")
+        throw new Error(e)
     }
 }
 
@@ -54,6 +57,7 @@ export const isCompetitionExist = (post:TCompetition)=>{
         return universalIsPostExist(db, tableName,post)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isVacancyExist")
+        throw new Error(e)
     }
 }
 
@@ -62,6 +66,7 @@ export const add = (post: TCompetition)=>{
         return universalAddPost(db,tableName,post)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in add")
+        throw new Error(e)
     }
 }
 
@@ -70,6 +75,7 @@ export const deleteCompetition = (id:number)=>{
         universalDeletePost(db,tableName,id)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in deleteVacancy")
+        throw new Error(e)
     }
 }
 
@@ -90,6 +96,7 @@ export const count = (post:Partial<TCompetition> = {},
         )
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in count")
+        throw new Error(e)
     }
 
 }
@@ -111,6 +118,7 @@ export const getCompetitions = (post:Partial<TCompetition> = {},
         )
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in getVacancies")
+        throw new Error(e)
     }
 
 }
