@@ -48,6 +48,12 @@ const parsersParams = [
         url: "https://guap.ru/m/science/grants",
         fileUrl: "guap",
         parserType: TParserType.nodejs
+    },
+    {
+        name: "rcfoundation",
+        url: '.',
+        fileUrl: "rcfoundation",
+        parserType: TParserType.nodejs
     }
 ]
 export const generateDefaultParsers = ():TParser[] => {
