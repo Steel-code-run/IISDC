@@ -1,27 +1,20 @@
 import {NextFunction, Response} from "express";
-import {IUser, UserRole} from "@iisdc/types";
 import {ICustomRequest} from "../types/request";
 import {verifyToken} from "./jwt";
-
+import {JwtPayload} from "jsonwebtoken";
 
 
 export function setUser(req:ICustomRequest, res:Response, next:NextFunction) {
 
-    const questUser:IUser = {
-        id: -1,
-        name: "quest",
-        role: UserRole.quest,
-    }
+
     const token = req.headers["authorization"]?.split(" ")[1];
     if (token === undefined) {
-        req.user = questUser;
         next();
         return
     }
 
-    const decodedToken = verifyToken(token);
+    const decodedToken = verifyToken(token) as JwtPayload;
     if (decodedToken === undefined) {
-        req.user = questUser;
         next();
         return
     }

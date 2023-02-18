@@ -1,10 +1,8 @@
 import {shieldIt} from "@iisdc/utils";
 
-export default function createWhereQuery(obj: Object, objLike: Object = {}, exclude:object = {}): string {
+export default function createWhereQuery(obj: Object, keysLike: Array<String> = [], excludeKeys:Array<String> = []): string {
     const keys = Object.keys(obj);
     const values = Object.values(obj);
-    const keysLike = Object.keys(objLike);
-    const excludeKeys = Object.keys(exclude);
 
     let query = ' WHERE ';
     let firstAnd = false;

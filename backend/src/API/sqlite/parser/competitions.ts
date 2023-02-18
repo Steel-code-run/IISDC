@@ -1,8 +1,7 @@
 import * as path from "path";
 import {consoleLog} from "../../../utils/consoleLog";
 import {__projectPath} from "../../../utils/projectPath";
-
-import {TGrant} from "@iisdc/types";
+import {TCompetition} from "@iisdc/types";
 import {
     universalAddPost,
     universalCount, universalDeletePost, universalDropTable,
@@ -10,24 +9,22 @@ import {
     universalIsPostExist,
     universalIsTableExist
 } from "../helpers/tableManipulations";
+
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
-const tableName = "grants"
+const tableName = "competitions"
 export const createTable = ()=>{
     try {
-        db.prepare('CREATE TABLE grants(' +
+        db.prepare('CREATE TABLE competitions(' +
             'id INTEGER PRIMARY KEY AUTOINCREMENT,' +
             'namePost STRING,' +
             'dateCreationPost STRING,' +
             'direction STRING,' +
-            'organization STRING,' +
-            'deadline STRING,' +
-            'summary STRING,' +
-            'directionForSpent STRING,' +
             'fullText STRING,' +
             'link STRING,' +
-            'linkPDF STRING,' +
-            'timeOfParse DATETIME' +
+            'organization STRING,' +
+            'timeOfParse DATETIME,' +
+            'deadline STRING' +
             ');').run()
     }
     catch (e) {
@@ -55,7 +52,7 @@ export const isTableExist = ()=>{
     }
 }
 
-export const isGrantExist = (post:TGrant)=>{
+export const isCompetitionExist = (post:TCompetition)=>{
     try {
         return universalIsPostExist(db, tableName,post)
     } catch (e) {
@@ -64,7 +61,7 @@ export const isGrantExist = (post:TGrant)=>{
     }
 }
 
-export const add = (post: TGrant)=>{
+export const add = (post: TCompetition)=>{
     try {
         return universalAddPost(db,tableName,post)
     } catch (e) {
@@ -73,7 +70,7 @@ export const add = (post: TGrant)=>{
     }
 }
 
-export const deleteGrant = (id:number)=>{
+export const deleteCompetition = (id:number)=>{
     try {
         universalDeletePost(db,tableName,id)
     } catch (e) {
@@ -82,7 +79,7 @@ export const deleteGrant = (id:number)=>{
     }
 }
 
-export const count = (post:Partial<TGrant> = {},
+export const count = (post:Partial<TCompetition> = {},
                       limit?:number,
                       orderBy:string = "DESC",
                       timeOfParseSince?:number|string,
@@ -104,7 +101,7 @@ export const count = (post:Partial<TGrant> = {},
 
 }
 
-export const getGrants = (post:Partial<TGrant> = {},
+export const getCompetitions = (post:Partial<TCompetition> = {},
                              limit?:number,
                              orderBy:string = "DESC",
                              timeOfParseSince?:number|string,
