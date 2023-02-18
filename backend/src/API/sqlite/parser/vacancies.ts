@@ -1,40 +1,32 @@
 import * as path from "path";
-import {consoleLog} from "../../../utils/consoleLog";
 import {__projectPath} from "../../../utils/projectPath";
-
-import {TGrant} from "@iisdc/types";
+import {TVacancy} from "@iisdc/types";
+import {consoleLog} from "../../../utils/consoleLog";
 import {
     universalAddPost,
-    universalCount, universalDeletePost, universalDropTable,
-    universalGetPosts,
+    universalCount,
+    universalCreateTable, universalDeletePost, universalDropTable, universalGetPosts,
     universalIsPostExist,
     universalIsTableExist
 } from "../helpers/tableManipulations";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
-const tableName = "grants"
+const tableName = "vacancies"
 export const createTable = ()=>{
-    try {
-        db.prepare('CREATE TABLE grants(' +
-            'id INTEGER PRIMARY KEY AUTOINCREMENT,' +
-            'namePost STRING,' +
-            'dateCreationPost STRING,' +
-            'direction STRING,' +
-            'organization STRING,' +
-            'deadline STRING,' +
-            'summary STRING,' +
-            'directionForSpent STRING,' +
-            'fullText STRING,' +
-            'link STRING,' +
-            'linkPDF STRING,' +
-            'timeOfParse DATETIME' +
-            ');').run()
-    }
-    catch (e) {
-        consoleLog("from "+__filename +"\n" + "Error in createGrantsTable")
-        throw new Error(e)
-    }
-    return true
+    return universalCreateTable(db,tableName, {
+        "id" : "INTEGER PRIMARY KEY AUTOINCREMENT",
+        "namePost": "STRING",
+        "direction": "STRING",
+        'requirements': 'STRING' ,
+        'responsibilities': 'STRING' ,
+        'conditions': 'STRING' ,
+        'salary': 'STRING' ,
+        'fullText': 'STRING' ,
+        'dateCreationPost': 'STRING' ,
+        'organization': 'STRING' ,
+        'link': 'STRING' ,
+        'timeOfParse': 'DATETIME'
+    })
 }
 
 export const dropTable = ()=>{
@@ -48,14 +40,14 @@ export const dropTable = ()=>{
 
 export const isTableExist = ()=>{
     try {
-        return universalIsTableExist(db, tableName)
+    return universalIsTableExist(db, tableName)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isTableExist")
         throw new Error(e)
     }
 }
 
-export const isGrantExist = (post:TGrant)=>{
+export const isVacancyExist = (post:TVacancy)=>{
     try {
         return universalIsPostExist(db, tableName,post)
     } catch (e) {
@@ -64,7 +56,7 @@ export const isGrantExist = (post:TGrant)=>{
     }
 }
 
-export const add = (post: TGrant)=>{
+export const add = (post: TVacancy)=>{
     try {
         return universalAddPost(db,tableName,post)
     } catch (e) {
@@ -73,7 +65,7 @@ export const add = (post: TGrant)=>{
     }
 }
 
-export const deleteGrant = (id:number)=>{
+export const deleteVacancy = (id:number)=>{
     try {
         universalDeletePost(db,tableName,id)
     } catch (e) {
@@ -82,7 +74,7 @@ export const deleteGrant = (id:number)=>{
     }
 }
 
-export const count = (post:Partial<TGrant> = {},
+export const count = (post:Partial<TVacancy> = {},
                       limit?:number,
                       orderBy:string = "DESC",
                       timeOfParseSince?:number|string,
@@ -104,11 +96,11 @@ export const count = (post:Partial<TGrant> = {},
 
 }
 
-export const getGrants = (post:Partial<TGrant> = {},
-                             limit?:number,
-                             orderBy:string = "DESC",
-                             timeOfParseSince?:number|string,
-                             timeOfParseTo?:number|string)=> {
+export const getVacancies = (post:Partial<TVacancy> = {},
+                                limit?:number,
+                                orderBy:string = "DESC",
+                                timeOfParseSince?:number|string,
+                                timeOfParseTo?:number|string)=> {
     try {
         return universalGetPosts(
             db,

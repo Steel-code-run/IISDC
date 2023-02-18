@@ -5,12 +5,8 @@ export enum UserRole {
 }
 
 export type IUser ={
-    id: number;
+    id?: number;
     name: string;
-    role:UserRole;
+    role?:UserRole;
+    password?: string;
 }
-
-export type IUserWithPassword = {
-    password: string;
-
-} & IUser
