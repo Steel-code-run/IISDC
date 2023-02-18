@@ -37,6 +37,18 @@ const parsersParams = [
         fileUrl:"minobrnauki",
         parserType: TParserType["nodejs"]
     },
+    {
+        name: "sowa-ru",
+        url: ".",
+        fileUrl: "sowa-ru",
+        parserType: TParserType["nodejs"]
+    },
+    {
+        name: "guap.ru",
+        url: "https://guap.ru/m/science/grants",
+        fileUrl: "guap",
+        parserType: TParserType.nodejs
+    }
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
