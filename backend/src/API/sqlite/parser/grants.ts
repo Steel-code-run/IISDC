@@ -11,8 +11,26 @@ import {
     universalIsPostExist,
     universalIsTableExist
 } from "../helpers/tableManipulations";
-const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
+import * as fs from "fs";
+let dbPath = path.join(__projectPath, '../','sqlite','db','parser.db');
+let db:any;
+setDb(dbPath)
 
+
+/**
+ * Функция устанавливающая коннект к бд
+ * @param newPath
+ */
+export function setDb(newPath:string){
+    if (!fs.existsSync(newPath)){
+        const dir = path.parse(newPath).dir
+        try {
+            fs.mkdirSync(dir);
+        } catch {}
+    }
+    dbPath = newPath
+    db = require('better-sqlite3')(dbPath)
+}
 export const tableName = "grants"
 export const protectedFromDrop = false
 
