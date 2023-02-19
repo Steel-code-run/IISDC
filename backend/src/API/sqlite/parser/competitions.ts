@@ -3,6 +3,7 @@ import {consoleLog} from "../../../utils/consoleLog";
 import {__projectPath} from "../../../utils/projectPath";
 import {TCompetition} from "@iisdc/types";
 import {
+    createTableIfNotExist,
     universalAddPost,
     universalCount, universalDeletePost, universalDropTable,
     universalGetPosts,
@@ -12,7 +13,11 @@ import {
 
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
-const tableName = "competitions"
+export const tableName = "competitions"
+export const protectedFromDrop = false
+
+
+
 export const createTable = ()=>{
     try {
         db.prepare('CREATE TABLE competitions(' +
@@ -54,6 +59,7 @@ export const isTableExist = ()=>{
 
 export const isCompetitionExist = (post:TCompetition)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalIsPostExist(db, tableName,post)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isVacancyExist")
@@ -63,6 +69,7 @@ export const isCompetitionExist = (post:TCompetition)=>{
 
 export const add = (post: TCompetition)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalAddPost(db,tableName,post)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in add")
@@ -72,6 +79,7 @@ export const add = (post: TCompetition)=>{
 
 export const deleteCompetition = (id:number)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         universalDeletePost(db,tableName,id)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in deleteVacancy")
@@ -85,6 +93,7 @@ export const count = (post:Partial<TCompetition> = {},
                       timeOfParseSince?:number|string,
                       timeOfParseTo?:number|string)=> {
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalCount(
             db,
             tableName,
@@ -107,6 +116,7 @@ export const getCompetitions = (post:Partial<TCompetition> = {},
                              timeOfParseSince?:number|string,
                              timeOfParseTo?:number|string)=> {
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalGetPosts(
             db,
             tableName,

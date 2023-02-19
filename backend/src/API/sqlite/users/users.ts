@@ -3,6 +3,7 @@ import {IUser} from "@iisdc/types";
 import {consoleLog} from "../../../utils/consoleLog";
 import {__projectPath} from "../../../utils/projectPath";
 import {
+    createTableIfNotExist,
     universalAddPost,
     universalCreateTable,
     universalDropTable,
@@ -11,8 +12,8 @@ import {
 } from "../helpers/tableManipulations";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','users.db'));
 
-const tableName = "usersData";
-
+export const tableName = "usersData";
+export const protectedFromDrop = true
 export const createTable = ()=>{
     try {
         return universalCreateTable(db,tableName,{
@@ -53,6 +54,7 @@ export const getUsers = (user:Partial<IUser>,
                          limit?:number,
                          orderBy:string = "DESC") => {
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalGetPosts(db,tableName,user,limit,orderBy)
     }
     catch (e) {
@@ -64,6 +66,7 @@ export const getUsers = (user:Partial<IUser>,
 
 export const add = (user:IUser) => {
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalAddPost(db,tableName,user)
     }
     catch (e){

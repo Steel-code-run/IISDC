@@ -1,6 +1,7 @@
 const {exceptionWords} =  require("../../utils/wordsForParsers.js");
 const {getHTML} = require ('../../utils/getHTML.js');
-const {definePostDescription, defineTypePost, getDataBySelector, getLinksPosts} =require('../../utils/methodsParser.js');
+const {getLinksPosts} =require('../../utils/methodsParser.js');
+const {getInfoPosts} = require("../../utils/methodsParser");
 
 
 const url = 'https://minobrnauki.gov.ru/grants/grants/';
@@ -14,18 +15,6 @@ const querySelectors = {
     linkPDF: 'div.post-body a:not([href="/grants/grants/"])',
 };
 
-
-const getInfoPosts = (links) => {
-    return links.map(async (link) => {
-        const jsdom = await getHTML(link);
-        const {title} = querySelectors;
-
-        const namePost = getDataBySelector(jsdom, title);
-        return definePostDescription(defineTypePost(namePost), jsdom, querySelectors, link, baseUrl);
-
-
-    });
-};
 
 const filterPosts = (posts) => {
     return posts
@@ -46,7 +35,7 @@ const filterPosts = (posts) => {
     const jsdom = await getHTML(url);
     const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
 
-    const receivedPosts = await Promise.all(getInfoPosts(links));
+    const receivedPosts = await getInfoPosts(querySelectors, baseUrl, links);
 
     try {
         console.log(

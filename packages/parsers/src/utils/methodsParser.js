@@ -1,7 +1,8 @@
-const getLinksPosts = (jsdom, querySelector, url) => {
-    return Array.from(
-        jsdom.window.document.querySelectorAll(querySelector)
-    ).map((link) => url + link.getAttribute('href'));
+const {getHTML} = require("./getHTML");
+const getLinksPosts = (jsdom, querySelector, url = '') => {
+    return Array.from(jsdom.window.document.querySelectorAll(querySelector))
+        .filter(link => link.hasAttribute('href'))
+        .map((link) => url + link.getAttribute('href'))
 };
 const getLinksPDF = (jsdom, querySelector, url) => {
     return Array.from(
@@ -12,7 +13,8 @@ const getLinksPDF = (jsdom, querySelector, url) => {
     });
 };
 const getDataBySelector = (jsdom, querySelector) => {
-    return jsdom.window.document.querySelector(querySelector)?.textContent ?? '';
+    const arr_tags = Array.from(jsdom.window.document.querySelectorAll(querySelector))
+    return arr_tags.map(data => data?.textContent).join('')
 }
 
 const getSummaryGrant = (jsdom, querySelector) => {
@@ -48,6 +50,7 @@ const definePostDescription = (postType, jsdom, querySelectors, link, url) => {
                 postDescription: {
                     namePost: getDataBySelector(jsdom, querySelectors?.title),
                     dateCreationPost: getDataBySelector(jsdom, querySelectors?.date),
+                    directionForSpent: "",
                     summary: getSummaryGrant(jsdom, querySelectors?.text),
                     fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
                     deadline: getDataBySelector(jsdom, querySelectors?.deadline),
@@ -221,6 +224,21 @@ const defineTypeDescriptionTelegram = (postType, post, link) => {
 
     }
 }
+
+const getInfoPosts = async (querySelectors, baseUrl, links) => {
+    const result = []
+
+    for (let index in links) {
+        const jsdom = await getHTML(links[index])
+        const {title} = querySelectors;
+
+        const namePost = getDataBySelector(jsdom, title);
+        result.push(definePostDescription(defineTypePost(namePost), jsdom, querySelectors, links[index], baseUrl));
+    }
+
+    return result
+}
+
 const clearString = (string) => {
     return string.replaceAll(/[\n\r\t]/g, '')
 }
@@ -238,5 +256,6 @@ module.exports = {
     getLinksPosts,
     getLinksPDF,
     definePostDescription,
-    clearString
+    clearString,
+    getInfoPosts
 }

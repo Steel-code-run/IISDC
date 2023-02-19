@@ -1,4 +1,4 @@
-import {readFileSync,appendFileSync, statSync, writeFileSync} from "fs";
+import {readFileSync,appendFileSync, statSync, writeFileSync, existsSync} from "fs";
 import {__projectPath} from "./projectPath";
 import path from "path";
 
@@ -23,6 +23,10 @@ export function consoleLog(message: string) {
 }
 
 function addLogToFile(message:string){
+    if (!existsSync(logFilePath)) {
+        appendFileSync(logFilePath, '', {flag:'a'})
+    }
+
     while (statSync(logFilePath).size > maxLogFileSizeInByte){
         let content = readFileSync(logFilePath).toString().split("\n")
         content = content.slice(10,content.length)

@@ -4,6 +4,7 @@ import {__projectPath} from "../../../utils/projectPath";
 
 import {TGrant} from "@iisdc/types";
 import {
+    createTableIfNotExist,
     universalAddPost,
     universalCount, universalDeletePost, universalDropTable,
     universalGetPosts,
@@ -12,7 +13,9 @@ import {
 } from "../helpers/tableManipulations";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
-const tableName = "grants"
+export const tableName = "grants"
+export const protectedFromDrop = false
+
 export const createTable = ()=>{
     try {
         db.prepare('CREATE TABLE grants(' +
@@ -57,6 +60,7 @@ export const isTableExist = ()=>{
 
 export const isGrantExist = (post:TGrant)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalIsPostExist(db, tableName,post)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isVacancyExist")
@@ -66,6 +70,7 @@ export const isGrantExist = (post:TGrant)=>{
 
 export const add = (post: TGrant)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalAddPost(db,tableName,post)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in add")
@@ -75,6 +80,7 @@ export const add = (post: TGrant)=>{
 
 export const deleteGrant = (id:number)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         universalDeletePost(db,tableName,id)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in deleteVacancy")
@@ -88,6 +94,7 @@ export const count = (post:Partial<TGrant> = {},
                       timeOfParseSince?:number|string,
                       timeOfParseTo?:number|string)=> {
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalCount(
             db,
             tableName,
@@ -110,6 +117,7 @@ export const getGrants = (post:Partial<TGrant> = {},
                              timeOfParseSince?:number|string,
                              timeOfParseTo?:number|string)=> {
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalGetPosts(
             db,
             tableName,

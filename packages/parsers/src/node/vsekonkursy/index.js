@@ -1,51 +1,57 @@
 const {exceptionWords, keyWords} = require("../../utils/wordsForParsers.js");
+const {getHTML} = require('../../utils/getHTML.js');
 const {
     definePostDescription,
     defineTypePost,
     getDataBySelector,
     getLinksPosts
 } = require('../../utils/methodsParser.js');
-const {getHTML} = require("../../utils/getHTML");
-
 
 const page = process.argv[2] || 1;
 
-const url = 'https://fadm.gov.ru/news/';
-const baseUrl = 'https://fadm.gov.ru';
+const baseUrl = 'https://vsekonkursy.ru/';
+const url = baseUrl
 
 const querySelectors = {
-    title: 'h2.news__title',
-    link: 'a.news-mini.news-catalog__mini',
-    date: 'span.date',
-    text: 'div.news__wrap',
+    title: 'h1.title.entry-title',
+    link: 'div.article-content-col a[class]',
+    date: 'time.entry-date published',
+    text: 'div.nv-content-wrap.entry-content p',
+    deadline: 'div.elementor-text-editor.elementor-clearfix p',
 };
 
-const getInfoPosts = async (querySelectors, baseUrl, links) => {
+const getFilterPost = (jsdom, selector) => {
+    return (jsdom.window.document.querySelector(selector)?.textContent === 'Конкурс завершен')
+}
+
+const getInfoPosts = async (links) => {
+
     const result = []
 
     for (let index in links) {
-        const jsdom = await getHTML(links[index], {
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Mobile Safari/537.36'
-        });
+        const jsdom = await getHTML(links[index])
         const {title} = querySelectors;
 
         const namePost = getDataBySelector(jsdom, title);
-        result.push(definePostDescription(defineTypePost(namePost), jsdom, querySelectors, links[index], baseUrl));
+        if(!getFilterPost(jsdom, 'p[style="font-style: italic;"]')){
+            result.push(definePostDescription(defineTypePost(namePost), jsdom, querySelectors, links[index], baseUrl));
+        }
     }
 
     return result
 }
 
-
 const getPostLazyLoading = async (page, url, querySelectors) => {
-    const jsdom = await getHTML(`${url}?PAGEN_1=${page}`);
-    const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
+    const jsdom = await getHTML(url + `page/${page}`);
+    const links = getLinksPosts(jsdom, querySelectors.link, '');
 
-    return getInfoPosts(links);
+    return getInfoPosts(querySelectors, baseUrl, links)
+
 };
 
 const filterPosts = (posts) => {
     return posts
+        .filter((post) => post !== undefined) // фильтрация конкурсов, которые уже закончены
         .filter((post) => post.postType !== 'other')
         .filter((post) => {
             const {namePost} = post.postDescription;
@@ -74,6 +80,3 @@ const filterPosts = (posts) => {
         console.log(error);
     }
 })()
-
-
-

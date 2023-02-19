@@ -25,7 +25,7 @@ function copyBuild(cb){
     cb()
 }
 
-gulp.task("createFrontendBuild", gulp.parallel(
+gulp.task("createFrontendBuild", gulp.series(
     clear,
     buildFrontend,
     copyEnv,
