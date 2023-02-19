@@ -1,7 +1,8 @@
 const getLinksPosts = (jsdom, querySelector, url) => {
     return Array.from(
         jsdom.window.document.querySelectorAll(querySelector)
-    ).map((link) => url + link.getAttribute('href'));
+    ).filter(link => link.hasAttribute('href'))
+        .map((link) => url + link.getAttribute('href'))
 };
 const getLinksPDF = (jsdom, querySelector, url) => {
     return Array.from(
@@ -12,7 +13,8 @@ const getLinksPDF = (jsdom, querySelector, url) => {
     });
 };
 const getDataBySelector = (jsdom, querySelector) => {
-    return jsdom.window.document.querySelector(querySelector)?.textContent ?? '';
+    const arr_tags = Array.from(jsdom.window.document.querySelectorAll(querySelector))
+    return arr_tags.map(data => data?.textContent).join('')
 }
 
 const getSummaryGrant = (jsdom, querySelector) => {

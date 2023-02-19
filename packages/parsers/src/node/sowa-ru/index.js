@@ -12,13 +12,12 @@ const page = process.argv[2] || 1;
 
 
 const url = 'https://sowa-ru.com/event/';
-const baseUrl = 'https://sowa-ru.com';
 
 
 
 const querySelectors = {
     title: 'h1.page-header-title',
-    link: 'a.kt-blocks-info-box-link-wrap info-box-link kt-blocks-info-box-media-align-top kt-info-halign-center',
+    link: 'a.kt-blocks-info-box-link-wrap',
     // date: 'span.ico_clock b',
     // text: 'div[itemprop="text"]',
     deadline: 'div.elementor-text-editor.elementor-clearfix p',
@@ -35,11 +34,11 @@ const getInfoPosts = (links) => {
 };
 
 const getPostLazyLoading = async (page, url, querySelectors) => {
-    const jsdom = await getHTML(`${url}page/${page}/?wpv_view_count=87565`);
+    const jsdom = await getHTML(url);
     const links = getLinksPosts(jsdom, querySelectors.link, '');
-    console.log(links)
 
-    return [...(await Promise.all(getInfoPosts(links)))];
+    return getInfoPosts(links).map(promise => promise.then(res => res))
+
 };
 
 const filterPosts = (posts) => {
@@ -62,7 +61,7 @@ const filterPosts = (posts) => {
 };
 
 (async function main() {
-    const receivedPosts = await getPostLazyLoading(page, url, querySelectors);
+    const receivedPosts = await Promise.all( await getPostLazyLoading(page, url, querySelectors));
 
     try {
         console.log(
