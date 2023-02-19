@@ -2,7 +2,6 @@ const {exceptionWords} =  require("../../utils/wordsForParsers.js");
 const {getHTML} = require ('../../utils/getHTML.js');
 const {definePostDescription, defineTypePost, getDataBySelector, getLinksPosts} =require('../../utils/methodsParser.js');
 
-
 const url = 'https://rcfoundation.ru/grant.html';
 const baseUrl = 'https://rcfoundation.ru/';
 

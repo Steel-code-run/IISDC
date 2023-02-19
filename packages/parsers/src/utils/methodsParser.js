@@ -1,7 +1,6 @@
-const getLinksPosts = (jsdom, querySelector, url) => {
-    return Array.from(
-        jsdom.window.document.querySelectorAll(querySelector)
-    ).filter(link => link.hasAttribute('href'))
+const getLinksPosts = (jsdom, querySelector, url = '') => {
+    return Array.from(jsdom.window.document.querySelectorAll(querySelector))
+        .filter(link => link.hasAttribute('href'))
         .map((link) => url + link.getAttribute('href'))
 };
 const getLinksPDF = (jsdom, querySelector, url) => {
