@@ -1,4 +1,4 @@
-const grantRegExp = /((грант)|(субсид))/igm
+const grantRegExp = /((грант)|(субсид)|(преми))/igm
 const competitionRegExp = /(конкурс)|(олимп)/gim;
 const vacancyRegExp = /(ваканс)/igm
 const internshipRegExp = /(стажировк)/igm
@@ -18,6 +18,8 @@ const fullTextRegExp = {
 
 const getDataBySelector = (dom, selector, regExp= undefined, regExpFlags = 'gmi') => {
     const data = dom.querySelector(selector)?.textContent;
+    if (!data)
+        return ''
     if (regExp) {
         const result = data.match(regExp, regExpFlags);
         return result ? result[0] : "";
@@ -34,18 +36,26 @@ const getLink = (dom, selector) => {
 }
 
 const isGrant = (namePost) => {
+    if (!namePost)
+        return false
     return namePost.toLowerCase().search(grantRegExp) !== -1;
 }
 
 const isCompetition = (namePost) => {
+    if (!namePost)
+        return false
     return namePost.toLowerCase().search(competitionRegExp) !== -1;
 }
 
 const isVacancy = (namePost) => {
+    if (!namePost)
+        return false
     return namePost.toLowerCase().search(vacancyRegExp) !== -1;
 }
 
 const isInternship = (namePost) => {
+    if (!namePost)
+        return false
     return namePost.toLowerCase().search(internshipRegExp) !== -1;
 }
 

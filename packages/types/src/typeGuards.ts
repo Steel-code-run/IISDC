@@ -5,6 +5,8 @@ export const isTPost = (post: any): post is TPost<any> =>
 export const isTPostType = (postType: any): postType is TPostType =>
 	Object.values(TPostType).includes(postType as TPostType);
 export const isTParserResult = (parserResult: any): parserResult is TParserResult =>{
+	if (parserResult.length === 0)
+		return true
 	return isTPost(parserResult[0]);
 }
 export const isGrantPost = (post: TPost<any>): post is TPost<TPostType.grant> =>
