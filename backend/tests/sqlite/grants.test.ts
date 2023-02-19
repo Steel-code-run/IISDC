@@ -9,8 +9,6 @@ import {TGrant} from "@iisdc/types";
 
 let dbPath = path.join(__projectPath, '../','sqlite','db','testing__parser.db');
 
-
-
 describe("sqliteGrants", () =>{
     let grant: TGrant
     let expectedGrant: TGrant
