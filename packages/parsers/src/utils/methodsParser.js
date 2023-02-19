@@ -49,6 +49,7 @@ const definePostDescription = (postType, jsdom, querySelectors, link, url) => {
                 postDescription: {
                     namePost: getDataBySelector(jsdom, querySelectors?.title),
                     dateCreationPost: getDataBySelector(jsdom, querySelectors?.date),
+                    directionForSpent: "",
                     summary: getSummaryGrant(jsdom, querySelectors?.text),
                     fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
                     deadline: getDataBySelector(jsdom, querySelectors?.deadline),

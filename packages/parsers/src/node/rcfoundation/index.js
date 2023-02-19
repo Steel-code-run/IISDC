@@ -7,7 +7,7 @@ const baseUrl = 'https://rcfoundation.ru/';
 
 const querySelectors = {
     title: 'h1.mt-0.mb-2',
-    link: 'div.item-wrapper a',
+    link: 'div.item-heading a',
     // date: 'span.post-date-day',
     text: 'div.row.mt-4',
 };
@@ -42,6 +42,7 @@ const filterPosts = (posts) => {
 (async function main() {
     const jsdom = await getHTML(url);
     const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
+    console.log(links)
 
     const receivedPosts = await Promise.all(getInfoPosts(links));
 
