@@ -8,7 +8,7 @@ const baseUrl = 'https://rcfoundation.ru/';
 
 const querySelectors = {
     title: 'h1.mt-0.mb-2',
-    link: 'div.item-wrapper  a',
+    link: 'div.item-wrapper > a',
     // date: 'span.post-date-day',
     text: 'div.row.mt-4',
 };
