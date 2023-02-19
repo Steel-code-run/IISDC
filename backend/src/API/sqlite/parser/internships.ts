@@ -12,7 +12,9 @@ import {consoleLog} from "../../../utils/consoleLog";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
 
-const tableName = "internships"
+export const tableName = "internships"
+export const protectedFromDrop = false
+
 export const createTable = ()=>{
     return universalCreateTable(db,tableName, {
         "id" : "INTEGER PRIMARY KEY AUTOINCREMENT",

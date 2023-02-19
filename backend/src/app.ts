@@ -23,12 +23,18 @@ import users from "./router/routes/users";
 import parsers from "./router/routes/parsers";
 import competitions from "./router/routes/competitions";
 import internships from "./router/routes/internships";
+import database from "./router/routes/database";
 
 configureAll()
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// JWT
 app.use(setUser);
+
+// routes
+
 app.use(stats);
 app.use(grants);
 app.use(auth);
@@ -36,7 +42,10 @@ app.use(users);
 app.use(parsers);
 app.use(competitions)
 app.use(vacancies);
+app.use(database);
 app.use(internships);
+
+// routes end
 app.listen(port, () => {
 	consoleLog(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
@@ -50,7 +59,7 @@ if (process.env.NODE_ENV === "development") {
 	const BYPASSUserIUser = {
 		name: "BYPASS",
 		role: 999,
-		id: 2,
+		id: -100,
 	}
 	console.log("Bearer " + generateBYPASSToken(BYPASSUserIUser)!)
 }

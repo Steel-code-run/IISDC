@@ -12,7 +12,9 @@ import {
 } from "../helpers/tableManipulations";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
-const tableName = "grants"
+export const tableName = "grants"
+export const protectedFromDrop = false
+
 export const createTable = ()=>{
     try {
         db.prepare('CREATE TABLE grants(' +

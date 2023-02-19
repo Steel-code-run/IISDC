@@ -1,48 +1,35 @@
-import * as sqliteParser from "../parser/parser";
-import * as sqliteGrant from "../parser/grants";
 import * as sqliteUsers from "../users/users";
-import * as sqliteCompetitions from "../parser/competitions";
-import * as sqliteVacancies from "../parser/vacancies"
-import * as sqliteInternships from "../parser/internships"
 import {createDefaultUsers} from "./createDefaultUsers";
+import {consoleLog} from "../../../utils/consoleLog";
+import {generateDefaultParsers} from "../../../model/defaultParsers";
+import * as sqliteParser from "../parser/parser";
 
 // Это в продакшен не пускать)
 export const configureAll = () => {
-    configureParserTable();
-    configureGrantsTable();
-    configureUsersTable();
-    createDefaultUsers();
-    configureCompetitionsTable();
-    configureVacanciesTable()
-    configureInternshipsTable();
+
+    configureDefaultUsers()
+    configureDefaultParsers()
 }
 
-export const configureParserTable = () => {
-    sqliteParser.dropTable();
-    sqliteParser.createTable();
+export const configureDefaultUsers = () => {
+    if (sqliteUsers.getUsers({}).length < 1) {
+        consoleLog("started configure default users")
+        sqliteUsers.dropTable()
+        sqliteUsers.createTable()
+        createDefaultUsers();
+    }
 }
 
-export const configureGrantsTable = () => {
-    sqliteGrant.dropTable();
-    sqliteGrant.createTable();
+export const configureDefaultParsers = () =>{
+    const parsers = generateDefaultParsers();
+    consoleLog("started configure default parsers")
+    parsers.forEach(parser => {
+        if (sqliteParser.getParsers(parser).length < 1)
+            sqliteParser.addParser(parser)
+    });
 }
 
-export const configureUsersTable = () => {
-    sqliteUsers.dropTable();
-    sqliteUsers.createTable();
-}
 
-export const configureCompetitionsTable = () => {
-    sqliteCompetitions.dropTable();
-    sqliteCompetitions.createTable();
-}
 
-export const configureVacanciesTable = () =>{
-    sqliteVacancies.dropTable();
-    sqliteVacancies.createTable();
-}
 
-export const configureInternshipsTable = () =>{
-    sqliteInternships.dropTable();
-    sqliteInternships.createTable();
-}
+

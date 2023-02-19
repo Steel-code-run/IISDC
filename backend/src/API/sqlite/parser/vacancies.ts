@@ -11,7 +11,9 @@ import {
 } from "../helpers/tableManipulations";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
-const tableName = "vacancies"
+export const tableName = "vacancies"
+export const protectedFromDrop = false
+
 export const createTable = ()=>{
     return universalCreateTable(db,tableName, {
         "id" : "INTEGER PRIMARY KEY AUTOINCREMENT",

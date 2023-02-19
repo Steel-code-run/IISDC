@@ -20,7 +20,7 @@ function diffDate(date1:string,date2:string):number{
 
 const automateAddingParsers = async () => {
     if (isTimeToAddParsersToQueue()) {
-        parserCallQueuePushMany(sqliteParser.getParsers(1000));
+        parserCallQueuePushMany(sqliteParser.getParsers({},1000));
     }
     // Проверяем каждый час
     setTimeout(automateAddingParsers, 1000 * 60 * 60)
