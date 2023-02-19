@@ -6,6 +6,7 @@ export type TParser = {
 	url: string;
 	fileUrl: string;
 	enabled: string;
+	id?: number;
 };
 
 export enum TParserType {

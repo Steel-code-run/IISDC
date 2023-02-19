@@ -1,5 +1,5 @@
 import * as sqliteParser from "../API/sqlite/parser/parser";
-import {parserCallQueuePush, parserCallQueueShift} from "./parserQueue";
+import {parserCallQueuePush, parserCallQueuePushMany, parserCallQueueShift} from "./parserQueue";
 import {generateDefaultParsers} from "./defaultParsers";
 import {
     isCompetitionPost, isGrantPost,
@@ -17,14 +17,13 @@ import {activateAutomateAddingParsers} from "./automateAddingParsers";
 const parserOptions = {
     isFirstBoot: true,
     parsersInThisMoment: 0,
-    maxParsersInThisMoment: 5,
+    maxParsersInThisMoment: 2,
 }
 
 export const enableParserScheduler = () => {
     if (parserOptions.isFirstBoot) {
         parserOptions.isFirstBoot = false;
-        const parsers = generateDefaultParsers();
-        parsers.forEach(parser => sqliteParser.addParser(parser));
+        parserCallQueuePushMany(sqliteParser.getParsers({},1000));
         activateAutomateAddingParsers();
         parserScheduler().then();
     }

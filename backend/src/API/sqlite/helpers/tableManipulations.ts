@@ -7,6 +7,18 @@ type TCreationObjectTable = {
     // key, options
     [key: string]: string
 }
+
+export const createTableIfNotExist = (isTableExist:()=>boolean, createTable:()=>any) =>{
+    try {
+        if (!isTableExist()) {
+            createTable()
+        }
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in createTableIfNotExist")
+        throw new Error(e)
+    }
+}
+
 export const universalCreateTable = (db:any, tableName:string, creationObjectTable:TCreationObjectTable) => {
     let str = `CREATE TABLE ${tableName}(`
 

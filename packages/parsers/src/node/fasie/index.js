@@ -1,14 +1,10 @@
 const {exceptionWords, keyWords} = require("../../utils/wordsForParsers.js");
 const {getHTML} = require('../../utils/getHTML.js');
-const {
-    definePostDescription,
-    defineTypePost,
-    getDataBySelector,
-    getLinksPosts
-} = require('../../utils/methodsParser.js');
+const {getLinksPosts} = require('../../utils/methodsParser.js');
+const {getInfoPosts} = require("../../utils/methodsParser");
 
 
-const page = process.argv[2] || 1;
+const page = process.argv[2] || 5;
 
 
 const url = 'https://fasie.ru/press/';
@@ -21,21 +17,12 @@ const querySelectors = {
     text: 'div[itemprop="text"]',
 };
 
-const getInfoPosts = (links) => {
-    return links.map(async (link) => {
-        const jsdom = await getHTML(link);
-        const {title} = querySelectors;
-
-        const namePost = getDataBySelector(jsdom, title);
-        return definePostDescription(defineTypePost(namePost), jsdom, querySelectors, link);
-    });
-};
 
 const getPostLazyLoading = async (page, url, querySelectors) => {
     const jsdom = await getHTML(`${url}?ajax=Y&ajax=Y&PAGEN_1=${page}`);
     const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
 
-    return [...(await Promise.all(getInfoPosts(links))).slice(0, -1)];
+    return getInfoPosts(querySelectors, baseUrl, links);
 };
 
 const filterPosts = (posts) => {

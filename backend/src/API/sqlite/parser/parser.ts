@@ -2,7 +2,17 @@ import * as path from "path";
 import {TParser} from "@iisdc/types";
 import {consoleLog} from "../../../utils/consoleLog";
 import {__projectPath} from "../../../utils/projectPath";
+import {
+    createTableIfNotExist,
+    universalAddPost,
+    universalGetPosts,
+    universalIsTableExist
+} from "../helpers/tableManipulations";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
+
+
+export const tableName = "parsers"
+export const protectedFromDrop = true
 
 export const createTable = ()=>{
     try {
@@ -11,7 +21,7 @@ export const createTable = ()=>{
             'name STRING UNIQUE,' +
             'parserType STRING,' +
             'url STRING,' +
-            'fileUrl STRING,' +
+            'fileUrl STRING UNIQUE,' +
             'enabled STRING' +
             ');').run()
     }
@@ -35,31 +45,30 @@ export const dropTable = ()=>{
 
 export const isTableExist = ()=>{
     try {
-        return db.prepare('SELECT name FROM sqlite_master WHERE type=\'table\' ' +
-            'AND name=\'parsers\';').all().length > 0
+        return universalIsTableExist(db, tableName)
     }
     catch (e) {
         consoleLog("from "+__filename +"\n" + "isParsersTableExist error")
+        throw new Error(e)
+
     }
 }
 
 export const addParser = (parser: TParser)=>{
     try {
-        return db.prepare('INSERT INTO parsers (name, parserType, url, fileUrl, enabled) VALUES (?, ?, ?, ?, ?);')
-            .run(parser.name, parser.parserType, parser.url, parser.fileUrl, parser.enabled)
+        createTableIfNotExist(isTableExist,createTable)
+        return universalAddPost(db,tableName,parser)
     }
     catch (e) {
         consoleLog("from "+__filename +"\n" + "addParser error")
+        throw new Error(e)
     }
 }
 
-export const getParsers = (limit?:number, orderBy:string="DESC")=>{
-
-    if (limit === undefined)
-        limit = 10
-    let query = `SELECT * FROM parsers ORDER BY id ${orderBy} LIMIT ? ;`
+export const getParsers = (parser:Partial<TParser>,limit?:number, orderBy:string="DESC")=>{
     try {
-        return db.prepare(query).all(limit)
+        createTableIfNotExist(isTableExist,createTable)
+        return universalGetPosts(db,tableName,parser,limit,orderBy)
     }
     catch (e) {
         consoleLog("from "+__filename +"\n" + e.message)
@@ -67,8 +76,12 @@ export const getParsers = (limit?:number, orderBy:string="DESC")=>{
     }
 }
 
+/*
+ * Рудимент, не использовать.
+ */
 export const getParser = (id: number)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return db.prepare('SELECT * FROM parsers WHERE id = ?;').get(id) as TParser
     }   catch (e) {
         consoleLog("from "+__filename +"\n" + e.message)

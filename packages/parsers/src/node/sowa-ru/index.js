@@ -1,11 +1,9 @@
 const {exceptionWords, keyWords} = require("../../utils/wordsForParsers.js");
 const {getHTML} = require('../../utils/getHTML.js');
 const {
-    definePostDescription,
-    defineTypePost,
-    getDataBySelector,
     getLinksPosts
 } = require('../../utils/methodsParser.js');
+const {getInfoPosts} = require("../../utils/methodsParser");
 
 
 const page = process.argv[2] || 1;
@@ -23,21 +21,12 @@ const querySelectors = {
     deadline: 'div.elementor-text-editor.elementor-clearfix p',
 };
 
-const getInfoPosts = (links) => {
-    return links.map(async (link) => {
-        const jsdom = await getHTML(link);
-        const {title} = querySelectors;
-
-        const namePost = getDataBySelector(jsdom, title);
-        return definePostDescription(defineTypePost(namePost), jsdom, querySelectors, link);
-    });
-};
 
 const getPostLazyLoading = async (page, url, querySelectors) => {
     const jsdom = await getHTML(url);
     const links = getLinksPosts(jsdom, querySelectors.link, '');
 
-    return getInfoPosts(links).map(promise => promise.then(res => res))
+    return getInfoPosts(querySelectors, url, links)
 
 };
 
@@ -61,7 +50,7 @@ const filterPosts = (posts) => {
 };
 
 (async function main() {
-    const receivedPosts = await Promise.all( await getPostLazyLoading(page, url, querySelectors));
+    const receivedPosts =  await getPostLazyLoading(page, url, querySelectors);
 
     try {
         console.log(

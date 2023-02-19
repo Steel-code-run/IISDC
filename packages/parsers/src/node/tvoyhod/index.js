@@ -1,13 +1,5 @@
 const {exceptionWords, keyWords} = require("../../utils/wordsForParsers.js");
-const {getHTML} = require('../../utils/getHTML.js');
-const {
-    definePostDescription,
-    defineTypePost,
-    getDataBySelector,
-    getLinksPosts
-} = require('../../utils/methodsParser.js');
-
-const page = process.argv[2] || 1;
+const {getInfoPosts} = require("../../utils/methodsParser");
 
 const baseUrl = 'https://news.tvoyhod.online/';
 const url = baseUrl
@@ -16,18 +8,6 @@ const querySelectors = {
     title: 'h1.js-feed-post-title',
     link: 'div.js-feed-post.t-feed__post a.js-feed-post-link',
     text: 'div[id="feed-text"]',
-};
-
-const getInfoPosts = (links) => {
-    return links.map(async (link) => {
-        const jsdom = await getHTML(link);
-        const {title} = querySelectors;
-
-        const namePost = getDataBySelector(jsdom, title);
-        console.log(namePost)
-
-        return definePostDescription(defineTypePost(namePost), jsdom, querySelectors, link);
-    });
 };
 
 const filterPosts = (posts) => {
@@ -69,9 +49,8 @@ const filterPosts = (posts) => {
         "credentials": "omit"
     }).then( (data) => data.json()));
     const links = JSON.parse(JSON.stringify(dataApi)).posts.map(post => post.url)
-    console.log(links)
 
-    const receivedPosts = await Promise.all(getInfoPosts(links));
+    const receivedPosts = await getInfoPosts(querySelectors, baseUrl, links);
 
     try {
         console.log(

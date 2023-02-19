@@ -20,24 +20,28 @@ const querySelectors = {
     text: 'div.news__wrap',
 };
 
+const getInfoPosts = async (querySelectors, baseUrl, links) => {
+    const result = []
 
-const getInfoPosts = (links) => {
-    return links.map(async (link) => {
-        const jsdom = await getHTML(link, {
+    for (let index in links) {
+        const jsdom = await getHTML(links[index], {
             'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Mobile Safari/537.36'
         });
         const {title} = querySelectors;
 
         const namePost = getDataBySelector(jsdom, title);
-        return definePostDescription(defineTypePost(namePost), jsdom, querySelectors, link);
-    });
-};
+        result.push(definePostDescription(defineTypePost(namePost), jsdom, querySelectors, links[index], baseUrl));
+    }
+
+    return result
+}
+
 
 const getPostLazyLoading = async (page, url, querySelectors) => {
     const jsdom = await getHTML(`${url}?PAGEN_1=${page}`);
     const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
 
-    return [...(await Promise.all(getInfoPosts(links)))];
+    return getInfoPosts(links);
 };
 
 const filterPosts = (posts) => {

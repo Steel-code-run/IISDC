@@ -1,3 +1,4 @@
+const {getHTML} = require("./getHTML");
 const getLinksPosts = (jsdom, querySelector, url = '') => {
     return Array.from(jsdom.window.document.querySelectorAll(querySelector))
         .filter(link => link.hasAttribute('href'))
@@ -223,6 +224,21 @@ const defineTypeDescriptionTelegram = (postType, post, link) => {
 
     }
 }
+
+const getInfoPosts = async (querySelectors, baseUrl, links) => {
+    const result = []
+
+    for (let index in links) {
+        const jsdom = await getHTML(links[index])
+        const {title} = querySelectors;
+
+        const namePost = getDataBySelector(jsdom, title);
+        result.push(definePostDescription(defineTypePost(namePost), jsdom, querySelectors, links[index], baseUrl));
+    }
+
+    return result
+}
+
 const clearString = (string) => {
     return string.replaceAll(/[\n\r\t]/g, '')
 }
@@ -240,5 +256,6 @@ module.exports = {
     getLinksPosts,
     getLinksPDF,
     definePostDescription,
-    clearString
+    clearString,
+    getInfoPosts
 }

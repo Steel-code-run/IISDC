@@ -7,14 +7,10 @@ const {
     getLinksPosts
 } = require('../../utils/methodsParser.js');
 
-
 const page = process.argv[2] || 1;
-
 
 const baseUrl = 'https://vsekonkursy.ru/';
 const url = baseUrl
-
-
 
 const querySelectors = {
     title: 'h1.title.entry-title',
@@ -25,31 +21,31 @@ const querySelectors = {
 };
 
 const getFilterPost = (jsdom, selector) => {
-    console.log(jsdom.window.document.querySelector(selector)?.textContent)
     return (jsdom.window.document.querySelector(selector)?.textContent === 'Конкурс завершен')
 }
 
-const getInfoPosts = (links) => {
-    return links.map(async (link) => {
-        const jsdom = await getHTML(link);
+const getInfoPosts = async (links) => {
+
+    const result = []
+
+    for (let index in links) {
+        const jsdom = await getHTML(links[index])
         const {title} = querySelectors;
 
         const namePost = getDataBySelector(jsdom, title);
-
-        console.log(namePost)
-        // если в посте нет тега с тексто "Конкурс завершен" - отправляем пост дальше
         if(!getFilterPost(jsdom, 'p[style="font-style: italic;"]')){
-            return definePostDescription(defineTypePost(namePost), jsdom, querySelectors, link);
+            result.push(definePostDescription(defineTypePost(namePost), jsdom, querySelectors, links[index], baseUrl));
         }
+    }
 
-    });
-};
+    return result
+}
 
 const getPostLazyLoading = async (page, url, querySelectors) => {
     const jsdom = await getHTML(url + `page/${page}`);
     const links = getLinksPosts(jsdom, querySelectors.link, '');
 
-    return getInfoPosts(links).map(promise => promise?.then(res => res))
+    return getInfoPosts(querySelectors, baseUrl, links)
 
 };
 
@@ -74,7 +70,7 @@ const filterPosts = (posts) => {
 };
 
 (async function main() {
-    const receivedPosts = await Promise.all( await getPostLazyLoading(page, url, querySelectors));
+    const receivedPosts = await getPostLazyLoading(page, url, querySelectors);
 
     try {
         console.log(
