@@ -12,7 +12,6 @@ const querySelectors = {
     text: 'div.row.mt-4',
 };
 
-
 const getInfoPosts = (links) => {
     return links.map(async (link) => {
         const jsdom = await getHTML(link);
@@ -20,8 +19,6 @@ const getInfoPosts = (links) => {
 
         const namePost = getDataBySelector(jsdom, title);
         return definePostDescription(defineTypePost(namePost), jsdom, querySelectors, link, baseUrl);
-
-
     });
 };
 
@@ -42,7 +39,6 @@ const filterPosts = (posts) => {
 (async function main() {
     const jsdom = await getHTML(url);
     const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
-    console.log(links)
 
     const receivedPosts = await Promise.all(getInfoPosts(links));
 
