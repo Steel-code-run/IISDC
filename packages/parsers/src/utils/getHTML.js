@@ -1,8 +1,10 @@
 const needle = require('needle');
 const JSDOM = require("jsdom").JSDOM;
 
-function getHTML(url) {
-    return needle('get', url).then((res) => {
+function getHTML(url,headers = {}) {
+    return needle('get', url, {
+        headers
+    }).then((res) => {
         return new JSDOM(res.body);
     });
 }

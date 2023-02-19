@@ -7,6 +7,8 @@ exports.isTPost = isTPost;
 const isTPostType = (postType) => Object.values(parser_1.TPostType).includes(postType);
 exports.isTPostType = isTPostType;
 const isTParserResult = (parserResult) => {
+    if (parserResult.length === 0)
+        return true;
     return (0, exports.isTPost)(parserResult[0]);
 };
 exports.isTParserResult = isTParserResult;
