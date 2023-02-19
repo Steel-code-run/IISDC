@@ -2,7 +2,12 @@ import * as path from "path";
 import {TParser} from "@iisdc/types";
 import {consoleLog} from "../../../utils/consoleLog";
 import {__projectPath} from "../../../utils/projectPath";
-import {universalAddPost, universalGetPosts, universalIsTableExist} from "../helpers/tableManipulations";
+import {
+    createTableIfNotExist,
+    universalAddPost,
+    universalGetPosts,
+    universalIsTableExist
+} from "../helpers/tableManipulations";
 const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
 
 
@@ -44,21 +49,25 @@ export const isTableExist = ()=>{
     }
     catch (e) {
         consoleLog("from "+__filename +"\n" + "isParsersTableExist error")
+        throw new Error(e)
+
     }
 }
 
 export const addParser = (parser: TParser)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalAddPost(db,tableName,parser)
     }
     catch (e) {
         consoleLog("from "+__filename +"\n" + "addParser error")
-        console.log(e)
+        throw new Error(e)
     }
 }
 
 export const getParsers = (parser:Partial<TParser>,limit?:number, orderBy:string="DESC")=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalGetPosts(db,tableName,parser,limit,orderBy)
     }
     catch (e) {
@@ -72,6 +81,7 @@ export const getParsers = (parser:Partial<TParser>,limit?:number, orderBy:string
  */
 export const getParser = (id: number)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return db.prepare('SELECT * FROM parsers WHERE id = ?;').get(id) as TParser
     }   catch (e) {
         consoleLog("from "+__filename +"\n" + e.message)

@@ -8,23 +8,28 @@ const baseUrl = 'https://rcfoundation.ru/';
 
 const querySelectors = {
     title: 'h1.mt-0.mb-2',
-    link: 'div.item-wrapper a',
+    link: 'div.item-wrapper  a',
     // date: 'span.post-date-day',
     text: 'div.row.mt-4',
 };
 
 
-const getInfoPosts = (links) => {
-    return links.map(async (link) => {
-        const jsdom = await getHTML(link);
+const getInfoPosts = async (links) => {
+
+    const result = []
+
+    for (let index in links) {
+        const jsdom = await getHTML(links[index])
         const {title} = querySelectors;
 
         const namePost = getDataBySelector(jsdom, title);
-        return definePostDescription(defineTypePost(namePost), jsdom, querySelectors, link, baseUrl);
+        result.push(definePostDescription(defineTypePost(namePost), jsdom, querySelectors, links[index], baseUrl));
+    }
 
+    return result
 
-    });
-};
+}
+
 
 const filterPosts = (posts) => {
     return posts
@@ -44,7 +49,7 @@ const filterPosts = (posts) => {
     const jsdom = await getHTML(url);
     const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
 
-    const receivedPosts = await Promise.all(getInfoPosts(links));
+    const receivedPosts = await getInfoPosts(links);
 
     try {
         console.log(

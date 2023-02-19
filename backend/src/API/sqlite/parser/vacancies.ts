@@ -3,6 +3,7 @@ import {__projectPath} from "../../../utils/projectPath";
 import {TVacancy} from "@iisdc/types";
 import {consoleLog} from "../../../utils/consoleLog";
 import {
+    createTableIfNotExist,
     universalAddPost,
     universalCount,
     universalCreateTable, universalDeletePost, universalDropTable, universalGetPosts,
@@ -51,6 +52,7 @@ export const isTableExist = ()=>{
 
 export const isVacancyExist = (post:TVacancy)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalIsPostExist(db, tableName,post)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isVacancyExist")
@@ -60,6 +62,7 @@ export const isVacancyExist = (post:TVacancy)=>{
 
 export const add = (post: TVacancy)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalAddPost(db,tableName,post)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in add")
@@ -69,6 +72,7 @@ export const add = (post: TVacancy)=>{
 
 export const deleteVacancy = (id:number)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         universalDeletePost(db,tableName,id)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in deleteVacancy")
@@ -82,6 +86,7 @@ export const count = (post:Partial<TVacancy> = {},
                       timeOfParseSince?:number|string,
                       timeOfParseTo?:number|string)=> {
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalCount(
             db,
             tableName,
@@ -104,6 +109,7 @@ export const getVacancies = (post:Partial<TVacancy> = {},
                                 timeOfParseSince?:number|string,
                                 timeOfParseTo?:number|string)=> {
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalGetPosts(
             db,
             tableName,

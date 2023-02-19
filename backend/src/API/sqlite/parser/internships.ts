@@ -1,4 +1,5 @@
 import {
+    createTableIfNotExist,
     universalAddPost, universalCount,
     universalCreateTable, universalDeletePost,
     universalDropTable, universalGetPosts,
@@ -52,6 +53,7 @@ export const isTableExist = ()=>{
 
 export const isInternshipExist = (post:TInternship)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalIsPostExist(db, tableName,post)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isVacancyExist")
@@ -61,6 +63,7 @@ export const isInternshipExist = (post:TInternship)=>{
 
 export const add = (post: TInternship)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalAddPost(db,tableName,post)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in add")
@@ -70,6 +73,7 @@ export const add = (post: TInternship)=>{
 
 export const deleteInternship = (id:number)=>{
     try {
+        createTableIfNotExist(isTableExist,createTable)
         universalDeletePost(db,tableName,id)
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in deleteVacancy")
@@ -83,6 +87,7 @@ export const count = (post:Partial<TInternship> = {},
                       timeOfParseSince?:number|string,
                       timeOfParseTo?:number|string)=> {
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalCount(
             db,
             tableName,
@@ -105,6 +110,7 @@ export const getInternships = (post:Partial<TInternship> = {},
                              timeOfParseSince?:number|string,
                              timeOfParseTo?:number|string)=> {
     try {
+        createTableIfNotExist(isTableExist,createTable)
         return universalGetPosts(
             db,
             tableName,
