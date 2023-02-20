@@ -22,7 +22,7 @@ const getPostLazyLoading = async (page, url, querySelectors) => {
     const jsdom = await getHTML(`${url}?ajax=Y&ajax=Y&PAGEN_1=${page}`);
     const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
 
-    return getInfoPosts(querySelectors, baseUrl, links);
+    return getInfoPosts(querySelectors, links);
 };
 
 const filterPosts = (posts) => {

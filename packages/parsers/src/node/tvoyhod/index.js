@@ -50,7 +50,7 @@ const filterPosts = (posts) => {
     }).then( (data) => data.json()));
     const links = JSON.parse(JSON.stringify(dataApi)).posts.map(post => post.url)
 
-    const receivedPosts = await getInfoPosts(querySelectors, baseUrl, links);
+    const receivedPosts = await getInfoPosts(querySelectors, links);
 
     try {
         console.log(

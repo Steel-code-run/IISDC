@@ -1,5 +1,6 @@
 const {getHTML} = require("./getHTML");
 const getLinksPosts = (jsdom, querySelector, url = '') => {
+    console.log(jsdom.window.document.querySelectorAll(querySelector))
     return Array.from(jsdom.window.document.querySelectorAll(querySelector))
         .filter(link => link.hasAttribute('href'))
         .map((link) => url + link.getAttribute('href'))
@@ -225,7 +226,7 @@ const defineTypeDescriptionTelegram = (postType, post, link) => {
     }
 }
 
-const getInfoPosts = async (querySelectors, baseUrl, links) => {
+const getInfoPosts = async (querySelectors, links, baseUrl = '' ) => {
     const result = []
 
     for (let index in links) {
