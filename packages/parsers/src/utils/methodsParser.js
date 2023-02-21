@@ -239,6 +239,9 @@ const getInfoPosts = async (querySelectors, links, baseUrl = '' ) => {
 
     return result
 }
+const convertJson = (json) => {
+    return JSON.parse(JSON.stringify(json))
+}
 
 const clearString = (string) => {
     return string.replaceAll(/[\n\r\t]/g, '')
@@ -258,5 +261,6 @@ module.exports = {
     getLinksPDF,
     definePostDescription,
     clearString,
-    getInfoPosts
+    getInfoPosts,
+    convertJson
 }
