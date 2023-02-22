@@ -1,6 +1,5 @@
 const {getHTML} = require("./getHTML");
 const getLinksPosts = (jsdom, querySelector, url = '') => {
-    console.log(jsdom.window.document.querySelectorAll(querySelector))
     return Array.from(jsdom.window.document.querySelectorAll(querySelector))
         .filter(link => link.hasAttribute('href'))
         .map((link) => url + link.getAttribute('href'))

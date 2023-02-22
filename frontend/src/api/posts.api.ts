@@ -6,16 +6,16 @@ export const postsApi = createApi({
     baseQuery: fetchBaseQuery(
         {
             baseUrl: 'http://localhost:3003/',
-
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQllQQVNTIiwicm9sZSI6OTk5LCJpZCI6MiwiaWF0IjoxNjc2NDk3NTQ0LCJleHAiOjE3MDQ0OTExNDR9.7_WhMbLUfk-WP3lm0JAzsIBoZB8UtZ0tJBFMSPD6_gM'
-            }
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQllQQVNTIiwicm9sZSI6OTk5LCJpZCI6LTEwMCwiaWF0IjoxNjc3MDYzODczLCJleHAiOjE3MDUwNTc0NzN9.tMDWPoOEZ2_m4ynvu1uB3noj_p-raHpMU7FHklXjfUY'
+            },
+            method: 'POST'
 
         }),
     endpoints: (builder) => ({
         getGrants: builder.query<any, void>({
             query: () => 'grants/get',
+
         }),
         getVacancies: builder.query<any, void>({
             query: () => 'vacancies/get',

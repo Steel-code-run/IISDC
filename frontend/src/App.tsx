@@ -3,7 +3,6 @@ import './App.scss';
 import PageAuth from "./pages/PageAuth/PageAuth";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import PageHome from "./pages/PageHome/PageHome";
-import Header from "./components/Header/Header";
 import PageGrants from "./pages/PageGrants/PageGrants";
 import PageVacancies from "./pages/PageVacancies/PageVacancies";
 import PageInternships from "./pages/PageInternships/PageInternships";
@@ -21,9 +20,6 @@ function App() {
         <div className="App" data-testid="App">
             <Routes>
                 <Route path={'/auth'} element={<PageAuth/>}/>
-            </Routes>
-            <Header/>
-            <Routes>
                 <Route path={'/home'} element={<PageHome/>}/>
                 <Route path={'/grants'} element={<PageGrants/>}/>
                 <Route path={'/vacancies'} element={<PageVacancies/>}/>
