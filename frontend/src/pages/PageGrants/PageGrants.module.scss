@@ -1,0 +1,9 @@
+.pageGrants {
+  margin-top: 20px;
+
+  &__posts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 10px;
+  }
+}
