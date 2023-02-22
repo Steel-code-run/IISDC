@@ -3,30 +3,36 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 export const postsApi = createApi({
     reducerPath: 'postsApi',
-    baseQuery: fetchBaseQuery({baseUrl: process.env.REACT_APP_SERVER_URL}),
+    baseQuery: fetchBaseQuery(
+        {
+            baseUrl: 'http://localhost:3003/',
+
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQllQQVNTIiwicm9sZSI6OTk5LCJpZCI6MiwiaWF0IjoxNjc2NDk3NTQ0LCJleHAiOjE3MDQ0OTExNDR9.7_WhMbLUfk-WP3lm0JAzsIBoZB8UtZ0tJBFMSPD6_gM'
+            }
+
+        }),
     endpoints: (builder) => ({
-        getPosts: builder.query({
-            query: () => 'posts',
+        getGrants: builder.query<any, void>({
+            query: () => 'grants/get',
         }),
-
-        updatePost: builder.mutation({
-            query: (post) => ({
-                url: `posts/${post.id}`,
-                method: 'PUT',
-                body: post
-            })
+        getVacancies: builder.query<any, void>({
+            query: () => 'vacancies/get',
         }),
-
-        directions: builder.query({
-            query: () => 'getGrantDirections',
+        getInternships: builder.query<any, void>({
+            query: () => 'internships/get',
         }),
-
-        countPosts: builder.query({
-            query: () => 'countPosts',
+        getCompetitions: builder.query<any, void>({
+            query: () => 'competitions/get',
         }),
-
 
     })
 });
 
-export const {useGetPostsQuery} = postsApi;
+export const {
+    useGetGrantsQuery,
+    useGetCompetitionsQuery,
+    useGetInternshipsQuery,
+    useGetVacanciesQuery
+} = postsApi;

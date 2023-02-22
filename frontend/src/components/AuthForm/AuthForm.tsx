@@ -23,7 +23,7 @@ const AuthForm: FC<AuthFormProps> = () => {
     const onSubmit = async ({login, password}: IFormReceivedData) => {
 
         try {
-            const answer = await axios.post('http://localhost:3003/login', {
+            const answer = await axios.post('http://localhost:3003/auth/login', {
                 name: login,
                 password: password,
                 role: 1

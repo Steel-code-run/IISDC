@@ -3,6 +3,11 @@ import './App.scss';
 import PageAuth from "./pages/PageAuth/PageAuth";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import PageHome from "./pages/PageHome/PageHome";
+import Header from "./components/Header/Header";
+import PageGrants from "./pages/PageGrants/PageGrants";
+import PageVacancies from "./pages/PageVacancies/PageVacancies";
+import PageInternships from "./pages/PageInternships/PageInternships";
+import PageCompetition from "./pages/PageCompetition/PageCompetition";
 
 function App() {
     const navigate = useNavigate()
@@ -10,16 +15,25 @@ function App() {
         (window.localStorage.getItem('token'))
             ? navigate('/home')
             : navigate('/auth')
-    },[])
+    }, [])
 
-  return (
-    <div className="App" data-testid="App">
-        <Routes>
-            <Route path={'/auth'} element={<PageAuth/>} />
-            <Route path={'/home'} element={<PageHome/>} />
-        </Routes>
-    </div>
-  );
+    return (
+        <div className="App" data-testid="App">
+            <Routes>
+                <Route path={'/auth'} element={<PageAuth/>}/>
+            </Routes>
+            <Header/>
+            <Routes>
+                <Route path={'/home'} element={<PageHome/>}/>
+                <Route path={'/grants'} element={<PageGrants/>}/>
+                <Route path={'/vacancies'} element={<PageVacancies/>}/>
+                <Route path={'/internships'} element={<PageInternships/>}/>
+                <Route path={'/competitions'} element={<PageCompetition/>}/>
+
+            </Routes>
+
+        </div>
+    );
 }
 
 export default App;
