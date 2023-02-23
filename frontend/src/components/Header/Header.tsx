@@ -1,12 +1,18 @@
 import React, {FC} from 'react';
 import styles from './Header.module.scss';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Avatar from '../../assets/images/Profile.svg'
 
 export interface HeaderProps {
 }
 
 const Header: FC<HeaderProps> = () => {
+    const navigate = useNavigate()
+    const logout = () => {
+        window.localStorage.removeItem('token')
+        navigate('/')
+    }
+
     return (
         <div className={styles.header} data-testid="Header">
             <div className={'container'}>
@@ -30,7 +36,7 @@ const Header: FC<HeaderProps> = () => {
                     </ul>
                     <div className={styles.header__blockUser}>
                         <img className={styles.header__avatar} src={Avatar} alt="icon"/>
-                        <button className={styles.header__logout}>Выйти</button>
+                        <button onClick={logout} className={styles.header__logout}>Выйти</button>
                     </div>
                 </div>
             </div>
