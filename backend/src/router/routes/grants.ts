@@ -59,7 +59,7 @@ router.post("/grants/delete",(req:ICustomRequest,res) => {
     const id = req.body.id;
 
     if (id === undefined) {
-        res.json(generateAnswer({message:answerMessage.unknownError,data:{messageToHuman:"id is undefined"}}))
+        res.json(generateAnswer({message:answerMessage.unknownError,data:"id is undefined"}))
         return;
     }
     const grant = sqliteGrants.getGrants({id})
@@ -78,6 +78,29 @@ router.post("/grants/count", (req:ICustomRequest,res)=>{
     res.json(generateAnswer({
         message:answerMessage.success,
         data: sqliteGrants.count(grant)?.[0]?.["COUNT(*)"] ?? 0
+    }))
+})
+
+router.post("/grants/update", (req:ICustomRequest, res) => {
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+
+    const grant = getGrant(req)
+
+    try {
+        sqliteGrants.updateGrant(grant)
+    } catch (e) {
+        res.json(generateAnswer({
+            message:answerMessage.unknownError,
+            data: e.message
+        }))
+        return
+    }
+
+    res.json(generateAnswer({
+        message:answerMessage.unknownError,
+        data: sqliteGrants.getGrants(grant)
     }))
 })
 

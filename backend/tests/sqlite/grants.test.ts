@@ -7,7 +7,7 @@ import {__projectPath} from "../../src/utils/projectPath";
 import {grantFixture} from "../fixtures/grantFixture";
 import {TGrant} from "@iisdc/types";
 
-let dbPath = path.join(__projectPath, '../','sqlite','db','testing__parser.db');
+let dbPath = path.join(__projectPath, '../../','sqlite','db','testing__parser.db');
 
 describe("sqliteGrants", () =>{
     let grant: TGrant

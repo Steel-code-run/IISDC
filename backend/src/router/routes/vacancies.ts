@@ -115,4 +115,26 @@ router.post("/vacancies/count", (req:ICustomRequest,res)=>{
     }))
 })
 
+router.post("/vacancies/update", (req:ICustomRequest, res) => {
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+
+    const vacancy = getVacancy(req)
+
+    try {
+        sqliteVacancies.update(vacancy)
+    } catch (e) {
+        res.json(generateAnswer({
+            message:answerMessage.unknownError,
+            data: e.message
+        }))
+        return
+    }
+
+    res.json(generateAnswer({
+        message:answerMessage.unknownError,
+        data: sqliteVacancies.getVacancies(vacancy)
+    }))
+})
 export default router
