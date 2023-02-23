@@ -25,8 +25,8 @@ import parsers from "./router/routes/parsers";
 import competitions from "./router/routes/competitions";
 import internships from "./router/routes/internships";
 import database from "./router/routes/database";
-
 configureAll()
+
 
 app.use(cors(corsOptions));
 app.use(express.json());
