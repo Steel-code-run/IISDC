@@ -1,20 +1,24 @@
 import React, {FC} from 'react';
 import styles from './PageGrants.module.scss';
-import {useGetGrantsQuery} from "../../api/posts.api";
+import {useGetCountGrantsQuery, useGetGrantsQuery} from "../../api/posts.api";
 import CardPost from "../../components/CardGrant/CardPost";
 import Header from "../../components/Header/Header";
 import {TGrant} from "@iisdc/types";
-import usePagination from "@mui/material/usePagination";
+import {Pagination} from "@mui/material";
 
 
 export interface PageGrantsProps {
 }
 
 const PageGrants: FC<PageGrantsProps> = () => {
+    const amountPosts = 18;
+    const {data:amountPage} = useGetCountGrantsQuery();
+    const[page, setPage] = React.useState<number>(1)
+
     const {data = [], error, isLoading} = useGetGrantsQuery(18);
 
-    const {items } = usePagination(data)
-    console.log(items)
+
+    console.log(amountPage)
     if (isLoading) return <h1>Is loading...</h1>
     return (
         <>
@@ -44,10 +48,10 @@ const PageGrants: FC<PageGrantsProps> = () => {
                         }
                     </div>
 
-                    {/*<Pagination count={amountPosts}*/}
-                    {/*            onChange={() => setPage(page => page + 1)}*/}
-                    {/*            color="secondary"*/}
-                    {/*            />*/}
+                    <Pagination count={amountPosts}
+                                onChange={() => setPage(page => page + 1)}
+                                color="secondary"
+                                />
                 </div>
 
             </div>

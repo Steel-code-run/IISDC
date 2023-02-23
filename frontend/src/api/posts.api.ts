@@ -24,7 +24,7 @@ export const postsApi = createApi({
             }
         }),
         getCountGrants: builder.query<any, void>({
-            query: () => '/grants/count'
+            query: () => 'grants/count'
         }),
         getVacancies: builder.query<any, void>({
             query: () => 'vacancies/get',

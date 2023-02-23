@@ -22,20 +22,9 @@ const CardPost: FC<CardPostProps> = ({
     timeOfParse
                                      }) => {
     const [isActive, setIsActive] = React.useState<boolean>(false)
-    const formatDate = {
-        year: 0,
-        month: 0,
-        day: 0,
-    };
-    const getDate = (day: number, month: number, year: number): string => {
-        return `${formatDate.day}.${formatDate.month}.${formatDate.year}`
-    };
-    console.log(new Date(dateCreationPost))
 
 
-    formatDate.year =  new Date().getFullYear() - new Date(dateCreationPost).getFullYear();
-    formatDate.month = new Date().getMonth() - new Date(dateCreationPost).getMonth();
-    formatDate.day = new Date().getDay() - new Date(dateCreationPost).getDay();
+
     return (
         <>
             <div className={styles.cardPost} data-testid="CardPost">

@@ -32,8 +32,9 @@ router.post("/grants/get",(req:ICustomRequest,res) => {
     const grant = getGrant(req)
     const timeOfParseSince = req.body.timeOfParseSince;
     const timeOfParseTo = req.body.timeOfParseTo;
+    const from = req.body.from
     const limit = req.body.limit;
-    res.json(generateAnswer({message:answerMessage.success,data: sqliteGrants.getGrants(grant,limit,"DESC",timeOfParseSince,timeOfParseTo)}))
+    res.json(generateAnswer({message:answerMessage.success,data: sqliteGrants.getGrants(grant,from,limit,"DESC",timeOfParseSince,timeOfParseTo)}))
 })
 
 router.post("/grants/add",(req:ICustomRequest,res) => {
@@ -74,7 +75,6 @@ router.post("/grants/count", (req:ICustomRequest,res)=>{
     }
 
     const grant = getGrant(req)
-
     res.json(generateAnswer({
         message:answerMessage.success,
         data: sqliteGrants.count(grant)

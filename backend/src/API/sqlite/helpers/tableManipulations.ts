@@ -92,6 +92,7 @@ export const universalDeletePost = (db:any,tableName:string,id:number) => {
 export const universalCount = (db:any,
                                tableName: string,
                                post:Partial<any> = {},
+                               from:number = 0,
                                limit?:number,
                                orderBy:string = "DESC",
                                timeOfParseSince?:number|string,
@@ -101,6 +102,7 @@ _universalGetPosts(
     tableName,
     post,
     limit,
+    from,
     orderBy,
     timeOfParseSince,
     timeOfParseTo,
@@ -111,6 +113,7 @@ const _universalGetPosts = <T>(
     db:any,
     tableName:string,
     post:Partial<T> = {},
+    from:number = 0,
     limit:number = 10,
     orderBy:string = "DESC",
     timeOfParseSince?:number|string,
@@ -130,9 +133,9 @@ const _universalGetPosts = <T>(
 
     }
 
-    query += ` ORDER BY id ${orderBy} LIMIT ? ;`
+    query += ` ORDER BY id ${orderBy} LIMIT ?, ? ;`
     try {
-        return db.prepare(query).all(limit) as T[]
+        return db.prepare(query).all(from, limit) as T[]
     }
     catch (e) {
         consoleLog("from "+__filename +" getGrants\n" + e.message)
@@ -144,8 +147,9 @@ export const universalGetPosts = <T>(
     db:any,
     tableName:string,
     post:Partial<T> = {},
+    from:number = 0,
     limit?:number,
     orderBy:string = "DESC",
     timeOfParseSince?:number|string,
     timeOfParseTo?:number|string) =>
-    _universalGetPosts(db,tableName,post,limit,orderBy,timeOfParseSince,timeOfParseTo) as T[]
+    _universalGetPosts(db,tableName,post,from,limit,orderBy,timeOfParseSince,timeOfParseTo) as T[]
