@@ -3,10 +3,52 @@ require("./gulp/createBackendBuild");
 require("./gulp/createPackagesBuild");
 require("./gulp/copyMainPackageJSON");
 require("./gulp/createFrontendBuild");
+const clearBuilt = (cb)=>{
+    try {
+        execSync("rm -r ./built")
+    }
+    catch (e) {
+        console.log(e)
+    }
+    cb();
+}
 
 gulp.task("createBuild", gulp.series(
+    clearBuilt,
     "buildBackend",
     "buildPackages",
     "copyMainPackageJson",
     "createFrontendBuild"
+))
+
+const {execSync} = require("child_process");
+const Application = require('ssh-deploy-release');
+require('dotenv').config()
+require('localenv')
+
+const deploy= (cb) => {
+    const options = {
+        localPath: './built',
+        exclude: ["**/node_modules/**","**/node_modules"],
+        host: process.env.SSL_HOST,
+        username: process.env.SSL_USER,
+        password: process.env.SSL_PASSWORD,
+        deployPath: '/var/built',
+        currentReleaseLink: 'built',
+        onAfterDeploy: 'pm2 delete all; cd /var/built/built ' +
+            '&& npm install ' +
+            '&& pm2 serve frontend/build' +
+            '&& cd backend/src' +
+            '&& pm2',
+    };
+
+    const deployer = new Application(options);
+    deployer.deployRelease(() => {
+        console.log('Ok backend!')
+    });
+    cb();
+}
+
+gulp.task("deploy",gulp.series(
+    deploy
 ))

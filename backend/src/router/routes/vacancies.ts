@@ -111,7 +111,7 @@ router.post("/vacancies/count", (req:ICustomRequest,res)=>{
 
     res.json(generateAnswer({
         message:answerMessage.success,
-        data: sqliteVacancies.count(vacancy)
+        data: sqliteVacancies.count(vacancy)?.[0]?.["COUNT(*)"] ?? 0
     }))
 })
 

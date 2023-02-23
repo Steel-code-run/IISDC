@@ -77,7 +77,7 @@ router.post("/grants/count", (req:ICustomRequest,res)=>{
     const grant = getGrant(req)
     res.json(generateAnswer({
         message:answerMessage.success,
-        data: sqliteGrants.count(grant)
+        data: sqliteGrants.count(grant)?.[0]?.["COUNT(*)"] ?? 0
     }))
 })
 

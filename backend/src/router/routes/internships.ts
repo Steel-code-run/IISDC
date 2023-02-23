@@ -62,7 +62,7 @@ router.post("/internships/count", (req:ICustomRequest,res)=>{
 
     res.json(generateAnswer({
         message:answerMessage.success,
-        data: sqliteInternship.count(internship)
+        data: sqliteInternship.count(internship)?.[0]?.["COUNT(*)"] ?? 0
     }))
 })
 export default router
