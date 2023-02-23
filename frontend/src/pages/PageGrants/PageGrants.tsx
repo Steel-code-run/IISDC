@@ -1,17 +1,20 @@
 import React, {FC} from 'react';
 import styles from './PageGrants.module.scss';
 import {useGetGrantsQuery} from "../../api/posts.api";
-import CardPost from "../../components/CardPost/CardPost";
+import CardPost from "../../components/CardGrant/CardPost";
 import Header from "../../components/Header/Header";
+import {TGrant} from "@iisdc/types";
+import usePagination from "@mui/material/usePagination";
+
 
 export interface PageGrantsProps {
 }
 
 const PageGrants: FC<PageGrantsProps> = () => {
-    const {data = [], error, isLoading} = useGetGrantsQuery();
+    const {data = [], error, isLoading} = useGetGrantsQuery(18);
 
-    console.log(data?.data)
-
+    const {items } = usePagination(data)
+    console.log(items)
     if (isLoading) return <h1>Is loading...</h1>
     return (
         <>
@@ -20,7 +23,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
                 <div className="container">
                     <div className={styles.pageGrants__posts}>
                         {
-                            data?.data?.map((post: any) => {
+                            data?.data?.map((post: TGrant) => {
                                 return (
                                     <CardPost
                                         key={post.id}
@@ -34,12 +37,17 @@ const PageGrants: FC<PageGrantsProps> = () => {
                                         link={post.link}
                                         linkPDF={post.link}
                                         summary={post.summary}
+                                        timeOfParse={post.timeOfParse}
                                     />
                                 )
                             })
                         }
                     </div>
 
+                    {/*<Pagination count={amountPosts}*/}
+                    {/*            onChange={() => setPage(page => page + 1)}*/}
+                    {/*            color="secondary"*/}
+                    {/*            />*/}
                 </div>
 
             </div>

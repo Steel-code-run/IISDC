@@ -16,7 +16,11 @@ const PopupPost: FC<PopupPostProps> = ({isActive,
                                        direction,
                                        summary}) => {
 
+    const body = document.body.style;
+    (isActive) ? body.overflowY = 'hidden' : body.overflowY = 'scroll';
+
     return (
+
         <>
             {isActive &&
                 <div className={styles.popupPost} data-testid="PopupPost">
@@ -37,9 +41,15 @@ const PopupPost: FC<PopupPostProps> = ({isActive,
                             </div>}
                             <div className={styles.popupPost__fullText + ' ' + styles.popupPost__col}>{fullText}</div>
                         </div>
-                        <div className={styles.popupPost__btns}>
-                            <button className={styles.popupPost__deletePost}>Удалить</button>
-                            <button className={styles.popupPost__deletePost}>Сохранить</button>
+                        <div className={styles.popupPost__footer}>
+                            <div className={styles.popupPost__links}>
+
+                            </div>
+
+                            <div className={styles.popupPost__btns}>
+                                <button className={styles.popupPost__deletePost}>Удалить</button>
+                                <button className={styles.popupPost__savePost}>Сохранить</button>
+                            </div>
                         </div>
                     </div>
                 </div>

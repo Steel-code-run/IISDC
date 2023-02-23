@@ -18,13 +18,28 @@ const CardPost: FC<CardPostProps> = ({
                                          directionForSpent,
                                          fullText,
                                          link,
-                                         linkPDF
+                                         linkPDF,
+    timeOfParse
                                      }) => {
     const [isActive, setIsActive] = React.useState<boolean>(false)
+    const formatDate = {
+        year: 0,
+        month: 0,
+        day: 0,
+    };
+    const getDate = (day: number, month: number, year: number): string => {
+        return `${formatDate.day}.${formatDate.month}.${formatDate.year}`
+    };
+    console.log(new Date(dateCreationPost))
+
+
+    formatDate.year =  new Date().getFullYear() - new Date(dateCreationPost).getFullYear();
+    formatDate.month = new Date().getMonth() - new Date(dateCreationPost).getMonth();
+    formatDate.day = new Date().getDay() - new Date(dateCreationPost).getDay();
     return (
         <>
             <div className={styles.cardPost} data-testid="CardPost">
-                <div className={styles.cardPost__data}>{dateCreationPost}</div>
+                <div className={styles.cardPost__data}>{timeOfParse}</div>
                 {direction && <div className={styles.cardPost__direction}>{direction}</div>}
                 <div className={styles.cardPost__wrapper}>
                     <h1 onClick={() => setIsActive(!isActive)} className={styles.cardPost__name}>{namePost}</h1>
@@ -49,3 +64,6 @@ const CardPost: FC<CardPostProps> = ({
 };
 
 export default CardPost;
+
+
+

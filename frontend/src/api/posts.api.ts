@@ -13,9 +13,18 @@ export const postsApi = createApi({
 
         }),
     endpoints: (builder) => ({
-        getGrants: builder.query<any, void>({
-            query: () => 'grants/get',
-
+        getGrants: builder.query<any, number>({
+            query: (limit: 0) => {
+                return {
+                    url: 'grants/get',
+                    body: {
+                        limit
+                    }
+                }
+            }
+        }),
+        getCountGrants: builder.query<any, void>({
+            query: () => '/grants/count'
         }),
         getVacancies: builder.query<any, void>({
             query: () => 'vacancies/get',
@@ -32,6 +41,7 @@ export const postsApi = createApi({
 
 export const {
     useGetGrantsQuery,
+    useGetCountGrantsQuery,
     useGetCompetitionsQuery,
     useGetInternshipsQuery,
     useGetVacanciesQuery
