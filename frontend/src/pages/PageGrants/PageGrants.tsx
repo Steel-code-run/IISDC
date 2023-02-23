@@ -18,7 +18,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
 
     const {data = [], error, isLoading} = useGetGrantsQuery({
         limit: amountPostsPerPage,
-        from: page * amountPostsPerPage
+        from: (page-1) * amountPostsPerPage
     });
 
 

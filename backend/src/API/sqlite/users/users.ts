@@ -10,7 +10,7 @@ import {
     universalGetPosts,
     universalIsTableExist
 } from "../helpers/tableManipulations";
-const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','users.db'));
+const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','users.db'));
 
 export const tableName = "usersData";
 export const protectedFromDrop = true

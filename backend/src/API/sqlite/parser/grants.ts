@@ -12,7 +12,7 @@ import {
     universalIsTableExist
 } from "../helpers/tableManipulations";
 import * as fs from "fs";
-let dbPath = path.join(__projectPath, '../','sqlite','db','parser.db');
+let dbPath = path.join(__projectPath, '../../','sqlite','db','parser.db');
 let db:any;
 setDb(dbPath)
 

@@ -11,7 +11,7 @@ import {
     universalIsTableExist
 } from "../helpers/tableManipulations";
 
-const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
+const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','users.db'));
 
 export const tableName = "competitions"
 export const protectedFromDrop = false
