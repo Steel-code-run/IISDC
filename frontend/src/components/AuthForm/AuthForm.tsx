@@ -22,15 +22,19 @@ const AuthForm: FC<AuthFormProps> = () => {
 
     const onSubmit = async ({login, password}: IFormReceivedData) => {
 
-        const answer = await axios.post('http://localhost:3003/login', {
-            name: login,
-            password: password,
-            role: 1
-        })
-        const token = answer.headers.authorization.replace('Bearer ', '')
-        if(answer.data.message === 'success') navigate('/home')
-        window.localStorage.setItem('token', token)
-        console.log('answer server: ', answer.headers)
+        try {
+            const answer = await axios.post(process.env.REACT_APP_SERVER_URL+'auth/login', {
+                name: login,
+                password: password,
+                role: 1
+            })
+            const token = answer.headers.authorization.replace('Bearer ', '')
+            if(answer.data.message === 'success') navigate('/home')
+            window.localStorage.setItem('token', token)
+
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (

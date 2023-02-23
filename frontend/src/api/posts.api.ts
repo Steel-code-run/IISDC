@@ -1,32 +1,55 @@
 import '@reduxjs/toolkit/query/react';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
+export interface IGetGrants {
+    limit: number,
+    from: number
+}
+
+
 export const postsApi = createApi({
     reducerPath: 'postsApi',
-    baseQuery: fetchBaseQuery({baseUrl: process.env.REACT_APP_SERVER_URL}),
+    baseQuery: fetchBaseQuery(
+        {
+            baseUrl: process.env.REACT_APP_SERVER_URL,
+            headers: {
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQllQQVNTIiwicm9sZSI6OTk5LCJpZCI6LTEwMCwiaWF0IjoxNjc3MDYzODczLCJleHAiOjE3MDUwNTc0NzN9.tMDWPoOEZ2_m4ynvu1uB3noj_p-raHpMU7FHklXjfUY'
+            },
+            method: 'POST'
+
+        }),
     endpoints: (builder) => ({
-        getPosts: builder.query({
-            query: () => 'posts',
+        getGrants: builder.query<any, IGetGrants>({
+            query: ({limit, from}) => {
+                return {
+                    url: 'grants/get',
+                    body: {
+                        limit,
+                        from
+                    }
+                }
+            }
         }),
-
-        updatePost: builder.mutation({
-            query: (post) => ({
-                url: `posts/${post.id}`,
-                method: 'PUT',
-                body: post
-            })
+        getCountGrants: builder.query<any, void>({
+            query: () => 'grants/count'
         }),
-
-        directions: builder.query({
-            query: () => 'getGrantDirections',
+        getVacancies: builder.query<any, void>({
+            query: () => 'vacancies/get',
         }),
-
-        countPosts: builder.query({
-            query: () => 'countPosts',
+        getInternships: builder.query<any, void>({
+            query: () => 'internships/get',
         }),
-
+        getCompetitions: builder.query<any, void>({
+            query: () => 'competitions/get',
+        }),
 
     })
 });
 
-export const {useGetPostsQuery} = postsApi;
+export const {
+    useGetGrantsQuery,
+    useGetCountGrantsQuery,
+    useGetCompetitionsQuery,
+    useGetInternshipsQuery,
+    useGetVacanciesQuery
+} = postsApi;

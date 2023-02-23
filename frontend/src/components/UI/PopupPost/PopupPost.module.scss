@@ -1,0 +1,119 @@
+.popupPost {
+  width: 100vw;
+  height: 100vh;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+
+  &__blackFon {
+    width: 100%;
+    height: 100vh;
+    background-color: #000;
+    opacity: 40%;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+  }
+
+  &__crossExit {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+  }
+
+  &__namePost {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+
+    color: #000000;
+  }
+
+  &__wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1065px;
+    height: 728px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 28px;
+
+  }
+
+  &__fields {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+  &__fullText {
+    width: 100%;
+    height: 248px;
+
+
+    overflow-y: scroll;
+    padding: 0 20px;
+  }
+
+  &__organization {
+    width: 100%;
+    height: 40px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  &__col {
+    font-style: normal;
+    font-weight: 200;
+    font-size: 16px;
+    line-height: 22px;
+
+    color: #000000;
+    border: 3px solid #A7A7A7;
+    border-radius: 10px;
+  }
+
+  &__summary {
+    width: 285px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 33px;
+    display: flex;
+    align-items: center;
+
+    color: #363636;
+    height: fit-content;
+  }
+
+  &__deletePost {
+    width: 250px;
+    height: 43px;
+
+    background: #BA2E36;
+    border-radius: 10px;
+  }
+
+  &__savePost {
+    width: 250px;
+    height: 43px;
+
+    background: #00BA95;
+    border-radius: 10px;
+  }
+  &__savePost, &__deletePost {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 33px;
+    text-align: center;
+
+    color: #FFFFFF;
+  }
+}

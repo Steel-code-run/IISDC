@@ -26,7 +26,7 @@ const getPostLazyLoading = async (page, url, querySelectors) => {
     const jsdom = await getHTML(url);
     const links = getLinksPosts(jsdom, querySelectors.link, '');
 
-    return getInfoPosts(querySelectors, url, links)
+    return getInfoPosts(querySelectors, links, url)
 
 };
 

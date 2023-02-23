@@ -225,7 +225,7 @@ const defineTypeDescriptionTelegram = (postType, post, link) => {
     }
 }
 
-const getInfoPosts = async (querySelectors, baseUrl, links) => {
+const getInfoPosts = async (querySelectors, links, baseUrl = '' ) => {
     const result = []
 
     for (let index in links) {
@@ -237,6 +237,9 @@ const getInfoPosts = async (querySelectors, baseUrl, links) => {
     }
 
     return result
+}
+const convertJson = (json) => {
+    return JSON.parse(JSON.stringify(json))
 }
 
 const clearString = (string) => {
@@ -257,5 +260,6 @@ module.exports = {
     getLinksPDF,
     definePostDescription,
     clearString,
-    getInfoPosts
+    getInfoPosts,
+    convertJson
 }

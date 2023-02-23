@@ -1,14 +1,12 @@
 const {exceptionWords, keyWords} = require("../../utils/wordsForParsers.js");
-const {getInfoPosts} = require("../../utils/methodsParser");
-
-const baseUrl = 'https://news.tvoyhod.online/';
-const url = baseUrl
+const {getInfoPosts, convertJson} = require("../../utils/methodsParser");
 
 const querySelectors = {
     title: 'h1.js-feed-post-title',
     link: 'div.js-feed-post.t-feed__post a.js-feed-post-link',
     text: 'div[id="feed-text"]',
 };
+
 
 const filterPosts = (posts) => {
     return posts
@@ -48,9 +46,9 @@ const filterPosts = (posts) => {
         "mode": "cors",
         "credentials": "omit"
     }).then( (data) => data.json()));
-    const links = JSON.parse(JSON.stringify(dataApi)).posts.map(post => post.url)
+    const links = convertJson(dataApi).posts.map(post => post.url)
 
-    const receivedPosts = await getInfoPosts(querySelectors, baseUrl, links);
+    const receivedPosts = await getInfoPosts(querySelectors, links);
 
     try {
         console.log(
