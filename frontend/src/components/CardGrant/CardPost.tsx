@@ -19,16 +19,17 @@ const CardPost: FC<CardPostProps> = ({
                                          fullText,
                                          link,
                                          linkPDF,
-    timeOfParse
+                                         timeOfParse
                                      }) => {
     const [isActive, setIsActive] = React.useState<boolean>(false)
 
+    const date =  new Date( Number(timeOfParse))
 
 
     return (
         <>
             <div className={styles.cardPost} data-testid="CardPost">
-                <div className={styles.cardPost__data}>{timeOfParse}</div>
+                <div className={styles.cardPost__data}>{date.toLocaleDateString()}</div>
                 {direction && <div className={styles.cardPost__direction}>{direction}</div>}
                 <div className={styles.cardPost__wrapper}>
                     <h1 onClick={() => setIsActive(!isActive)} className={styles.cardPost__name}>{namePost}</h1>

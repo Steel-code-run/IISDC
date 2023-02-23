@@ -13,13 +13,13 @@ function App() {
     React.useEffect(() => {
         (window.localStorage.getItem('token'))
             ? navigate('/home')
-            : navigate('/auth')
+            : navigate('/')
     }, [])
 
     return (
         <div className="App" data-testid="App">
             <Routes>
-                <Route path={'/auth'} element={<PageAuth/>}/>
+                <Route path={'/'} element={<PageAuth/>}/>
                 <Route path={'/home'} element={<PageHome/>}/>
                 <Route path={'/grants'} element={<PageGrants/>}/>
                 <Route path={'/vacancies'} element={<PageVacancies/>}/>
