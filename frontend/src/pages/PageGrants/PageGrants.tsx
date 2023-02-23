@@ -11,14 +11,17 @@ export interface PageGrantsProps {
 }
 
 const PageGrants: FC<PageGrantsProps> = () => {
-    const amountPosts = 18;
-    const {data:amountPage} = useGetCountGrantsQuery();
-    const[page, setPage] = React.useState<number>(1)
+    const amountPostsPerPage = 12;
+    const {data: totalPosts} = useGetCountGrantsQuery();
+    const amountPages = Math.floor(totalPosts?.data / amountPostsPerPage);
+    const [page, setPage] = React.useState<number>(1)
 
-    const {data = [], error, isLoading} = useGetGrantsQuery(18);
+    const {data = [], error, isLoading} = useGetGrantsQuery({
+        limit: amountPostsPerPage,
+        from: page * amountPostsPerPage
+    });
 
 
-    console.log(amountPage)
     if (isLoading) return <h1>Is loading...</h1>
     return (
         <>
@@ -48,10 +51,11 @@ const PageGrants: FC<PageGrantsProps> = () => {
                         }
                     </div>
 
-                    <Pagination count={amountPosts}
-                                onChange={() => setPage(page => page + 1)}
+                    <Pagination count={amountPages}
+                                page={page}
+                                onChange={(_, num) => setPage(num)}
                                 color="secondary"
-                                />
+                    />
                 </div>
 
             </div>

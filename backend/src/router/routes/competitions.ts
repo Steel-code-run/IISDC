@@ -57,7 +57,7 @@ router.post("/competitions/count", (req:ICustomRequest,res)=>{
 
     res.json(generateAnswer({
         message:answerMessage.success,
-        data: sqliteCompetitions.count(competition)
+        data: sqliteCompetitions.count(competition)?.[0]?.["COUNT(*)"] ?? 0
     }))
 })
 export default router

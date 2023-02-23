@@ -1,11 +1,17 @@
 import '@reduxjs/toolkit/query/react';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
+export interface IGetGrants {
+    limit: number,
+    from: number
+}
+
+
 export const postsApi = createApi({
     reducerPath: 'postsApi',
     baseQuery: fetchBaseQuery(
         {
-            baseUrl: 'http://localhost:3003/',
+            baseUrl: process.env.REACT_APP_SERVER_URL,
             headers: {
                 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQllQQVNTIiwicm9sZSI6OTk5LCJpZCI6LTEwMCwiaWF0IjoxNjc3MDYzODczLCJleHAiOjE3MDUwNTc0NzN9.tMDWPoOEZ2_m4ynvu1uB3noj_p-raHpMU7FHklXjfUY'
             },
@@ -13,12 +19,13 @@ export const postsApi = createApi({
 
         }),
     endpoints: (builder) => ({
-        getGrants: builder.query<any, number>({
-            query: (limit: 0) => {
+        getGrants: builder.query<any, IGetGrants>({
+            query: ({limit, from}) => {
                 return {
                     url: 'grants/get',
                     body: {
-                        limit
+                        limit,
+                        from
                     }
                 }
             }

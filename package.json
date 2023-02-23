@@ -16,7 +16,8 @@
     "dev:built:frontend": "cd ./frontend/build && serve",
     "dev:built:backend": "cd ./backend && cross-env NODE_ENV=development node src/app.js",
     "dev:built": "concurrently \"npm run dev:built:backend\" \"npm run dev:built:frontend\" ",
-    "build": "gulp build"
+    "build": "gulp build",
+    "start": "concurrently \"npm run start:built:backend\" \"cd ./backend && pm2\""
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,8 @@
   },
   "devDependencies": {
     "gulp": "^4.0.2",
-    "gulp-typescript": "^6.0.0-alpha.1"
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "localenv": "^0.2.2",
+    "ssh-deploy-release": "^4.0.1"
   }
 }
