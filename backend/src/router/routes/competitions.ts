@@ -30,8 +30,9 @@ router.post("/competitions/get",(req:ICustomRequest,res) => {
     const competition = getCompetitions(req)
     const timeOfParseSince = req.body.timeOfParseSince;
     const timeOfParseTo = req.body.timeOfParseTo;
+    const from = req.body.from
     const limit = req.body.limit;
-    res.json(generateAnswer({message:answerMessage.success,data: sqliteCompetitions.getCompetitions(competition,limit,"DESC",timeOfParseSince,timeOfParseTo)}))
+    res.json(generateAnswer({message:answerMessage.success,data: sqliteCompetitions.getCompetitions(competition,from,limit,"DESC",timeOfParseSince,timeOfParseTo)}))
 })
 
 router.post("/competitions/add",(req:ICustomRequest,res) => {

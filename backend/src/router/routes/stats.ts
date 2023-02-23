@@ -15,9 +15,9 @@ router.post("/stats/getBeautifulStats", (req:ICustomRequest,res)=>{
     }
     const yesterday = new Date().getTime() - 86400000;
     const beautifulStats:TBeautifulStats = {
-        competitions: sqliteCompetitions.count({},10,"DESC",yesterday,undefined)[0]["COUNT(*)"],
-        grants: sqliteGrants.count({},10,"DESC",yesterday,undefined)[0]["COUNT(*)"],
-        vacancies: sqliteVacancies.count({},10,"DESC", yesterday, undefined)[0]["COUNT(*)"],
+        competitions: sqliteCompetitions.count({},0,10,"DESC",yesterday,undefined)[0]["COUNT(*)"],
+        grants: sqliteGrants.count({},0,10,"DESC",yesterday,undefined)[0]["COUNT(*)"],
+        vacancies: sqliteVacancies.count({},0,10,"DESC", yesterday, undefined)[0]["COUNT(*)"],
         internships: 0,
     }
     res.json(generateAnswer({message:answerMessage.success,data:beautifulStats}))

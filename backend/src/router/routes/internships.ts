@@ -35,7 +35,9 @@ router.post("/internships/get",(req:ICustomRequest,res) => {
     const timeOfParseSince = req.body.timeOfParseSince;
     const timeOfParseTo = req.body.timeOfParseTo;
     const limit = req.body.limit;
-    res.json(generateAnswer({message:answerMessage.success,data: sqliteInternship.getInternships(internship,limit,"DESC",timeOfParseSince,timeOfParseTo)}))
+    const from = req.body.from
+
+    res.json(generateAnswer({message:answerMessage.success,data: sqliteInternship.getInternships(internship,from,limit,"DESC",timeOfParseSince,timeOfParseTo)}))
 })
 
 router.post("/internships/add",(req:ICustomRequest,res) => {

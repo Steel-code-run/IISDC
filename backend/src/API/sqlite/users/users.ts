@@ -51,11 +51,12 @@ export const dropTable = ()=>{
 
 
 export const getUsers = (user:Partial<IUser>,
+                         from:number = 0,
                          limit?:number,
                          orderBy:string = "DESC") => {
     try {
         createTableIfNotExist(isTableExist,createTable)
-        return universalGetPosts(db,tableName,user,limit,orderBy)
+        return universalGetPosts(db,tableName,user,from,limit,orderBy)
     }
     catch (e) {
         consoleLog("from "+__filename +"\n" +e.message)
