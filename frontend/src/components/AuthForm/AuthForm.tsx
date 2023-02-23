@@ -15,6 +15,7 @@ export interface IFormReceivedData {
 }
 
 const AuthForm: FC<AuthFormProps> = () => {
+    const [serverErrors, setServerErrors] = React.useState('')
     const {register, formState:{
         errors
     }, handleSubmit} = useForm<IFormReceivedData>()
@@ -32,8 +33,10 @@ const AuthForm: FC<AuthFormProps> = () => {
             if(answer.data.message === 'success') navigate('/home')
             window.localStorage.setItem('token', token)
 
-        } catch (err) {
-            console.log(err)
+        } catch (err: any) {
+            if(err) {
+                setServerErrors(err.message)
+            }
         }
     }
 
@@ -60,7 +63,7 @@ const AuthForm: FC<AuthFormProps> = () => {
                 </div>
             </div>
             {
-                (errors?.login || errors?.password)
+                (errors?.login || errors?.password || serverErrors)
                     ? <p className={styles.authForm__unvalidMessage}>Некорректные учетные данные</p>
                     : null
             }

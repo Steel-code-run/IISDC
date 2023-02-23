@@ -1,0 +1,19 @@
+
+.Mui-selected {
+  background: rgba(217, 217, 217, 0.35) !important;
+  border: 3px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  color: #000 !important;
+}
+.MuiPaginationItem-previousNext {
+  background: url("../assets/images/nextArrowPagination.svg") no-repeat;
+  background-size: 30px 30px;
+}
+.MuiPaginationItem-previousNext[aria-label="Go to previous page"] {
+  background: url("../assets/images/nextArrowPagination.svg") no-repeat;
+  background-size: 30px 30px;
+  transform: rotate(180deg) !important;
+}
+.MuiSvgIcon-root {
+  display: none !important;
+}

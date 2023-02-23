@@ -55,6 +55,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
                                 page={page}
                                 onChange={(_, num) => setPage(num)}
                                 color="secondary"
+
                     />
                 </div>
 
