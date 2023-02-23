@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.scss';
+import './styles/Pagination.scss';
 import PageAuth from "./pages/PageAuth/PageAuth";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import PageHome from "./pages/PageHome/PageHome";
