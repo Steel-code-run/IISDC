@@ -23,7 +23,7 @@ const parserOptions = {
 export const enableParserScheduler = () => {
     if (parserOptions.isFirstBoot) {
         parserOptions.isFirstBoot = false;
-        parserCallQueuePushMany(sqliteParser.getParsers({},1000));
+        parserCallQueuePushMany(sqliteParser.getParsers({},0,1000));
         activateAutomateAddingParsers();
         parserScheduler().then();
     }

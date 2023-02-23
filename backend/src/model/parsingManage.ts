@@ -19,6 +19,7 @@ export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallPara
         const grant = grants[i];
         if (!isGrantExist(grant)) {
             // добавляем в бд
+            grant.timeOfParse = new Date().getTime()
             sqliteGrants.add(toNormalGrant(grant));
             if (newGrants === 0) parseNextPage = true;
             newGrants++;

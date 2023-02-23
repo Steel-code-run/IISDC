@@ -36,9 +36,10 @@ router.post('/vacancies/get',(req:ICustomRequest,res)=>{
     const timeOfParseSince = req.body.timeOfParseSince;
     const timeOfParseTo = req.body.timeOfParseTo;
     const limit = req.body.limit;
+    const from = req.body.from
     res.json(generateAnswer({
         message:answerMessage.success,
-        data: sqliteVacancies.getVacancies(vacancy,limit,"DESC",timeOfParseSince,timeOfParseTo)
+        data: sqliteVacancies.getVacancies(vacancy,from,limit,"DESC",timeOfParseSince,timeOfParseTo)
     }))
 })
 
@@ -110,7 +111,7 @@ router.post("/vacancies/count", (req:ICustomRequest,res)=>{
 
     res.json(generateAnswer({
         message:answerMessage.success,
-        data: sqliteVacancies.count(vacancy)
+        data: sqliteVacancies.count(vacancy)?.[0]?.["COUNT(*)"] ?? 0
     }))
 })
 

@@ -35,7 +35,9 @@ router.post("/internships/get",(req:ICustomRequest,res) => {
     const timeOfParseSince = req.body.timeOfParseSince;
     const timeOfParseTo = req.body.timeOfParseTo;
     const limit = req.body.limit;
-    res.json(generateAnswer({message:answerMessage.success,data: sqliteInternship.getInternships(internship,limit,"DESC",timeOfParseSince,timeOfParseTo)}))
+    const from = req.body.from
+
+    res.json(generateAnswer({message:answerMessage.success,data: sqliteInternship.getInternships(internship,from,limit,"DESC",timeOfParseSince,timeOfParseTo)}))
 })
 
 router.post("/internships/add",(req:ICustomRequest,res) => {
@@ -60,7 +62,7 @@ router.post("/internships/count", (req:ICustomRequest,res)=>{
 
     res.json(generateAnswer({
         message:answerMessage.success,
-        data: sqliteInternship.count(internship)
+        data: sqliteInternship.count(internship)?.[0]?.["COUNT(*)"] ?? 0
     }))
 })
 export default router

@@ -10,7 +10,7 @@ import {
     universalIsPostExist,
     universalIsTableExist
 } from "../helpers/tableManipulations";
-const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
+const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','users.db'));
 
 export const tableName = "vacancies"
 export const protectedFromDrop = false
@@ -81,6 +81,7 @@ export const deleteVacancy = (id:number)=>{
 }
 
 export const count = (post:Partial<TVacancy> = {},
+                      from:number = 0,
                       limit?:number,
                       orderBy:string = "DESC",
                       timeOfParseSince?:number|string,
@@ -91,6 +92,7 @@ export const count = (post:Partial<TVacancy> = {},
             db,
             tableName,
             post,
+            from,
             limit,
             orderBy,
             timeOfParseSince,
@@ -104,6 +106,7 @@ export const count = (post:Partial<TVacancy> = {},
 }
 
 export const getVacancies = (post:Partial<TVacancy> = {},
+                             from:number = 0,
                                 limit?:number,
                                 orderBy:string = "DESC",
                                 timeOfParseSince?:number|string,
@@ -114,6 +117,7 @@ export const getVacancies = (post:Partial<TVacancy> = {},
             db,
             tableName,
             post,
+            from,
             limit,
             orderBy,
             timeOfParseSince,

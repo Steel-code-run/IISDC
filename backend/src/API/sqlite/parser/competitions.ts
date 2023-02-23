@@ -11,7 +11,7 @@ import {
     universalIsTableExist
 } from "../helpers/tableManipulations";
 
-const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
+const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','users.db'));
 
 export const tableName = "competitions"
 export const protectedFromDrop = false
@@ -88,6 +88,7 @@ export const deleteCompetition = (id:number)=>{
 }
 
 export const count = (post:Partial<TCompetition> = {},
+                      from:number = 0,
                       limit?:number,
                       orderBy:string = "DESC",
                       timeOfParseSince?:number|string,
@@ -98,6 +99,7 @@ export const count = (post:Partial<TCompetition> = {},
             db,
             tableName,
             post,
+            from,
             limit,
             orderBy,
             timeOfParseSince,
@@ -111,6 +113,7 @@ export const count = (post:Partial<TCompetition> = {},
 }
 
 export const getCompetitions = (post:Partial<TCompetition> = {},
+                                from:number = 0,
                              limit?:number,
                              orderBy:string = "DESC",
                              timeOfParseSince?:number|string,
@@ -121,6 +124,7 @@ export const getCompetitions = (post:Partial<TCompetition> = {},
             db,
             tableName,
             post,
+            from,
             limit,
             orderBy,
             timeOfParseSince,

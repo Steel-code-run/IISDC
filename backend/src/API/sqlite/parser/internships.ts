@@ -10,7 +10,7 @@ import path from "path";
 import {__projectPath} from "../../../utils/projectPath";
 import {TInternship} from "@iisdc/types";
 import {consoleLog} from "../../../utils/consoleLog";
-const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
+const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','users.db'));
 
 
 export const tableName = "internships"
@@ -82,6 +82,7 @@ export const deleteInternship = (id:number)=>{
 }
 
 export const count = (post:Partial<TInternship> = {},
+                      from:number = 0,
                       limit?:number,
                       orderBy:string = "DESC",
                       timeOfParseSince?:number|string,
@@ -92,6 +93,7 @@ export const count = (post:Partial<TInternship> = {},
             db,
             tableName,
             post,
+            from,
             limit,
             orderBy,
             timeOfParseSince,
@@ -105,6 +107,7 @@ export const count = (post:Partial<TInternship> = {},
 }
 
 export const getInternships = (post:Partial<TInternship> = {},
+                               from:number = 0,
                              limit?:number,
                              orderBy:string = "DESC",
                              timeOfParseSince?:number|string,
@@ -115,6 +118,7 @@ export const getInternships = (post:Partial<TInternship> = {},
             db,
             tableName,
             post,
+            from,
             limit,
             orderBy,
             timeOfParseSince,

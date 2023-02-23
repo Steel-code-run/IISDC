@@ -29,7 +29,12 @@ export async function sendTelegramMessage({ chatId, message }: ISendTelegramMess
 }
 
 export function frequentlyInitTelegramBot(){
-	initTelegramBot()
+	try {
+		initTelegramBot()
+	} catch (e) {
+		consoleLog(e)
+		return
+	}
 	if (bot === null)
 		throw new Error('Telegram have error in initialization');
 	bot.getMe().then(()=>{

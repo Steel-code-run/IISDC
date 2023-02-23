@@ -18,8 +18,10 @@ router.post("/users/getUsers",(req:ICustomRequest,res)=>{
         role: req.body.role
     }
     const limit = req.body.limit
+    const from = req.body.from
+
     try {
-        let users = sqliteUsers.getUsers(userSearch,limit,"DESC")
+        let users = sqliteUsers.getUsers(userSearch,from,limit,"DESC")
         users.forEach(user=>{
             delete user.password
         })
@@ -46,7 +48,7 @@ router.post("/users/getMe",(req:ICustomRequest,res)=>{
     }
 
     try {
-        let users = sqliteUsers.getUsers(req.user,1,"DESC")
+        let users = sqliteUsers.getUsers(req.user,0,1,"DESC")
         users.forEach(user=>{
             delete user.password
         })

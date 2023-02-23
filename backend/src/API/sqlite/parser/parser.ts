@@ -8,7 +8,7 @@ import {
     universalGetPosts,
     universalIsTableExist
 } from "../helpers/tableManipulations";
-const db = require('better-sqlite3')(path.join(__projectPath, '../','sqlite','db','parser.db'));
+const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','users.db'));
 
 
 export const tableName = "parsers"
@@ -65,10 +65,10 @@ export const addParser = (parser: TParser)=>{
     }
 }
 
-export const getParsers = (parser:Partial<TParser>,limit?:number, orderBy:string="DESC")=>{
+export const getParsers = (parser:Partial<TParser>,from:number = 0,limit?:number, orderBy:string="DESC")=>{
     try {
         createTableIfNotExist(isTableExist,createTable)
-        return universalGetPosts(db,tableName,parser,limit,orderBy)
+        return universalGetPosts(db,tableName,parser,from,limit,orderBy)
     }
     catch (e) {
         consoleLog("from "+__filename +"\n" + e.message)

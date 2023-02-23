@@ -4,9 +4,7 @@ import {consoleLog} from "../../../utils/consoleLog";
 import {generateDefaultParsers} from "../../../model/defaultParsers";
 import * as sqliteParser from "../parser/parser";
 
-// Это в продакшен не пускать)
 export const configureAll = () => {
-
     configureDefaultUsers()
     configureDefaultParsers()
 }
@@ -28,7 +26,6 @@ export const configureDefaultParsers = () =>{
             sqliteParser.addParser(parser)
     });
 }
-
 
 
 
