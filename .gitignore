@@ -7,4 +7,4 @@
 /**/logs.txt
 /**/*.db
 *.local
-release.tar.gz
+./release.tar.gz
