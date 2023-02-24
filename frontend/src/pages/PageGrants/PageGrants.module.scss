@@ -1,5 +1,12 @@
 .pageGrants {
-  margin-top: 20px;
+  margin: 20px 0;
+
+  &__wrapper {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
   &__posts {
     display: flex;
