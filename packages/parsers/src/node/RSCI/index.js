@@ -1,8 +1,8 @@
 const {getHTML} = require("../../utils/getHTML");
 const {definePost, clearString, getDataBySelector, getLink, getPostType, fullTextRegExp} = require("../../utils/normalParsingHelper");
 const page = process.argv[2] || 1;
-const url = "http://www.rsci.ru/grants";
-const baseUrl = "http://www.rsci.ru";
+const url = "https://www.rsci.ru/grants";
+const baseUrl = "https://www.rsci.ru";
 
 const querySelectors = {
 	posts: ".info-card",
@@ -26,7 +26,6 @@ async function getPosts(page)  {
 			.map((item) => clearString(item))
 			.filter((item) => item !== "")
 		dateCreationPost = new Date(dateCreationPost[2], dateCreationPost[1]-1, dateCreationPost[0]).getTime();
-
 		const organization = clearString(getDataBySelector(postsOnPage[i], querySelectors.organization));
 		const link = baseUrl + getLink(postsOnPage[i], querySelectors.link);
 		const direction = clearString(getDataBySelector(postsOnPage[i], querySelectors.direction));

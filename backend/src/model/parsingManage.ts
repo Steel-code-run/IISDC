@@ -15,8 +15,10 @@ import {toNormalCompetition, toNormalGrant, toNormalInternship, toNormalVacancy}
 export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallParams) => {
     let parseNextPage = false;
     let newGrants = 0;
+
     for (let i = 0; i < grants.length; i++) {
         const grant = grants[i];
+
         if (!isGrantExist(grant)) {
             // добавляем в бд
             grant.timeOfParse = new Date().getTime()

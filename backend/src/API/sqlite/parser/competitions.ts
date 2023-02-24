@@ -62,8 +62,8 @@ export const isCompetitionExist = (post:TCompetition)=>{
         createTableIfNotExist(isTableExist,createTable)
         return universalIsPostExist(db,
             tableName,
-            {namePost:post.namePost,timeOfParse:post.timeOfParse},
-            ["timeOfParse"]
+            {namePost:post.namePost,dateCreationPost:post.dateCreationPost},
+            ["namePost"]
         )
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isVacancyExist")

@@ -82,8 +82,8 @@ export const isGrantExist = (post:TGrant)=>{
 
         return universalIsPostExist(db,
             tableName,
-            {namePost:post.namePost,timeOfParse:post.timeOfParse},
-            ["timeOfParse"]
+            {namePost:post.namePost,dateCreationPost:post.dateCreationPost},
+            ["namePost"]
         )
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isVacancyExist")
@@ -173,4 +173,8 @@ export const updateGrant = (post:TGrant)=>{
         consoleLog("from "+__filename +"\n" + "Error in updateGrant")
         throw new Error(e)
     }
+}
+
+export const getDirections = ()=>{
+    return db.prepare(`SELECT DISTINCT direction FROM grants`).all()
 }

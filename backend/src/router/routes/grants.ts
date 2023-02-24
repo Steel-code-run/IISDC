@@ -5,6 +5,7 @@ import {toNormalGrant} from "../../helpers/toNormalPost";
 import {Router} from "express";
 import {answerMessage, TGrant} from "@iisdc/types";
 import {isUserCanEnter} from "../../auth/isUserCanEnter";
+import {getDirections} from "../../API/sqlite/parser/grants";
 
 
 const router = Router()
@@ -91,11 +92,7 @@ router.post("/grants/update", (req:ICustomRequest, res) => {
     try {
         sqliteGrants.updateGrant(grant)
     } catch (e) {
-        res.json(generateAnswer({
-            message:answerMessage.unknownError,
-            data: e.message
-        }))
-        return
+
     }
 
     res.json(generateAnswer({
@@ -104,5 +101,25 @@ router.post("/grants/update", (req:ICustomRequest, res) => {
     }))
 })
 
+router.post("/grants/getDirections", (req:ICustomRequest, res)=>{
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+    let directions
+    try {
+        directions = sqliteGrants.getDirections().map((el:any)=> el.direction);
 
+    } catch (e) {
+        res.json(generateAnswer({
+            message:answerMessage.unknownError,
+            data: e.message
+        }))
+        return
+    }
+
+    res.json(generateAnswer({
+        message: answerMessage.success,
+        data: directions
+    }))
+})
 export default router
