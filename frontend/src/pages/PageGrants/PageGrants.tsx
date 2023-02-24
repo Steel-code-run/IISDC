@@ -5,6 +5,7 @@ import CardPost from "../../components/CardGrant/CardPost";
 import Header from "../../components/Header/Header";
 import {TGrant} from "@iisdc/types";
 import {Pagination} from "@mui/material";
+import Search from "../../components/UI/Search/Search";
 
 
 export interface PageGrantsProps {
@@ -18,8 +19,10 @@ const PageGrants: FC<PageGrantsProps> = () => {
 
     const {data = [], error, isLoading} = useGetGrantsQuery({
         limit: amountPostsPerPage,
-        from: (page-1) * amountPostsPerPage
+        from: (page - 1) * amountPostsPerPage
     });
+
+    const listNames = data?.data?.map((post: TGrant) => post.namePost)
 
 
     if (isLoading) return <h1>Is loading...</h1>
@@ -28,6 +31,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
             <Header/>
             <div className={styles.pageGrants} data-testid="PageGrants">
                 <div className="container">
+                    <Search list={listNames}/>
                     <div className={styles.pageGrants__posts}>
                         {
                             data?.data?.map((post: TGrant) => {
@@ -42,7 +46,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
                                         directionForSpent={post.directionForSpent}
                                         fullText={post.fullText}
                                         link={post.link}
-                                        linkPDF={post.link}
+                                        linkPDF={post.linkPDF}
                                         summary={post.summary}
                                         timeOfParse={post.timeOfParse}
                                     />

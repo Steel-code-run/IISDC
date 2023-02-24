@@ -1,0 +1,118 @@
+.burgerMenu {
+
+  &__burgerIcon {
+    width: 30px;
+    height: 21px;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+
+    &__line {
+      position: absolute;
+      height: 3px;
+      width: 100%;
+      background-color: #fff;
+    }
+
+    &__line:nth-child(1) {
+      top: 0;
+      left: 0;
+      transition: 0.3s all;
+
+    }
+
+    &__line:nth-child(2) {
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+    }
+
+    &__line:nth-child(3) {
+      bottom: 0;
+      left: 0;
+      transition: 0.3s all;
+
+    }
+
+
+  }
+
+  &__menu {
+    width: 100%;
+    height: 100vh;
+    background-color: #7671DD;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+  }
+
+  &__wrapper {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    width: inherit;
+    height: inherit;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+
+    &__navItem {
+      width: 100vw;
+      height: 60px;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 33px;
+
+      border-bottom: 1px solid #3934A3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+    }
+    &__navItem a {
+      color: #FFFFFF;
+    }
+  }
+
+}
+
+@media (max-width: 768px) {
+  .burgerMenu {
+
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+}
+
+.burgerMenu {
+
+  &__burgerIcon {
+    &__line.activeBurgerIcon:nth-child(1) {
+
+      top: 9px;
+      transform: rotate(-45deg);
+      transition: 0.3s all;
+
+    }
+
+    &__line.activeBurgerIcon:nth-child(2) {
+      opacity: 0;
+    }
+
+    &__line.activeBurgerIcon:nth-child(3) {
+      bottom: 9px;
+      transform: rotate(45deg);
+      transition: 0.3s all;
+    }
+
+  }
+}
+
+.activeBurgerIcon {
+  display: block;
+}

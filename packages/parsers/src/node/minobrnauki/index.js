@@ -35,7 +35,7 @@ const filterPosts = (posts) => {
     const jsdom = await getHTML(url);
     const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
 
-    const receivedPosts = await getInfoPosts(querySelectors, links);
+    const receivedPosts = await getInfoPosts(querySelectors, links, baseUrl);
 
     try {
         console.log(

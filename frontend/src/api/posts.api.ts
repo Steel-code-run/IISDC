@@ -42,11 +42,15 @@ export const postsApi = createApi({
         getCompetitions: builder.query<any, void>({
             query: () => 'competitions/get',
         }),
+        getBeautifulStats : builder.query<any, void>({
+            query: () => 'stats/getBeautifulStats'
+        })
 
     })
 });
 
 export const {
+    useGetBeautifulStatsQuery,
     useGetGrantsQuery,
     useGetCountGrantsQuery,
     useGetCompetitionsQuery,

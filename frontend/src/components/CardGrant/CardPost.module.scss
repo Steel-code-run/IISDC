@@ -65,12 +65,11 @@
     font-weight: 700;
     font-size: 14px;
     line-height: 19px;
-    display: flex;
-    align-items: center;
     text-align: center;
     min-height: 100px;
     text-overflow: clip;
     overflow: hidden;
+    cursor: pointer;
   }
 
   &__organization {
