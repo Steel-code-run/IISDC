@@ -65,12 +65,14 @@
     font-weight: 700;
     font-size: 14px;
     line-height: 19px;
-    display: flex;
-    align-items: center;
     text-align: center;
     min-height: 100px;
-    text-overflow: clip;
     overflow: hidden;
+    cursor: pointer;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
   }
 
   &__organization {

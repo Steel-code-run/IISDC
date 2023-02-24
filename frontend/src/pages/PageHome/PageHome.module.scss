@@ -1,2 +1,9 @@
 .pageHome {
+
+  &__graphic {
+    width: 100%;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+  }
 }
