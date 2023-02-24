@@ -1,9 +1,29 @@
 .pageGrants {
-  margin-top: 20px;
+  margin: 20px 0;
+
+  &__wrapper {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
   &__posts {
     display: flex;
     flex-wrap: wrap;
     gap: 10px 10px;
+    margin-top: 40px;
   }
+}
+
+@media (max-width: 1180px) {
+  .pageGrants {
+
+    &__posts {
+      justify-content: space-evenly;
+    }
+
+
+  }
+
 }

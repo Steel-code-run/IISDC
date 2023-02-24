@@ -1,11 +1,11 @@
 import React from 'react';
-import {render, screen} from '@testing-library/react';
+import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import Search from './Search';
 
 describe('<Search />', () => {
     test('it should mount without list item', () => {
-        render(<Search list={[]}/>);
+        // render(<Search list={[]}/>);
 
         const search = screen.getByTestId('Search');
         const searchInput = screen.getByTestId('SearchInput');
