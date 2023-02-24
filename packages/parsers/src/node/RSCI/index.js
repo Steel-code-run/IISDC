@@ -11,7 +11,7 @@ const querySelectors = {
 	dateCreationPost: "div > time",
 	organization: ".info-title",
 	link: "div.info-card-deskription > a",
-	fullText:"#grant-news-contayner > div > div.article.card-item.z-depth-1 > div > div.card-item-text",
+	fullText:".card-item-text",
 }
 
 async function getPosts(page)  {
