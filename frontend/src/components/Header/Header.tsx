@@ -11,14 +11,9 @@ export interface HeaderProps {
 const Header: FC<HeaderProps> = () => {
     const [isBurgerVisibility, setIsBurgerVisibility] = React.useState(false)
 
-
     const checkSizeWindow = () => {
-        const sizeWindow = window.innerWidth;
-        if (sizeWindow <= 768) {
-            setIsBurgerVisibility(true)
-        } else {
-            setIsBurgerVisibility(false)
-        }
+        const sizeWindow = window.outerWidth;
+        (sizeWindow <= 768) ? setIsBurgerVisibility(true) : setIsBurgerVisibility(false)
     }
 
     React.useEffect(() => {

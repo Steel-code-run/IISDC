@@ -132,6 +132,9 @@
 
 @media (max-width: 360px) {
   .authForm {
+    &__footerForm {
+      flex-wrap: wrap;
+    }
     &__title {
       font-size: 36px;
 

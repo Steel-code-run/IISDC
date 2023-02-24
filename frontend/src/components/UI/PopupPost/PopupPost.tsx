@@ -26,7 +26,6 @@ const PopupPost: FC<PopupPostProps> = ({
     (isActive) ? body.overflowY = 'hidden' : body.overflowY = 'scroll';
 
     return (
-
         <>
             {isActive &&
                 <div className={styles.popupPost} data-testid="PopupPost">

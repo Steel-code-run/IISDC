@@ -67,9 +67,12 @@
     line-height: 19px;
     text-align: center;
     min-height: 100px;
-    text-overflow: clip;
     overflow: hidden;
     cursor: pointer;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
   }
 
   &__organization {
