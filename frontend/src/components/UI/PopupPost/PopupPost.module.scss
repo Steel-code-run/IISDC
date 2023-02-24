@@ -138,6 +138,27 @@
     grid-column-end: 5;
     grid-row-start: 2;
     grid-row-end: 3;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__editBtn {
+    width: 124.2px;
+    height: 43px;
+    background: #FF963C;
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #FFFFFF;
   }
 
   &__deletePost {
@@ -182,9 +203,7 @@
     font-size: 13px;
     line-height: 20px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
 
     color: #FFFFFF;
 
@@ -194,6 +213,7 @@
 
   &__dateCreationPost {
     background: #00BA95;
+    white-space: pre;
 
   }
 

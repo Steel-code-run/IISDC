@@ -21,6 +21,7 @@ const PopupPost: FC<PopupPostProps> = ({
                                            dateCreationPost,
                                            deadline
                                        }) => {
+    const [isEdit, setIsEdit] = React.useState<boolean>(false)
 
     const body = document.body.style;
     (isActive) ? body.overflowY = 'hidden' : body.overflowY = 'scroll';
@@ -34,11 +35,11 @@ const PopupPost: FC<PopupPostProps> = ({
                         <img onClick={() => setIsActive(false)} src={cross} className={styles.popupPost__crossExit}
                              alt={'icon'}/>
                         <div className={styles.popupPost__fields}>
-                                <div className={styles.popupPost__namePost}>{namePost}</div>
+                            <div className={styles.popupPost__namePost}>{namePost}</div>
                             <div className={styles.popupPost__dates}>
-                                <div className={styles.popupPost__dateCreationPost}>{dateCreationPost}</div>
-
-                                <div className={styles.popupPost__deadline}>{deadline}</div>
+                                <div className={styles.popupPost__dateCreationPost}>{'Дата  \n' +
+                                    'создания поста\n' + (new Date(dateCreationPost).toLocaleString()).replace(',', '\n')}</div>
+                                <div className={styles.popupPost__deadline}>{'Дата окончания подачи заявок \n' + deadline}</div>
                             </div>
                             {
                                 summary &&
@@ -55,13 +56,19 @@ const PopupPost: FC<PopupPostProps> = ({
                         </div>
                         <div className={styles.popupPost__footer}>
                             <div className={styles.popupPost__links}>
-                                <a href={link} rel="noopener noreferrer" target="_blank" className={styles.popupPost__link}>Страница гранта</a>
+                                <a href={link} rel="noopener noreferrer" target="_blank"
+                                   className={styles.popupPost__link}>Страница гранта</a>
                                 {linkPDF && <a href={linkPDF[0]} className={styles.popupPost__link}>PDF файл</a>}
                             </div>
 
                             <div className={styles.popupPost__btns}>
-                                <button className={styles.popupPost__deletePost}>Удалить</button>
-                                <button className={styles.popupPost__savePost}>Сохранить</button>
+                                {!isEdit
+                                    ? <button onClick={() => setIsEdit(isEdit => !isEdit)} className={styles.popupPost__editBtn}>Редактировать</button>
+                                    : <>
+                                        <button className={styles.popupPost__deletePost}>Удалить</button>
+                                        <button onClick={() => setIsEdit(isEdit => !isEdit)} className={styles.popupPost__savePost}>Сохранить</button>
+                                    </>
+                                }
                             </div>
                         </div>
                     </div>

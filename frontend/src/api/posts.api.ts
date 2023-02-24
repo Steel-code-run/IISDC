@@ -3,7 +3,8 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 export interface IGetGrants {
     limit: number,
-    from: number
+    from: number,
+    namePost: string
 }
 
 
@@ -20,18 +21,26 @@ export const postsApi = createApi({
         }),
     endpoints: (builder) => ({
         getGrants: builder.query<any, IGetGrants>({
-            query: ({limit, from}) => {
+            query: ({limit, from, namePost}) => {
                 return {
                     url: 'grants/get',
                     body: {
-                        limit,
-                        from
+                        limit: (namePost) ? 1 : limit,
+                        from,
+                        namePost
                     }
                 }
             }
         }),
-        getCountGrants: builder.query<any, void>({
-            query: () => 'grants/count'
+        getCountGrants: builder.query<any, string>({
+            query: (namePost: string) => {
+                return {
+                    url: 'grants/count',
+                    body: {
+                        namePost
+                    }
+                }
+            }
         }),
         getVacancies: builder.query<any, void>({
             query: () => 'vacancies/get',

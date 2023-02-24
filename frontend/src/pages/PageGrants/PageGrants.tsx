@@ -13,16 +13,35 @@ export interface PageGrantsProps {
 
 const PageGrants: FC<PageGrantsProps> = () => {
     const amountPostsPerPage = 12;
-    const {data: totalPosts} = useGetCountGrantsQuery();
-    const amountPages = Math.floor(totalPosts?.data / amountPostsPerPage);
     const [page, setPage] = React.useState<number>(1)
+    const [amountPages, setAmountPages] = React.useState<number>(1)
+    const [debounceValue, setDebounceValue] = React.useState<string>('')
+
+    const {data: totalCountPosts} = useGetCountGrantsQuery(debounceValue);
+
+    React.useEffect(() => {
+        setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
+    }, [totalCountPosts, setAmountPages])
 
     const {data = [], error, isLoading} = useGetGrantsQuery({
         limit: amountPostsPerPage,
-        from: (page - 1) * amountPostsPerPage
+        from: (page - 1) * amountPostsPerPage,
+        namePost: debounceValue
     });
 
-    const listNames = data?.data?.map((post: TGrant) => post.namePost)
+    const {data: totalPosts} = useGetGrantsQuery({
+        limit: totalCountPosts?.data,
+        from: 0,
+        namePost: ''
+    });
+    
+
+    const listNames = totalPosts?.data?.map((post: TGrant) => {
+        return {
+            id: post.id,
+            namePost: post.namePost,
+        }
+    })
 
 
     if (isLoading) return <h1>Is loading...</h1>
@@ -31,7 +50,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
             <Header/>
             <div className={styles.pageGrants} data-testid="PageGrants">
                 <div className="container">
-                    <Search list={listNames}/>
+                    <Search cbDebounce={setDebounceValue} list={listNames}/>
                     <div className={styles.pageGrants__posts}>
                         {
                             data?.data?.map((post: TGrant) => {

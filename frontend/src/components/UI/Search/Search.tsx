@@ -1,18 +1,32 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC} from 'react';
 import styles from './Search.module.scss';
+import crossClose from '../../../assets/images/crossExit.svg'
+import {useDebounce} from "../../../helpers/debounce";
 
-export interface SearchProps {
-    list?: string[]
+interface IListItem {
+    id: number,
+    namePost: string,
 }
 
-const Search: FC<SearchProps> = ({list = []}) => {
-    const [isOpen, setIsOpen] = React.useState<boolean>(false);
-    const [searchValue, setSearchValue] = React.useState<string>('');
-    const [filteredList, setFilteredList] = React.useState<string[]>(list);
+export interface SearchProps {
+    list?: IListItem[],
+    cbDebounce: (debounceValue: string) => void
 
-    useEffect(() => {
-        setFilteredList(list.filter(item => item.toLowerCase().startsWith(searchValue.toLowerCase())))
-    }, [list, searchValue])
+}
+
+const Search: FC<SearchProps> = ({list = [], cbDebounce}) => {
+    const [searchValue, setSearchValue] = React.useState<string>('');
+    const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
+    const debouncedSearch = useDebounce(searchValue, 600);
+
+    React.useEffect(() => cbDebounce(debouncedSearch), [debouncedSearch, cbDebounce])
+
+    const [filteredList, setFilteredList] = React.useState<IListItem[]>(list);
+
+    React.useEffect(() => {
+        setFilteredList(list.filter(item => item.namePost.toLowerCase().startsWith(searchValue.toLowerCase())))
+    }, [list])
 
     return (
         <div className={styles.search} data-testid="Search">
@@ -21,6 +35,7 @@ const Search: FC<SearchProps> = ({list = []}) => {
                 <input autoFocus={true}
                        onChange={(e) => {
                            setSearchValue(e.target.value);
+
                            if (!e.target.value) {
                                  setIsOpen(true)
                            }
@@ -29,26 +44,27 @@ const Search: FC<SearchProps> = ({list = []}) => {
                         if (!searchValue) {
                             setIsOpen(true)
                         }}}
-                       onBlur={() => {
-                        setTimeout(() => {
-                            setIsOpen(false)
-                        }, 0)
-                       }}
+
                        className={styles.search__input}
                        value={searchValue}
                        type="text"
                        data-testid="SearchInput"/>
+                {
+                    searchValue && <img onClick={() => setSearchValue('')}
+                                        className={styles.search__textClear}
+                                        src={crossClose} alt="icon"/>
+                }
                 <ul data-testid="SearchList"
                     className={(isOpen) ? styles.search__list : styles.hideDropDown}>
                     {filteredList.length > 0 ? filteredList.map((item, index) => {
                             return (
                                 <li onClick={() => {
-                                    setSearchValue(item);
+                                    setSearchValue(item.namePost);
                                     setIsOpen(false);
                                 }}
                                     className={styles.search__list__item}
-                                    key={index}
-                                    data-testid="SearchListItem">{item}</li>
+                                    key={item.namePost + item.id}
+                                    data-testid="SearchListItem">{item.namePost}</li>
                             )
                         })
                         : <li className={styles.search__list__searchEmpty}>Ничего не найдено</li>
