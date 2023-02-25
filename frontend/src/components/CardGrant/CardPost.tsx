@@ -8,6 +8,7 @@ export interface CardPostProps extends TGrant {
 }
 
 const CardPost: FC<CardPostProps> = ({
+                                         id,
                                          dateCreationPost,
                                          direction,
                                          namePost,
@@ -22,7 +23,7 @@ const CardPost: FC<CardPostProps> = ({
                                      }) => {
     const [isActive, setIsActive] = React.useState<boolean>(false)
 
-    const date =  new Date( Number(timeOfParse))
+    const date = new Date(Number(timeOfParse))
 
 
     return (
@@ -38,7 +39,8 @@ const CardPost: FC<CardPostProps> = ({
                     <h4 className={styles.cardPost__organization}>{organization}</h4>
                 </div>
             </div>
-            <PopupPost isActive={isActive}
+            <PopupPost id={id}
+                       isActive={isActive}
                        setIsActive={setIsActive}
                        namePost={namePost}
                        dateCreationPost={dateCreationPost}

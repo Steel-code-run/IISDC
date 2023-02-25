@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import styles from './PageGrants.module.scss';
 import {useGetCountGrantsQuery, useGetDirectionsQuery, useGetGrantsQuery} from "../../api/posts.api";
 import CardPost from "../../components/CardGrant/CardPost";
@@ -12,11 +12,11 @@ export interface PageGrantsProps {
 }
 
 const PageGrants: FC<PageGrantsProps> = () => {
-    const [amountPostsPerPage, setAmountPostsPerPage] = React.useState(12);
-    const [page, setPage] = React.useState<number>(1)
-    const [amountPages, setAmountPages] = React.useState<number>(1)
-    const [debounceValue, setDebounceValue] = React.useState<string>('')
-    const [choicedDirection, setChoicedDirection] = React.useState('Все направления')
+    const [amountPostsPerPage, setAmountPostsPerPage] = useState(12);
+    const [page, setPage] = useState<number>(1)
+    const [amountPages, setAmountPages] = useState<number>(1)
+    const [debounceValue, setDebounceValue] = useState<string>('')
+    const [choicedDirection, setChoicedDirection] = useState('Все направления')
 
     const generatorRequestGrant = (type: string) => {
 
@@ -73,18 +73,18 @@ const PageGrants: FC<PageGrantsProps> = () => {
         }
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         window.addEventListener('resize', () => checkSizeWindow())
         checkSizeWindow()
     }, [])
 
 
-    React.useEffect(() => {
+    useEffect(() => {
         setPage(1)
     }, [debounceValue, setDebounceValue, choicedDirection, setChoicedDirection])
 
 
-    React.useEffect(() => {
+    useEffect(() => {
         setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
     }, [totalCountPosts, setAmountPages])
 
@@ -96,7 +96,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
             <div className={styles.pageGrants} data-testid="PageGrants">
                 <div className="container">
                     <Search cbDebounce={setDebounceValue} />
-                    <Dropdown listDirections={directions.data} cbChoicedDirection={setChoicedDirection}/>
+                    <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
                     <div className={styles.pageGrants__wrapper}>
                         <div className={styles.pageGrants__posts}>
                             {
@@ -104,6 +104,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
                                     return (
                                         <CardPost
                                             key={post.id}
+                                            id={post.id}
                                             dateCreationPost={post.dateCreationPost}
                                             direction={post.direction}
                                             namePost={post.namePost}

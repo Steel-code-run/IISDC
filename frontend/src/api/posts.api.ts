@@ -50,6 +50,16 @@ export const postsApi = createApi({
                 }
             }
         }),
+        deletePostGrant: builder.mutation<any, number>({
+            query: (id) => (
+                {
+                    url: 'grants/delete',
+                    body: {
+                        id
+                    }
+                }
+            )
+        }),
         getDirections: builder.query<any, void>({
             query: () => 'grants/getDirections'
         }),
@@ -70,6 +80,7 @@ export const postsApi = createApi({
 });
 
 export const {
+    useDeletePostGrantMutation,
     useGetDirectionsQuery,
     useGetBeautifulStatsQuery,
     useGetGrantsQuery,

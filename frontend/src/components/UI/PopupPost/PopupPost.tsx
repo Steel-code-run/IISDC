@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import styles from './PopupPost.module.scss';
 import {TGrant} from "@iisdc/types";
 import cross from '../../../assets/images/crossExit.svg'
+import {useDeletePostGrantMutation} from "../../../api/posts.api";
 
 export interface PopupPostProps extends TGrant {
     isActive: boolean
@@ -9,6 +10,7 @@ export interface PopupPostProps extends TGrant {
 }
 
 const PopupPost: FC<PopupPostProps> = ({
+                                           id,
                                            isActive,
                                            setIsActive,
                                            fullText,
@@ -23,6 +25,7 @@ const PopupPost: FC<PopupPostProps> = ({
                                            directionForSpent
                                        }) => {
     const [isEdit, setIsEdit] = React.useState<boolean>(false)
+    const [deletePost] = useDeletePostGrantMutation()
 
     const body = document.body.style;
     (isActive) ? body.overflowY = 'hidden' : body.overflowY = 'scroll';
@@ -33,8 +36,8 @@ const PopupPost: FC<PopupPostProps> = ({
                 <div className={styles.popupPost} data-testid="PopupPost">
                     <div onClick={() => setIsActive(false)} className={styles.popupPost__blackFon}></div>
                     <div className={styles.popupPost__wrapper}>
-                            <img onClick={() => setIsActive(false)} src={cross} className={styles.popupPost__crossExit}
-                                 alt={'icon'}/>
+                        <img onClick={() => setIsActive(false)} src={cross} className={styles.popupPost__crossExit}
+                             alt={'icon'}/>
                         <div className={styles.popupPost__fields}>
                             <div className={styles.popupPost__namePost}>{namePost}</div>
                             <div className={styles.popupPost__dates}>
@@ -72,7 +75,16 @@ const PopupPost: FC<PopupPostProps> = ({
                                     ? <button onClick={() => setIsEdit(isEdit => !isEdit)}
                                               className={styles.popupPost__editBtn}>Редактировать</button>
                                     : <>
-                                        <button className={styles.popupPost__deletePost}>Удалить</button>
+                                        <button onClick={async () => {
+                                            console.log(id)
+                                            if (id) {
+                                                const delPost = await deletePost(id);
+                                                console.log(delPost)
+
+                                            }
+                                        }}
+                                                className={styles.popupPost__deletePost}>Удалить
+                                        </button>
                                         <button onClick={() => setIsEdit(isEdit => !isEdit)}
                                                 className={styles.popupPost__savePost}>Сохранить
                                         </button>
