@@ -5,12 +5,11 @@ import {toNormalGrant} from "../../helpers/toNormalPost";
 import {Router} from "express";
 import {answerMessage, TGrant} from "@iisdc/types";
 import {isUserCanEnter} from "../../auth/isUserCanEnter";
-import {getDirections} from "../../API/sqlite/parser/grants";
 
 
 const router = Router()
 const getGrant = (req:ICustomRequest) => {
-    const grant:TGrant = {
+    let grant:TGrant = {
         namePost: req.body.namePost,
         dateCreationPost: req.body.dateCreationPost,
         direction: req.body.direction,
