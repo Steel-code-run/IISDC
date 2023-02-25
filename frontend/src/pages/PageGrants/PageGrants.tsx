@@ -16,9 +16,49 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [page, setPage] = React.useState<number>(1)
     const [amountPages, setAmountPages] = React.useState<number>(1)
     const [debounceValue, setDebounceValue] = React.useState<string>('')
-    const [choicedDirection, setChoicedDirection] = React.useState('')
+    const [choicedDirection, setChoicedDirection] = React.useState('Все направления')
 
-    const {data: totalCountPosts} = useGetCountGrantsQuery(debounceValue);
+    const generatorRequestGrant = (type: string) => {
+
+        if(type === 'haveDirection') {
+            return {
+                limit: amountPostsPerPage,
+                from: (page - 1) * amountPostsPerPage,
+                namePost: debounceValue,
+                direction: choicedDirection
+            }
+        }
+        return {
+            limit: amountPostsPerPage,
+            from: (page - 1) * amountPostsPerPage,
+            namePost: debounceValue,
+        }
+
+    }
+    const generatorRequestGrantCount = (type: string) => {
+
+        if(type === 'haveDirection') {
+            return {
+                namePost:debounceValue,
+                direction: choicedDirection
+            }
+        }
+        return {
+            namePost:debounceValue,
+        }
+
+    }
+
+    const {data: totalCountPosts} = useGetCountGrantsQuery(generatorRequestGrantCount(
+        (choicedDirection !== 'Все направления')
+        ? 'haveDirection'
+        : 'noDirection'));
+
+    const {data = [], error, isLoading} = useGetGrantsQuery(
+        generatorRequestGrant((choicedDirection !== 'Все направления')
+            ? 'haveDirection'
+            : 'noDirection'));
+    const {data: directions} = useGetDirectionsQuery();
 
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
@@ -38,22 +78,15 @@ const PageGrants: FC<PageGrantsProps> = () => {
         checkSizeWindow()
     }, [])
 
-    React.useEffect(() => {
-        setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
-    }, [totalCountPosts, setAmountPages])
 
     React.useEffect(() => {
         setPage(1)
-    }, [debounceValue, setDebounceValue])
+    }, [debounceValue, setDebounceValue, choicedDirection, setChoicedDirection])
 
-    const {data = [], error, isLoading} = useGetGrantsQuery({
-        limit: amountPostsPerPage,
-        from: (page - 1) * amountPostsPerPage,
-        namePost: debounceValue,
-        direction: choicedDirection
-    });
 
-    const {data: directions} = useGetDirectionsQuery();
+    React.useEffect(() => {
+        setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
+    }, [totalCountPosts, setAmountPages])
 
 
     if (isLoading) return <h1>Is loading...</h1>

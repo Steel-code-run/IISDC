@@ -5,7 +5,12 @@ export interface IGetGrants {
     limit: number,
     from: number,
     namePost: string,
-    direction: string
+    direction?: string
+}
+
+interface IGetCountGrants {
+    namePost?: string,
+    direction?: string
 }
 
 
@@ -34,12 +39,13 @@ export const postsApi = createApi({
                 }
             }
         }),
-        getCountGrants: builder.query<any, string>({
-            query: (namePost: string) => {
+        getCountGrants: builder.query<any, IGetCountGrants>({
+            query: ({namePost, direction}) => {
                 return {
                     url: 'grants/count',
                     body: {
-                        namePost
+                        namePost,
+                        direction
                     }
                 }
             }
