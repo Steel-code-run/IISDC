@@ -25,6 +25,7 @@ export const postsApi = createApi({
             method: 'POST'
 
         }),
+    tagTypes: ['Grants'],
     endpoints: (builder) => ({
         getGrants: builder.query<any, IGetGrants>({
             query: ({limit, from, namePost, direction}) => {
@@ -37,7 +38,14 @@ export const postsApi = createApi({
                         direction
                     }
                 }
-            }
+            },
+            providesTags: (result) =>
+                result?.data
+                    ? [
+                        ...result?.data.map(({ id } : any) => ({ type: 'Grants' as const, id })),
+                        { type: 'Grants', id: 'LIST' },
+                    ]
+                    : [{ type: 'Grants', id: 'LIST' }],
         }),
         getCountGrants: builder.query<any, IGetCountGrants>({
             query: ({namePost, direction}) => {
@@ -58,7 +66,8 @@ export const postsApi = createApi({
                         id
                     }
                 }
-            )
+            ),
+            invalidatesTags: [{type: 'Grants', id: 'LIST'}]
         }),
         getDirections: builder.query<any, void>({
             query: () => 'grants/getDirections'

@@ -76,11 +76,9 @@ const PopupPost: FC<PopupPostProps> = ({
                                               className={styles.popupPost__editBtn}>Редактировать</button>
                                     : <>
                                         <button onClick={async () => {
-                                            console.log(id)
                                             if (id) {
-                                                const delPost = await deletePost(id);
-                                                console.log(delPost)
-
+                                                await deletePost(id);
+                                                setIsActive(false)
                                             }
                                         }}
                                                 className={styles.popupPost__deletePost}>Удалить
