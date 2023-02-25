@@ -9,7 +9,7 @@ import {
     universalCount, universalDeletePost, universalDropTable,
     universalGetPosts,
     universalIsPostExist,
-    universalIsTableExist
+    universalIsTableExist, universalUpdatePost
 } from "../helpers/tableManipulations";
 import * as fs from "fs";
 let dbPath = path.join(__projectPath, '../../','sqlite','db','parser.db');
@@ -79,7 +79,12 @@ export const isTableExist = ()=>{
 export const isGrantExist = (post:TGrant)=>{
     try {
         createTableIfNotExist(isTableExist,createTable)
-        return universalIsPostExist(db, tableName,post)
+
+        return universalIsPostExist(db,
+            tableName,
+            {namePost:post.namePost,dateCreationPost:post.dateCreationPost},
+            ["namePost"]
+        )
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isVacancyExist")
         throw new Error(e)
@@ -154,4 +159,22 @@ export const getGrants = (post:Partial<TGrant> = {},
         throw new Error(e)
     }
 
+}
+
+export const updateGrant = (post:TGrant)=>{
+    if (post.id === undefined){
+        throw new Error("Id - required")
+    }
+
+    try {
+        universalUpdatePost(post,post.id,db,tableName)
+
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in updateGrant")
+        throw new Error(e)
+    }
+}
+
+export const getDirections = ()=>{
+    return db.prepare(`SELECT DISTINCT direction FROM grants`).all()
 }

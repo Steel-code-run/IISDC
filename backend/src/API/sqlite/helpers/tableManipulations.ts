@@ -2,6 +2,7 @@ import {consoleLog} from "../../../utils/consoleLog";
 import createInsertQuery from "../helpers/createInsertQuery";
 import createWhereTimeQuery from "../helpers/createWhereTimeQuery";
 import createWhereQuery from "../helpers/createWhereQuery";
+import createSetQuery from "./createSetQuery";
 
 type TCreationObjectTable = {
     // key, options
@@ -58,9 +59,9 @@ export const universalDropTable = (db:any, tableName:string)=>{
     return true
 }
 
-export const universalIsPostExist = (db:any,tableName:string,post:any)=>{
+export const universalIsPostExist = (db:any,tableName:string,post:any,keysLike:String[] = [],excludeKeys = ["timeOfParse"])=>{
     let query = `SELECT * FROM ${tableName} `
-    query+=createWhereQuery(post,[],["timeOfParse"])
+    query+=createWhereQuery(post,keysLike,excludeKeys)
     try {
         return db.prepare(query).all().length>0 ;
     } catch (e) {
@@ -153,3 +154,18 @@ export const universalGetPosts = <T>(
     timeOfParseSince?:number|string,
     timeOfParseTo?:number|string) =>
     _universalGetPosts(db,tableName,post,from,limit,orderBy,timeOfParseSince,timeOfParseTo) as T[]
+
+export const universalUpdatePost = <T extends Object>(post:T,id:number, db:any,tableName:string) =>{
+    let query = `UPDATE ${tableName} `
+    query += createSetQuery(post, ["id"])
+    if (query === `UPDATE ${tableName} `)
+        throw new Error("nothing to change")
+    query += ` WHERE id = '${id}' `
+    try {
+
+        return db.prepare(query).run()
+    } catch (e) {
+        consoleLog("from "+__filename +" universalUpdatePost\n" + e.message)
+        throw new Error(e)
+    }
+}

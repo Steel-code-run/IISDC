@@ -61,7 +61,6 @@ const parse = async(parsersCallParams:TParserCallParams)=>{
             needToParseNextPage = vacanciesManage(vacancies,parsersCallParams) || needToParseNextPage
             needToParseNextPage = internshipsManage(internships,parsersCallParams) || needToParseNextPage
             needToParseNextPage = competitionsManage(competitions,parsersCallParams) || needToParseNextPage
-
             // Если нужно, то добавляем в очередь парсеры для следующей страницы
             if (needToParseNextPage) {
                 if (parsersCallParams.page < 5) {

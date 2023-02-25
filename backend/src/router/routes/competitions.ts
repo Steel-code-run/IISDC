@@ -60,4 +60,44 @@ router.post("/competitions/count", (req:ICustomRequest,res)=>{
         data: sqliteCompetitions.count(competition)?.[0]?.["COUNT(*)"] ?? 0
     }))
 })
+
+router.post("/competitions/update", (req:ICustomRequest, res) => {
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+
+    const competition = getCompetitions(req)
+
+    try {
+        sqliteCompetitions.update(competition)
+    } catch (e) {
+        res.json(generateAnswer({
+            message:answerMessage.unknownError,
+            data: e.message
+        }))
+        return
+    }
+
+    res.json(generateAnswer({
+        message:answerMessage.unknownError,
+        data: sqliteCompetitions.getCompetitions(competition)
+    }))
+})
+
+router.post("/competitions/delete",(req:ICustomRequest,res) => {
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+
+    const id = req.body.id;
+
+    if (id === undefined) {
+        res.json(generateAnswer({message:answerMessage.unknownError,data:"id is undefined"}))
+        return;
+    }
+    const competition = sqliteCompetitions.getCompetitions({id})
+    sqliteCompetitions.deleteCompetition(id)
+
+    res.json(generateAnswer({message:answerMessage.success, data:competition}))
+})
 export default router

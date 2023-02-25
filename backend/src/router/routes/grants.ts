@@ -5,6 +5,7 @@ import {toNormalGrant} from "../../helpers/toNormalPost";
 import {Router} from "express";
 import {answerMessage, TGrant} from "@iisdc/types";
 import {isUserCanEnter} from "../../auth/isUserCanEnter";
+import {getDirections} from "../../API/sqlite/parser/grants";
 
 
 const router = Router()
@@ -59,7 +60,7 @@ router.post("/grants/delete",(req:ICustomRequest,res) => {
     const id = req.body.id;
 
     if (id === undefined) {
-        res.json(generateAnswer({message:answerMessage.unknownError,data:{messageToHuman:"id is undefined"}}))
+        res.json(generateAnswer({message:answerMessage.unknownError,data:"id is undefined"}))
         return;
     }
     const grant = sqliteGrants.getGrants({id})
@@ -81,5 +82,44 @@ router.post("/grants/count", (req:ICustomRequest,res)=>{
     }))
 })
 
+router.post("/grants/update", (req:ICustomRequest, res) => {
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
 
+    const grant = getGrant(req)
+
+    try {
+        sqliteGrants.updateGrant(grant)
+    } catch (e) {
+
+    }
+
+    res.json(generateAnswer({
+        message:answerMessage.unknownError,
+        data: sqliteGrants.getGrants(grant)
+    }))
+})
+
+router.post("/grants/getDirections", (req:ICustomRequest, res)=>{
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+    let directions
+    try {
+        directions = sqliteGrants.getDirections().map((el:any)=> el.direction);
+
+    } catch (e) {
+        res.json(generateAnswer({
+            message:answerMessage.unknownError,
+            data: e.message
+        }))
+        return
+    }
+
+    res.json(generateAnswer({
+        message: answerMessage.success,
+        data: directions
+    }))
+})
 export default router

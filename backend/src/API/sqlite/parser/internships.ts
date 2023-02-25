@@ -4,7 +4,7 @@ import {
     universalCreateTable, universalDeletePost,
     universalDropTable, universalGetPosts,
     universalIsPostExist,
-    universalIsTableExist
+    universalIsTableExist, universalUpdatePost
 } from "../helpers/tableManipulations";
 import path from "path";
 import {__projectPath} from "../../../utils/projectPath";
@@ -54,7 +54,11 @@ export const isTableExist = ()=>{
 export const isInternshipExist = (post:TInternship)=>{
     try {
         createTableIfNotExist(isTableExist,createTable)
-        return universalIsPostExist(db, tableName,post)
+        return universalIsPostExist(db,
+            tableName,
+            {namePost:post.namePost,dateCreationPost:post.dateCreationPost},
+            ["namePost"]
+        )
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in isVacancyExist")
         throw new Error(e)
@@ -126,6 +130,20 @@ export const getInternships = (post:Partial<TInternship> = {},
         )
     } catch (e) {
         consoleLog("from " + __filename + "\n" + "Error in getVacancies")
+        throw new Error(e)
+    }
+}
+
+export const update = (post:TInternship)=>{
+    if (post.id === undefined){
+        throw new Error("Id - required")
+    }
+
+    try {
+        universalUpdatePost(post,post.id,db,tableName)
+
+    } catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in updateGrant")
         throw new Error(e)
     }
 }

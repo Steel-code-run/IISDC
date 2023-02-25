@@ -65,4 +65,43 @@ router.post("/internships/count", (req:ICustomRequest,res)=>{
         data: sqliteInternship.count(internship)?.[0]?.["COUNT(*)"] ?? 0
     }))
 })
+router.post("/internships/update", (req:ICustomRequest, res) => {
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+
+    const internship = getInternship(req)
+
+    try {
+        sqliteInternship.update(internship)
+    } catch (e) {
+        res.json(generateAnswer({
+            message:answerMessage.unknownError,
+            data: e.message
+        }))
+        return
+    }
+
+    res.json(generateAnswer({
+        message:answerMessage.unknownError,
+        data: sqliteInternship.getInternships(internship)
+    }))
+})
+
+router.post("/internships/delete",(req:ICustomRequest,res) => {
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+
+    const id = req.body.id;
+
+    if (id === undefined) {
+        res.json(generateAnswer({message:answerMessage.unknownError,data:"id is undefined"}))
+        return;
+    }
+    const internship = sqliteInternship.getInternships({id})
+    sqliteInternship.deleteInternship(id)
+
+    res.json(generateAnswer({message:answerMessage.success, data:internship}))
+})
 export default router
