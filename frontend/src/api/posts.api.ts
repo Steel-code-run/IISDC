@@ -4,7 +4,8 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 export interface IGetGrants {
     limit: number,
     from: number,
-    namePost: string
+    namePost: string,
+    direction: string
 }
 
 
@@ -21,13 +22,14 @@ export const postsApi = createApi({
         }),
     endpoints: (builder) => ({
         getGrants: builder.query<any, IGetGrants>({
-            query: ({limit, from, namePost}) => {
+            query: ({limit, from, namePost, direction}) => {
                 return {
                     url: 'grants/get',
                     body: {
                         limit: limit,
                         from,
-                        namePost
+                        namePost,
+                        direction
                     }
                 }
             }
@@ -41,6 +43,9 @@ export const postsApi = createApi({
                     }
                 }
             }
+        }),
+        getDirections: builder.query<any, void>({
+            query: () => 'grants/getDirections'
         }),
         getVacancies: builder.query<any, void>({
             query: () => 'vacancies/get',
@@ -59,6 +64,7 @@ export const postsApi = createApi({
 });
 
 export const {
+    useGetDirectionsQuery,
     useGetBeautifulStatsQuery,
     useGetGrantsQuery,
     useGetCountGrantsQuery,

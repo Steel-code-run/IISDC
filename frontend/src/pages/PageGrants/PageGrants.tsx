@@ -1,11 +1,12 @@
 import React, {FC} from 'react';
 import styles from './PageGrants.module.scss';
-import {useGetCountGrantsQuery, useGetGrantsQuery} from "../../api/posts.api";
+import {useGetCountGrantsQuery, useGetDirectionsQuery, useGetGrantsQuery} from "../../api/posts.api";
 import CardPost from "../../components/CardGrant/CardPost";
 import Header from "../../components/Header/Header";
 import {TGrant} from "@iisdc/types";
 import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
+import Dropdown from "../../components/UI/Dropdown/Dropdown";
 
 export interface PageGrantsProps {
 }
@@ -15,6 +16,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [page, setPage] = React.useState<number>(1)
     const [amountPages, setAmountPages] = React.useState<number>(1)
     const [debounceValue, setDebounceValue] = React.useState<string>('')
+    const [choicedDirection, setChoicedDirection] = React.useState('')
 
     const {data: totalCountPosts} = useGetCountGrantsQuery(debounceValue);
 
@@ -47,8 +49,11 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const {data = [], error, isLoading} = useGetGrantsQuery({
         limit: amountPostsPerPage,
         from: (page - 1) * amountPostsPerPage,
-        namePost: debounceValue
+        namePost: debounceValue,
+        direction: choicedDirection
     });
+
+    const {data: directions} = useGetDirectionsQuery();
 
 
     if (isLoading) return <h1>Is loading...</h1>
@@ -58,6 +63,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
             <div className={styles.pageGrants} data-testid="PageGrants">
                 <div className="container">
                     <Search cbDebounce={setDebounceValue} />
+                    <Dropdown listDirections={directions.data} cbChoicedDirection={setChoicedDirection}/>
                     <div className={styles.pageGrants__wrapper}>
                         <div className={styles.pageGrants__posts}>
                             {

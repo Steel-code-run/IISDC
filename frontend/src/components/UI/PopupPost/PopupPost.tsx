@@ -33,8 +33,8 @@ const PopupPost: FC<PopupPostProps> = ({
                 <div className={styles.popupPost} data-testid="PopupPost">
                     <div onClick={() => setIsActive(false)} className={styles.popupPost__blackFon}></div>
                     <div className={styles.popupPost__wrapper}>
-                        <img onClick={() => setIsActive(false)} src={cross} className={styles.popupPost__crossExit}
-                             alt={'icon'}/>
+                            <img onClick={() => setIsActive(false)} src={cross} className={styles.popupPost__crossExit}
+                                 alt={'icon'}/>
                         <div className={styles.popupPost__fields}>
                             <div className={styles.popupPost__namePost}>{namePost}</div>
                             <div className={styles.popupPost__dates}>
@@ -55,7 +55,8 @@ const PopupPost: FC<PopupPostProps> = ({
                                 </div>
 
                             </div>
-                            <div className={styles.popupPost__directionForSpend + ' ' + styles.popupPost__col}>{'Направление расходных средств\n'
+                            <div
+                                className={styles.popupPost__directionForSpend + ' ' + styles.popupPost__col}>{'Направление расходных средств\n'
                                 + directionForSpent}</div>
                             <div className={styles.popupPost__fullText + ' ' + styles.popupPost__col}>{fullText}</div>
                         </div>
