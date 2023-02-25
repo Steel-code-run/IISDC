@@ -1,23 +1,29 @@
 import {TParser, TParserType} from "@iisdc/types";
 
 const parsersParams = [
-    {
-        name:"cptgrantov",
-        url:"https://cptgrantov.ru/",
-        fileUrl:"cptgrantov",
-        parserType: TParserType["nodejs"]
-    },
-    {
-        name:"fadm.gov",
-        url:"https://fadm.gov/",
-        fileUrl:"fadm.gov",
-        parserType: TParserType["nodejs"]
-    },
+    // {
+    //     name:"cptgrantov",
+    //     url:"https://cptgrantov.ru/",
+    //     fileUrl:"cptgrantov",
+    //     parserType: TParserType["nodejs"]
+    // },
+    // {
+    //     name:"fadm.gov",
+    //     url:"https://fadm.gov/",
+    //     fileUrl:"fadm.gov",
+    //     parserType: TParserType["nodejs"]
+    // },
     {
         name:"fasie",
         url:"https://fasie.ru/",
         fileUrl:"fasie",
         parserType: TParserType["nodejs"]
+    },
+    {
+        name: "guap.ru",
+        url: "https://guap.ru/m/science/grants",
+        fileUrl: "guap",
+        parserType: TParserType.nodejs
     },
     {
         name:"integraciya",
@@ -38,21 +44,27 @@ const parsersParams = [
         parserType: TParserType["nodejs"]
     },
     {
-        name: "sowa-ru",
-        url: ".",
-        fileUrl: "sowa-ru",
-        parserType: TParserType["nodejs"]
-    },
-    {
-        name: "guap.ru",
-        url: "https://guap.ru/m/science/grants",
-        fileUrl: "guap",
+        name: "rb.ru",
+        url:"...",
+        fileUrl: "rb.ru",
         parserType: TParserType.nodejs
     },
     {
         name: "rcfoundation",
         url: '.',
         fileUrl: "rcfoundation",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: "sowa-ru",
+        url: ".",
+        fileUrl: "sowa-ru",
+        parserType: TParserType["nodejs"]
+    },
+    {
+        name: "tvoyhod",
+        url: ".",
+        fileUrl: "tvoyhod",
         parserType: TParserType.nodejs
     }
 ]
