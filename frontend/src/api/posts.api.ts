@@ -25,7 +25,7 @@ export const postsApi = createApi({
                 return {
                     url: 'grants/get',
                     body: {
-                        limit: (namePost) ? 1 : limit,
+                        limit: limit,
                         from,
                         namePost
                     }

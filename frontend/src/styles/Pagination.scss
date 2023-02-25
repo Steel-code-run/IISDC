@@ -7,11 +7,11 @@
 }
 .MuiPaginationItem-previousNext {
   background: url("../assets/images/nextArrowPagination.svg") no-repeat;
-  background-size: 30px 30px;
+  background-size: 30px 30px !important;
 }
 .MuiPaginationItem-previousNext[aria-label="Go to previous page"] {
   background: url("../assets/images/nextArrowPagination.svg") no-repeat;
-  background-size: 30px 30px;
+  background-size: 30px 34px !important;
   transform: rotate(180deg) !important;
 }
 .MuiSvgIcon-root {
@@ -19,4 +19,6 @@
 }
 .MuiPagination-root {
   margin-top: 24px;
+  display: flex;
+  align-items: center;
 }

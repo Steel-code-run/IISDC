@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
 import styles from './Search.module.scss';
-import crossClose from '../../../assets/images/crossExit.svg'
 import {useDebounce} from "../../../helpers/debounce";
 import SearchIcon from '../../../assets/images/searchIcon.svg'
 
@@ -10,12 +9,11 @@ interface IListItem {
 }
 
 export interface SearchProps {
-    list?: IListItem[],
     cbDebounce: (debounceValue: string) => void
 
 }
 
-const Search: FC<SearchProps> = ({list = [], cbDebounce}) => {
+const Search: FC<SearchProps> = ({  cbDebounce}) => {
     const [searchValue, setSearchValue] = React.useState<string>('');
 
     const debouncedSearch = useDebounce(searchValue, 600);
@@ -29,20 +27,11 @@ const Search: FC<SearchProps> = ({list = [], cbDebounce}) => {
                 <img className={styles.search__searchIcon} src={SearchIcon} alt="icon"/>
                 <input autoFocus={true}
                        onChange={(e) => {
-                           setSearchValue(e.target.value);
-
-                       }}
-
+                           setSearchValue(e.target.value);}}
                        className={styles.search__input}
                        value={searchValue}
                        type="text"
                        data-testid="SearchInput"/>
-                {
-                    searchValue && <img onClick={() => setSearchValue('')}
-                                        className={styles.search__textClear}
-                                        src={crossClose} alt="icon"/>
-                }
-
             </div>
         </div>
     )

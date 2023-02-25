@@ -8,7 +8,6 @@ export interface CardPostProps extends TGrant {
 }
 
 const CardPost: FC<CardPostProps> = ({
-                                         id,
                                          dateCreationPost,
                                          direction,
                                          namePost,
@@ -30,9 +29,12 @@ const CardPost: FC<CardPostProps> = ({
         <>
             <div className={styles.cardPost} data-testid="CardPost">
                 <div className={styles.cardPost__data}>{date.toLocaleDateString()}</div>
-                {direction && <div className={styles.cardPost__direction}>{direction}</div>}
+                <div className={styles.cardPost__direction}>{direction}</div>
                 <div className={styles.cardPost__wrapper}>
                     <h1 onClick={() => setIsActive(!isActive)} className={styles.cardPost__name}>{namePost}</h1>
+                    {
+                        summary && <div className={styles.cardPost__summary}>{'Сумма гранта: ' + summary}</div>
+                    }
                     <h4 className={styles.cardPost__organization}>{organization}</h4>
                 </div>
             </div>
