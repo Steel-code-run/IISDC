@@ -96,7 +96,10 @@ const PageGrants: FC<PageGrantsProps> = () => {
             <div className={styles.pageGrants} data-testid="PageGrants">
                 <div className="container">
                     <Search cbDebounce={setDebounceValue} />
-                    <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
+                    {(data?.data.length > 0) &&
+                        <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
+                    }
+
                     <div className={styles.pageGrants__wrapper}>
                         <div className={styles.pageGrants__posts}>
                             {
@@ -121,10 +124,11 @@ const PageGrants: FC<PageGrantsProps> = () => {
                                 })
                             }
                         </div>
-
-                        <Pagination count={amountPages}
+                        {
+                            (data?.data.length > 0) && <Pagination count={amountPages}
                                     page={page}
                                     onChange={(_, num) => setPage(num)}/>
+                        }
 
                     </div>
                 </div>
