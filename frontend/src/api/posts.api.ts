@@ -1,5 +1,6 @@
 import '@reduxjs/toolkit/query/react';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {IUpdateData} from "../components/UI/PopupPost/PopupPost";
 
 export interface IGetGrants {
     limit: number,
@@ -69,6 +70,13 @@ export const postsApi = createApi({
             ),
             invalidatesTags: [{type: 'Grants', id: 'LIST'}]
         }),
+        updatePostGrant: builder.mutation<any, IUpdateData>({
+            query: (updateData) => ({
+                url: 'grants/update',
+                body: updateData
+            }),
+            invalidatesTags: [{type: 'Grants', id: 'LIST'}]
+        }),
         getDirections: builder.query<any, void>({
             query: () => 'grants/getDirections'
         }),
@@ -89,6 +97,7 @@ export const postsApi = createApi({
 });
 
 export const {
+    useUpdatePostGrantMutation,
     useDeletePostGrantMutation,
     useGetDirectionsQuery,
     useGetBeautifulStatsQuery,

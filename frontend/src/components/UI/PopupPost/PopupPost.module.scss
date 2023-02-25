@@ -79,10 +79,11 @@
     grid-row: 2 / 3;
     grid-column: 1 / 4;
   }
-  &__directionForSpend {
+  &__directionForSpent {
     width: 100%;
     max-height: 116px;
     height: 100%;
+    display: flex;
 
     grid-row: 3 / 4;
     grid-column: 1 / 5;
@@ -93,6 +94,7 @@
     font-weight: 600;
     font-size: 20px;
     line-height: 27px;
+    display: flex;
 
     color: #000000;
     max-width: 720px;
@@ -130,7 +132,17 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    display: flex;
 
+  }
+  &__organization p {
+    width: 100%;
+  }
+  &__direction p {
+    width: 100%;
+  }
+  &__directionForSpent p {
+    width: 100%;
   }
 
   &__col {
@@ -350,7 +362,7 @@
 
       height: 60px;
     }
-    &__directionForSpend {
+    &__directionForSpent {
       grid-row: 5 / 6;
       grid-column: 1 / 5;
 
