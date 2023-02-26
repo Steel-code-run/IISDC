@@ -57,7 +57,7 @@ const PopupPost: FC<PopupPostProps> = ({
                             <div className={styles.popupPost__namePost}>{namePost}</div>
                             <div className={styles.popupPost__dates}>
                                 <div className={styles.popupPost__dateCreationPost}>{'Дата  \n' +
-                                    'создания поста\n' + (new Date(dateCreationPost).toLocaleString()).replace(',', '\n')}</div>
+                                    'создания поста\n' + (new Date(dateCreationPost)?.toLocaleDateString())?.replace(',', '\n')}</div>
                                 <div
                                     className={styles.popupPost__deadline}>{'Дата окончания подачи заявок \n' + deadline}</div>
                             </div>

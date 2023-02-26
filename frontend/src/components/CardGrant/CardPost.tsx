@@ -30,7 +30,7 @@ const CardPost: FC<CardPostProps> = ({
         <>
             <div onClick={() => setIsActive(!isActive)} className={styles.cardPost} data-testid="CardPost">
                 <div
-                    className={styles.cardPost__data}>{date.getDay() + '.' + date.getMonth() + '\n' + date.getFullYear()}</div>
+                    className={styles.cardPost__data}>{date.toLocaleDateString().slice(0, 5) + '\n' + date.getFullYear()}</div>
                 {
                     direction && <div className={styles.cardPost__direction}>{direction}</div>
                 }
