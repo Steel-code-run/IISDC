@@ -96,9 +96,8 @@ const PageGrants: FC<PageGrantsProps> = () => {
             <div className={styles.pageGrants} data-testid="PageGrants">
                 <div className="container">
                     <Search cbDebounce={setDebounceValue} />
-                    {(data?.data.length > 0) &&
-                        <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
-                    }
+                    <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
+
 
                     <div className={styles.pageGrants__wrapper}>
                         <div className={styles.pageGrants__posts}>
