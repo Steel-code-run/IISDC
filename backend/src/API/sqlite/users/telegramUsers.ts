@@ -10,6 +10,7 @@ import {
     universalIsTableExist, universalUpdatePost
 } from "../helpers/tableManipulations";
 import {telegramUser} from "../../../types/serializables";
+import {decoderShieldIt} from "@iisdc/utils";
 const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','telegramUsers.db'));
 
 export const tableName = "telegramUsers";
@@ -62,8 +63,9 @@ export const getUsers = (user:Partial<telegramUser>,
         for (let key in posts) {
             let newPost = posts[key]
             try {
-                newPost.settings = JSON.parse(String(posts[key].settings))
+                newPost.settings = JSON.parse(decoderShieldIt(String(posts[key].settings))!)
             } catch  {
+                console.log("error in parse JSON in telegram getUsers ")
                 newPost.settings = {}
             }
             newPosts.push(newPost)
@@ -82,7 +84,7 @@ export const add = (user:Partial<telegramUser>) => {
     try {
         createTableIfNotExist(isTableExist,createTable)
         let k:any = user
-        k.settings = JSON.stringify(user.settings)?.length > 4 ? '' : ''
+        k.settings = JSON.stringify(user.settings)?.length > 4 ? JSON.stringify(user.settings) : ''
         return universalAddPost(db,tableName,k)
     }
     catch (e){
@@ -91,13 +93,15 @@ export const add = (user:Partial<telegramUser>) => {
     }
 }
 
-export const update = (post:telegramUser)=>{
-    if (post.id === undefined){
+export const update = (user:telegramUser)=>{
+    if (user.id === undefined){
         throw new Error("Id - required")
     }
 
     try {
-        universalUpdatePost(post,post.id,db,tableName)
+        let k:any = user
+        k.settings = JSON.stringify(user.settings)?.length > 4 ? JSON.stringify(user.settings) : ''
+        universalUpdatePost(k,k.id,db,tableName)
 
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in updateGrant")

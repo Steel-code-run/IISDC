@@ -9,7 +9,7 @@ dotenv.config({path:path.join(__projectPath,'../',`.env.${process.env.NODE_ENV}`
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 
-let bot: TelegramBot | null = null;
+export let bot: TelegramBot | null = null;
 
 function initTelegramBot() {
 	if (token === undefined) {

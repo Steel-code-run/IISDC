@@ -5,6 +5,7 @@ import toSettings from "./btns/toSettings";
 import getCompetitionsBtn from "./btns/getCompetitionsBtn";
 import getInternshipsBtn from "./btns/getInternshipsBtn";
 import getVacanciesBtn from "./btns/getVacanciesBtn";
+import setAllowedTimeBtn from "./btns/setAllowedTimeBtn";
 
 const defaultKeyboards = {
     home: [
@@ -31,6 +32,9 @@ const defaultKeyboards = {
     settings: [
         [
             homeBtn,
+        ],
+        [
+            setAllowedTimeBtn
         ]
     ]
 }

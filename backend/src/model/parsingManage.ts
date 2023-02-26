@@ -10,6 +10,7 @@ import {
 } from "@iisdc/types";
 import {toNormalCompetition, toNormalGrant, toNormalInternship, toNormalVacancy} from "../helpers/toNormalPost";
 import {isPostInDbByLevenstein} from "../helpers/isPostInDbByLevenstein";
+import {sendNewGrantToTelegram} from "../telegram/frequentlySendPosts";
 
 
 
@@ -25,6 +26,7 @@ export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallPara
             // добавляем в бд
             grant.timeOfParse = new Date().getTime()
             sqliteGrants.add(toNormalGrant(grant));
+            sendNewGrantToTelegram(toNormalGrant(grant))
             if (newGrants === 0) parseNextPage = true;
             newGrants++;
         } else {

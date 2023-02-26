@@ -1,6 +1,5 @@
 import {answers} from "../answers";
 import defaultKeyboards from "../defaultKeyboards";
-import {telegramUser} from "../../types/serializables";
 import TelegramBot from "node-telegram-bot-api";
 import * as sqliteGrants from "../../API/sqlite/parser/grants"
 import * as sqliteTelegramUsers from "../../API/sqlite/users/telegramUsers"
