@@ -38,8 +38,6 @@
     justify-content: center;
     text-align: center;
 
-
-
     color: #FFFFFF;
   }
 
@@ -99,6 +97,7 @@
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
+    padding: 0 10px;
   }
 
   &__organization {

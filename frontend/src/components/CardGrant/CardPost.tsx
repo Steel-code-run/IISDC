@@ -24,21 +24,20 @@ const CardPost: FC<CardPostProps> = ({
     const [isActive, setIsActive] = React.useState<boolean>(false)
 
     const date = new Date(Number(timeOfParse))
-
+    const formateDate = {
+        day: date.getDate(),
+        month: ((date.getMonth() + 1)  < 10) ? '0'+(date.getMonth() + 1) : (date.getMonth() + 1),
+        year: date.getFullYear()
+    }
 
     return (
         <>
             <div onClick={() => setIsActive(!isActive)} className={styles.cardPost} data-testid="CardPost">
-                <div
-                    className={styles.cardPost__data}>{date.toLocaleDateString().slice(0, 5) + '\n' + date.getFullYear()}</div>
-                {
-                    direction && <div className={styles.cardPost__direction}>{direction}</div>
-                }
+                <div className={styles.cardPost__data}>{formateDate.day + '.' + formateDate.month + '\n' + formateDate.year}</div>
+                    {direction && <div className={styles.cardPost__direction}>{direction}</div>}
                 <div className={styles.cardPost__wrapper}>
                     <h1 className={styles.cardPost__name}>{namePost}</h1>
-                    {
-                        summary && <div className={styles.cardPost__summary}>{'Сумма гранта: ' + summary}</div>
-                    }
+                    {summary && <div className={styles.cardPost__summary}>{'Сумма гранта: ' + summary}</div>}
                     <h4 className={styles.cardPost__organization}>{organization}</h4>
                 </div>
             </div>
