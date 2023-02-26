@@ -10,7 +10,20 @@ import {
 } from "@iisdc/types";
 import {isGrantExist} from "../API/sqlite/parser/grants";
 import {toNormalCompetition, toNormalGrant, toNormalInternship, toNormalVacancy} from "../helpers/toNormalPost";
+import levenshtein from "js-levenshtein";
 
+const levensteinProc=0.8
+const isGrantAddedInLast50 = (grant:TGrant)=>{
+    const posts = sqliteGrants.getGrants({},0,50)
+
+    for (let i = 0; i<posts.length;i++){
+        const levi = levenshtein(posts[i].namePost,grant.namePost)
+        let maxLength = Math.max(posts[i].namePost.length,grant.namePost.length)
+
+        let dif = maxLength/length
+    }
+
+}
 
 export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallParams) => {
     let parseNextPage = false;
