@@ -28,11 +28,11 @@ const CardPost: FC<CardPostProps> = ({
 
     return (
         <>
-            <div className={styles.cardPost} data-testid="CardPost">
+            <div onClick={() => setIsActive(!isActive)}  className={styles.cardPost} data-testid="CardPost">
                 <div className={styles.cardPost__data}>{date.toLocaleDateString()}</div>
                 <div className={styles.cardPost__direction}>{direction}</div>
                 <div className={styles.cardPost__wrapper}>
-                    <h1 onClick={() => setIsActive(!isActive)} className={styles.cardPost__name}>{namePost}</h1>
+                    <h1 className={styles.cardPost__name}>{namePost}</h1>
                     {
                         summary && <div className={styles.cardPost__summary}>{'Сумма гранта: ' + summary}</div>
                     }
