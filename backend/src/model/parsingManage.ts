@@ -8,22 +8,10 @@ import {
     TGrant, TInternship, TParserCallParams,
     TVacancy
 } from "@iisdc/types";
-import {isGrantExist} from "../API/sqlite/parser/grants";
 import {toNormalCompetition, toNormalGrant, toNormalInternship, toNormalVacancy} from "../helpers/toNormalPost";
-import levenshtein from "js-levenshtein";
+import {isPostInDbByLevenstein} from "../helpers/isPostInDbByLevenstein";
 
-const levensteinProc=0.8
-const isGrantAddedInLast50 = (grant:TGrant)=>{
-    const posts = sqliteGrants.getGrants({},0,50)
 
-    for (let i = 0; i<posts.length;i++){
-        const levi = levenshtein(posts[i].namePost,grant.namePost)
-        let maxLength = Math.max(posts[i].namePost.length,grant.namePost.length)
-
-        let dif = maxLength/length
-    }
-
-}
 
 export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallParams) => {
     let parseNextPage = false;
@@ -31,8 +19,9 @@ export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallPara
 
     for (let i = 0; i < grants.length; i++) {
         const grant = grants[i];
+        const last50Posts = sqliteGrants.getGrants({},0,50)
 
-        if (!isGrantExist(grant)) {
+        if (!isPostInDbByLevenstein(grant,last50Posts)) {
             // добавляем в бд
             grant.timeOfParse = new Date().getTime()
             sqliteGrants.add(toNormalGrant(grant));
@@ -53,7 +42,9 @@ export const vacanciesManage = (vacancies: TVacancy[], parsersCallParams:TParser
     let newVacancies = 0;
     for (let i = 0; i < vacancies.length; i++) {
         const vacancy = vacancies[i];
-        if (!sqliteVacancies.isVacancyExist(vacancy)) {
+        const last50Posts = sqliteVacancies.getVacancies({},0,50)
+
+        if (!isPostInDbByLevenstein(vacancy,last50Posts)) {
             // добавляем в бд
             vacancy.timeOfParse = new Date().getTime()
             sqliteVacancies.add(toNormalVacancy(vacancy));
@@ -74,7 +65,9 @@ export const internshipsManage = (internships: TInternship[], parsersCallParams:
     let newInternships = 0;
     for (let i = 0; i < internships.length; i++) {
         const internship = internships[i];
-        if (!sqliteInternships.isInternshipExist(internship)) {
+        const last50Posts = sqliteInternships.getInternships({},0,50)
+
+        if (!isPostInDbByLevenstein(internship,last50Posts)) {
             // добавляем в бд
             internship.timeOfParse = new Date().getTime()
             sqliteInternships.add(toNormalInternship(internship));
@@ -95,7 +88,9 @@ export const competitionsManage = (competitions: TCompetition[], parsersCallPara
     let newCompetitions = 0;
     for (let i = 0; i < competitions.length; i++) {
         const competition = competitions[i];
-        if (!sqliteCompetitions.isCompetitionExist(competition)) {
+        const last50Posts = sqliteCompetitions.getCompetitions({},0,50)
+
+        if (!isPostInDbByLevenstein(competition,last50Posts)) {
             // добавляем в бд
             competition.timeOfParse = new Date().getTime()
             sqliteCompetitions.add(toNormalCompetition(competition));

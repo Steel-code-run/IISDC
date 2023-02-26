@@ -10,7 +10,7 @@ import path from "path";
 import {__projectPath} from "../../../utils/projectPath";
 import {TInternship} from "@iisdc/types";
 import {consoleLog} from "../../../utils/consoleLog";
-const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','users.db'));
+const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','parser.db'));
 
 
 export const tableName = "internships"
