@@ -23,6 +23,7 @@ body {
 
 button {
   cursor: pointer;
+  user-select: none;
 }
 
 ul, li {
@@ -35,4 +36,7 @@ ul, li {
   margin: 0 auto;
   height: 100%;
   padding: 0 10px;
+}
+img {
+  user-select: none;
 }

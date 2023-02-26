@@ -102,9 +102,10 @@ const PopupPost: FC<PopupPostProps> = ({
                         </div>
                         <div className={styles.popupPost__footer}>
                             <div className={styles.popupPost__links}>
-                                <a href={link} rel="noopener noreferrer" target="_blank"
-                                   className={styles.popupPost__link}>Страница гранта</a>
-                                {linkPDF && <a href={linkPDF[0]} className={styles.popupPost__link}>PDF файл</a>}
+                                {link && <a href={link} rel="noopener noreferrer" target="_blank"
+                                            className={styles.popupPost__link}>Страница гранта</a>}
+                                {linkPDF && <a href={linkPDF} rel="noopener noreferrer" target="_blank"
+                                               className={styles.popupPost__link}>PDF файл</a>}
                             </div>
 
                             <div className={styles.popupPost__btns}>

@@ -16,7 +16,7 @@
       right: 36px;
       width: 3px;
       height: 100%;
-      background: rgba(0, 0, 0, 0.25);
+      background: #A7A7A7;
     }
 
     &__input {
@@ -24,14 +24,14 @@
       height: 100%;
 
       background: #FFFFFF;
-      border: 3px solid rgba(0, 0, 0, 0.25);
+      border: 3px solid #A7A7A7;
       border-radius: 10px 10px 0 0;
       position: relative;
       font-weight: 300;
       font-size: 16px;
       line-height: 20px;
 
-      padding: 5px 13px;
+      padding: 5px 40px 5px 13px;
 
     }
 
@@ -58,7 +58,7 @@
     left: 0;
     z-index: 2;
     background-color: #fff;
-    border: 3px solid #B1B1B1;
+    border: 3px solid #A7A7A7;
 
     border-radius: 0 0 10px 10px;
 
@@ -68,11 +68,11 @@
       line-height: 20px;
       padding: 5px 13px;
       cursor: pointer;
-      border-right: 3px solid #B1B1B1;
+      border-right: 3px solid #A7A7A7;
     }
 
     &__item:not(:last-child) {
-      border-bottom: 3px solid #B1B1B1;
+      border-bottom: 3px solid #A7A7A7;
     }
   }
   &__itemList::-webkit-scrollbar {

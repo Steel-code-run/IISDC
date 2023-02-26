@@ -3,17 +3,11 @@ import styles from './Search.module.scss';
 import {useDebounce} from "../../../helpers/debounce";
 import SearchIcon from '../../../assets/images/searchIcon.svg'
 
-interface IListItem {
-    id: number,
-    namePost: string,
-}
-
 export interface SearchProps {
     cbDebounce: (debounceValue: string) => void
-
 }
 
-const Search: FC<SearchProps> = ({  cbDebounce}) => {
+const Search: FC<SearchProps> = ({cbDebounce}) => {
     const [searchValue, setSearchValue] = React.useState<string>('');
 
     const debouncedSearch = useDebounce(searchValue, 600);
@@ -23,7 +17,6 @@ const Search: FC<SearchProps> = ({  cbDebounce}) => {
     return (
         <div className={styles.search} data-testid="Search">
             <div className={styles.search__wrapper}>
-
                 <img className={styles.search__searchIcon} src={SearchIcon} alt="icon"/>
                 <input autoFocus={true}
                        onChange={(e) => {

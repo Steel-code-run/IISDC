@@ -29,7 +29,7 @@ const CardPost: FC<CardPostProps> = ({
     return (
         <>
             <div onClick={() => setIsActive(!isActive)}  className={styles.cardPost} data-testid="CardPost">
-                <div className={styles.cardPost__data}>{date.toLocaleDateString()}</div>
+                <div className={styles.cardPost__data}>{date.getDay() + '.' + date.getMonth() + '\n' + date.getFullYear()}</div>
                 <div className={styles.cardPost__direction}>{direction}</div>
                 <div className={styles.cardPost__wrapper}>
                     <h1 className={styles.cardPost__name}>{namePost}</h1>
