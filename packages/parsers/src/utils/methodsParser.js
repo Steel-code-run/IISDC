@@ -5,7 +5,6 @@ const getLinksPosts = (jsdom, querySelector, url = '') => {
         .map((link) => url + link.getAttribute('href'))
 };
 const getLinksPDF = (jsdom, querySelector, url) => {
-    console.log(url )
     return Array.from(
         jsdom.window.document.querySelectorAll(querySelector)
     ).map((link) => {
@@ -36,7 +35,7 @@ const defineTypePost = (namePost) => {
     }
 
     for (const [key, value] of Object.entries(keyWords)) {
-        if (value.some((word) => namePost.toLowerCase().includes(word))) {
+        if (value?.some((word) => namePost?.toLowerCase()?.includes(word))) {
             return key;
         }
     }

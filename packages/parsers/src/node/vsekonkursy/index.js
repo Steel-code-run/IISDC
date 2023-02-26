@@ -20,11 +20,11 @@ const querySelectors = {
     deadline: 'div.elementor-text-editor.elementor-clearfix p',
 };
 
-const getFilterPost = (jsdom, selector) => {
-    return (jsdom.window.document.querySelector(selector)?.textContent === 'Конкурс завершен')
-}
+// const getFilterPost = (jsdom, selector) => {
+//     return (jsdom.window.document.querySelector(selector)?.textContent === 'Конкурс завершен')
+// }
 
-const getInfoPosts = async (links) => {
+const getInfoPosts = async (querySelectors, links) => {
 
     const result = []
 
@@ -33,9 +33,9 @@ const getInfoPosts = async (links) => {
         const {title} = querySelectors;
 
         const namePost = getDataBySelector(jsdom, title);
-        if(!getFilterPost(jsdom, 'p[style="font-style: italic;"]')){
-            result.push(definePostDescription(defineTypePost(namePost), jsdom, querySelectors, links[index], baseUrl));
-        }
+
+        result.push(definePostDescription(defineTypePost(namePost), jsdom, querySelectors, links[index], baseUrl));
+
     }
 
     return result
@@ -45,7 +45,7 @@ const getPostLazyLoading = async (page, url, querySelectors) => {
     const jsdom = await getHTML(url + `page/${page}`);
     const links = getLinksPosts(jsdom, querySelectors.link, '');
 
-    return getInfoPosts(querySelectors, links)
+    return await getInfoPosts(querySelectors, links)
 
 };
 

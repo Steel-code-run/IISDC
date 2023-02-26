@@ -1,9 +1,7 @@
-const {exceptionWords} = require("../../utils/wordsForParsers.js");
 const {getHTML} = require('../../utils/getHTML.js');
 const {
-    getLinksPosts
+    defineTypePost
 } = require('../../utils/methodsParser.js');
-const {getInfoPosts, defineTypePost} = require("../../utils/methodsParser");
 
 
 const url = 'https://oreluniver.ru/international/connections/grants';
@@ -21,33 +19,24 @@ const getPosts = (jsdom, selector) => {
 }
 
 const getInfoPost = (post, selectors) => {
-    return {
-        title: post.querySelector(selectors.title),
-        deadline: post.querySelector(selectors.deadline),
-        link: baseUrl + post.querySelector(selectors.link).getAttribute('href')
-    }
+    const newArr = Array.from(post).slice(0, 40)
+    return newArr.map(post => {
+        return {
+            title: post.querySelector(selectors.title)?.textContent,
+            deadline: post.querySelector(selectors.deadline)?.textContent,
+            link: baseUrl + post?.querySelector(selectors.link)?.getAttribute('href')
+        }
+    })
 }
 
 
 const filterPosts = (posts) => {
-    return posts
-        .filter((post) => post.postType !== 'other')
-        .filter((post) => {
-            const {namePost} = post.postDescription;
-
-            return exceptionWords.every((word) => {
-                if (namePost.toLowerCase().includes(word)) {
-                }
-                return !namePost.toLowerCase().includes(word);
-            });
-        })
+    return posts.filter((post) => post.postType !== 'other')
 };
 
 (async function main() {
     const jsdom = await getHTML(url);
-    const posts = getPosts(jsdom, querySelectors);
-    
-
+    const posts = getInfoPost(getPosts(jsdom, querySelectors.post), querySelectors);
 
 
     const receivedPosts = posts.map(post => {
@@ -57,14 +46,14 @@ const filterPosts = (posts) => {
                 return {
                     postType: 'grant',
                     postDescription: {
-                        namePost: getDataBySelector(jsdom, querySelectors?.title),
-                        dateCreationPost: getDataBySelector(jsdom, querySelectors?.date),
+                        namePost: post.title,
+                        dateCreationPost: '',
                         directionForSpent: "",
-                        summary: getSummaryGrant(jsdom, querySelectors?.text),
-                        fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
-                        deadline: getDataBySelector(jsdom, querySelectors?.deadline),
-                        linkPDF: getLinksPDF(jsdom, querySelectors?.linkPDF, url),
-                        link,
+                        summary: '',
+                        fullText: '',
+                        deadline: post.deadline,
+                        linkPDF: post.link,
+                        link: '',
                     },
 
                 };
@@ -72,44 +61,44 @@ const filterPosts = (posts) => {
                 return {
                     postType: 'competition',
                     postDescription: {
-                        namePost: getDataBySelector(jsdom, querySelectors?.title),
-                        dateCreationPost: getDataBySelector(jsdom, querySelectors?.date),
-                        deadline: getDataBySelector(jsdom, querySelectors?.deadline),
+                        namePost: post.title,
+                        dateCreationPost: '',
+                        deadline: post.deadline,
                         direction: 'направление',
-                        fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
-                        link,
+                        fullText:  '',
+                        link: post.link,
                     },
                 };
             case 'vacancy':
                 return {
                     postType: 'vacancy',
                     postDescription: {
-                        namePost: getDataBySelector(jsdom, querySelectors?.title),
-                        dateCreationPost: getDataBySelector(jsdom, querySelectors?.date),
-                        direction: getDataBySelector(jsdom, querySelectors?.text),
-                        fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
+                        namePost: post.title,
+                        dateCreationPost: '',
+                        direction: '',
+                        fullText: '',
                         organization: "Организация",
                         conditions: "Условия",
                         requirements: "Требования",
                         responsibilities: "Обязанности",
                         salary: "Зарплата",
-                        link,
+                        link: post.link,
                     },
                 };
             case 'internship':
                 return {
                     postType: 'internship',
                     postDescription: {
-                        namePost: getDataBySelector(jsdom, querySelectors?.title),
-                        dateCreationPost: getDataBySelector(jsdom, querySelectors?.date),
-                        direction: getDataBySelector(jsdom, querySelectors?.text),
-                        fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
+                        namePost: post.title,
+                        dateCreationPost: '',
+                        direction: '',
+                        fullText: '',
                         organization: "Организация",
                         conditions: "Условия",
                         requirements: "Требования",
                         responsibilities: "Обязанности",
                         salary: "Зарплата",
-                        link,
+                        link: post.link,
                     },
                 };
             case 'other':
