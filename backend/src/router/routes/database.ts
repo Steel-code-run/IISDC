@@ -10,7 +10,7 @@ import * as sqliteVacancies from "../../API/sqlite/parser/vacancies"
 import * as sqliteInternships from "../../API/sqlite/parser/internships"
 import {generateAnswer} from "../../utils/generateServerAnswer";
 import {configureDefaultParsers} from "../../API/sqlite/configurateDataBase/configureDataBase";
-import {protectedFromDrop} from "../../API/sqlite/parser/parser";
+
 
 const router = Router()
 

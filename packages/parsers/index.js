@@ -19,7 +19,7 @@ const callNodeTsParser = (params) => {
         throw new Error('Errors with parser file path');
     }
     execString += ` ${params.page}`;
-    return execPromise(execString).then(({ stdout, stderr }) => {
+    return execPromise(execString).then(({ stdout }) => {
         stdout = JSON.parse(stdout);
         if (!(0, types_1.isTParserResult)(stdout))
             throw new Error('Parser result is not valid');
@@ -41,3 +41,4 @@ const callParser = async (params) => {
     }
 };
 exports.callParser = callParser;
+//# sourceMappingURL=index.js.map

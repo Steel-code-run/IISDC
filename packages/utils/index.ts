@@ -7,3 +7,11 @@ export function shieldIt(str:any){
         .replace(/'/g, "&#039;")
         .trim();
 }
+
+export function decoderShieldIt(str: string | undefined){
+    return str?.replace(/&amp;/g, "&")
+        ?.replace(/&lt;/g, "<")
+        ?.replace(/&gt;/g, ">")
+        ?.replace(/&quot;/g, '"')
+        ?.replace(/&#039;/g, "'");
+}

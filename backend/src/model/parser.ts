@@ -49,6 +49,7 @@ const parse = async(parsersCallParams:TParserCallParams)=>{
     consoleLog("currentParsing: " + parsersCallParams.parser.name + ", page: " + parsersCallParams.page);
 
         return callParser(parsersCallParams).then((posts) => {
+            consoleLog(`All posts in ${parsersCallParams.parser.name} page ${parsersCallParams.page}: ${posts.length}` )
             // Получаем всё отдельно
             const grants = getGrantsFromPosts(posts);
             const vacancies = getVacanciesFromPosts(posts);

@@ -10,7 +10,7 @@ import {
     universalIsPostExist,
     universalIsTableExist, universalUpdatePost
 } from "../helpers/tableManipulations";
-const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','users.db'));
+const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','parser.db'));
 
 export const tableName = "vacancies"
 export const protectedFromDrop = false
