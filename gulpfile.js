@@ -50,7 +50,7 @@ const deploy= (cb) => {
         onAfterDeploy: 'pm2 delete all; cd /var/built/built ' +
             '&& npm install --production' +
             '&& pm2 serve frontend/build' +
-            '&& pm2 start backend/src/app.js'
+            '&& cross-env NODE_ENV=production pm2 start backend/src/app.js'
     };
 
     const deployer = new Application(options);

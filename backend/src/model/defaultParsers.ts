@@ -54,6 +54,36 @@ const parsersParams = [
         url: ".",
         fileUrl: "tvoyhod",
         parserType: TParserType.nodejs
+    },
+    {
+        name: "cptgrantov",
+        url: ".",
+        fileUrl: "cptgrantov",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: "fadm.gov",
+        url: ".",
+        fileUrl: "fadm.gov",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: "oreluniver",
+        url: ".",
+        fileUrl: "oreluniver",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: "rsv",
+        url: ".",
+        fileUrl: "rsv",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: "vsekonkursy",
+        url: ".",
+        fileUrl: "vsekonkursy",
+        parserType: TParserType.nodejs
     }
 ]
 export const generateDefaultParsers = ():TParser[] => {
