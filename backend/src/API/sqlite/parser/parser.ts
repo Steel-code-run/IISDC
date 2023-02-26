@@ -8,11 +8,11 @@ import {
     universalGetPosts,
     universalIsTableExist
 } from "../helpers/tableManipulations";
-const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','users.db'));
+const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','parser.db'));
 
 
 export const tableName = "parsers"
-export const protectedFromDrop = true
+export const protectedFromDrop = false
 
 export const createTable = ()=>{
     try {
