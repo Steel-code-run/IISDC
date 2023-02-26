@@ -42,8 +42,7 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
                      src={dropdownIcon} alt={'icon'}/>
             </div>
 
-            {
-                isOpen && <ul className={styles.dropdown__itemList}>
+            {isOpen && <ul className={styles.dropdown__itemList}>
                     <li className={styles.dropdown__itemList__item}
                         onClick={(e) => handleClickItemDropdown(e)}>Все направления
                     </li>
