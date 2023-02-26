@@ -31,8 +31,8 @@ router.post("/parsers/getParsers",(req:ICustomRequest,res)=>{
         return;
     }
 
-    const limit = req.body.limit;
-    res.json(generateAnswer({message:answerMessage.success,data: sqliteParser.getParsers(limit)}))
+    const limit = req.body.limit ?? 1000;
+    res.json(generateAnswer({message:answerMessage.success,data: sqliteParser.getParsers({},0,limit)}))
 })
 router.post("/parsers/getParsersQueue",(req:ICustomRequest,res) => {
     if (!isUserCanEnter(req,res)){
