@@ -7,3 +7,4 @@ var UserRole;
     UserRole[UserRole["user"] = 1] = "user";
     UserRole[UserRole["admin"] = 2] = "admin";
 })(UserRole = exports.UserRole || (exports.UserRole = {}));
+//# sourceMappingURL=users.js.map

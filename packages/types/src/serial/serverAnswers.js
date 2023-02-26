@@ -11,3 +11,4 @@ var answerMessage;
     answerMessage["userAlreadyExists"] = "User already exists";
     answerMessage["insufficientRole"] = "Insufficient role";
 })(answerMessage = exports.answerMessage || (exports.answerMessage = {}));
+//# sourceMappingURL=serverAnswers.js.map
