@@ -1,10 +1,17 @@
 import '@reduxjs/toolkit/query/react';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {IUpdateData} from "../components/UI/PopupPost/PopupPost";
 
 export interface IGetGrants {
     limit: number,
     from: number,
-    namePost: string
+    namePost: string,
+    direction?: string
+}
+
+interface IGetCountGrants {
+    namePost?: string,
+    direction?: string
 }
 
 
@@ -19,28 +26,59 @@ export const postsApi = createApi({
             method: 'POST'
 
         }),
+    tagTypes: ['Grants'],
     endpoints: (builder) => ({
         getGrants: builder.query<any, IGetGrants>({
-            query: ({limit, from, namePost}) => {
+            query: ({limit, from, namePost, direction}) => {
                 return {
                     url: 'grants/get',
                     body: {
-                        limit: (namePost) ? 1 : limit,
+                        limit: limit,
                         from,
-                        namePost
+                        namePost,
+                        direction
+                    }
+                }
+            },
+            providesTags: (result) =>
+                result?.data
+                    ? [
+                        ...result?.data.map(({ id } : any) => ({ type: 'Grants' as const, id })),
+                        { type: 'Grants', id: 'LIST' },
+                    ]
+                    : [{ type: 'Grants', id: 'LIST' }],
+        }),
+        getCountGrants: builder.query<any, IGetCountGrants>({
+            query: ({namePost, direction}) => {
+                return {
+                    url: 'grants/count',
+                    body: {
+                        namePost,
+                        direction
                     }
                 }
             }
         }),
-        getCountGrants: builder.query<any, string>({
-            query: (namePost: string) => {
-                return {
-                    url: 'grants/count',
+        deletePostGrant: builder.mutation<any, number>({
+            query: (id) => (
+                {
+                    url: 'grants/delete',
                     body: {
-                        namePost
+                        id
                     }
                 }
-            }
+            ),
+            invalidatesTags: [{type: 'Grants', id: 'LIST'}]
+        }),
+        updatePostGrant: builder.mutation<any, IUpdateData>({
+            query: (updateData) => ({
+                url: 'grants/update',
+                body: updateData
+            }),
+            invalidatesTags: [{type: 'Grants', id: 'LIST'}]
+        }),
+        getDirections: builder.query<any, void>({
+            query: () => 'grants/getDirections'
         }),
         getVacancies: builder.query<any, void>({
             query: () => 'vacancies/get',
@@ -59,6 +97,9 @@ export const postsApi = createApi({
 });
 
 export const {
+    useUpdatePostGrantMutation,
+    useDeletePostGrantMutation,
+    useGetDirectionsQuery,
     useGetBeautifulStatsQuery,
     useGetGrantsQuery,
     useGetCountGrantsQuery,

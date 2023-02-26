@@ -29,13 +29,13 @@ const getSummaryGrant = (jsdom, querySelector) => {
 const defineTypePost = (namePost) => {
     const keyWords = {
         grant: ['грант', 'гранты', 'гранта', 'грантом', 'гранту', 'субсидия', 'субсидии', 'субсидию', 'субсидией', 'субсидию'],
-        competition: ['конкурс', 'конкурсы', 'конкурса', 'конкурсом', 'конкурсу'],
+        competition: ['конкурс', 'конкурсы', 'конкурса', 'конкурсом', 'конкурсу', 'чемпионат'],
         vacancy: ['вакансия', 'вакансии', 'вакансию', 'вакансией', 'вакансию'],
         internship: ['стажировка', 'стажировки', 'стажировку', 'стажировкой', 'стажировке'],
     }
 
     for (const [key, value] of Object.entries(keyWords)) {
-        if (value.some((word) => namePost.toLowerCase().includes(word))) {
+        if (value?.some((word) => namePost?.toLowerCase()?.includes(word))) {
             return key;
         }
     }

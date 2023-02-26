@@ -1,0 +1,90 @@
+.dropdown {
+  position: relative;
+
+  max-width: 500px;
+  width: 100%;
+  margin-top: 20px;
+
+  &__inputBlock {
+    position: relative;
+    height: 30px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 36px;
+      width: 3px;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    &__input {
+      width: 100%;
+      height: 100%;
+
+      background: #FFFFFF;
+      border: 3px solid rgba(0, 0, 0, 0.25);
+      border-radius: 10px 10px 0 0;
+      position: relative;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 20px;
+
+      padding: 5px 13px;
+
+    }
+
+    &__inputIcon {
+      width: 30px;
+      height: 100%;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 5px;
+      transition: 0.3s all;
+      cursor: pointer;
+    }
+
+  }
+
+  &__itemList {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    overflow-y: scroll;
+    position: absolute;
+    top: 27px;
+    left: 0;
+    z-index: 2;
+    background-color: #fff;
+    border: 3px solid #B1B1B1;
+
+    border-radius: 0 0 10px 10px;
+
+    &__item {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 20px;
+      padding: 5px 13px;
+      cursor: pointer;
+      border-right: 3px solid #B1B1B1;
+    }
+
+    &__item:not(:last-child) {
+      border-bottom: 3px solid #B1B1B1;
+    }
+  }
+  &__itemList::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &__itemList::-webkit-scrollbar-thumb {
+    background: #A7A7A7;
+  }
+}
+
+.rotateIcon {
+  transform: rotate(180deg) translateY(50%);
+  transition: 0.3s all;
+}

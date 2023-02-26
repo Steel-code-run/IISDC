@@ -23,6 +23,7 @@ const querySelectors = {
 const getInfoPosts = async (querySelectors, baseUrl, links) => {
     const result = []
 
+
     for (let index in links) {
         const jsdom = await getHTML(links[index], {
             'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Mobile Safari/537.36'
@@ -41,7 +42,7 @@ const getPostLazyLoading = async (page, url, querySelectors) => {
     const jsdom = await getHTML(`${url}?PAGEN_1=${page}`);
     const links = getLinksPosts(jsdom, querySelectors.link, baseUrl);
 
-    return getInfoPosts(links);
+    return await getInfoPosts(querySelectors, baseUrl, links);
 };
 
 const filterPosts = (posts) => {

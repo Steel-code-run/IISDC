@@ -23,20 +23,24 @@ const CardPost: FC<CardPostProps> = ({
                                      }) => {
     const [isActive, setIsActive] = React.useState<boolean>(false)
 
-    const date =  new Date( Number(timeOfParse))
+    const date = new Date(Number(timeOfParse))
 
 
     return (
         <>
-            <div className={styles.cardPost} data-testid="CardPost">
+            <div onClick={() => setIsActive(!isActive)}  className={styles.cardPost} data-testid="CardPost">
                 <div className={styles.cardPost__data}>{date.toLocaleDateString()}</div>
-                {direction && <div className={styles.cardPost__direction}>{direction}</div>}
+                <div className={styles.cardPost__direction}>{direction}</div>
                 <div className={styles.cardPost__wrapper}>
-                    <h1 onClick={() => setIsActive(!isActive)} className={styles.cardPost__name}>{namePost}</h1>
+                    <h1 className={styles.cardPost__name}>{namePost}</h1>
+                    {
+                        summary && <div className={styles.cardPost__summary}>{'Сумма гранта: ' + summary}</div>
+                    }
                     <h4 className={styles.cardPost__organization}>{organization}</h4>
                 </div>
             </div>
-            <PopupPost isActive={isActive}
+            <PopupPost id={id}
+                       isActive={isActive}
                        setIsActive={setIsActive}
                        namePost={namePost}
                        dateCreationPost={dateCreationPost}

@@ -1,22 +1,64 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import styles from './PageGrants.module.scss';
-import {useGetCountGrantsQuery, useGetGrantsQuery} from "../../api/posts.api";
+import {useGetCountGrantsQuery, useGetDirectionsQuery, useGetGrantsQuery} from "../../api/posts.api";
 import CardPost from "../../components/CardGrant/CardPost";
 import Header from "../../components/Header/Header";
 import {TGrant} from "@iisdc/types";
 import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
+import Dropdown from "../../components/UI/Dropdown/Dropdown";
 
 export interface PageGrantsProps {
 }
 
 const PageGrants: FC<PageGrantsProps> = () => {
-    const [amountPostsPerPage, setAmountPostsPerPage] = React.useState(12);
-    const [page, setPage] = React.useState<number>(1)
-    const [amountPages, setAmountPages] = React.useState<number>(1)
-    const [debounceValue, setDebounceValue] = React.useState<string>('')
+    const [amountPostsPerPage, setAmountPostsPerPage] = useState(12);
+    const [page, setPage] = useState<number>(1)
+    const [amountPages, setAmountPages] = useState<number>(1)
+    const [debounceValue, setDebounceValue] = useState<string>('')
+    const [choicedDirection, setChoicedDirection] = useState('Все направления')
 
-    const {data: totalCountPosts} = useGetCountGrantsQuery(debounceValue);
+    const generatorRequestGrant = (type: string) => {
+
+        if(type === 'haveDirection') {
+            return {
+                limit: amountPostsPerPage,
+                from: (page - 1) * amountPostsPerPage,
+                namePost: debounceValue,
+                direction: choicedDirection
+            }
+        }
+        return {
+            limit: amountPostsPerPage,
+            from: (page - 1) * amountPostsPerPage,
+            namePost: debounceValue,
+        }
+
+    }
+    const generatorRequestGrantCount = (type: string) => {
+
+        if(type === 'haveDirection') {
+            return {
+                namePost:debounceValue,
+                direction: choicedDirection
+            }
+        }
+        return {
+            namePost:debounceValue,
+        }
+
+    }
+
+    const {data: totalCountPosts} = useGetCountGrantsQuery(generatorRequestGrantCount(
+        (choicedDirection !== 'Все направления')
+        ? 'haveDirection'
+        : 'noDirection'));
+
+    const {data = [], error, isLoading} = useGetGrantsQuery(
+        generatorRequestGrant((choicedDirection !== 'Все направления')
+            ? 'haveDirection'
+            : 'noDirection'));
+    const {data: directions} = useGetDirectionsQuery();
 
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
@@ -26,36 +68,25 @@ const PageGrants: FC<PageGrantsProps> = () => {
         else if(sizeWindow <= 360) {
             setAmountPostsPerPage(2)
         }
+        else if(sizeWindow > 768) {
+            setAmountPostsPerPage(12)
+        }
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         window.addEventListener('resize', () => checkSizeWindow())
         checkSizeWindow()
     }, [])
 
-    React.useEffect(() => {
+
+    useEffect(() => {
+        setPage(1)
+    }, [debounceValue, setDebounceValue, choicedDirection, setChoicedDirection])
+
+
+    useEffect(() => {
         setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
     }, [totalCountPosts, setAmountPages])
-
-    const {data = [], error, isLoading} = useGetGrantsQuery({
-        limit: amountPostsPerPage,
-        from: (page - 1) * amountPostsPerPage,
-        namePost: debounceValue
-    });
-
-    const {data: totalPosts} = useGetGrantsQuery({
-        limit: totalCountPosts?.data,
-        from: 0,
-        namePost: ''
-    });
-
-
-    const listNames = totalPosts?.data?.map((post: TGrant) => {
-        return {
-            id: post.id,
-            namePost: post.namePost,
-        }
-    })
 
 
     if (isLoading) return <h1>Is loading...</h1>
@@ -64,7 +95,10 @@ const PageGrants: FC<PageGrantsProps> = () => {
             <Header/>
             <div className={styles.pageGrants} data-testid="PageGrants">
                 <div className="container">
-                    <Search cbDebounce={setDebounceValue} list={listNames}/>
+                    <Search cbDebounce={setDebounceValue} />
+                    <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
+
+
                     <div className={styles.pageGrants__wrapper}>
                         <div className={styles.pageGrants__posts}>
                             {
@@ -72,6 +106,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
                                     return (
                                         <CardPost
                                             key={post.id}
+                                            id={post.id}
                                             dateCreationPost={post.dateCreationPost}
                                             direction={post.direction}
                                             namePost={post.namePost}
@@ -88,10 +123,11 @@ const PageGrants: FC<PageGrantsProps> = () => {
                                 })
                             }
                         </div>
-
-                        <Pagination count={amountPages}
+                        {
+                            (data?.data.length > 0) && <Pagination count={amountPages}
                                     page={page}
                                     onChange={(_, num) => setPage(num)}/>
+                        }
 
                     </div>
                 </div>
