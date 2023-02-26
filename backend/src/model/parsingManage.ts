@@ -32,7 +32,6 @@ export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallPara
         } else {
             // Если нашли совпадение в бд, то больше не парсим
             parseNextPage = false;
-            break;
         }
     }
     consoleLog(parsersCallParams.parser.name + " new grants added in DB: " + newGrants);
@@ -55,7 +54,6 @@ export const vacanciesManage = (vacancies: TVacancy[], parsersCallParams:TParser
         } else {
             // Если нашли совпадение в бд, то больше не парсим
             parseNextPage = false;
-            break;
         }
     }
     consoleLog(parsersCallParams.parser.name + " new vacancies added in DB: " + newVacancies)
@@ -78,7 +76,6 @@ export const internshipsManage = (internships: TInternship[], parsersCallParams:
         } else {
             // Если нашли совпадение в бд, то больше не парсим
             parseNextPage = false;
-            break;
         }
     }
     consoleLog(parsersCallParams.parser.name + " new internships added in DB: " + newInternships);
@@ -101,7 +98,6 @@ export const competitionsManage = (competitions: TCompetition[], parsersCallPara
         } else {
             // Если нашли совпадение в бд, то больше не парсим
             parseNextPage = false;
-            break;
         }
     }
     consoleLog(parsersCallParams.parser.name + " new competitions added in DB: " + newCompetitions);
