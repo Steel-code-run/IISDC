@@ -61,9 +61,10 @@ const PopupPost: FC<PopupPostProps> = ({
                                 <div
                                     className={styles.popupPost__deadline}>{'Дата окончания подачи заявок \n' + deadline}</div>
                             </div>
+                            {summary &&
                             <div className={styles.popupPost__summary + ' ' + styles.popupPost__col}>Сумма
                                 гранта:<br/> {summary}
-                            </div>
+                            </div>}
 
                             <div className={styles.popupPost__directionAndOrganization}>
                                 <div className={styles.popupPost__organization + ' ' + styles.popupPost__col}>
