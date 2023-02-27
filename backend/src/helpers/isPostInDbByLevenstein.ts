@@ -1,12 +1,13 @@
 import levenshtein from "js-levenshtein";
 import {TCompetition, TGrant, TInternship, TVacancy} from "@iisdc/types";
+import {decoderShieldIt} from "@iisdc/utils";
 
 export const isPostInDbByLevenstein = <T extends TGrant|TInternship|TVacancy|TCompetition>(post:T,posts:T[])=>{
     const levensteinPercentGap=0.8
 
 
     for (let i = 0; i<posts.length;i++){
-        let dif = levensteinInPercent(post.namePost,posts[i].namePost)
+        let dif = levensteinInPercent(decoderShieldIt(post.namePost)!,decoderShieldIt(posts[i].namePost)!)
         if (dif > levensteinPercentGap) {
             return true
         }
