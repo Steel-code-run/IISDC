@@ -1,6 +1,7 @@
 import {parserCallQueuePushMany} from "./parserQueue";
 import * as sqliteParser from "../API/sqlite/parser/parser";
 import {diffDate} from "../helpers/diffDate";
+
 const allowTimeStart = "10:00:00"
 const allowTimeEnd = "18:00:00"
 let isAutomateAddingParsersActivate = false
@@ -17,7 +18,7 @@ const automateAddingParsers = async () => {
         parserCallQueuePushMany(sqliteParser.getParsers({},0,1000));
     }
     // Проверяем каждый час
-    setTimeout(automateAddingParsers, 1000 * 60)
+    setTimeout(automateAddingParsers, 1000 * 60 * 60 * 60)
 }
 
 export const activateAutomateAddingParsers = () => {

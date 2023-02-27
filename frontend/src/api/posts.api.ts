@@ -8,10 +8,20 @@ export interface IGetGrants {
     namePost: string,
     direction?: string
 }
+export interface IGetCompetitions {
+    limit: number,
+    from: number,
+    namePost: string,
+    direction?: string
+}
 
 interface IGetCountGrants {
     namePost?: string,
     direction?: string
+}
+
+interface IGetCountCompetitions extends IGetCountGrants{
+
 }
 
 
@@ -26,8 +36,9 @@ export const postsApi = createApi({
             method: 'POST'
 
         }),
-    tagTypes: ['Grants'],
+    tagTypes: ['Grants', 'Competitions'],
     endpoints: (builder) => ({
+
         getGrants: builder.query<any, IGetGrants>({
             query: ({limit, from, namePost, direction}) => {
                 return {
@@ -86,8 +97,36 @@ export const postsApi = createApi({
         getInternships: builder.query<any, void>({
             query: () => 'internships/get',
         }),
-        getCompetitions: builder.query<any, void>({
-            query: () => 'competitions/get',
+        getCompetitions: builder.query<any, IGetCompetitions>({
+            query: ({limit, from, namePost, direction}) => {
+                return {
+                    url: 'competitions/get',
+                    body: {
+                        limit: limit,
+                        from,
+                        namePost,
+                        direction
+                    }
+                }
+            },
+            providesTags: (result) =>
+                result?.data
+                    ? [
+                        ...result?.data.map(({ id } : any) => ({ type: 'Competitions' as const, id })),
+                        { type: 'Competitions', id: 'LIST' },
+                    ]
+                    : [{ type: 'Competitions', id: 'LIST' }],
+        }),
+        getCountСompetitions: builder.query<any, IGetCountCompetitions>({
+            query: ({namePost, direction}) => {
+                return {
+                    url: 'competitions/count',
+                    body: {
+                        namePost,
+                        direction
+                    }
+                }
+            }
         }),
         getBeautifulStats : builder.query<any, void>({
             query: () => 'stats/getBeautifulStats'
@@ -97,6 +136,7 @@ export const postsApi = createApi({
 });
 
 export const {
+    useGetCountСompetitionsQuery,
     useUpdatePostGrantMutation,
     useDeletePostGrantMutation,
     useGetDirectionsQuery,

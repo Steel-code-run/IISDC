@@ -57,13 +57,14 @@ const PopupPost: FC<PopupPostProps> = ({
                             <div className={styles.popupPost__namePost}>{namePost}</div>
                             <div className={styles.popupPost__dates}>
                                 <div className={styles.popupPost__dateCreationPost}>{'Дата  \n' +
-                                    'создания поста\n' + (new Date(dateCreationPost).toLocaleString()).replace(',', '\n')}</div>
+                                    'создания поста\n' + (new Date(dateCreationPost)?.toLocaleDateString())?.replace(',', '\n')}</div>
                                 <div
                                     className={styles.popupPost__deadline}>{'Дата окончания подачи заявок \n' + deadline}</div>
                             </div>
+                            {summary &&
                             <div className={styles.popupPost__summary + ' ' + styles.popupPost__col}>Сумма
                                 гранта:<br/> {summary}
-                            </div>
+                            </div>}
 
                             <div className={styles.popupPost__directionAndOrganization}>
                                 <div className={styles.popupPost__organization + ' ' + styles.popupPost__col}>
@@ -102,9 +103,10 @@ const PopupPost: FC<PopupPostProps> = ({
                         </div>
                         <div className={styles.popupPost__footer}>
                             <div className={styles.popupPost__links}>
-                                <a href={link} rel="noopener noreferrer" target="_blank"
-                                   className={styles.popupPost__link}>Страница гранта</a>
-                                {linkPDF && <a href={linkPDF[0]} className={styles.popupPost__link}>PDF файл</a>}
+                                {link && <a href={link} rel="noopener noreferrer" target="_blank"
+                                            className={styles.popupPost__link}>Страница гранта</a>}
+                                {linkPDF && <a href={linkPDF} rel="noopener noreferrer" target="_blank"
+                                               className={styles.popupPost__link}>PDF файл</a>}
                             </div>
 
                             <div className={styles.popupPost__btns}>

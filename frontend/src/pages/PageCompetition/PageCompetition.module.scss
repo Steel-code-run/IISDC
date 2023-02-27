@@ -1,9 +1,32 @@
 .pageCompetition {
-  margin-top: 20px;
+  margin: 20px 0;
+
+  &__wrapper {
+    min-height: 70vh;
+    height: 920px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 30px 0;
+    margin-top: 30px;
+  }
 
   &__posts {
     display: flex;
     flex-wrap: wrap;
     gap: 10px 10px;
+    align-content: flex-start;
   }
+}
+
+@media (max-width: 1180px) {
+  .pageCompetitions {
+
+    &__posts {
+      justify-content: space-evenly;
+    }
+
+
+  }
+
 }

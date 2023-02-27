@@ -7,6 +7,8 @@ import {TGrant} from "@iisdc/types";
 import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
+import {Dna} from "react-loader-spinner";
+import '../../styles/spinner-loader.scss';
 
 export interface PageGrantsProps {
 }
@@ -20,7 +22,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
 
     const generatorRequestGrant = (type: string) => {
 
-        if(type === 'haveDirection') {
+        if (type === 'haveDirection') {
             return {
                 limit: amountPostsPerPage,
                 from: (page - 1) * amountPostsPerPage,
@@ -37,22 +39,22 @@ const PageGrants: FC<PageGrantsProps> = () => {
     }
     const generatorRequestGrantCount = (type: string) => {
 
-        if(type === 'haveDirection') {
+        if (type === 'haveDirection') {
             return {
-                namePost:debounceValue,
+                namePost: debounceValue,
                 direction: choicedDirection
             }
         }
         return {
-            namePost:debounceValue,
+            namePost: debounceValue,
         }
 
     }
 
     const {data: totalCountPosts} = useGetCountGrantsQuery(generatorRequestGrantCount(
         (choicedDirection !== 'Все направления')
-        ? 'haveDirection'
-        : 'noDirection'));
+            ? 'haveDirection'
+            : 'noDirection'));
 
     const {data = [], error, isLoading} = useGetGrantsQuery(
         generatorRequestGrant((choicedDirection !== 'Все направления')
@@ -62,13 +64,11 @@ const PageGrants: FC<PageGrantsProps> = () => {
 
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
-        if(sizeWindow <= 768 && sizeWindow >= 414)  {
+        if (sizeWindow <= 768 && sizeWindow >= 414) {
             setAmountPostsPerPage(9)
-        }
-        else if(sizeWindow <= 360) {
+        } else if (sizeWindow <= 360) {
             setAmountPostsPerPage(2)
-        }
-        else if(sizeWindow > 768) {
+        } else if (sizeWindow > 768) {
             setAmountPostsPerPage(12)
         }
     }
@@ -86,16 +86,21 @@ const PageGrants: FC<PageGrantsProps> = () => {
 
     useEffect(() => {
         setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
-    }, [totalCountPosts, setAmountPages])
+    }, [totalCountPosts, setAmountPages, amountPostsPerPage])
 
 
-    if (isLoading) return <h1>Is loading...</h1>
+    if (isLoading) return <Dna visible={true}
+                               height="250"
+                               width="250"
+                               ariaLabel="dna-loading"
+                               wrapperStyle={{}}
+                               wrapperClass="dna-wrapper"/>
     return (
         <>
             <Header/>
             <div className={styles.pageGrants} data-testid="PageGrants">
                 <div className="container">
-                    <Search cbDebounce={setDebounceValue} />
+                    <Search cbDebounce={setDebounceValue}/>
                     <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
 
 
@@ -124,9 +129,13 @@ const PageGrants: FC<PageGrantsProps> = () => {
                             }
                         </div>
                         {
-                            (data?.data.length > 0) && <Pagination count={amountPages}
-                                    page={page}
-                                    onChange={(_, num) => setPage(num)}/>
+                            (data?.data?.length > 0) &&
+                            <Pagination count={amountPages}
+                                        page={page}
+                                        defaultPage={page}
+                                        siblingCount={0}
+                                        boundaryCount={1}
+                                        onChange={(_, num) => setPage(num)}/>
                         }
 
                     </div>

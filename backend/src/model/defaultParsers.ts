@@ -84,6 +84,12 @@ const parsersParams = [
         url: ".",
         fileUrl: "vsekonkursy",
         parserType: TParserType.nodejs
+    },
+    {
+        name: "eee-science",
+        url: ".",
+        fileUrl: "eee-science",
+        parserType: TParserType.nodejs
     }
 ]
 export const generateDefaultParsers = ():TParser[] => {
