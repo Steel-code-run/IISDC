@@ -13,7 +13,7 @@ function App() {
     const navigate = useNavigate()
     React.useEffect(() => {
         (window.localStorage.getItem('token'))
-            ? navigate('/home')
+            ? navigate('/grants')
             : navigate('/')
     }, [])
 
