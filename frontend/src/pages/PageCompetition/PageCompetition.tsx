@@ -1,6 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './PageCompetition.module.scss';
-import CardPost from "../../components/CardGrant/CardPost";
 import Header from "../../components/Header/Header";
 import {TGrant} from "@iisdc/types";
 import {Pagination} from "@mui/material";
@@ -8,6 +7,7 @@ import Search from "../../components/UI/Search/Search";
 import {Dna} from "react-loader-spinner";
 import '../../styles/spinner-loader.scss';
 import {useGetCompetitionsQuery, useGetCountСompetitionsQuery} from "../../api/posts.api";
+import CardCompetition from "../../components/CardCompetition/CardCompetition";
 
 export interface PageCompetitionsProps {
 }
@@ -76,7 +76,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                             {
                                 data?.data?.map((post: TGrant) => {
                                     return (
-                                        <CardPost
+                                        <CardCompetition
                                             key={post.id}
                                             id={post.id}
                                             dateCreationPost={post.dateCreationPost}
@@ -84,11 +84,9 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                                             namePost={post.namePost}
                                             organization={post.organization}
                                             deadline={post.deadline}
-                                            directionForSpent={post.directionForSpent}
                                             fullText={post.fullText}
                                             link={post.link}
                                             linkPDF={post.linkPDF}
-                                            summary={post.summary}
                                             timeOfParse={post.timeOfParse}
                                         />
                                     )

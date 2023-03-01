@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import styles from './CardPost.module.scss';
 import {TGrant} from "@iisdc/types";
-import PopupPost from "../UI/PopupPost/PopupPost";
+import PopupPost, {TTypesOfPosts} from "../UI/PopupPost/PopupPost";
 
 export interface CardPostProps extends TGrant {
 
@@ -42,24 +42,26 @@ const CardPost: FC<CardPostProps> = ({
                     <h4 className={styles.cardPost__organization}>{organization}</h4>
                 </div>
             </div>
-            <PopupPost<TGrant>
+            <PopupPost<TTypesOfPosts>
                 isActive={isActive}
                 setIsActive={setIsActive}
-                fields={
-                    {
-                        id,
-                        namePost,
-                        organization,
-                        deadline,
-                        summary,
-                        directionForSpent,
-                        fullText,
-                        link,
-                        linkPDF,
-                        timeOfParse,
-                        direction,
-                        dateCreationPost
-                    }}
+                id={id}
+                namePost={namePost}
+                organization={organization}
+                deadline={deadline}
+                fullText={fullText}
+                link={link}
+                linkPDF={linkPDF}
+                timeOfParse={timeOfParse}
+                direction={direction}
+                dateCreationPost={dateCreationPost}
+                summary={summary}
+                directionForSpent={directionForSpent}
+                conditions={''}
+                requirements={''}
+                responsibilities={''}
+                salary={''}
+
             />
         </>
 

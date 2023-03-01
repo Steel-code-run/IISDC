@@ -2,13 +2,19 @@ import React, {useState} from 'react';
 import styles from './PopupPost.module.scss';
 import cross from '../../../assets/images/crossExit.svg'
 import {useDeletePostGrantMutation, useUpdatePostGrantMutation} from "../../../api/posts.api";
-import {TCompetition, TGrant} from "@iisdc/types";
+import {TCompetition, TGrant, TInternship, TVacancy} from "@iisdc/types";
 
-export interface PopupPostProps<T, >{
-    fields: T,
-    isActive: boolean
-    setIsActive: React.Dispatch<React.SetStateAction<boolean>>
+export type TTypesOfPosts = TGrant & TCompetition & TInternship & TVacancy
+
+export type TPopupPostProps<T> = {
+    [field in keyof T]: T[field];
+
 }
+type TPropsState = {
+    isActive: boolean;
+    setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 
 export interface IUpdateData {
     id: number | undefined,
@@ -17,15 +23,26 @@ export interface IUpdateData {
     directionForSpent?: string | null
 }
 
-const PopupPost = <T extends TGrant | TCompetition>({fields, setIsActive, isActive}: PopupPostProps<T>) => {
-    const {namePost,dateCreationPost,deadline,fullText,direction,organization,id,link,timeOfParse, linkPDF} = fields
+const PopupPost = <T extends TTypesOfPosts>({
+                                                namePost,
+                                                dateCreationPost,
+                                                direction,
+                                                organization,
+                                                id,
+                                                linkPDF,
+                                                link,
+                                                deadline,
+                                                fullText,
+                                                setIsActive,
+                                                isActive,
+                                                summary,
+                                            }: TPopupPostProps<T> & TPropsState) => {
     const [isEdit, setIsEdit] = useState<boolean>(false)
     const [updateData, setUpdateData] = useState<IUpdateData>({
         id,
         organization,
         direction,
     })
-    console.log(linkPDF)
 
     const [deletePost] = useDeletePostGrantMutation()
     const [updatePost] = useUpdatePostGrantMutation()
@@ -49,6 +66,11 @@ const PopupPost = <T extends TGrant | TCompetition>({fields, setIsActive, isActi
                                 <div
                                     className={styles.popupPost__deadline}>{'Дата окончания подачи заявок \n' + deadline}</div>
                             </div>
+
+                            {summary &&
+                                <div className={styles.popupPost__summary + ' ' + styles.popupPost__col}>Сумма
+                                    гранта:<br/> {summary}
+                                </div>}
 
                             <div className={styles.popupPost__directionAndOrganization}>
                                 <div className={styles.popupPost__organization + ' ' + styles.popupPost__col}>
@@ -80,7 +102,7 @@ const PopupPost = <T extends TGrant | TCompetition>({fields, setIsActive, isActi
                                 {link && <a href={link} rel="noopener noreferrer" target="_blank"
                                             className={styles.popupPost__link}>Страница гранта</a>}
                                 {linkPDF && <a href={linkPDF} rel="noopener noreferrer" target="_blank"
-                                            className={styles.popupPost__link}>Прикрепленный файл</a>}
+                                               className={styles.popupPost__link}>Прикрепленный файл</a>}
                             </div>
 
                             <div className={styles.popupPost__btns}>

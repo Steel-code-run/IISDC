@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import styles from './CardCompetition.module.scss';
 import {TCompetition} from "@iisdc/types";
-import PopupPost from "../UI/PopupPost/PopupPost";
+import PopupPost, {TTypesOfPosts} from "../UI/PopupPost/PopupPost";
 
 export interface CardCompetitionProps extends TCompetition {
 }
@@ -38,22 +38,25 @@ const CardCompetition: FC<CardCompetitionProps> = ({
                     <h4 className={styles.cardCompetition__organization}>{organization}</h4>
                 </div>
             </div>
-            <PopupPost<TCompetition>
+            <PopupPost<TTypesOfPosts>
                 isActive={isActive}
                 setIsActive={setIsActive}
-                fields={
-                    {
-                        id,
-                        namePost,
-                        organization,
-                        deadline,
-                        fullText,
-                        link,
-                        timeOfParse,
-                        direction,
-                        dateCreationPost,
-                        linkPDF
-                    }}
+                id={id}
+                namePost={namePost}
+                organization={organization}
+                deadline={deadline}
+                fullText={fullText}
+                link={link}
+                linkPDF={linkPDF}
+                timeOfParse={timeOfParse}
+                direction={direction}
+                dateCreationPost={dateCreationPost}
+                summary={''}
+                directionForSpent={''}
+                conditions={''}
+                requirements={''}
+                responsibilities={''}
+                salary={''}
             />
         </>
 
