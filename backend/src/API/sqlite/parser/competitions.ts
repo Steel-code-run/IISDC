@@ -5,10 +5,13 @@ import {TCompetition} from "@iisdc/types";
 import {
     createTableIfNotExist,
     universalAddPost,
-    universalCount, universalDeletePost, universalDropTable,
+    universalCount,
+    universalDeletePost,
+    universalDropTable,
     universalGetPosts,
     universalIsPostExist,
-    universalIsTableExist, universalUpdatePost
+    universalIsTableExist,
+    universalUpdatePost
 } from "../helpers/tableManipulations";
 
 const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','parser.db'));
@@ -27,6 +30,7 @@ export const createTable = ()=>{
             'direction STRING,' +
             'fullText STRING,' +
             'link STRING,' +
+            'linkPDF STRING,' +
             'organization STRING,' +
             'timeOfParse DATETIME,' +
             'deadline STRING' +

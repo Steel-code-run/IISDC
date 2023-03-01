@@ -1,47 +1,61 @@
 import React, {FC} from 'react';
 import styles from './CardCompetition.module.scss';
 import {TCompetition} from "@iisdc/types";
+import PopupPost from "../UI/PopupPost/PopupPost";
 
 export interface CardCompetitionProps extends TCompetition {
 }
 
 const CardCompetition: FC<CardCompetitionProps> = ({
-    id,
-    dateCreationPost,
-    direction,
-    organization,
-    deadline,
-    link,
-    namePost,
-    fullText}) => {
-
+                                                       id,
+                                                       dateCreationPost,
+                                                       direction,
+                                                       namePost,
+                                                       organization,
+                                                       deadline,
+                                                       fullText,
+                                                       link,
+                                                       timeOfParse,
+                                                       linkPDF
+                                                   }) => {
     const [isActive, setIsActive] = React.useState<boolean>(false)
 
+    const date = new Date(Number(timeOfParse))
+    const formateDate = {
+        day: date.getDate(),
+        month: ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1),
+        year: date.getFullYear()
+    }
+
     return (
-        <div className={styles.cardCompetition} data-testid="CardCompetition">
-            <>
-                <div className={styles.cardPost} data-testid="CardPost">
-                    <div className={styles.cardPost__data}>{dateCreationPost}</div>
-                    {direction && <div className={styles.cardPost__direction}>{direction}</div>}
-                    <div className={styles.cardPost__wrapper}>
-                        <h1 onClick={() => setIsActive(!isActive)} className={styles.cardPost__name}>{namePost}</h1>
-                        <h4 className={styles.cardPost__organization}>{organization}</h4>
-                    </div>
+        <>
+            <div onClick={() => setIsActive(!isActive)} className={styles.cardCompetition} data-testid="CardPost">
+                <div
+                    className={styles.cardCompetition__data}>{formateDate.day + '.' + formateDate.month + '\n' + formateDate.year}</div>
+                {direction && <div className={styles.cardCompetition__direction}>{direction}</div>}
+                <div className={styles.cardCompetition__wrapper}>
+                    <h1 className={styles.cardCompetition__name}>{namePost}</h1>
+                    <h4 className={styles.cardCompetition__organization}>{organization}</h4>
                 </div>
-                {/*<PopupPost isActive={isActive}*/}
-                {/*           setIsActive={setIsActive}*/}
-                {/*           namePost={namePost}*/}
-                {/*           dateCreationPost={dateCreationPost}*/}
-                {/*           direction={direction}*/}
-                {/*           organization={organization}*/}
-                {/*           deadline={deadline}*/}
-                {/*           summary={summary}*/}
-                {/*           directionForSpent={directionForSpent}*/}
-                {/*           fullText={fullText}*/}
-                {/*           link={link}*/}
-                {/*           linkPDF={linkPDF}/>*/}
-            </>
-        </div>
+            </div>
+            <PopupPost<TCompetition>
+                isActive={isActive}
+                setIsActive={setIsActive}
+                fields={
+                    {
+                        id,
+                        namePost,
+                        organization,
+                        deadline,
+                        fullText,
+                        link,
+                        timeOfParse,
+                        direction,
+                        dateCreationPost,
+                        linkPDF
+                    }}
+            />
+        </>
 
     )
 };

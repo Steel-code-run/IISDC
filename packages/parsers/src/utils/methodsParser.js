@@ -68,6 +68,7 @@ const definePostDescription = (postType, jsdom, querySelectors, link, url) => {
                     deadline: getDataBySelector(jsdom, querySelectors?.deadline),
                     direction: 'направление',
                     fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
+                    linkPDF: getLinksPDF(jsdom, querySelectors?.linkPDF, url),
                     link,
                 },
             };

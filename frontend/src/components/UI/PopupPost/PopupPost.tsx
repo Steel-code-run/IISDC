@@ -1,10 +1,11 @@
-import React, {FC, useState} from 'react';
+import React, {useState} from 'react';
 import styles from './PopupPost.module.scss';
-import {TGrant} from "@iisdc/types";
 import cross from '../../../assets/images/crossExit.svg'
 import {useDeletePostGrantMutation, useUpdatePostGrantMutation} from "../../../api/posts.api";
+import {TCompetition, TGrant} from "@iisdc/types";
 
-export interface PopupPostProps extends TGrant {
+export interface PopupPostProps<T, >{
+    fields: T,
     isActive: boolean
     setIsActive: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -16,28 +17,15 @@ export interface IUpdateData {
     directionForSpent?: string | null
 }
 
-const PopupPost: FC<PopupPostProps> = ({
-                                           id,
-                                           isActive,
-                                           setIsActive,
-                                           fullText,
-                                           namePost,
-                                           organization,
-                                           direction,
-                                           summary,
-                                           link,
-                                           linkPDF,
-                                           dateCreationPost,
-                                           deadline,
-                                           directionForSpent,
-                                       }) => {
+const PopupPost = <T extends TGrant | TCompetition>({fields, setIsActive, isActive}: PopupPostProps<T>) => {
+    const {namePost,dateCreationPost,deadline,fullText,direction,organization,id,link,timeOfParse, linkPDF} = fields
     const [isEdit, setIsEdit] = useState<boolean>(false)
     const [updateData, setUpdateData] = useState<IUpdateData>({
         id,
         organization,
         direction,
-        directionForSpent
     })
+    console.log(linkPDF)
 
     const [deletePost] = useDeletePostGrantMutation()
     const [updatePost] = useUpdatePostGrantMutation()
@@ -61,10 +49,6 @@ const PopupPost: FC<PopupPostProps> = ({
                                 <div
                                     className={styles.popupPost__deadline}>{'Дата окончания подачи заявок \n' + deadline}</div>
                             </div>
-                            {summary &&
-                            <div className={styles.popupPost__summary + ' ' + styles.popupPost__col}>Сумма
-                                гранта:<br/> {summary}
-                            </div>}
 
                             <div className={styles.popupPost__directionAndOrganization}>
                                 <div className={styles.popupPost__organization + ' ' + styles.popupPost__col}>
@@ -88,17 +72,7 @@ const PopupPost: FC<PopupPostProps> = ({
                                 </div>
 
                             </div>
-                            <div className={styles.popupPost__directionForSpent + ' ' + styles.popupPost__col}>
-                                Направление расходных средств: <p contentEditable={isEdit}
-                                                                 suppressContentEditableWarning={true}
-                                                                 onInput={(e) => {
-                                                                     const target = e.target as HTMLElement;
-                                                                     setUpdateData({
-                                                                         ...updateData,
-                                                                         directionForSpent: target.textContent
-                                                                     })
-                                                                 }}>{directionForSpent}</p>
-                            </div>
+
                             <div className={styles.popupPost__fullText + ' ' + styles.popupPost__col}>{fullText}</div>
                         </div>
                         <div className={styles.popupPost__footer}>
@@ -106,7 +80,7 @@ const PopupPost: FC<PopupPostProps> = ({
                                 {link && <a href={link} rel="noopener noreferrer" target="_blank"
                                             className={styles.popupPost__link}>Страница гранта</a>}
                                 {linkPDF && <a href={linkPDF} rel="noopener noreferrer" target="_blank"
-                                               className={styles.popupPost__link}>PDF файл</a>}
+                                            className={styles.popupPost__link}>Прикрепленный файл</a>}
                             </div>
 
                             <div className={styles.popupPost__btns}>
