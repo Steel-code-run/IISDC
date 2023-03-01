@@ -30,7 +30,7 @@ const AuthForm: FC<AuthFormProps> = () => {
                 role: 1
             })
             const token = answer.headers.authorization.replace('Bearer ', '')
-            if(answer.data.message === 'success') navigate('/home')
+            if(answer.data.message === 'success') navigate('/grants')
             window.localStorage.setItem('token', token)
 
         } catch (err: any) {

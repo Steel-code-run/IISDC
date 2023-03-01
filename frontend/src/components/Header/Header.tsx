@@ -30,17 +30,17 @@ const Header: FC<HeaderProps> = () => {
                             <>
                                 <ul className={styles.header__nav}>
                                     <li className={styles.header__nav__navItem}>
-                                        <Link to={'/home'}>Главная</Link>
+                                        <Link to={'/home'}>Статистика</Link>
                                     </li>
                                     <li className={styles.header__nav__navItem}>
                                         <Link to={'/grants'}>Гранты</Link>
                                     </li>
-                                    <li className={styles.header__nav__navItem}>
-                                        <Link to={'/vacancies'}>Вакансии</Link>
-                                    </li>
-                                    <li className={styles.header__nav__navItem}>
-                                        <Link to={'/internships'}>Стажировки</Link>
-                                    </li>
+                                    {/*<li className={styles.header__nav__navItem}>*/}
+                                    {/*    <Link to={'/vacancies'}>Вакансии</Link>*/}
+                                    {/*</li>*/}
+                                    {/*<li className={styles.header__nav__navItem}>*/}
+                                    {/*    <Link to={'/internships'}>Стажировки</Link>*/}
+                                    {/*</li>*/}
                                     <li className={styles.header__nav__navItem}>
                                         <Link to={'/competitions'}>Конкурсы</Link>
                                     </li>
