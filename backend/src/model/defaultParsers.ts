@@ -56,12 +56,6 @@ const parsersParams = [
         parserType: TParserType.nodejs
     },
     {
-        name: "cptgrantov",
-        url: ".",
-        fileUrl: "cptgrantov",
-        parserType: TParserType.nodejs
-    },
-    {
         name: "fadm.gov",
         url: ".",
         fileUrl: "fadm.gov",

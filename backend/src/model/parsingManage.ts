@@ -11,7 +11,7 @@ import {
 import {toNormalCompetition, toNormalGrant, toNormalInternship, toNormalVacancy} from "../helpers/toNormalPost";
 import {isPostInDbByLevenstein} from "../helpers/isPostInDbByLevenstein";
 import {sendNewGrantToTelegram} from "../telegram/frequentlySendPosts";
-
+import classify from "@iisdc/ai"
 
 
 export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallParams) => {
@@ -24,6 +24,7 @@ export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallPara
 
         if (!isPostInDbByLevenstein(grant,last500Posts)) {
             // добавляем в бд
+            grant.direction = classify(grant.fullText)
             grant.timeOfParse = new Date().getTime()
             sqliteGrants.add(toNormalGrant(grant));
             sendNewGrantToTelegram(toNormalGrant(grant))
@@ -91,6 +92,7 @@ export const competitionsManage = (competitions: TCompetition[], parsersCallPara
 
         if (!isPostInDbByLevenstein(competition,last500Posts)) {
             // добавляем в бд
+            competition.direction = classify(competition.fullText)
             competition.timeOfParse = new Date().getTime()
             sqliteCompetitions.add(toNormalCompetition(competition));
             if (newCompetitions === 0) parseNextPage = true;
