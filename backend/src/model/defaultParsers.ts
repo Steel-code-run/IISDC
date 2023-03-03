@@ -96,7 +96,20 @@ const parsersParams = [
         url: ".",
         fileUrl: "фонд_культ._иниц",
         parserType: TParserType.nodejs
-    }
+    },
+    {
+        name: 'президентские_гранты',
+        url: ".",
+        fileUrl: "президентские_гранты",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'docs.edu.gov',
+        url: ".",
+        fileUrl: "docs.edu.gov",
+        parserType: TParserType.nodejs
+    },
+
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
