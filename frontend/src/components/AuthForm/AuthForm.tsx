@@ -72,7 +72,7 @@ const AuthForm: FC<AuthFormProps> = () => {
 
             <div className={styles.authForm__footerForm}>
                 <p> Забыли <a href="#">пароль?</a></p>
-                <a href="#">Зарегестрироваться</a>
+                <a href="#">Зарегистрироваться</a>
             </div>
         </form>
 
