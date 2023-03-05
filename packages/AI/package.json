@@ -4,6 +4,7 @@
     "main": "index.js",
     "type": "commonjs",
     "dependencies": {
-        "natural": "^6.2.0"
+        "natural": "^6.2.0",
+        "@iisdc/types": "file: ../types"
     }
 }
