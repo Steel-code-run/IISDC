@@ -20,13 +20,8 @@ interface IGetCountGrants {
     direction?: string
 }
 
-interface IGetCountCompetitions extends IGetCountGrants{
-
-}
-
-
-export const postsApi = createApi({
-    reducerPath: 'postsApi',
+export const grantsApi = createApi({
+    reducerPath: 'grantsApi',
     baseQuery: fetchBaseQuery(
         {
             baseUrl: process.env.REACT_APP_SERVER_URL,
@@ -36,7 +31,7 @@ export const postsApi = createApi({
             method: 'POST'
 
         }),
-    tagTypes: ['Grants', 'Competitions'],
+    tagTypes: ['Grants'],
     endpoints: (builder) => ({
 
         getGrants: builder.query<any, IGetGrants>({
@@ -88,46 +83,10 @@ export const postsApi = createApi({
             }),
             invalidatesTags: [{type: 'Grants', id: 'LIST'}]
         }),
-        getDirections: builder.query<any, void>({
+        getDirectionsGrants: builder.query<any, void>({
             query: () => 'grants/getDirections'
         }),
-        getVacancies: builder.query<any, void>({
-            query: () => 'vacancies/get',
-        }),
-        getInternships: builder.query<any, void>({
-            query: () => 'internships/get',
-        }),
-        getCompetitions: builder.query<any, IGetCompetitions>({
-            query: ({limit, from, namePost, direction}) => {
-                return {
-                    url: 'competitions/get',
-                    body: {
-                        limit: limit,
-                        from,
-                        namePost,
-                        direction
-                    }
-                }
-            },
-            providesTags: (result) =>
-                result?.data
-                    ? [
-                        ...result?.data.map(({ id } : any) => ({ type: 'Competitions' as const, id })),
-                        { type: 'Competitions', id: 'LIST' },
-                    ]
-                    : [{ type: 'Competitions', id: 'LIST' }],
-        }),
-        getCountСompetitions: builder.query<any, IGetCountCompetitions>({
-            query: ({namePost, direction}) => {
-                return {
-                    url: 'competitions/count',
-                    body: {
-                        namePost,
-                        direction
-                    }
-                }
-            }
-        }),
+
         getBeautifulStats : builder.query<any, void>({
             query: () => 'stats/getBeautifulStats'
         })
@@ -136,14 +95,10 @@ export const postsApi = createApi({
 });
 
 export const {
-    useGetCountСompetitionsQuery,
     useUpdatePostGrantMutation,
     useDeletePostGrantMutation,
-    useGetDirectionsQuery,
+    useGetDirectionsGrantsQuery,
     useGetBeautifulStatsQuery,
     useGetGrantsQuery,
     useGetCountGrantsQuery,
-    useGetCompetitionsQuery,
-    useGetInternshipsQuery,
-    useGetVacanciesQuery
-} = postsApi;
+} = grantsApi;

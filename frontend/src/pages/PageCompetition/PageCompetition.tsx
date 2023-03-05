@@ -6,8 +6,13 @@ import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import {Dna} from "react-loader-spinner";
 import '../../styles/spinner-loader.scss';
-import {useGetCompetitionsQuery, useGetCountСompetitionsQuery} from "../../api/posts.api";
+import {
+    useGetCompetitionsQuery,
+    useGetCountСompetitionsQuery,
+    useGetDirectionsCompetitionsQuery
+} from "../../api/competitions.api";
 import CardCompetition from "../../components/CardCompetition/CardCompetition";
+import Dropdown from "../../components/UI/Dropdown/Dropdown";
 
 export interface PageCompetitionsProps {
 }
@@ -17,17 +22,47 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     const [page, setPage] = useState<number>(1)
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
-    
+    const [choicedDirection, setChoicedDirection] = useState('Все направления')
+    const generatorRequestCompetitions = (type: string) => {
 
-    const {data: totalCountPosts} = useGetCountСompetitionsQuery({
-        namePost: debounceValue,
-    });
+        if (type === 'haveDirection') {
+            return {
+                limit: amountPostsPerPage,
+                from: (page - 1) * amountPostsPerPage,
+                namePost: debounceValue,
+                direction: choicedDirection
+            }
+        }
+        return {
+            limit: amountPostsPerPage,
+            from: (page - 1) * amountPostsPerPage,
+            namePost: debounceValue,
+        }
 
-    const {data = [], error, isLoading} = useGetCompetitionsQuery({
-        limit: amountPostsPerPage,
-        from: (page - 1) * amountPostsPerPage,
-        namePost: debounceValue,
-    });
+    }
+    const generatorRequestCompetitionsCount = (type: string) => {
+
+        if (type === 'haveDirection') {
+            return {
+                namePost: debounceValue,
+                direction: choicedDirection
+            }
+        }
+        return {
+            namePost: debounceValue,
+        }
+
+    }
+    const {data: totalCountPosts} = useGetCountСompetitionsQuery(
+        generatorRequestCompetitionsCount((choicedDirection !== 'Все направления')
+        ? 'haveDirection'
+        : 'noDirection'));
+
+    const {data = [], error, isLoading} = useGetCompetitionsQuery(
+        generatorRequestCompetitions((choicedDirection !== 'Все направления')
+            ? 'haveDirection'
+            : 'noDirection'));
+    const {data: directions} = useGetDirectionsCompetitionsQuery();
 
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
@@ -48,7 +83,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
 
     useEffect(() => {
         setPage(1)
-    }, [debounceValue, setDebounceValue])
+    }, [debounceValue, setDebounceValue, choicedDirection, setChoicedDirection])
 
 
     useEffect(() => {
@@ -68,7 +103,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
             <div className={styles.pageCompetition} data-testid="PageCompetition">
                 <div className="container">
                     <Search cbDebounce={setDebounceValue}/>
-                    {/*<Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>*/}
+                    <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
 
 
                     <div className={styles.pageCompetition__wrapper}>

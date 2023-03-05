@@ -1,18 +1,9 @@
 import React, {FC} from 'react';
 import styles from './PageHome.module.scss';
 import Header from "../../components/Header/Header";
-import {
-    ArcElement,
-    BarElement,
-    CategoryScale,
-    Chart as ChartJS,
-    Legend,
-    LinearScale,
-    Title,
-    Tooltip,
-} from 'chart.js';
+import {ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip,} from 'chart.js';
 import {Pie,} from 'react-chartjs-2';
-import {useGetBeautifulStatsQuery} from "../../api/posts.api";
+import {useGetBeautifulStatsQuery} from "../../api/grants.api";
 
 
 export interface PageHomeProps {

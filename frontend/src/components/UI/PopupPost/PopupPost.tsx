@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styles from './PopupPost.module.scss';
 import cross from '../../../assets/images/crossExit.svg'
-import {useDeletePostGrantMutation, useUpdatePostGrantMutation} from "../../../api/posts.api";
+import {useDeletePostGrantMutation, useUpdatePostGrantMutation} from "../../../api/grants.api";
 import {TCompetition, TGrant, TInternship, TVacancy} from "@iisdc/types";
 
 export type TTypesOfPosts = TGrant & TCompetition & TInternship & TVacancy

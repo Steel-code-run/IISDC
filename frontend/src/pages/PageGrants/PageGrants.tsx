@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './PageGrants.module.scss';
-import {useGetCountGrantsQuery, useGetDirectionsQuery, useGetGrantsQuery} from "../../api/posts.api";
+import {useGetCountGrantsQuery, useGetDirectionsGrantsQuery, useGetGrantsQuery} from "../../api/grants.api";
 import CardPost from "../../components/CardGrant/CardPost";
 import Header from "../../components/Header/Header";
 import {TGrant} from "@iisdc/types";
@@ -60,7 +60,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
         generatorRequestGrant((choicedDirection !== 'Все направления')
             ? 'haveDirection'
             : 'noDirection'));
-    const {data: directions} = useGetDirectionsQuery();
+    const {data: directions} = useGetDirectionsGrantsQuery();
 
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
