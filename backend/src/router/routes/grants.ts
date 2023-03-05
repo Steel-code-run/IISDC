@@ -3,7 +3,7 @@ import {generateAnswer} from "../../utils/generateServerAnswer";
 import * as sqliteGrants from "../../API/sqlite/parser/grants";
 import {toNormalGrant} from "../../helpers/toNormalPost";
 import {Router} from "express";
-import {answerMessage, TGrant} from "@iisdc/types";
+import {answerMessage, DirectionType, TGrant} from "@iisdc/types";
 import {isUserCanEnter} from "../../auth/isUserCanEnter";
 
 
@@ -104,17 +104,12 @@ router.post("/grants/getDirections", (req:ICustomRequest, res)=>{
     if (!isUserCanEnter(req,res)){
         return;
     }
-    let directions
-    try {
-        directions = sqliteGrants.getDirections().map((el:any)=> el.direction);
+    let directions:any[] = [];
 
-    } catch (e) {
-        res.json(generateAnswer({
-            message:answerMessage.unknownError,
-            data: e.message
-        }))
-        return
+    for (let directionTypeKey in DirectionType) {
+        directions.push(DirectionType[directionTypeKey as keyof typeof DirectionType])
     }
+
 
     res.json(generateAnswer({
         message: answerMessage.success,
