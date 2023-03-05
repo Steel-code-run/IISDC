@@ -1,9 +1,16 @@
 .pageHome {
 
   &__graphic {
-    width: 70%;
+    width: 100%;
     height: 400px;
     display: flex;
     justify-content: center;
+
+    & > canvas {
+      height: 400px;
+      width: 400px;
+    }
+
+
   }
 }

@@ -13,6 +13,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const PageHome: FC<PageHomeProps> = () => {
     const {data: stats} = useGetBeautifulStatsQuery();
+    console.log(stats)
 
     const arrayStats = []
 

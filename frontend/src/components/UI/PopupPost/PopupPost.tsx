@@ -61,8 +61,8 @@ const PopupPost = <T extends TTypesOfPosts>({
                         <div className={styles.popupPost__fields}>
                             <div className={styles.popupPost__namePost}>{namePost}</div>
                             <div className={styles.popupPost__dates}>
-                                <div className={styles.popupPost__dateCreationPost}>{'Дата  \n' +
-                                    'создания поста\n' + (new Date(dateCreationPost)?.toLocaleDateString())?.replace(',', '\n')}</div>
+                                <div className={styles.popupPost__dateCreationPost}>{(dateCreationPost) ? 'Дата  \n' +
+                                    'создания поста\n' + (new Date(dateCreationPost)?.toLocaleDateString())?.replace(',', '\n') : 'Не указано'}</div>
                                 <div
                                     className={styles.popupPost__deadline}>{'Дата окончания подачи заявок \n' + deadline}</div>
                             </div>
