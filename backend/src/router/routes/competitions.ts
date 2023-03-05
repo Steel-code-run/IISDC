@@ -1,6 +1,6 @@
 import {Router} from "express";
 import {isUserCanEnter} from "../../auth/isUserCanEnter";
-import {answerMessage, TCompetition} from "@iisdc/types";
+import {answerMessage, DirectionType, TCompetition} from "@iisdc/types";
 import {ICustomRequest} from "../../types/request";
 import {toNormalCompetition} from "../../helpers/toNormalPost";
 import {generateAnswer} from "../../utils/generateServerAnswer";
@@ -100,5 +100,22 @@ router.post("/competitions/delete",(req:ICustomRequest,res) => {
     sqliteCompetitions.deleteCompetition(id)
 
     res.json(generateAnswer({message:answerMessage.success, data:competition}))
+})
+
+router.post("/competitions/getDirections", (req:ICustomRequest, res)=>{
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+    let directions:any[] = [];
+
+    for (let directionTypeKey in DirectionType) {
+        directions.push(DirectionType[directionTypeKey as keyof typeof DirectionType])
+    }
+
+
+    res.json(generateAnswer({
+        message: answerMessage.success,
+        data: directions
+    }))
 })
 export default router

@@ -1,12 +1,15 @@
 import * as sqliteParser from "../API/sqlite/parser/parser";
 import {parserCallQueuePush, parserCallQueuePushMany, parserCallQueueShift} from "./parserQueue";
-import {generateDefaultParsers} from "./defaultParsers";
 import {
-    isCompetitionPost, isGrantPost,
-    isInternshipPost, isVacancyPost,
-    TCompetition, TGrant,
+    isCompetitionPost,
+    isGrantPost,
+    isInternshipPost,
+    isVacancyPost,
+    TCompetition,
+    TGrant,
     TInternship,
-    TParserCallParams, TPost,
+    TParserCallParams,
+    TPost,
     TVacancy
 } from "@iisdc/types";
 import {consoleLog} from "../utils/consoleLog";
@@ -17,7 +20,7 @@ import {activateAutomateAddingParsers} from "./automateAddingParsers";
 const parserOptions = {
     isFirstBoot: true,
     parsersInThisMoment: 0,
-    maxParsersInThisMoment: 2,
+    maxParsersInThisMoment: 5,
 }
 
 export const enableParserScheduler = () => {

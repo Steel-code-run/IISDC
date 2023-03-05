@@ -18,4 +18,4 @@ __exportStar(require("./src/serial/serverAnswers"), exports);
 __exportStar(require("./src/serial/parser"), exports);
 __exportStar(require("./src/serial/users"), exports);
 __exportStar(require("./src/typeGuards"), exports);
-//# sourceMappingURL=index.js.map
+__exportStar(require("./src/serial/directionType"), exports);
