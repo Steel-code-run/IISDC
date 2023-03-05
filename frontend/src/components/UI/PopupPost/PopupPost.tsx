@@ -73,7 +73,8 @@ const PopupPost = <T extends TTypesOfPosts>({
                                 </div>}
 
                             <div className={styles.popupPost__directionAndOrganization}>
-                                <div className={styles.popupPost__organization + ' ' + styles.popupPost__col}>
+                                <div data-tip={organization}
+                                     className={styles.popupPost__organization + ' ' + styles.popupPost__col}>
                                     Организаторы: <p contentEditable={isEdit}
                                                      suppressContentEditableWarning={true}
                                                      onInput={(e) => {
@@ -84,7 +85,8 @@ const PopupPost = <T extends TTypesOfPosts>({
                                                          })
                                                      }}>{organization}</p>
                                 </div>
-                                <div className={styles.popupPost__direction + ' ' + styles.popupPost__col}>
+                                <div data-tip={direction}
+                                     className={styles.popupPost__direction + ' ' + styles.popupPost__col}>
                                     Направление: <p contentEditable={isEdit}
                                                     suppressContentEditableWarning={true}
                                                     onInput={(e) => {
