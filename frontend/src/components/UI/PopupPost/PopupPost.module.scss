@@ -149,7 +149,7 @@
         visibility: visible;
         opacity: 1;
         bottom: calc(100% + 10px);
-        transition: 0.3s all;
+        transition: 0.1s ease-out;
       }
     }
 
@@ -161,7 +161,7 @@
 
       position: absolute;
       content: attr(data-tip);
-      transition: 0.3s all;
+      transition: 0.1s ease-out;
       bottom: 100%;
       visibility: hidden;
       opacity: 0;
