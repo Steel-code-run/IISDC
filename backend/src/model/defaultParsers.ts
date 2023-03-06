@@ -55,6 +55,12 @@ const parsersParams = [
         fileUrl: "tvoyhod",
         parserType: TParserType.nodejs
     },
+    // {
+    //     name: "cptgrantov",
+    //     url: ".",
+    //     fileUrl: "cptgrantov",
+    //     parserType: TParserType.nodejs
+    // },
     {
         name: "fadm.gov",
         url: ".",
@@ -84,7 +90,26 @@ const parsersParams = [
         url: ".",
         fileUrl: "eee-science",
         parserType: TParserType.nodejs
-    }
+    },
+    {
+        name: 'фонд_культ._иниц',
+        url: ".",
+        fileUrl: "фонд_культ._иниц",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'президентские_гранты',
+        url: ".",
+        fileUrl: "президентские_гранты",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'docs.edu.gov',
+        url: ".",
+        fileUrl: "docs.edu.gov",
+        parserType: TParserType.nodejs
+    },
+
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];

@@ -1,5 +1,4 @@
-import {TCompetition, TInternship, TVacancy} from "@iisdc/types";
-import {TGrant} from "@iisdc/types";
+import {TCompetition, TGrant, TInternship, TVacancy} from "@iisdc/types";
 
 const normalCompetition:TCompetition = {
     namePost: "",
@@ -7,6 +6,7 @@ const normalCompetition:TCompetition = {
     deadline: "",
     direction: "",
     fullText: "",
+    linkPDF: "",
     link: "",
     organization: "",
     timeOfParse: 0

@@ -3,11 +3,7 @@ import * as sqliteGrants from "../API/sqlite/parser/grants";
 import * as sqliteCompetitions from "../API/sqlite/parser/competitions";
 import * as sqliteVacancies from "../API/sqlite/parser/vacancies"
 import * as sqliteInternships from "../API/sqlite/parser/internships"
-import {
-    TCompetition,
-    TGrant, TInternship, TParserCallParams,
-    TVacancy
-} from "@iisdc/types";
+import {TCompetition, TGrant, TInternship, TParserCallParams, TVacancy} from "@iisdc/types";
 import {toNormalCompetition, toNormalGrant, toNormalInternship, toNormalVacancy} from "../helpers/toNormalPost";
 import {isPostInDbByLevenstein} from "../helpers/isPostInDbByLevenstein";
 import {sendNewGrantToTelegram} from "../telegram/frequentlySendPosts";

@@ -2,8 +2,15 @@
 
   &__graphic {
     width: 100%;
-    height: 800px;
+    height: 400px;
     display: flex;
     justify-content: center;
+
+    & > canvas {
+      height: 400px;
+      width: 400px;
+    }
+
+
   }
 }

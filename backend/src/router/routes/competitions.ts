@@ -17,6 +17,7 @@ const getCompetitions = (req:ICustomRequest) =>{
         deadline: req.body.deadline,
         fullText: req.body.fullText,
         link: req.body.link,
+        linkPDF: req.body.linkPDF,
         timeOfParse: req.body.timeOfParse,
         id:req.body.id,
     }

@@ -1,4 +1,5 @@
 import {DirectionType} from "@iisdc/types"
+
 const Design = {
     name: DirectionType.Design,
     props: [

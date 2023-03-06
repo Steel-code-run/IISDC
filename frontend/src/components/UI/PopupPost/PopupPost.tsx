@@ -1,13 +1,20 @@
-import React, {FC, useState} from 'react';
+import React, {useState} from 'react';
 import styles from './PopupPost.module.scss';
-import {TGrant} from "@iisdc/types";
 import cross from '../../../assets/images/crossExit.svg'
-import {useDeletePostGrantMutation, useUpdatePostGrantMutation} from "../../../api/posts.api";
+import {useDeletePostGrantMutation, useUpdatePostGrantMutation} from "../../../api/grants.api";
+import {TCompetition, TGrant, TInternship, TVacancy} from "@iisdc/types";
 
-export interface PopupPostProps extends TGrant {
-    isActive: boolean
-    setIsActive: React.Dispatch<React.SetStateAction<boolean>>
+export type TTypesOfPosts = TGrant & TCompetition & TInternship & TVacancy
+
+export type TPopupPostProps<T> = {
+    [field in keyof T]: T[field];
+
 }
+type TPropsState = {
+    isActive: boolean;
+    setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 
 export interface IUpdateData {
     id: number | undefined,
@@ -16,27 +23,25 @@ export interface IUpdateData {
     directionForSpent?: string | null
 }
 
-const PopupPost: FC<PopupPostProps> = ({
-                                           id,
-                                           isActive,
-                                           setIsActive,
-                                           fullText,
-                                           namePost,
-                                           organization,
-                                           direction,
-                                           summary,
-                                           link,
-                                           linkPDF,
-                                           dateCreationPost,
-                                           deadline,
-                                           directionForSpent,
-                                       }) => {
+const PopupPost = <T extends TTypesOfPosts>({
+                                                namePost,
+                                                dateCreationPost,
+                                                direction,
+                                                organization,
+                                                id,
+                                                linkPDF,
+                                                link,
+                                                deadline,
+                                                fullText,
+                                                setIsActive,
+                                                isActive,
+                                                summary,
+                                            }: TPopupPostProps<T> & TPropsState) => {
     const [isEdit, setIsEdit] = useState<boolean>(false)
     const [updateData, setUpdateData] = useState<IUpdateData>({
         id,
         organization,
         direction,
-        directionForSpent
     })
 
     const [deletePost] = useDeletePostGrantMutation()
@@ -56,18 +61,20 @@ const PopupPost: FC<PopupPostProps> = ({
                         <div className={styles.popupPost__fields}>
                             <div className={styles.popupPost__namePost}>{namePost}</div>
                             <div className={styles.popupPost__dates}>
-                                <div className={styles.popupPost__dateCreationPost}>{'Дата  \n' +
-                                    'создания поста\n' + (new Date(dateCreationPost)?.toLocaleDateString())?.replace(',', '\n')}</div>
+                                <div className={styles.popupPost__dateCreationPost}>{(dateCreationPost) ? 'Дата  \n' +
+                                    'создания поста\n' + (new Date(dateCreationPost)?.toLocaleDateString())?.replace(',', '\n') : 'Не указано'}</div>
                                 <div
                                     className={styles.popupPost__deadline}>{'Дата окончания подачи заявок \n' + deadline}</div>
                             </div>
+
                             {summary &&
-                            <div className={styles.popupPost__summary + ' ' + styles.popupPost__col}>Сумма
-                                гранта:<br/> {summary}
-                            </div>}
+                                <div className={styles.popupPost__summary + ' ' + styles.popupPost__col}>Сумма
+                                    гранта:<br/> {summary}
+                                </div>}
 
                             <div className={styles.popupPost__directionAndOrganization}>
-                                <div className={styles.popupPost__organization + ' ' + styles.popupPost__col}>
+                                <div data-tip={organization}
+                                     className={styles.popupPost__organization + ' ' + styles.popupPost__col}>
                                     Организаторы: <p contentEditable={isEdit}
                                                      suppressContentEditableWarning={true}
                                                      onInput={(e) => {
@@ -78,7 +85,8 @@ const PopupPost: FC<PopupPostProps> = ({
                                                          })
                                                      }}>{organization}</p>
                                 </div>
-                                <div className={styles.popupPost__direction + ' ' + styles.popupPost__col}>
+                                <div data-tip={direction}
+                                     className={styles.popupPost__direction + ' ' + styles.popupPost__col}>
                                     Направление: <p contentEditable={isEdit}
                                                     suppressContentEditableWarning={true}
                                                     onInput={(e) => {
@@ -88,17 +96,7 @@ const PopupPost: FC<PopupPostProps> = ({
                                 </div>
 
                             </div>
-                            <div className={styles.popupPost__directionForSpent + ' ' + styles.popupPost__col}>
-                                Направление расходных средств: <p contentEditable={isEdit}
-                                                                 suppressContentEditableWarning={true}
-                                                                 onInput={(e) => {
-                                                                     const target = e.target as HTMLElement;
-                                                                     setUpdateData({
-                                                                         ...updateData,
-                                                                         directionForSpent: target.textContent
-                                                                     })
-                                                                 }}>{directionForSpent}</p>
-                            </div>
+
                             <div className={styles.popupPost__fullText + ' ' + styles.popupPost__col}>{fullText}</div>
                         </div>
                         <div className={styles.popupPost__footer}>
@@ -106,7 +104,7 @@ const PopupPost: FC<PopupPostProps> = ({
                                 {link && <a href={link} rel="noopener noreferrer" target="_blank"
                                             className={styles.popupPost__link}>Страница гранта</a>}
                                 {linkPDF && <a href={linkPDF} rel="noopener noreferrer" target="_blank"
-                                               className={styles.popupPost__link}>PDF файл</a>}
+                                               className={styles.popupPost__link}>Прикрепленный файл</a>}
                             </div>
 
                             <div className={styles.popupPost__btns}>
