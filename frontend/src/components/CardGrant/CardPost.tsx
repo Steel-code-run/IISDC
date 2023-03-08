@@ -35,7 +35,7 @@ const CardPost: FC<CardPostProps> = ({
             <div onClick={() => setIsActive(!isActive)} className={styles.cardPost} data-testid="CardPost">
                 <div
                     className={styles.cardPost__data}>{formateDate.day + '.' + formateDate.month + '\n' + formateDate.year}</div>
-                {direction && <div className={styles.cardPost__direction}>{direction}</div>}
+                {/*{direction && <div className={styles.cardPost__direction}>{direction}</div>}*/}
                 <div className={styles.cardPost__wrapper}>
                     <h1 className={styles.cardPost__name}>{namePost}</h1>
                     {summary && <div className={styles.cardPost__summary}>{'Сумма гранта: ' + summary}</div>}
@@ -57,11 +57,6 @@ const CardPost: FC<CardPostProps> = ({
                 dateCreationPost={dateCreationPost}
                 summary={summary}
                 directionForSpent={directionForSpent}
-                conditions={''}
-                requirements={''}
-                responsibilities={''}
-                salary={''}
-
             />
         </>
 
