@@ -69,6 +69,8 @@ router.post("/competitions/update", (req:ICustomRequest, res) => {
 
     const competition = getCompetitions(req)
 
+    competition.direction = JSON.stringify(competition.direction)
+
     try {
         sqliteCompetitions.update(competition)
     } catch (e) {

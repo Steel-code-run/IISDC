@@ -88,6 +88,8 @@ router.post("/grants/update", (req:ICustomRequest, res) => {
 
     const grant = getGrant(req)
 
+    grant.direction = JSON.stringify(grant.direction);
+
     try {
         sqliteGrants.updateGrant(grant)
     } catch (e) {
