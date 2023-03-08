@@ -124,7 +124,7 @@ const _universalGetPosts = <T>(
     if (!query)
         query = `SELECT * FROM ${tableName} `
 
-    query += createWhereQuery(post,["namePost", "fullText"]);
+    query += createWhereQuery(post,["namePost", "fullText", "direction"]);
     let timeQuery = createWhereTimeQuery("timeOfParse", timeOfParseSince, timeOfParseTo);
     if (timeQuery.length > 0){
         if (query !== query) {
