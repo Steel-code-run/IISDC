@@ -1,12 +1,19 @@
 export enum DirectionType {
     Unknown = "Не определено",
     Design="Дизайн",
-    InnovationActivity = "Инновационная деятельность",
     IT ="IT",
-    Journalism="Журнализм",
-    Linguistics="Лингвистика",
+    Journalism="Журналистика",
     Medicine= "Медицина",
-    NaturalSciences = "Естественные науки",
     Pedagogy = "Педагогика",
-    SocialWork= "Социальная работа"
+    SocialWork= "Социальная работа",
+    drones = "Беспилотные летательные аппараты",
+    Biotech = "Биотехнологии",
+    Chemistry="Химия",
+    Geography="География",
+    Tourism = "Туризм",
+    Economy ="Экономика",
+    Philology="Филология",
+    libraryScience = "Библиотековедение",
+    Physiology="Физиология",
+
 }
