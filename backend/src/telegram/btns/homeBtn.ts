@@ -2,6 +2,7 @@ import TelegramBot from "node-telegram-bot-api";
 
 const homeBtn = {
     text:"на главную",
-} as  TelegramBot.KeyboardButton
+    callback_data:"/home"
+} as  TelegramBot.InlineKeyboardButton
 
 export default homeBtn

@@ -2,6 +2,7 @@ import TelegramBot from "node-telegram-bot-api";
 
 const toSettings = {
     text:"К настройкам",
-} as  TelegramBot.KeyboardButton
+    callback_data:"/settings"
+} as  TelegramBot.InlineKeyboardButton
 
 export default toSettings
