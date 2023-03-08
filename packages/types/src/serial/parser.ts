@@ -39,7 +39,7 @@ export type TGrant = {
 	// дата создания гранта
 	dateCreationPost: string;
 	// Направление гранта
-	direction: string;
+	direction: string |string[];
 	// организация-грантодатель
 	organization: string;
 	// дедлайн
@@ -115,7 +115,7 @@ export type TCompetition = {
 	// дедлайн
 	deadline: string;
 	// Направление
-	direction: string;
+	direction: string | string[];
 	// полный текст
 	fullText: string;
 	// название поста

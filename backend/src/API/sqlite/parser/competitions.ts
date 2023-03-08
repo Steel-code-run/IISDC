@@ -13,6 +13,7 @@ import {
     universalIsTableExist,
     universalUpdatePost
 } from "../helpers/tableManipulations";
+import {decoderShieldIt} from "@iisdc/utils";
 
 const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','parser.db'));
 
@@ -128,7 +129,7 @@ export const getCompetitions = (post:Partial<TCompetition> = {},
                              timeOfParseTo?:number|string)=> {
     try {
         createTableIfNotExist(isTableExist,createTable)
-        return universalGetPosts(
+        let posts = universalGetPosts(
             db,
             tableName,
             post,
@@ -138,6 +139,11 @@ export const getCompetitions = (post:Partial<TCompetition> = {},
             timeOfParseSince,
             timeOfParseTo
         )
+        return posts.map((el)=> {
+            el.direction = JSON.parse(decoderShieldIt(el.direction as string))
+            return el
+        })
+
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in getVacancies")
         throw new Error(e)
