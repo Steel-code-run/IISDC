@@ -12,6 +12,7 @@ import {
     universalIsTableExist, universalUpdatePost
 } from "../helpers/tableManipulations";
 import * as fs from "fs";
+import {decoderShieldIt} from "@iisdc/utils";
 let dbPath = path.join(__projectPath, '../../','sqlite','db','parser.db');
 let db:any;
 setDb(dbPath)
@@ -144,7 +145,7 @@ export const getGrants = (post:Partial<TGrant> = {},
                              timeOfParseTo?:number|string)=> {
     try {
         createTableIfNotExist(isTableExist,createTable)
-        return universalGetPosts(
+        let posts = universalGetPosts(
             db,
             tableName,
             post,
@@ -154,6 +155,11 @@ export const getGrants = (post:Partial<TGrant> = {},
             timeOfParseSince,
             timeOfParseTo
         )
+        return posts.map((el)=> {
+            el.direction = JSON.parse(decoderShieldIt(el.direction as string))
+            return el
+        })
+
     } catch (e) {
         consoleLog("from "+__filename +"\n" + "Error in getVacancies")
         throw new Error(e)
