@@ -82,7 +82,7 @@ router.post("/competitions/update", (req:ICustomRequest, res) => {
     }
 
     res.json(generateAnswer({
-        message:answerMessage.unknownError,
+        message:answerMessage.success,
         data: sqliteCompetitions.getCompetitions(competition)
     }))
 })
