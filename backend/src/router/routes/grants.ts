@@ -88,14 +88,19 @@ router.post("/grants/update", (req:ICustomRequest, res) => {
 
     const grant = getGrant(req)
 
+    grant.direction = JSON.stringify(grant.direction);
+
     try {
         sqliteGrants.updateGrant(grant)
     } catch (e) {
-
+        res.json(generateAnswer({
+            message:answerMessage.unknownError,
+            data: e.message
+        }))
     }
 
     res.json(generateAnswer({
-        message:answerMessage.unknownError,
+        message:answerMessage.success,
         data: sqliteGrants.getGrants(grant)
     }))
 })

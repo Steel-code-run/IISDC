@@ -16,7 +16,7 @@ export function sendNewGrantToTelegram(post:TGrant) {
 
         if ((diffDate(allowedTimeStart,curTime)>0) && diffDate(curTime,allowedTimeEnd)>0)
         {
-            bot?.sendMessage(user.telegramId, "Ура новый грант\n"+grantToString(post))
+            bot?.sendMessage(user.telegramId, "Получен новый грант \n"+grantToString(post))
         }
     })
 }

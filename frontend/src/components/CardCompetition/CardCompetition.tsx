@@ -8,8 +8,8 @@ export interface CardCompetitionProps extends TCompetition {
 
 const CardCompetition: FC<CardCompetitionProps> = ({
                                                        id,
-                                                       dateCreationPost,
                                                        direction,
+                                                       dateCreationPost,
                                                        namePost,
                                                        organization,
                                                        deadline,
@@ -32,7 +32,11 @@ const CardCompetition: FC<CardCompetitionProps> = ({
             <div onClick={() => setIsActive(!isActive)} className={styles.cardCompetition} data-testid="CardPost">
                 <div
                     className={styles.cardCompetition__data}>{formateDate.day + '.' + formateDate.month + '\n' + formateDate.year}</div>
-                {direction && <div className={styles.cardCompetition__direction}>{direction}</div>}
+                {direction && <div className={styles.cardCompetition__direction}>{(typeof direction == 'string')
+                    ? direction
+                    : (typeof direction == 'object')
+                        ? direction[0]
+                        : ''}</div>}
                 <div className={styles.cardCompetition__wrapper}>
                     <h1 className={styles.cardCompetition__name}>{namePost}</h1>
                     <h4 className={styles.cardCompetition__organization}>{organization}</h4>
@@ -53,10 +57,6 @@ const CardCompetition: FC<CardCompetitionProps> = ({
                 dateCreationPost={dateCreationPost}
                 summary={''}
                 directionForSpent={''}
-                conditions={''}
-                requirements={''}
-                responsibilities={''}
-                salary={''}
             />
         </>
 

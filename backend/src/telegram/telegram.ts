@@ -5,6 +5,7 @@ import {ISendTelegramMessage} from "../types/serializables";
 import {consoleLog} from "../utils/consoleLog";
 import {__projectPath} from "../utils/projectPath";
 import {onMsgScenario} from "./scenario";
+import * as process from "process";
 dotenv.config({path:path.join(__projectPath,'../',`.env.${process.env.NODE_ENV}`)});
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -12,6 +13,8 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 export let bot: TelegramBot | null = null;
 
 function initTelegramBot() {
+	if (process.env.WITHOUT_TELEGRAM_BOT  === "true")
+		return
 	if (token === undefined) {
 		throw new Error('Telegram bot token or chat id is undefined');
 	}
@@ -30,6 +33,9 @@ export async function sendTelegramMessage({ chatId, message }: ISendTelegramMess
 }
 
 export function frequentlyInitTelegramBot(){
+	if (process.env.WITHOUT_TELEGRAM_BOT  === "true")
+		return
+
 	try {
 		initTelegramBot()
 	} catch (e) {

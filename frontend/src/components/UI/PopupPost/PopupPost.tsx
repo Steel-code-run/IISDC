@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import styles from './PopupPost.module.scss';
 import cross from '../../../assets/images/crossExit.svg'
 import {useDeletePostGrantMutation, useUpdatePostGrantMutation} from "../../../api/grants.api";
-import {TCompetition, TGrant, TInternship, TVacancy} from "@iisdc/types";
+import {TCompetition, TGrant} from "@iisdc/types";
 
-export type TTypesOfPosts = TGrant & TCompetition & TInternship & TVacancy
+export type TTypesOfPosts = TGrant & TCompetition
 
 export type TPopupPostProps<T> = {
     [field in keyof T]: T[field];
@@ -19,7 +19,7 @@ type TPropsState = {
 export interface IUpdateData {
     id: number | undefined,
     organization?: string | null,
-    direction?: string | null,
+    direction?: string | string[] | null,
     directionForSpent?: string | null
 }
 
@@ -41,8 +41,9 @@ const PopupPost = <T extends TTypesOfPosts>({
     const [updateData, setUpdateData] = useState<IUpdateData>({
         id,
         organization,
-        direction,
+        direction
     })
+
 
     const [deletePost] = useDeletePostGrantMutation()
     const [updatePost] = useUpdatePostGrantMutation()
@@ -85,14 +86,23 @@ const PopupPost = <T extends TTypesOfPosts>({
                                                          })
                                                      }}>{organization}</p>
                                 </div>
-                                <div data-tip={direction}
+                                <div data-tip={(typeof direction == 'string')
+                                    ? direction
+                                    : (typeof direction == 'object')
+                                        ? direction.join(', ')
+                                        : ''}
                                      className={styles.popupPost__direction + ' ' + styles.popupPost__col}>
                                     Направление: <p contentEditable={isEdit}
                                                     suppressContentEditableWarning={true}
                                                     onInput={(e) => {
                                                         const target = e.target as HTMLElement;
-                                                        setUpdateData({...updateData, direction: target.textContent})
-                                                    }}>{direction}</p>
+                                                        console.log(target.textContent?.split(','))
+                                                        setUpdateData({...updateData, direction: target.textContent?.split(',')})
+                                                    }}>{(typeof direction == 'string')
+                                    ? direction
+                                    : (typeof direction == 'object')
+                                        ? direction.join(',')
+                                        : ''}</p>
                                 </div>
 
                             </div>

@@ -1,7 +1,8 @@
 import TelegramBot from "node-telegram-bot-api";
 
 const getGrantsBtn = {
-    text:"Получить последние гранты",
-} as  TelegramBot.KeyboardButton
+    text:"Получить гранты",
+    callback_data: "/getGrants"
+} as  TelegramBot.InlineKeyboardButton
 
 export default getGrantsBtn
