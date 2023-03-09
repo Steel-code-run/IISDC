@@ -161,7 +161,7 @@ export const getGrants = (post:Partial<TGrant> = {},
         })
 
     } catch (e) {
-        consoleLog("from "+__filename +"\n" + "Error in getVacancies")
+        consoleLog("from "+__filename +"\n" + "Error in getGrants")
         throw new Error(e)
     }
 
