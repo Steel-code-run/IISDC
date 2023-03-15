@@ -18,7 +18,7 @@ const automateAddingParsers = async () => {
         parserCallQueuePushMany(sqliteParser.getParsers({},0,1000));
     }
     // Проверяем каждый час
-    setTimeout(automateAddingParsers, 1000 * 60 * 60 * 60)
+    setTimeout(automateAddingParsers, 1000 * 60 * 60)
 }
 
 export const activateAutomateAddingParsers = () => {
