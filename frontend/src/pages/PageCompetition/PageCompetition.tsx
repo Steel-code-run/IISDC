@@ -69,7 +69,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
         if (sizeWindow <= 768 && sizeWindow >= 414) {
             setAmountPostsPerPage(9)
         } else if (sizeWindow <= 360) {
-            setAmountPostsPerPage(2)
+            setAmountPostsPerPage(3)
         } else if (sizeWindow > 768) {
             setAmountPostsPerPage(12)
         }

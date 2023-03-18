@@ -51,6 +51,16 @@ const PopupPost = <T extends TTypesOfPosts>({
     const body = document.body.style;
     (isActive) ? body.overflowY = 'hidden' : body.overflowY = 'scroll';
 
+    const convertDate = (date: string) => {
+        const dateCreationPost = new Date(date)?.toLocaleDateString();
+        if(dateCreationPost === 'Invalid Date') {
+            return 'Дата не указана'
+        } else  {
+            return dateCreationPost?.replace(',', '\n')
+        }
+
+    }
+
     return (
         <>
             {isActive &&
@@ -63,48 +73,49 @@ const PopupPost = <T extends TTypesOfPosts>({
                             <div className={styles.popupPost__namePost}>{namePost}</div>
                             <div className={styles.popupPost__dates}>
                                 <div className={styles.popupPost__dateCreationPost}>{(dateCreationPost) ? 'Дата  \n' +
-                                    'создания поста\n' + (new Date(dateCreationPost)?.toLocaleDateString())?.replace(',', '\n') : 'Не указано'}</div>
+                                    'создания поста:\n' + convertDate(dateCreationPost): 'Не указано'}</div>
                                 <div
                                     className={styles.popupPost__deadline}>{'Дата окончания подачи заявок \n' + deadline}</div>
                             </div>
+                            <div className={styles.popupPost__fields__row}>
 
-                            {summary &&
-                                <div className={styles.popupPost__summary + ' ' + styles.popupPost__col}>Сумма
-                                    гранта:<br/> {summary}
-                                </div>}
+                                <div className={styles.popupPost__directionAndOrganization}>
+                                    <div data-tip={organization}
+                                         className={styles.popupPost__organization + ' ' + styles.popupPost__col}>
+                                        Организаторы: <p contentEditable={isEdit}
+                                                         suppressContentEditableWarning={true}
+                                                         onInput={(e) => {
+                                                             const target = e.target as HTMLElement;
+                                                             setUpdateData({
+                                                                 ...updateData,
+                                                                 organization: target.textContent
+                                                             })
+                                                         }}>{organization}</p>
+                                    </div>
+                                    <div data-tip={(typeof direction == 'string')
+                                        ? direction
+                                        : (Array.isArray(direction))
+                                            ? direction.join(', ')
+                                            : ''}
+                                         className={styles.popupPost__direction + ' ' + styles.popupPost__col}>
+                                        Направление: <p contentEditable={isEdit}
+                                                        suppressContentEditableWarning={true}
+                                                        onInput={(e) => {
+                                                            const target = e.target as HTMLElement;
+                                                            console.log(target.textContent?.split(','))
+                                                            setUpdateData({...updateData, direction: target.textContent?.split(',')})
+                                                        }}>{(typeof direction == 'string')
+                                        ? direction
+                                        : (Array.isArray(direction))
+                                            ? direction.join(',')
+                                            : ''}</p>
+                                    </div>
 
-                            <div className={styles.popupPost__directionAndOrganization}>
-                                <div data-tip={organization}
-                                     className={styles.popupPost__organization + ' ' + styles.popupPost__col}>
-                                    Организаторы: <p contentEditable={isEdit}
-                                                     suppressContentEditableWarning={true}
-                                                     onInput={(e) => {
-                                                         const target = e.target as HTMLElement;
-                                                         setUpdateData({
-                                                             ...updateData,
-                                                             organization: target.textContent
-                                                         })
-                                                     }}>{organization}</p>
                                 </div>
-                                <div data-tip={(typeof direction == 'string')
-                                    ? direction
-                                    : (typeof direction == 'object')
-                                        ? direction.join(', ')
-                                        : ''}
-                                     className={styles.popupPost__direction + ' ' + styles.popupPost__col}>
-                                    Направление: <p contentEditable={isEdit}
-                                                    suppressContentEditableWarning={true}
-                                                    onInput={(e) => {
-                                                        const target = e.target as HTMLElement;
-                                                        console.log(target.textContent?.split(','))
-                                                        setUpdateData({...updateData, direction: target.textContent?.split(',')})
-                                                    }}>{(typeof direction == 'string')
-                                    ? direction
-                                    : (typeof direction == 'object')
-                                        ? direction.join(',')
-                                        : ''}</p>
-                                </div>
-
+                                {summary &&
+                                    <div className={styles.popupPost__summary + ' ' + styles.popupPost__col}>Сумма
+                                        гранта:<br/> {summary}
+                                    </div>}
                             </div>
 
                             <div className={styles.popupPost__fullText + ' ' + styles.popupPost__col}>{fullText}</div>
