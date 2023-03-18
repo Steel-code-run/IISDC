@@ -32,6 +32,7 @@ export function setDb(newPath:string){
     dbPath = newPath
     db = require('better-sqlite3')(dbPath)
 }
+
 export const tableName = "grants"
 export const protectedFromDrop = false
 
@@ -39,7 +40,7 @@ export const createTable = ()=>{
     try {
         db.prepare('CREATE TABLE grants(' +
             'id INTEGER PRIMARY KEY AUTOINCREMENT,' +
-            'namePost STRING,' +
+            'namePost STRING collate nocase,' +
             'dateCreationPost STRING,' +
             'direction STRING,' +
             'organization STRING,' +
