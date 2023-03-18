@@ -1,4 +1,4 @@
-const grantRegExp = /((грант)|(субсид)|(преми)|(проект))/igm
+const grantRegExp = /((грант)|(субсид)|(преми)|(проект)|(стартап)|(startup))/igm
 const competitionRegExp = /(конкурс)|(олимп)|(хакат)/gim;
 const vacancyRegExp = /(ваканс)/igm
 const internshipRegExp = /(стажировк)/igm
