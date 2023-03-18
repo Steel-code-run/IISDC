@@ -59,7 +59,10 @@ describe(parserFileUrl,()=>{
         return dataPromise.then(data=>{
             return dataFromPage2Promise.then(dataFromPage2=>{
                 let res = true;
-                dataFromPage2.forEach((el,index)=>{
+                data.forEach((el,index)=>{
+                    if (!dataFromPage2[index])
+                        return
+
                     if ((dataFromPage2[index].postDescription.namePost ===
                         data[index].postDescription.namePost) && (dataFromPage2[index].postDescription.link ===
                         data[index].postDescription.link))
