@@ -3,7 +3,7 @@ import {TParserCallParams, TParserResult} from "@iisdc/types";
 import {parserCallParamsFixture} from "./fixtures/parserCallParams";
 import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 
-const parserFileUrl = "guap"
+const parserFileUrl = "chemeco"
 
 let parserCallParams = parserCallParamsFixture(parserFileUrl)
 let data:  TParserResult;
