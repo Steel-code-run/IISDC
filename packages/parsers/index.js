@@ -41,4 +41,3 @@ const callParser = async (params) => {
     }
 };
 exports.callParser = callParser;
-//# sourceMappingURL=index.js.map
