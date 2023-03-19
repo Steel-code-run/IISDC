@@ -3,24 +3,25 @@ import {TParserResult} from "@iisdc/types";
 import {parserCallParamsFixture} from "./fixtures/parserCallParams";
 import {describe, expect, test} from '@jest/globals';
 
-const parserFileUrl = "fondpotanin"
+const parserFileUrl = "sowa-ru"
 
 let parserCallParams = parserCallParamsFixture(parserFileUrl)
 let data:  TParserResult;
+let dataFromPage2:  TParserResult;
 
 describe(parserFileUrl,()=>{
 
     test(":: have connection with parser", ()=>{
         async function getPosts(){
             data = await callParser(parserCallParams)
-            // dataFromPage2 = await callParser({...parserCallParams, page: 2})
+            dataFromPage2 = await callParser({...parserCallParams, page: 2})
             return true
         }
 
         return getPosts().then((r)=>{
             expect(r).toBe(true)
         })
-    }, 120 * 1000)
+    }, 60000)
 
     test(":: have some posts",()=>{
         expect(data.length).toBeGreaterThan(0)
@@ -48,6 +49,20 @@ describe(parserFileUrl,()=>{
         let res = true;
         data.forEach((el)=>{
             if (el.postDescription.link.length < 1)
+                res = false
+        })
+        expect(res).toBe(true)
+    })
+
+    test(":: page 2 started with new posts", ()=>{
+        let res = true;
+        data.forEach((el,index)=>{
+            if (!dataFromPage2[index])
+                return
+
+            if ((dataFromPage2[index].postDescription.namePost ===
+                data[index].postDescription.namePost) && (dataFromPage2[index].postDescription.link ===
+                data[index].postDescription.link))
                 res = false
         })
         expect(res).toBe(true)

@@ -1,9 +1,9 @@
 import {callParser} from "../index";
-import {TParserResult} from "@iisdc/types";
+import {TParserResult, TPostType} from "@iisdc/types";
 import {parserCallParamsFixture} from "./fixtures/parserCallParams";
 import {describe, expect, test} from '@jest/globals';
 
-const parserFileUrl = "fondpotanin"
+const parserFileUrl = "фонд_культ._иниц"
 
 let parserCallParams = parserCallParamsFixture(parserFileUrl)
 let data:  TParserResult;
@@ -13,14 +13,13 @@ describe(parserFileUrl,()=>{
     test(":: have connection with parser", ()=>{
         async function getPosts(){
             data = await callParser(parserCallParams)
-            // dataFromPage2 = await callParser({...parserCallParams, page: 2})
             return true
         }
 
         return getPosts().then((r)=>{
             expect(r).toBe(true)
         })
-    }, 120 * 1000)
+    }, 60000)
 
     test(":: have some posts",()=>{
         expect(data.length).toBeGreaterThan(0)
@@ -46,8 +45,9 @@ describe(parserFileUrl,()=>{
 
     test(":: all posts contains link", ()=>{
         let res = true;
+
         data.forEach((el)=>{
-            if (el.postDescription.link.length < 1)
+            if((el.postType === TPostType.grant || el.postType === TPostType.competition) && el.postDescription.linkPDF.length < 1)
                 res = false
         })
         expect(res).toBe(true)

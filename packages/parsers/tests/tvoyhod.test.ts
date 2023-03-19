@@ -3,24 +3,25 @@ import {TParserResult} from "@iisdc/types";
 import {parserCallParamsFixture} from "./fixtures/parserCallParams";
 import {describe, expect, test} from '@jest/globals';
 
-const parserFileUrl = "fondpotanin"
+const parserFileUrl = "tvoyhod"
 
 let parserCallParams = parserCallParamsFixture(parserFileUrl)
 let data:  TParserResult;
+let dataFromPage2:  TParserResult;
 
 describe(parserFileUrl,()=>{
 
     test(":: have connection with parser", ()=>{
         async function getPosts(){
             data = await callParser(parserCallParams)
-            // dataFromPage2 = await callParser({...parserCallParams, page: 2})
+            dataFromPage2 = await callParser({...parserCallParams, page: 2})
             return true
         }
 
         return getPosts().then((r)=>{
             expect(r).toBe(true)
         })
-    }, 120 * 1000)
+    }, 60000)
 
     test(":: have some posts",()=>{
         expect(data.length).toBeGreaterThan(0)
