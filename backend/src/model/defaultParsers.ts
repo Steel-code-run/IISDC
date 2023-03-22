@@ -109,7 +109,24 @@ const parsersParams = [
         fileUrl: "docs.edu.gov",
         parserType: TParserType.nodejs
     },
-
+    {
+        name: 'skyconf',
+        url: ".",
+        fileUrl: "skyconf",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'sdtech',
+        url: ".",
+        fileUrl: "sdtech",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'itonecup',
+        url: ".",
+        fileUrl: "itonecup",
+        parserType: TParserType.nodejs
+    },
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
