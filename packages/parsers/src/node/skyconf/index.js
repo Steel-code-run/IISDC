@@ -4,25 +4,26 @@ const {DirectionType} = require("@iisdc/types");
 
 
 const url = 'https://sfy-conf.ru/about';
+const url2 = 'https://sfy-conf.ru/contest'
 
 const querySelectors = {
-    title: '',
-    text: '',
-    deadline: '',
-    summary: '',
-    linkPDF: ''
+    title: 'div[field="title"].t017__title.t-title.t-title_xxs',
+    text: 'div[field="text"].t740__text.t-text.t-text_md',
+    deadline: 'div[field="li_descr__1647584363853"].t550__descr.t-text.t-text_xs',
+    linkPDF: 'div.t-card__title.t-heading.t-heading_md a.t-card__link'
 
 };
 
 
 (async function main() {
-    const jsdom = await getHTML(url);
+    let jsdom = await getHTML(url);
 
     const fullText = getDataBySelector(jsdom, querySelectors.text);
     const title = getDataBySelector(jsdom, querySelectors.title);
     const deadline = getDataBySelector(jsdom, querySelectors.deadline);
-    const summary = getDataBySelector(jsdom, querySelectors.summary);
-    const linkPDF = getLinksPDF(jsdom, querySelectors.linkPDF, url)
+
+    jsdom = await getHTML(url2);
+    const linkPDF = getLinksPDF(jsdom, querySelectors.linkPDF, url2)
 
 
     const parsedContent = {
@@ -31,10 +32,14 @@ const querySelectors = {
             namePost: title,
             dateCreationPost: '',
             deadline: deadline,
-            direction: [DirectionType.IT],
+            direction: [DirectionType.IT,
+                DirectionType.Medicine,
+                DirectionType.SocialWork,
+                DirectionType.Chemistry
+            ],
             fullText: fullText,
-            linkPDF: linkPDF,
-            summary: summary,
+            linkPDF: linkPDF.slice(0, 3),
+            summary: '',
             link: url,
         },
     };
