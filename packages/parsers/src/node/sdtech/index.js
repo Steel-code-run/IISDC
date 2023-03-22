@@ -1,16 +1,17 @@
 const {getHTML} = require('../../utils/getHTML.js');
 const {getLinksPosts} = require('../../utils/methodsParser.js');
-const {getInfoPosts, getDataBySelector} = require("../../utils/methodsParser");
+const {getInfoPosts, getDataBySelector, getLinksPDF} = require("../../utils/methodsParser");
 const {DirectionType, TPostType} = require("@iisdc/types");
 
 
-const url = '';
+const url = 'https://sdtech.sk.ru/';
 
 const querySelectors = {
-    title: 'div[data-elem-id="1470209944682"] div.tn-atom',
-    text: 'div[data-elem-id="1470209944682"] div.tn-atom',
-    deadline: 'div[data-elem-id="1677193455925"] div.tn-atom',
-    summary: 'div[data-elem-id="1677279410569"] div.tn-atom'
+    title: 'div.main-banner__title',
+    text: 'div.who-search__inner',
+    deadline: 'div.time-element__date',
+    summary: 'div.why-participate__item.light ul li strong',
+    linkPDF: 'a.docs__link'
 
 };
 
@@ -22,6 +23,7 @@ const querySelectors = {
     const title = getDataBySelector(jsdom, querySelectors.title);
     const deadline = getDataBySelector(jsdom, querySelectors.deadline);
     const summary = getDataBySelector(jsdom, querySelectors.summary);
+    const linkPDF = getLinksPDF(jsdom, querySelectors.linkPDF, url)
 
 
     const parsedContent = {
@@ -32,7 +34,7 @@ const querySelectors = {
             deadline: deadline,
             direction: [DirectionType.IT],
             fullText: fullText,
-            linkPDF: '',
+            linkPDF: linkPDF,
             summary: summary,
             link: url,
         },
