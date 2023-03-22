@@ -2,7 +2,6 @@ const {getHTML} = require('../../utils/getHTML.js');
 const {getLinksPosts} = require('../../utils/methodsParser.js');
 const { definePostDescription} = require("../../utils/methodsParser");
 
-
 const url = 'https://fondpotanin.ru/competitions/';
 const baseUrl = 'https://fondpotanin.ru';
 
