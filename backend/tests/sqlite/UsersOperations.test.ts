@@ -4,11 +4,12 @@ import path from "path";
 import {__projectPath} from "../../src/utils/projectPath";
 import {IUser} from "@iisdc/types";
 import {userFixture} from "../fixtures/userFixture";
+import {usersTableName} from "../../src/API/sqlite/config";
 
 
 let usersOperations: IUsersOperations
 
-const testingSqliteDb = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','users.db'));
+const testingSqliteDb = require('better-sqlite3')(path.join(__projectPath,'../','tests','testingSqlite','users.db'));
 
 let randomUser:IUser
 describe("UsersOperations",()=>{
@@ -17,7 +18,10 @@ describe("UsersOperations",()=>{
     })
 
     test("Init object",()=>{
-        usersOperations = new UsersOperations()
+        usersOperations = new UsersOperations(
+            testingSqliteDb,
+            usersTableName
+        )
     })
 
     describe("Create and get user", ()=>{

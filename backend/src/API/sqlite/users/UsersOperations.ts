@@ -4,10 +4,28 @@ import {consoleLog} from "../../../utils/consoleLog";
 import {usersDb, usersTableName} from "../config";
 import {IUser} from "@iisdc/types";
 import {query} from "express";
+import {DefaultOperation, IDefaultOperations} from "../DefaultOperations";
 
-export interface IUsersOperations {
+/**
+ * класс для операции с пользователями из БД
+ */
+export interface IUsersOperations extends IDefaultOperations{
+    /**
+     * Получаем пользователя из бд по id
+     * @param id
+     */
     getUser(id:number): IUser;
+
+    /**
+     * Вставляет в таблицу пользователя
+     * @param user
+     */
     insertUser(user:IUser): number;
+
+    /**
+     * Получаем пользователя из бд по имени
+     * @param name
+     */
     getUserByName(name:string):IUser;
 }
 
@@ -15,18 +33,9 @@ export interface IUsersOperations {
 /**
  * класс для операции с пользователями из БД
  */
-export class UsersOperations implements IUsersOperations{
-    private db;
-    private readonly tableName;
-    constructor(db?:any,tableName?:string) {
-        this.db = db || usersDb
-        this.tableName = tableName || usersTableName
-    };
+export class UsersOperations extends DefaultOperation implements IUsersOperations{
 
-    /**
-     * Получаем пользователя из бд по id
-     * @param id
-     */
+
     getUser(id:number){
 
         const  query = `SELECT id,name,password,role FROM ${this.tableName} WHERE id = '${id}'`
@@ -45,10 +54,7 @@ export class UsersOperations implements IUsersOperations{
         }
     }
 
-    /**
-     * Получаем пользователя из бд по имени
-     * @param name
-     */
+
     getUserByName(name:string){
 
         const  query = `SELECT id,name,password,role FROM ${this.tableName} WHERE name = '${name}'`
@@ -59,17 +65,14 @@ export class UsersOperations implements IUsersOperations{
             consoleLog(`
             Ошибка в UsersOperations, getUserByName name = ${name} \n
             query ->\n
-            ${JSON.stringify(query)}\n
+            ${query}\n
             ${e}            
             `);
             throw new Error(e);
         }
     }
 
-    /**
-     * Вставляет в таблицу пользователя
-     * @param user
-     */
+
     insertUser(user:IUser) {
         const query =  `
                 INSERT INTO ${this.tableName}
@@ -83,7 +86,7 @@ export class UsersOperations implements IUsersOperations{
             consoleLog(`
             Ошибка в UsersOperations, insertUser ${JSON.stringify(user,null,2)} \n
             query ->\n
-            ${JSON.stringify(query)}\n
+            ${query}\n
             ${e}            
             `);
             throw new Error(e);
