@@ -82,7 +82,7 @@ const PopupPost = <T extends TTypesOfPosts>({
                                 <div className={styles.popupPost__directionAndOrganization}>
                                     <div data-tip={organization}
                                          className={styles.popupPost__organization + ' ' + styles.popupPost__col}>
-                                        Организаторы: <p contentEditable={isEdit}
+                                         Организаторы: <p contentEditable={isEdit}
                                                          suppressContentEditableWarning={true}
                                                          onInput={(e) => {
                                                              const target = e.target as HTMLElement;
