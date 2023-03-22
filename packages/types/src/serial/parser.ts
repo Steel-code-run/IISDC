@@ -54,6 +54,7 @@ export type TGrant = {
 	link: string;
 	// ссылка на PDF
 	linkPDF: string;
+	sourceLink?:string;
 	// время парсинга
 	timeOfParse?: number;
 }
@@ -82,6 +83,7 @@ export type TVacancy = {
 	link: string;
 	// время парсинга
 	timeOfParse?: number;
+	sourceLink?:string;
 }
 
 export type TInternship = {
@@ -130,6 +132,7 @@ export type TCompetition = {
 	linkPDF: string;
 	// время парсинга
 	timeOfParse?: number;
+	sourceLink?:string;
 }
 
 export type TPost<T extends  TPostType> = {
