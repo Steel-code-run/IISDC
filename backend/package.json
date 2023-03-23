@@ -27,10 +27,10 @@
         "typescript": "^4.9.4"
     },
     "dependencies": {
+        "@iisdc/ai": "file:../packages/ai",
         "@iisdc/parser": "file:../packages/parsers",
         "@iisdc/types": "file: ../packages/types",
         "@iisdc/utils": "file:../packages/utils",
-        "@iisdc/ai": "file:../packages/ai",
         "@types/rewire": "^2.5.28",
         "better-sqlite3": "^8.0.1",
         "cors": "^2.8.5",

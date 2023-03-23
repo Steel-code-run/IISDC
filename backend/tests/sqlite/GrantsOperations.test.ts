@@ -7,6 +7,7 @@ import {userFixture} from "../fixtures/userFixture";
 import {grantsTableName, usersTableName} from "../../src/API/sqlite/config";
 import {GrantOperations, IGrantsOperations} from "../../src/API/sqlite/parser/GrantsOperations";
 import {grantFixture} from "../fixtures/grantFixture";
+import {getMetaphone} from "../../src/API/sqlite/helpers/getMetaphone";
 
 
 let grantsOperations: IGrantsOperations
@@ -14,12 +15,14 @@ let grantsOperations: IGrantsOperations
 const testingSqliteDb = require('better-sqlite3')(path.join(__projectPath,'../','tests','testingSqlite','parser.db'));
 
 let randomGrant:TGrant
+
 describe("GrantsOperations",()=>{
     beforeEach(()=>{
         randomGrant = grantFixture()
     })
 
     test("Init object",()=>{
+
         grantsOperations = new GrantOperations(
             testingSqliteDb,
             grantsTableName

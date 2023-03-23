@@ -1,11 +1,11 @@
 import {TGrant} from "@iisdc/types";
 import {sampleRange} from "../../src/utils/samleRange";
+import sampleArray from "../../src/utils/sampleArray";
 
 export function grantFixture():TGrant{
     return {
         organization: sampleRange(0,100).toString()+"a",
-        // TODO:: array sample
-        direction: sampleRange(0,100).toString()+"a",
+        direction: sampleArray(['1\'"',"'2",'3"',"4'",'5'],3),
         link: sampleRange(0,100).toString() +"a",
         fullText: sampleRange(0,100).toString()+"a",
         id: sampleRange(0,100),

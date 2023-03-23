@@ -1,6 +1,10 @@
 import {TGrant} from "@iisdc/types";
 import {DefaultOperation} from "../DefaultOperations";
 import {consoleLog} from "../../../utils/consoleLog";
+import path from "path";
+import {__projectPath} from "../../../utils/projectPath";
+import {getMetaphone} from "../helpers/getMetaphone";
+import {createTableGrantsQuery} from "../configurateDataBase/grantTable";
 
 export interface IGrantsOperations {
     insertGrant(grant:TGrant):number;
@@ -9,6 +13,11 @@ export interface IGrantsOperations {
 }
 
 export class GrantOperations extends DefaultOperation implements IGrantsOperations{
+
+    constructor(db:any,tableName:string) {
+        super(db,tableName);
+        this.createTable();
+    }
     insertGrant(grant:TGrant): number {
         const query = `
         INSERT INTO ${this.tableName}
@@ -24,27 +33,29 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         link,
         linkPDF,
         timeOfParse,
-        sourceLink
+        sourceLink,
+        metaphone
         )
         VALUES
-        (
-        '${grant.namePost}',
-        '${grant.dateCreationPost}',
-        '${grant.direction}',
-        '${grant.organization}',
-        '${grant.deadline}',
-        '${grant.summary}',
-        '${grant.directionForSpent}',
-        '${grant.fullText}',
-        '${grant.link}',
-        '${grant.linkPDF}',
-        '${grant.timeOfParse}',
-        '${grant.sourceLink}'
-        );
+        (?,?,?,?,?,?,?,?,?,?,?,?,?);
         `
 
         try {
-            return this.db.prepare(query).run().lastInsertRowid
+            return this.db.prepare(query).run(
+                grant.namePost,
+                grant.dateCreationPost,
+                JSON.stringify(grant.direction),
+                grant.organization,
+                grant.deadline,
+                grant.summary,
+                grant.directionForSpent,
+                grant.fullText,
+                grant.link,
+                grant.linkPDF,
+                grant.timeOfParse,
+                grant.sourceLink,
+                getMetaphone(grant.namePost)
+            ).lastInsertRowid
         } catch (e) {
             consoleLog(`
             Ошибка в GrantOperations, insertGrant ${JSON.stringify(grant,null,2)} \n
@@ -77,7 +88,9 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         id = ${id};
         `
         try {
-            return this.db.prepare(query).get()
+            let grant = this.db.prepare(query).get();
+            grant.direction = JSON.parse(grant.direction)
+            return grant
         } catch (e) {
             consoleLog(`
             Ошибка в GrantOperations, getGrant id = ${id} \n
@@ -88,4 +101,24 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
             throw new Error(e);
         }
     }
+
+    setGrantToBlackList(id:number){
+    }
+
+    createTable(){
+        let query = createTableGrantsQuery;
+        try {
+            return this.db.prepare(query).run()
+        } catch (e) {
+            consoleLog(`
+            Ошибка в createTable\n
+            query ->\n
+            ${query}\n
+            ${e}            
+            `);
+            throw new Error(e);
+        }
+    }
+
+
 }
