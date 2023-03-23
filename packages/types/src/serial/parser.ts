@@ -135,7 +135,7 @@ export type TCompetition = {
 	sourceLink?:string;
 }
 
-export type TPost<T extends  TPostType> = {
+export type TPost<T extends TPostType> = {
 	postType : T;
 	postDescription:
 		T extends TPostType.grant ? TGrant :
