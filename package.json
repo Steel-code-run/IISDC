@@ -31,9 +31,7 @@
   },
   "homepage": "https://github.com/Steel-code-run/IISDC#readme",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.12",
-    "concurrently": "^7.6.0",
-    "puppeteer": "^19.7.2"
+    "concurrently": "^7.6.0"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
