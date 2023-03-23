@@ -133,6 +133,13 @@ const parsersParams = [
         fileUrl: "konkurs.rcfoundation",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'премия.мывместе',
+        url: ".",
+        fileUrl: "премия.мывместе",
+        parserType: TParserType.nodejs
+    },
+
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
