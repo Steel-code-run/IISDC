@@ -1,4 +1,5 @@
 const {convertJson} = require("../../utils/methodsParser");
+const fetch = require("node-fetch")
 
 const filterPosts = (posts) => {
     return posts

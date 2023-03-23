@@ -4,7 +4,7 @@ const {getLinksPosts} = require('../../utils/methodsParser.js');
 const {getInfoPosts} = require("../../utils/methodsParser");
 
 
-const page = process.argv[2] || 5;
+const page = process.argv[2] || 1;
 
 
 const url = 'https://fasie.ru/press/';

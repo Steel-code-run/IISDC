@@ -109,6 +109,36 @@ const parsersParams = [
         fileUrl: "docs.edu.gov",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'skyconf',
+        url: ".",
+        fileUrl: "skyconf",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'sdtech',
+        url: ".",
+        fileUrl: "sdtech",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'itonecup',
+        url: ".",
+        fileUrl: "itonecup",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'konkurs.rcfoundation',
+        url: ".",
+        fileUrl: "konkurs.rcfoundation",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'премия.мывместе',
+        url: ".",
+        fileUrl: "премия.мывместе",
+        parserType: TParserType.nodejs
+    },
 
 ]
 export const generateDefaultParsers = ():TParser[] => {

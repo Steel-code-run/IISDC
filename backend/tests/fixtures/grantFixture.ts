@@ -4,6 +4,7 @@ import {sampleRange} from "../../src/utils/samleRange";
 export function grantFixture():TGrant{
     return {
         organization: sampleRange(0,100).toString()+"a",
+        // TODO:: array sample
         direction: sampleRange(0,100).toString()+"a",
         link: sampleRange(0,100).toString() +"a",
         fullText: sampleRange(0,100).toString()+"a",

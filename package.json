@@ -17,7 +17,8 @@
     "dev:built:backend": "cd ./backend && cross-env NODE_ENV=development node src/app.js",
     "dev:built": "concurrently \"npm run dev:built:backend\" \"npm run dev:built:frontend\" ",
     "build": "gulp build",
-    "start": "concurrently \"npm run start:built:backend\" \"cd ./backend && pm2\""
+    "start": "concurrently \"npm run start:built:backend\" \"cd ./backend && pm2\"",
+    "test:parsers": "cd ./packages/parsers && npm run test"
   },
   "repository": {
     "type": "git",

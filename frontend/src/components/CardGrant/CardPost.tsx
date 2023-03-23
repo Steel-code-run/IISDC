@@ -24,11 +24,6 @@ const CardPost = <T extends TPostType>({postType, props}: TComponentPage<T>) => 
             <div onClick={() => setIsActive(!isActive)} className={styles.cardPost} data-testid="CardPost">
                 <div
                     className={styles.cardPost__data}>{formateDate.day + '.' + formateDate.month + '\n' + formateDate.year}</div>
-                {direction && <div className={styles.cardPost__direction}>{(typeof direction == 'string')
-                    ? direction
-                    : (typeof direction == 'object')
-                        ? direction[0]
-                        : ''}</div>}
                 <div className={styles.cardPost__wrapper}>
                     <h1 className={styles.cardPost__name}>{namePost}</h1>
                     {summary && <div className={styles.cardPost__summary}>{'Сумма гранта: ' + summary}</div>}
