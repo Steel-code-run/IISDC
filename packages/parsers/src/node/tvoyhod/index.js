@@ -1,6 +1,6 @@
 const {exceptionWords, keyWords} = require("../../utils/wordsForParsers.js");
 const {getInfoPosts, convertJson} = require("../../utils/methodsParser");
-
+const fetch = require("node-fetch")
 const querySelectors = {
     title: 'h1.js-feed-post-title',
     link: 'div.js-feed-post.t-feed__post a.js-feed-post-link',
