@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './PageCompetition.module.scss';
 import Header from "../../components/Header/Header";
-import {TGrant} from "@iisdc/types";
+import {TGrant, TPostType} from "@iisdc/types";
 import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import {Dna} from "react-loader-spinner";
@@ -11,8 +11,8 @@ import {
     useGetCountСompetitionsQuery,
     useGetDirectionsCompetitionsQuery
 } from "../../api/competitions.api";
-import CardCompetition from "../../components/CardCompetition/CardCompetition";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
+import CardPost from "../../components/CardPost/CardPost";
 
 export interface PageCompetitionsProps {
 }
@@ -111,18 +111,21 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                             {
                                 data?.data?.map((post: TGrant) => {
                                     return (
-                                        <CardCompetition
+                                        <CardPost<TPostType.competition>
+                                            props={{
+                                                dateCreationPost: post.dateCreationPost,
+                                                linkPDF: post.linkPDF,
+                                                link: post.link,
+                                                deadline: post.deadline,
+                                                fullText: post.fullText,
+                                                id: post.id,
+                                                direction: post.direction,
+                                                namePost: post.namePost,
+                                                organization: post.organization,
+                                                timeOfParse: post.timeOfParse
+                                            }}
                                             key={post.id}
-                                            id={post.id}
-                                            dateCreationPost={post.dateCreationPost}
-                                            direction={post.direction}
-                                            namePost={post.namePost}
-                                            organization={post.organization}
-                                            deadline={post.deadline}
-                                            fullText={post.fullText}
-                                            link={post.link}
-                                            linkPDF={post.linkPDF}
-                                            timeOfParse={post.timeOfParse}
+                                            postType={TPostType.competition}
                                         />
                                     )
                                 })

@@ -1,6 +1,7 @@
 import '@reduxjs/toolkit/query/react';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {IUpdateData} from "../components/UI/PopupPost/PopupPost";
+
+// import {IUpdateData} from "../components/UI/PopupPost/PopupPost";
 
 export interface IGetCompetitions {
     limit: number,
@@ -17,7 +18,6 @@ interface IGetCountGrants {
 interface IGetCountCompetitions extends IGetCountGrants {
 
 }
-
 
 export const competitionsApi = createApi({
     reducerPath: 'competitionsApi',
@@ -67,19 +67,18 @@ export const competitionsApi = createApi({
         getDirectionsCompetitions: builder.query<any, void>({
             query: () => 'competitions/getDirections'
         }),
-        updateCompetitions: builder.mutation<any, IUpdateData>({
-            query: (updateData) => ({
-                url: 'competitions/update',
-                body: updateData
-            }),
-            invalidatesTags: [{type: 'Competitions', id: 'LIST'}]
-        }),
+        // updateCompetitions: builder.mutation<any, IUpdateData>({
+        //     query: (updateData) => ({
+        //         url: 'competitions/update',
+        //         body: updateData
+        //     }),
+        //     invalidatesTags: [{type: 'Competitions', id: 'LIST'}]
+        // }),
 
     })
 });
 
 export const {
-    useUpdateCompetitionsMutation,
     useGetDirectionsCompetitionsQuery,
     useGetCountСompetitionsQuery,
     useGetCompetitionsQuery
