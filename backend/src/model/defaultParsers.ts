@@ -127,6 +127,12 @@ const parsersParams = [
         fileUrl: "itonecup",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'konkurs.rcfoundation',
+        url: ".",
+        fileUrl: "konkurs.rcfoundation",
+        parserType: TParserType.nodejs
+    },
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
