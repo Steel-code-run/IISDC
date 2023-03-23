@@ -14,6 +14,7 @@ describe(parserFileUrl,()=>{
     test(":: have connection with parser", ()=>{
         async function getPosts(){
             data = await callParser(parserCallParams)
+            console.log(data);
             dataFromPage2 = await callParser({...parserCallParams, page: 2})
             return true
         }
