@@ -2,9 +2,8 @@ import React, {useState} from 'react';
 import styles from './PopupPost.module.scss';
 import cross from '../../../assets/images/crossExit.svg'
 import {useDeletePostGrantMutation, useUpdatePostGrantMutation} from "../../../api/grants.api";
-import {TCompetition, TGrant} from "@iisdc/types";
+import {TTypesOfPosts} from "../../../types/types";
 
-export type TTypesOfPosts = TGrant & TCompetition
 
 export type TPopupPostProps<T> = {
     [field in keyof T]: T[field];

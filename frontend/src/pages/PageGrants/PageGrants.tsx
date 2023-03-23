@@ -3,7 +3,7 @@ import styles from './PageGrants.module.scss';
 import {useGetCountGrantsQuery, useGetDirectionsGrantsQuery, useGetGrantsQuery} from "../../api/grants.api";
 import CardPost from "../../components/CardGrant/CardPost";
 import Header from "../../components/Header/Header";
-import {TGrant} from "@iisdc/types";
+import {TGrant, TPostType} from "@iisdc/types";
 import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
@@ -109,20 +109,23 @@ const PageGrants: FC<PageGrantsProps> = () => {
                             {
                                 data?.data?.map((post: TGrant) => {
                                     return (
-                                        <CardPost
+                                        <CardPost<TPostType.grant>
+                                            props={{
+                                                dateCreationPost: post.dateCreationPost,
+                                                linkPDF: post.linkPDF,
+                                                link: post.link,
+                                                deadline: post.deadline,
+                                                summary: post.summary,
+                                                directionForSpent: post.directionForSpent,
+                                                fullText: post.fullText,
+                                                id: post.id,
+                                                direction: post.direction,
+                                                namePost: post.namePost,
+                                                organization: post.organization,
+                                                timeOfParse: post.timeOfParse
+                                            }}
                                             key={post.id}
-                                            id={post.id}
-                                            dateCreationPost={post.dateCreationPost}
-                                            direction={post.direction}
-                                            namePost={post.namePost}
-                                            organization={post.organization}
-                                            deadline={post.deadline}
-                                            directionForSpent={post.directionForSpent}
-                                            fullText={post.fullText}
-                                            link={post.link}
-                                            linkPDF={post.linkPDF}
-                                            summary={post.summary}
-                                            timeOfParse={post.timeOfParse}
+                                            postType={TPostType.grant}
                                         />
                                     )
                                 })

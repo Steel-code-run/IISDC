@@ -1,29 +1,18 @@
-import React, {FC} from 'react';
+import React from 'react';
 import styles from './CardPost.module.scss';
-import {TGrant} from "@iisdc/types";
-import PopupPost, {TTypesOfPosts} from "../UI/PopupPost/PopupPost";
+import PagePost from "../../pages/PagePost/PagePost";
+import {TComponentPage} from "../../types/types";
+import {TPostType} from "@iisdc/types";
 
-export interface CardPostProps extends TGrant {
+interface ICardPost {
 
 }
 
-const CardPost: FC<CardPostProps> = ({
-                                         id,
-                                         dateCreationPost,
-                                         direction,
-                                         namePost,
-                                         organization,
-                                         deadline,
-                                         summary,
-                                         directionForSpent,
-                                         fullText,
-                                         link,
-                                         linkPDF,
-                                         timeOfParse
-                                     }) => {
+
+const CardPost = <T extends TPostType>({postType, props}: TComponentPage<T>) => {
     const [isActive, setIsActive] = React.useState<boolean>(false)
 
-    const date = new Date(Number(timeOfParse))
+    const date = new Date(Number(props.timeOfParse))
     const formateDate = {
         day: date.getDate(),
         month: ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1),
@@ -46,22 +35,14 @@ const CardPost: FC<CardPostProps> = ({
                     <h4 className={styles.cardPost__organization}>{organization}</h4>
                 </div>
             </div>
-            <PopupPost<TTypesOfPosts>
-                isActive={isActive}
-                setIsActive={setIsActive}
+
+            <PagePost<TComponentPage<TPostType.grant>>
+                postType={TPostType.grant}
                 id={id}
-                namePost={namePost}
-                organization={organization}
-                deadline={deadline}
-                fullText={fullText}
-                link={link}
-                linkPDF={linkPDF}
-                timeOfParse={timeOfParse}
-                direction={direction}
-                dateCreationPost={dateCreationPost}
-                summary={summary}
-                directionForSpent={directionForSpent}
+                props={props}
+
             />
+
         </>
 
     )
