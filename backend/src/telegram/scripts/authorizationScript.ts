@@ -5,44 +5,33 @@ import TelegramBot from "node-telegram-bot-api";
 import {telegramUser} from "../../types/serializables";
 const authKey = "testingKey"
 
-export const authorizationScript = (bot:TelegramBot,msg:TelegramBot.Message) =>{
-    const chatId = msg.chat.id
-    const telegramId = msg.from?.id
-    const key = msg.text?.split(' ')[1]
-    const user = sqliteTelegramUsers.getUsers({telegramId:msg.from?.id})[0]
+export const authorizationScript = (userId:number, key:string) =>{
+    const user = sqliteTelegramUsers.getUsers({telegramId:userId})[0]
 
 
 
     // Если уже авторизован
     if (user){
-        bot.sendMessage(chatId,answers.auth.already, {
-            reply_markup:{
-                keyboard: defaultKeyboards.home
-            }
-        })
         return
     }
     // Если ключ не правильный
     if (key !== authKey) {
-        bot.sendMessage(chatId, answers.auth.badKey)
-        return
+        throw new Error("Wrong key");
+    }
+    let userToDB:Partial<telegramUser> = {};
+    userToDB.telegramId = userId;
+    userToDB.settings = {}
+    userToDB.settings.intervalSettings = {
+        end: "24:00:00",
+        start:"00:00:00",
     }
 
     // Добавляем в бд
     try {
-        sqliteTelegramUsers.add({telegramId})
+        sqliteTelegramUsers.add(userToDB)
     } catch (e) {
-        bot.sendMessage(chatId,"Произошла ошибка при сохранении ваших данных", {
-            reply_markup:{
-                keyboard: defaultKeyboards.home
-            }
-        })
-        return
+        throw new Error("Error in sqlite");
     }
 
-    bot.sendMessage(msg.chat.id, answers.auth.successful,{
-        reply_markup: {
-            keyboard: defaultKeyboards.home
-        }
-    })
+    return true
 }

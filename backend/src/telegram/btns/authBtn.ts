@@ -2,6 +2,7 @@ import TelegramBot from "node-telegram-bot-api";
 
 const authBtn = {
     text:"Авторизироваться",
-} as  TelegramBot.KeyboardButton
+    callback_data: "/auth"
+} as  TelegramBot.InlineKeyboardButton
 
 export default authBtn

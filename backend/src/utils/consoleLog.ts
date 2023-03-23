@@ -30,7 +30,6 @@ function addLogToFile(message:string){
     while (statSync(logFilePath).size > maxLogFileSizeInByte){
         let content = readFileSync(logFilePath).toString().split("\n")
         content = content.slice(10,content.length)
-        console.log(content.length)
         writeFileSync(logFilePath,content.join("\n"))
     }
     appendFileSync(logFilePath, message + "\n", {flag:'a'})

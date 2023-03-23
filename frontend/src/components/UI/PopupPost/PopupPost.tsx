@@ -95,7 +95,6 @@ const PopupPost = <T extends TTypesOfPosts>({
                                                     suppressContentEditableWarning={true}
                                                     onInput={(e) => {
                                                         const target = e.target as HTMLElement;
-                                                        console.log(target.textContent?.split(','))
                                                         setUpdateData({...updateData, direction: target.textContent?.split(',')})
                                                     }}>{(typeof direction == 'string')
                                     ? direction
