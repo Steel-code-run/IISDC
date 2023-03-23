@@ -25,7 +25,7 @@ export const competitionsApi = createApi({
         {
             baseUrl: process.env.REACT_APP_SERVER_URL,
             headers: {
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQllQQVNTIiwicm9sZSI6OTk5LCJpZCI6LTEwMCwiaWF0IjoxNjc3MDYzODczLCJleHAiOjE3MDUwNTc0NzN9.tMDWPoOEZ2_m4ynvu1uB3noj_p-raHpMU7FHklXjfUY'
+                'Authorization': `Bearer ${window.localStorage.token}`
             },
             method: 'POST'
 

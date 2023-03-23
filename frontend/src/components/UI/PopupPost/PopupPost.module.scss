@@ -51,9 +51,16 @@
   &__fields {
     position: relative;
     display: grid;
-    grid-auto-rows: minmax(50px, auto);
-    grid-template-columns: auto;
     grid-gap: 15px 15px;
+
+    &__row {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      grid-row: 2 / 3;
+      grid-column: 1 / 5;
+      gap: 0 20px;
+    }
 
   }
 
@@ -75,11 +82,10 @@
   &__directionAndOrganization {
     display: flex;
     flex-direction: column;
-    gap: 15px 0;
 
-    grid-row: 2 / 3;
-    grid-column: 1 / 4;
-    max-width: 700px;
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px 0;
   }
 
   &__directionForSpent {
@@ -211,13 +217,13 @@
     color: #363636;
     justify-self: end;
 
-    grid-row: 2 / 3;
-    grid-column: 4 / 5;
-
+    white-space: nowrap;
     display: -webkit-box;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    position: relative;
+
   }
 
   &__editBtn {
@@ -325,40 +331,50 @@
   }
 }
 
-@media (max-width: 768px) {
+//@media (max-width: 768px) {
+//  .popupPost {
+//
+//    &__deletePost, &__savePost {
+//      width: 124px;
+//      height: 43px;
+//      font-size: 14px;
+//      line-height: 19px;
+//    }
+//
+//    &__namePost {
+//      font-size: 24px;
+//      line-height: 33px;
+//    }
+//
+//    &__organization {
+//      font-size: 20px;
+//      line-height: 27px;
+//    }
+//
+//    &__summary {
+//      font-size: 20px;
+//      line-height: 27px;
+//    }
+//
+//    &__deadline, &__dateCreationPost {
+//      width: 100px;
+//      height: 115px;
+//    }
+//  }
+//
+//}
+
+@media (max-width: 768px ) and (min-width: 540px) {
   .popupPost {
-    &__deletePost, &__savePost {
-      width: 124px;
-      height: 43px;
-      font-size: 14px;
-      line-height: 19px;
+
+    &__fields {
+      max-width: 768px;
+
+      &__row {
+        grid-row: 3 / 4;
+        grid-column: 1 / 5;
+      }
     }
-
-    &__namePost {
-      font-size: 24px;
-      line-height: 33px;
-    }
-
-    &__organization {
-      font-size: 20px;
-      line-height: 27px;
-    }
-
-    &__summary {
-      font-size: 20px;
-      line-height: 27px;
-    }
-
-    &__deadline, &__dateCreationPost {
-      width: 100px;
-      height: 115px;
-    }
-  }
-
-}
-
-@media (max-width: 540px) {
-  .popupPost {
 
     &__wrapper {
       min-height: 500px;
@@ -388,19 +404,12 @@
       line-height: 33px;
     }
 
-    &__directionAndOrganization {
-      grid-row: 3 / 4;
-      grid-column: 1 / 5;
 
-    }
 
     &__summary {
       width: 100%;
       font-size: 15px;
       line-height: 20px;
-
-      grid-row: 4 / 5;
-      grid-column: 1 / 5;
 
       height: 60px;
     }
@@ -425,7 +434,7 @@
 
 }
 
-@media (max-width: 360px) {
+@media (max-width: 410px) {
   .popupPost {
     &__btns {
       gap: 0 10px;

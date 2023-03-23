@@ -132,7 +132,7 @@ export type TCompetition = {
 	timeOfParse?: number;
 }
 
-export type TPost<T extends  TPostType> = {
+export type TPost<T extends TPostType> = {
 	postType : T;
 	postDescription:
 		T extends TPostType.grant ? TGrant :

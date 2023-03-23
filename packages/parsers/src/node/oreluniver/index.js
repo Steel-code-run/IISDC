@@ -67,6 +67,7 @@ const filterPosts = (posts) => {
                         direction: 'направление',
                         fullText:  '',
                         link: post.link,
+                        linkPDF: '',
                     },
                 };
             case 'vacancy':
