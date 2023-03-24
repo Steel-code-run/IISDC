@@ -10,12 +10,15 @@ import {shieldIt} from "@iisdc/utils";
 
 export interface IGrantsOperations extends IDefaultOperations{
     insertGrant(grant:TGrant): number
-    getGrant(id:number):TGrant;
+    getGrant(id: number): TGrant | undefined
     getGrants(props:{
         namePost: string,
         directions?: string[],
         blackListed?: number
     }):TGrant[]
+    setGrantToBlackList(id:number):void;
+    removeFromBlackList(id:number):void;
+    deleteGrant(id:number):void;
 }
 
 export class GrantOperations extends DefaultOperation implements IGrantsOperations{
@@ -88,7 +91,7 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
     }
 
 
-    getGrant(id: number): TGrant {
+    getGrant(id: number): TGrant | undefined{
         const query = `
         SELECT 
         id,
@@ -109,6 +112,8 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         `
         try {
             let grant = this.db.prepare(query).get(id);
+            if (!grant)
+                return undefined
             grant.direction = this.getGrantDirectionsByGrantId(grant.id)
             return grant
         } catch (e) {
@@ -150,11 +155,11 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
     setGrantToBlackList(id:number){
         const query  = `
         UPDATE ${this.tableName}
-        SET blackList = 1
+        SET blackListed = 1
         WHERE id = ${id}
         `
         try {
-            let grant = this.db.prepare(query).get();
+            this.db.prepare(query).run();
         } catch (e) {
             consoleLog(`
             Ошибка в GrantOperations, setGrantToBlackList id = ${id} \n
@@ -169,11 +174,11 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
     removeFromBlackList(id:number){
         const query  = `
         UPDATE ${this.tableName}
-        SET blackList = 0
+        SET blackListed = 0
         WHERE id = ${id}
         `
         try {
-            let grant = this.db.prepare(query).get();
+            this.db.prepare(query).run();
         } catch (e) {
             consoleLog(`
             Ошибка в GrantOperations, setGrantToBlackList id = ${id} \n
@@ -258,6 +263,24 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         } catch (e) {
             consoleLog(`
             Ошибка в GrantOperations, getGrants ${JSON.stringify(props)}, ${query}\n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
+            throw new Error(e);
+        }
+    }
+    deleteGrant(id:number){
+        const query = `
+            DELETE FROM ${this.tableName} 
+            WHERE 
+            (id = ${id})
+        `
+        try {
+            this.db.prepare(query).run()
+        } catch (e) {
+            consoleLog(`
+            Ошибка в GrantOperations, getGrants ${id}, ${query}\n
             query ->\n
             ${query}\n
             ${e}

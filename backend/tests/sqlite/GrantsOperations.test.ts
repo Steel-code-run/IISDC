@@ -129,8 +129,6 @@ describe("GrantsOperations",()=>{
             let expectedGrant = grantsOperations.getGrants({
                 namePost:"aaaaaaaaaaaaaaaaaaaaaaaaa"
             })[0]
-            console.log(grant);
-            console.log(expectedGrant);
             expect(expectedGrant).toMatchObject(grant)
 
         })
@@ -143,11 +141,38 @@ describe("GrantsOperations",()=>{
             }).length).toBe(0)
         })
 
-        // test("Delete grant",()=>{
-        //     if (!grant.id)
-        //         throw new Error("grant.id not defined")
-        //
-        // })
+        test("BlackList test 1",()=>{
+            grant = grantFixture()
+            grant.namePost +=" testing BlackList"
+            grant.id = grantsOperations.insertGrant(grant)
+
+            grantsOperations.setGrantToBlackList(grant.id)
+
+            expect(grantsOperations.getGrants({
+                namePost: grant.namePost,
+            }).length).toBe(0)
+        })
+
+        test("BlackList test 1",()=>{
+
+            if (!grant.id)
+                throw new Error("grant id undefined")
+
+            grantsOperations.removeFromBlackList(grant.id)
+
+            expect(grantsOperations.getGrants({
+                namePost: grant.namePost,
+            }).length).toBe(1)
+        })
+
+        test("Delete grant",()=>{
+            if (!grant.id)
+                throw new Error("grant.id not defined")
+
+            grantsOperations.deleteGrant(grant.id)
+            expect(grantsOperations.getGrant(grant.id)).toBeUndefined()
+
+        })
 
     })
 
