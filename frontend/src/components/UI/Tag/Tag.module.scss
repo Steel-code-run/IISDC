@@ -1,6 +1,7 @@
 .tag {
   width: 190px;
-  height: 20px;
+  min-height: 20px;
+  height: fit-content;
 
   background: #D9D9D9;
   border-radius: 5px;
@@ -15,4 +16,13 @@
   text-align: center;
 
   color: #000000;
+  padding: 0 10px;
+  position: relative;
+
+  cursor: pointer;
+
+  &__deleteIcon {
+    position: absolute;
+    right: 10px;
+  }
 }

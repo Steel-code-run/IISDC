@@ -32,7 +32,7 @@ const PagePost = (props: IPropsPagePost) => {
                         isPropsGrant(postType, data) &&
                         <>
                             <div className={styles.pagePost__field + ' ' + styles.pagePost__summary}>{'Сумма гранта: ' + data.summary}</div>
-                            <DropdownTags direction={data.direction}/>
+                            <DropdownTags direction={data.direction} isActiveDropdown={isEdit}/>
                             <div className={styles.pagePost__field}>{'Организаторы: ' + data.organization}</div>
                             <div
                                 className={styles.pagePost__field}>{'Направление расходывания средств: ' + data.directionForSpent}</div>
