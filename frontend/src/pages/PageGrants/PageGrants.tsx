@@ -91,7 +91,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
         setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
     }, [totalCountPosts, setAmountPages, amountPostsPerPage])
 
-    React.useEffect(() => {
+    useEffect(() => {
         (!error)
             ? navigate('/grants')
             : navigate('/')
