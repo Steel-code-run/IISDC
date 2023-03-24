@@ -9,6 +9,7 @@ import Search from "../../components/UI/Search/Search";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import {Dna} from "react-loader-spinner";
 import '../../styles/spinner-loader.scss';
+import {useNavigate} from "react-router-dom";
 
 export interface PageGrantsProps {
 }
@@ -19,6 +20,12 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState('Все направления')
+    const navigate = useNavigate()
+    React.useEffect(() => {
+        (window.localStorage.getItem('token'))
+            ? navigate('/grants')
+            : navigate('/')
+    }, [])
 
     const generatorRequestGrant = (type: string) => {
 
