@@ -82,7 +82,7 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         link,
         linkPDF,
         timeOfParse,
-        sourceLink
+        sourceLink,
         FROM ${this.tableName}
         WHERE
         id = ${id};
@@ -103,7 +103,43 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
     }
 
     setGrantToBlackList(id:number){
+        const query  = `
+        UPDATE ${this.tableName}
+        SET blackList = 1
+        WHERE id = ${id}
+        `
+        try {
+            let grant = this.db.prepare(query).get();
+        } catch (e) {
+            consoleLog(`
+            Ошибка в GrantOperations, setGrantToBlackList id = ${id} \n
+            query ->\n
+            ${query}\n
+            ${e}            
+            `);
+            throw new Error(e);
+        }
     }
+
+    unGrantToBlackList(id:number){
+        const query  = `
+        UPDATE ${this.tableName}
+        SET blackList = 0
+        WHERE id = ${id}
+        `
+        try {
+            let grant = this.db.prepare(query).get();
+        } catch (e) {
+            consoleLog(`
+            Ошибка в GrantOperations, setGrantToBlackList id = ${id} \n
+            query ->\n
+            ${query}\n
+            ${e}            
+            `);
+            throw new Error(e);
+        }
+    }
+
 
     createTable(){
         let query = createTableGrantsQuery;
@@ -120,5 +156,28 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         }
     }
 
+    getGrants(direction:string[],name:string){
+        let query = `
+        SELECT 
+        id,
+        namePost,
+        dateCreationPost,
+        direction,
+        organization,
+        deadline,
+        summary,
+        directionForSpent,
+        fullText,
+        link,
+        linkPDF,
+        timeOfParse,
+        sourceLink,
+        FROM ${this.tableName}
+        WHERE 
+        ${direction[0]?'direction':''}
+        `
+
+
+    }
 
 }
