@@ -21,13 +21,8 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState('Все направления')
     const navigate = useNavigate()
-    React.useEffect(() => {
-        (window.localStorage.getItem("token"))
-            ? navigate('/grants')
-            : navigate('/')
-    }, [])
 
-
+    console.log(window.localStorage.getItem('token'))
     const generatorRequestGrant = (type: string) => {
 
         if (type === 'haveDirection') {
@@ -35,13 +30,15 @@ const PageGrants: FC<PageGrantsProps> = () => {
                 limit: amountPostsPerPage,
                 from: (page - 1) * amountPostsPerPage,
                 namePost: debounceValue,
-                direction: choicedDirection
+                direction: choicedDirection,
+                token: window.localStorage.getItem('token')
             }
         }
         return {
             limit: amountPostsPerPage,
             from: (page - 1) * amountPostsPerPage,
             namePost: debounceValue,
+            token: window.localStorage.getItem('token')
         }
 
     }
@@ -97,6 +94,11 @@ const PageGrants: FC<PageGrantsProps> = () => {
         setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
     }, [totalCountPosts, setAmountPages, amountPostsPerPage])
 
+    React.useEffect(() => {
+        (!error)
+            ? navigate('/grants')
+            : navigate('/')
+    }, [])
 
     if (!directions?.data || isLoading) return <Dna visible={true}
                                                               height="250"
