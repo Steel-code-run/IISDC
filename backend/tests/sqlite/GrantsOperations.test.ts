@@ -1,17 +1,25 @@
 import {afterAll, beforeEach, describe, expect, test} from '@jest/globals';
 import {TGrant} from "@iisdc/types";
-import {directionsConstTableName, directionsTableName, grantsTableName} from "../../src/API/sqlite/config";
+import {
+    competitionsTableName,
+    directionsConstTableName,
+    directionsTableName,
+    grantsTableName
+} from "../../src/API/sqlite/config";
 import {GrantOperations, IGrantsOperations} from "../../src/API/sqlite/parser/GrantsOperations";
 import {grantFixture} from "../fixtures/grantFixture";
-import {parserDb} from "./config";
+
 import {DirectionsOperations} from "../../src/API/sqlite/DirectionsOperations";
 import {DirectionsConstOperations} from "../../src/API/sqlite/DirectionsConstOperations";
+import path from "path";
+import {__projectPath} from "../../src/utils/projectPath";
+import {CompetitionsOperation} from "../../src/API/sqlite/parser/CompetitionsOperation";
 
 
 let grantsOperations: IGrantsOperations
 let directionsConstOperations: DirectionsConstOperations
 let randomGrant:TGrant
-
+let parserDb = require('better-sqlite3')(path.join(__projectPath, '../','tests','testingSqlite','GrantsOperations-parser.db'));
 
 describe("GrantsOperations",()=>{
     beforeEach(()=>{
@@ -26,6 +34,7 @@ describe("GrantsOperations",()=>{
     })
 
     test("Init object",()=>{
+        new CompetitionsOperation(parserDb, competitionsTableName)
         directionsConstOperations = new DirectionsConstOperations(parserDb,directionsConstTableName)
         let directionsOperations = new DirectionsOperations(parserDb, directionsTableName, directionsConstOperations)
 
@@ -165,6 +174,24 @@ describe("GrantsOperations",()=>{
             }).length).toBe(1)
         })
 
+        test("Update grant",()=>{
+            if (!grant.id)
+                throw new Error("grant id undefined")
+
+            let newGrant = grantFixture()
+            newGrant.id = grant.id
+            grantsOperations.updateGrant(newGrant)
+
+            let updatedGrant = grantsOperations.getGrant(grant.id)
+
+            if (!updatedGrant)
+                throw new Error("не был получен грант")
+
+            updatedGrant.id = newGrant.id
+
+            expect(updatedGrant).toMatchObject(newGrant)
+        })
+
         test("Delete grant",()=>{
             if (!grant.id)
                 throw new Error("grant.id not defined")
@@ -173,10 +200,5 @@ describe("GrantsOperations",()=>{
             expect(grantsOperations.getGrant(grant.id)).toBeUndefined()
 
         })
-
     })
-
-
-
-
 })

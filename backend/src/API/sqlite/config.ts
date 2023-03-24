@@ -11,3 +11,5 @@ export const grantsTableName = "grants"
 export const directionsTableName = "directions"
 
 export const directionsConstTableName = "directions_const"
+
+export const competitionsTableName = "competitions"

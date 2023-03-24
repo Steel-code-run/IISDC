@@ -12,6 +12,7 @@ export interface IDirectionsOperations {
         tableNamePost: string,
     }):number,
     getDirections(parentId:number, tableNamePost:string):string[];
+    deleteDirections(parentId:number, parentTableName:string):void
 }
 
 
@@ -58,6 +59,24 @@ export class DirectionsOperations extends DefaultOperation implements IDirection
         } catch (e) {
             consoleLog(`
             Ошибка в DirectionsOperations, insertDirection ${props.direction}, ${direction_id}, ${props.parentID}, ${props.tableNamePost} \n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
+            throw new Error(e);
+        }
+    }
+
+    deleteDirections(parentId:number, parentTableName:string):void{
+        let query = `
+            DELETE FROM ${this.tableName} WHERE
+            (${this.tableName}.${parentTableName}_id = ${parentId})
+        `
+        try {
+            this.db.prepare(query).run()
+        } catch (e) {
+            consoleLog(`
+            Ошибка в DirectionsOperations, deleteDirections ${parentId}, ${parentTableName} \n
             query ->\n
             ${query}\n
             ${e}

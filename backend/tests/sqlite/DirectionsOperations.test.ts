@@ -1,20 +1,30 @@
 import {describe,test, expect,beforeAll,beforeEach} from '@jest/globals';
 import {DirectionsConstOperations, IDirectionsConstOperations} from "../../src/API/sqlite/DirectionsConstOperations";
-import {parserDb} from "./config";
 import {sampleRange} from "../../src/utils/samleRange";
 import {DirectionsOperations, IDirectionsOperations} from "../../src/API/sqlite/DirectionsOperations";
 import {GrantOperations, IGrantsOperations} from "../../src/API/sqlite/parser/GrantsOperations";
 import {grantFixture} from "../fixtures/grantFixture";
-import {directionsConstTableName, directionsTableName, grantsTableName} from "../../src/API/sqlite/config";
+import {
+    competitionsTableName,
+    directionsConstTableName,
+    directionsTableName,
+    grantsTableName
+} from "../../src/API/sqlite/config";
+import path from "path";
+import {__projectPath} from "../../src/utils/projectPath";
+import {CompetitionsOperation} from "../../src/API/sqlite/parser/CompetitionsOperation";
 
 let directionsConstOperations: IDirectionsConstOperations
 let directionsOperations: IDirectionsOperations
 let grantsOperations: IGrantsOperations
 let id;
 let testDirectionName = sampleRange(0,100000)+' - test'
+let parserDb = require('better-sqlite3')(path.join(__projectPath, '../','tests','testingSqlite','DirectionsOperations-parser.db'));
+
 describe("DirectionsOperations",()=>{
 
     test("Init object",()=>{
+        new CompetitionsOperation(parserDb, competitionsTableName)
         directionsConstOperations = new DirectionsConstOperations(parserDb,directionsConstTableName)
         directionsOperations = new DirectionsOperations(parserDb,directionsTableName, directionsConstOperations)
         grantsOperations = new GrantOperations(parserDb,grantsTableName, directionsOperations)

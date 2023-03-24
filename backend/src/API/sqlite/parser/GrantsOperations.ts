@@ -19,6 +19,7 @@ export interface IGrantsOperations extends IDefaultOperations{
     setGrantToBlackList(id:number):void;
     removeFromBlackList(id:number):void;
     deleteGrant(id:number):void;
+    updateGrant(grant:TGrant):void
 }
 
 export class GrantOperations extends DefaultOperation implements IGrantsOperations{
@@ -27,7 +28,7 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
     constructor(db:Database,tableName:string,directionsOperations: IDirectionsOperations) {
         super(db,tableName);
         this.createTable();
-        this.directionsOperations =directionsOperations
+        this.directionsOperations = directionsOperations
     }
     insertGrant(grant:TGrant): number {
         const query = `
@@ -79,6 +80,64 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
             }
 
             return grantId
+        } catch (e) {
+            consoleLog(`
+            Ошибка в GrantOperations, insertGrant ${JSON.stringify(grant,null,2)} \n
+            query ->\n
+            ${query}\n
+            ${e}            
+            `);
+            throw new Error(e);
+        }
+    }
+
+    updateGrant(grant:TGrant):void{
+        const query = `
+        UPDATE ${this.tableName} SET
+        namePost = ?,
+        dateCreationPost = ?,
+        organization = ?,
+        deadline = ?,
+        summary = ?,
+        directionForSpent = ?,
+        fullText = ?,
+        link = ?,
+        linkPDF = ?,
+        timeOfParse = ?,
+        sourceLink = ?,
+        metaphone = ?
+        WHERE id = ${grant.id}
+        `
+
+        try {
+
+            let grantId = Number(this.db.prepare(query).run(
+                grant.namePost,
+                grant.dateCreationPost,
+                grant.organization,
+                grant.deadline,
+                grant.summary,
+                grant.directionForSpent,
+                grant.fullText,
+                grant.link,
+                grant.linkPDF,
+                grant.timeOfParse,
+                grant.sourceLink,
+                getMetaphone(grant.namePost)
+            ).lastInsertRowid)
+
+            this.directionsOperations.deleteDirections(grantId, this.tableName)
+
+            if (Array.isArray(grant.direction)){
+                grant.direction.forEach(direction=>{
+                    this.directionsOperations.insertDirection({
+                        direction: direction,
+                        parentID: grantId,
+                        tableNamePost: this.tableName
+                    })
+                })
+            }
+
         } catch (e) {
             consoleLog(`
             Ошибка в GrantOperations, insertGrant ${JSON.stringify(grant,null,2)} \n
