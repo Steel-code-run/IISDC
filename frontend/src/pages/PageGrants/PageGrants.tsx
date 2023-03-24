@@ -21,11 +21,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState('Все направления')
     const navigate = useNavigate()
-    React.useEffect(() => {
-        (window.localStorage.getItem('token'))
-            ? navigate('/grants')
-            : navigate('/')
-    }, [])
+
 
     const generatorRequestGrant = (type: string) => {
 
@@ -95,6 +91,11 @@ const PageGrants: FC<PageGrantsProps> = () => {
         setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
     }, [totalCountPosts, setAmountPages, amountPostsPerPage])
 
+    React.useEffect(() => {
+        (!error)
+            ? navigate('/grants')
+            : navigate('/')
+    }, [])
 
     if (!directions?.data || isLoading) return <Dna visible={true}
                                                               height="250"
