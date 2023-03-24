@@ -8,6 +8,7 @@ import PageGrants from "./pages/PageGrants/PageGrants";
 import PageVacancies from "./pages/PageVacancies/PageVacancies";
 import PageInternships from "./pages/PageInternships/PageInternships";
 import PageCompetition from "./pages/PageCompetition/PageCompetition";
+import PagePost from "./pages/PagePost/PagePost";
 
 function App() {
     const navigate = useNavigate()
@@ -26,6 +27,7 @@ function App() {
                 <Route path={'/vacancies'} element={<PageVacancies/>}/>
                 <Route path={'/internships'} element={<PageInternships/>}/>
                 <Route path={'/competitions'} element={<PageCompetition/>}/>
+                <Route path={'/post'} element={<PagePost/>}/>
 
             </Routes>
 

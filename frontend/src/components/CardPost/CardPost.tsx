@@ -3,6 +3,7 @@ import styles from './CardPost.module.scss';
 import {TComponentPage} from "../../types/types";
 import {TPostType} from "@iisdc/types";
 import {isPropsCompetition, isPropsGrant, isPropsInternship, isPropsVacancy} from "../../types/typeGuards";
+import {Link} from "react-router-dom";
 
 interface ICardPost {
 
@@ -24,12 +25,12 @@ const CardPost = <T extends TPostType>({postType, props}: TComponentPage<T>) => 
                     className={styles.cardPost__data}>{formateDate.day + '.' + formateDate.month + '\n' + formateDate.year}</div>
                 <div className={styles.cardPost__wrapper}>
                     {isPropsGrant(postType, props) &&
-                        <>
+                        <Link to={'/post'} state={{data: props}}>
                             <h1 className={styles.cardPost__name}>{props.namePost}</h1>
                             {props.summary &&
                                 <div className={styles.cardPost__summary}>{'Сумма гранта: ' + props.summary}</div>}
                             <h4 className={styles.cardPost__organization}>{props.organization}</h4>
-                        </>
+                        </Link>
                     }
                     {isPropsCompetition(postType, props) &&
                         <>

@@ -7,9 +7,9 @@ import {TGrant, TPostType} from "@iisdc/types";
 import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
-import {Dna} from "react-loader-spinner";
 import '../../styles/spinner-loader.scss';
 import {useNavigate} from "react-router-dom";
+import {Dna} from "react-loader-spinner";
 
 export interface PageGrantsProps {
 }
@@ -22,10 +22,11 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [choicedDirection, setChoicedDirection] = useState('Все направления')
     const navigate = useNavigate()
     React.useEffect(() => {
-        (window.localStorage.getItem('token'))
+        (window.localStorage.getItem("token"))
             ? navigate('/grants')
             : navigate('/')
     }, [])
+
 
     const generatorRequestGrant = (type: string) => {
 
@@ -62,6 +63,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
         (choicedDirection !== 'Все направления')
             ? 'haveDirection'
             : 'noDirection'));
+
 
     const {data = [], error, isLoading} = useGetGrantsQuery(
         generatorRequestGrant((choicedDirection !== 'Все направления')

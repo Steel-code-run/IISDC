@@ -19,13 +19,14 @@ interface IGetCountGrants {
     direction?: string
 }
 
+
 export const grantsApi = createApi({
     reducerPath: 'grantsApi',
     baseQuery: fetchBaseQuery(
         {
             baseUrl: process.env.REACT_APP_SERVER_URL,
             headers: {
-                'Authorization': `Bearer ${window.localStorage.token}`,
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
             },
             method: 'POST'
 
