@@ -13,6 +13,7 @@ import {
 } from "../../api/competitions.api";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import CardPost from "../../components/CardPost/CardPost";
+import {useNavigate} from "react-router-dom";
 
 export interface PageCompetitionsProps {
 }
@@ -23,6 +24,12 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState('Все направления')
+    const navigate = useNavigate()
+    React.useEffect(() => {
+        (window.localStorage.getItem('token'))
+            ? navigate('/grants')
+            : navigate('/')
+    }, [])
     const generatorRequestCompetitions = (type: string) => {
 
         if (type === 'haveDirection') {
