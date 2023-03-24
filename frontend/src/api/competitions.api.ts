@@ -7,25 +7,20 @@ export interface IGetCompetitions {
     limit: number,
     from: number,
     namePost: string,
-    direction?: string
+    direction?: string,
+    token: string | null
 }
 
-interface IGetCountGrants {
+interface IGetCountCompetitions {
     namePost?: string,
-    direction?: string
-}
-
-interface IGetCountCompetitions extends IGetCountGrants {
-
+    direction?: string,
+    token: string | null
 }
 export const competitionsApi = createApi({
     reducerPath: 'competitionsApi',
     baseQuery: fetchBaseQuery(
         {
             baseUrl: process.env.REACT_APP_SERVER_URL,
-            headers: {
-                'Authorization': `Bearer ${window.localStorage.getItem("token")}`
-            },
             method: 'POST'
 
         }),
@@ -33,7 +28,7 @@ export const competitionsApi = createApi({
     endpoints: (builder) => ({
 
         getCompetitions: builder.query<any, IGetCompetitions>({
-            query: ({limit, from, namePost, direction}) => {
+            query: ({limit, from, namePost, direction, token}) => {
                 return {
                     url: 'competitions/get',
                     body: {
@@ -41,7 +36,10 @@ export const competitionsApi = createApi({
                         from,
                         namePost,
                         direction
-                    }
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                 }
             },
             providesTags: (result) =>
@@ -53,18 +51,27 @@ export const competitionsApi = createApi({
                     : [{type: 'Competitions', id: 'LIST'}],
         }),
         getCountСompetitions: builder.query<any, IGetCountCompetitions>({
-            query: ({namePost, direction}) => {
+            query: ({namePost, direction, token}) => {
                 return {
                     url: 'competitions/count',
                     body: {
                         namePost,
                         direction
-                    }
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                 }
             }
         }),
-        getDirectionsCompetitions: builder.query<any, void>({
-            query: () => 'competitions/getDirections'
+        getDirectionsCompetitions: builder.query<any, any>({
+            query: ({token}) => ({
+                url: 'competitions/getDirections',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+
+            })
         }),
         // updateCompetitions: builder.mutation<any, IUpdateData>({
         //     query: (updateData) => ({

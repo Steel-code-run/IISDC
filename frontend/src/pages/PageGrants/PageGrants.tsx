@@ -20,9 +20,8 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState('Все направления')
-    const navigate = useNavigate()
-
-    console.log(window.localStorage.getItem('token'))
+    const navigate = useNavigate();
+    const token = window.localStorage.getItem('token');
     const generatorRequestGrant = (type: string) => {
 
         if (type === 'haveDirection') {
@@ -31,14 +30,14 @@ const PageGrants: FC<PageGrantsProps> = () => {
                 from: (page - 1) * amountPostsPerPage,
                 namePost: debounceValue,
                 direction: choicedDirection,
-                token: window.localStorage.getItem('token')
+                token: token
             }
         }
         return {
             limit: amountPostsPerPage,
             from: (page - 1) * amountPostsPerPage,
             namePost: debounceValue,
-            token: window.localStorage.getItem('token')
+            token: token
         }
 
     }
@@ -47,27 +46,16 @@ const PageGrants: FC<PageGrantsProps> = () => {
         if (type === 'haveDirection') {
             return {
                 namePost: debounceValue,
-                direction: choicedDirection
+                direction: choicedDirection,
+                token: token
             }
         }
         return {
             namePost: debounceValue,
+            token: token
         }
 
     }
-
-    const {data: totalCountPosts} = useGetCountGrantsQuery(generatorRequestGrantCount(
-        (choicedDirection !== 'Все направления')
-            ? 'haveDirection'
-            : 'noDirection'));
-
-
-    const {data = [], error, isLoading} = useGetGrantsQuery(
-        generatorRequestGrant((choicedDirection !== 'Все направления')
-            ? 'haveDirection'
-            : 'noDirection'));
-    const {data: directions} = useGetDirectionsGrantsQuery();
-
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
         if (sizeWindow <= 768 && sizeWindow >= 414) {
@@ -79,10 +67,19 @@ const PageGrants: FC<PageGrantsProps> = () => {
         }
     }
 
-    useEffect(() => {
-        window.addEventListener('resize', () => checkSizeWindow())
-        checkSizeWindow()
-    }, [])
+    const {data: totalCountPosts} = useGetCountGrantsQuery(generatorRequestGrantCount(
+        (choicedDirection !== 'Все направления')
+            ? 'haveDirection'
+            : 'noDirection'));
+    const {data = [], error, isLoading} = useGetGrantsQuery(
+        generatorRequestGrant((choicedDirection !== 'Все направления')
+            ? 'haveDirection'
+            : 'noDirection'));
+
+
+    const {data: directions} = useGetDirectionsGrantsQuery({
+        token: token
+    });
 
 
     useEffect(() => {
@@ -95,10 +92,13 @@ const PageGrants: FC<PageGrantsProps> = () => {
     }, [totalCountPosts, setAmountPages, amountPostsPerPage])
 
     React.useEffect(() => {
-        (!error)
-            ? navigate('/grants')
-            : navigate('/')
-    }, [])
+        window.addEventListener('resize', () => checkSizeWindow())
+        checkSizeWindow();
+
+        (data.message === 'unauthorized')
+            ? navigate('/')
+            : navigate('/grants')
+    }, [isLoading])
 
     if (!directions?.data || isLoading) return <Dna visible={true}
                                                               height="250"

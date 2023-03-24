@@ -5,18 +5,14 @@ export interface IGetGrants {
     limit: number,
     from: number,
     namePost: string,
-    direction?: string
-}
-export interface IGetCompetitions {
-    limit: number,
-    from: number,
-    namePost: string,
-    direction?: string
+    direction?: string,
+    token: string | null
 }
 
 interface IGetCountGrants {
     namePost?: string,
-    direction?: string
+    direction?: string,
+    token: string | null
 }
 
 
@@ -25,17 +21,13 @@ export const grantsApi = createApi({
     baseQuery: fetchBaseQuery(
         {
             baseUrl: process.env.REACT_APP_SERVER_URL,
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            },
             method: 'POST'
 
         }),
     tagTypes: ['Grants'],
     endpoints: (builder) => ({
-
         getGrants: builder.query<any, IGetGrants>({
-            query: ({limit, from, namePost, direction}) => {
+            query: ({limit, from, namePost, direction, token}) => {
                 return {
                     url: 'grants/get',
                     body: {
@@ -43,7 +35,10 @@ export const grantsApi = createApi({
                         from,
                         namePost,
                         direction
-                    }
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
                 }
             },
             providesTags: (result) =>
@@ -55,23 +50,29 @@ export const grantsApi = createApi({
                     : [{ type: 'Grants', id: 'LIST' }],
         }),
         getCountGrants: builder.query<any, IGetCountGrants>({
-            query: ({namePost, direction}) => {
+            query: ({namePost, direction, token}) => {
                 return {
                     url: 'grants/count',
                     body: {
                         namePost,
                         direction
-                    }
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
                 }
             }
         }),
         deletePostGrant: builder.mutation<any, number>({
-            query: (id) => (
+            query: (id, ) => (
                 {
                     url: 'grants/delete',
                     body: {
                         id
-                    }
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${window.localStorage.getItem("token")}`,
+                    },
                 }
             ),
             invalidatesTags: [{type: 'Grants', id: 'LIST'}]
@@ -83,12 +84,24 @@ export const grantsApi = createApi({
         //     }),
         //     invalidatesTags: [{type: 'Grants', id: 'LIST'}]
         // }),
-        getDirectionsGrants: builder.query<any, void>({
-            query: () => 'grants/getDirections'
+        getDirectionsGrants: builder.query<any, any>({
+            query: ({token}) => (
+                {
+                    url:'grants/getDirections',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                }
+            )
         }),
 
-        getBeautifulStats : builder.query<any, void>({
-            query: () => 'stats/getBeautifulStats'
+        getBeautifulStats : builder.query<any, any>({
+            query: ({token}) => ({
+                url: 'stats/getBeautifulStats',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
         })
 
     })
