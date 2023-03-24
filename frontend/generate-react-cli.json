@@ -47,5 +47,6 @@
       "withStory": false,
       "withLazy": false
     }
-  }
+  },
+  "usesStyledComponents": true
 }

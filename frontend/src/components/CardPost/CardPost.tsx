@@ -12,7 +12,7 @@ interface ICardPost {
 
 const CardPost = <T extends TPostType>({postType, props}: TComponentPage<T>) => {
     const date = new Date(Number(props.timeOfParse))
-    const formateDate = {
+    const formatDate = {
         day: date.getDate(),
         month: ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1),
         year: date.getFullYear()
@@ -22,10 +22,10 @@ const CardPost = <T extends TPostType>({postType, props}: TComponentPage<T>) => 
         <>
             <div className={styles.cardPost} data-testid="CardPost">
                 <div
-                    className={styles.cardPost__data}>{formateDate.day + '.' + formateDate.month + '\n' + formateDate.year}</div>
+                    className={styles.cardPost__data}>{formatDate.day + '.' + formatDate.month + '\n' + formatDate.year}</div>
                 <div className={styles.cardPost__wrapper}>
                     {isPropsGrant(postType, props) &&
-                        <Link to={'/post'} state={{data: props}}>
+                        <Link to={'/post'} state={{data: props, postType}}>
                             <h1 className={styles.cardPost__name}>{props.namePost}</h1>
                             {props.summary &&
                                 <div className={styles.cardPost__summary}>{'Сумма гранта: ' + props.summary}</div>}
@@ -33,10 +33,10 @@ const CardPost = <T extends TPostType>({postType, props}: TComponentPage<T>) => 
                         </Link>
                     }
                     {isPropsCompetition(postType, props) &&
-                        <>
+                        <Link to={'/post'} state={{data: props, postType}}>
                             <h1 className={styles.cardPost__name}>{props.namePost}</h1>
                             <h4 className={styles.cardPost__organization}>{props.organization}</h4>
-                        </>
+                        </Link>
                     }
                     {isPropsInternship(postType, props) &&
                         <>

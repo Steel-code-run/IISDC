@@ -52,6 +52,7 @@ const PageHome: FC<PageHomeProps> = () => {
             <div className={styles.pageHome} data-testid="PageHome">
                 <div className="container">
                     <div className={styles.pageHome__graphic}>
+                        {'Получено за день парсерами: '}
                         <Pie
                             data={data}
                         />

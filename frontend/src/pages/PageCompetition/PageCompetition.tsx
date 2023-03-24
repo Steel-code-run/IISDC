@@ -29,7 +29,6 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
 
 
     const generatorRequestCompetitions = (type: string) => {
-
         if (type === 'haveDirection') {
             return {
                 limit: amountPostsPerPage,
