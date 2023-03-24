@@ -1,19 +1,14 @@
 import {describe,test, expect,beforeAll,beforeEach} from '@jest/globals';
-import {IUsersOperations, UsersOperations} from "../../src/API/sqlite/users/UsersOperations";
-import path from "path";
-import {__projectPath} from "../../src/utils/projectPath";
-import {IUser, TGrant} from "@iisdc/types";
-import {userFixture} from "../fixtures/userFixture";
-import {grantsTableName, usersTableName} from "../../src/API/sqlite/config";
+import {TGrant} from "@iisdc/types";
+import {directionsTableName, grantsTableName, usersTableName} from "../../src/API/sqlite/config";
 import {GrantOperations, IGrantsOperations} from "../../src/API/sqlite/parser/GrantsOperations";
 import {grantFixture} from "../fixtures/grantFixture";
-import {getMetaphone} from "../../src/API/sqlite/helpers/getMetaphone";
+import {directionsConstTableName, parserDb} from "./config";
+import {DirectionsOperations} from "../../src/API/sqlite/DirectionsOperations";
+import {DirectionsConstOperations} from "../../src/API/sqlite/DirectionsConstOperations";
 
 
 let grantsOperations: IGrantsOperations
-
-const testingSqliteDb = require('better-sqlite3')(path.join(__projectPath,'../','tests','testingSqlite','parser.db'));
-
 let randomGrant:TGrant
 
 describe("GrantsOperations",()=>{
@@ -22,14 +17,18 @@ describe("GrantsOperations",()=>{
     })
 
     test("Init object",()=>{
+        // На всякий случай запустим обьекты чтобы они создали зависимые таблицы
+        let directionsConstOperations = new DirectionsConstOperations(parserDb,directionsConstTableName)
+        let directionsOperations = new DirectionsOperations(parserDb, directionsTableName, directionsConstOperations)
 
         grantsOperations = new GrantOperations(
-            testingSqliteDb,
-            grantsTableName
+            parserDb,
+            grantsTableName,
+            directionsOperations
         )
     })
 
-    describe("Create and get user", ()=>{
+    describe("Create and get grant", ()=>{
         let grant:TGrant;
 
         test("Create grant", ()=>{

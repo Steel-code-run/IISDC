@@ -81,7 +81,7 @@ export class UsersOperations extends DefaultOperation implements IUsersOperation
                 ('${user.name}','${user.password}','${user.role}')
                 `
         try {
-            return this.db.prepare(query).run().lastInsertRowid
+            return Number(this.db.prepare(query).run().lastInsertRowid)
         } catch (e) {
             consoleLog(`
             Ошибка в UsersOperations, insertUser ${JSON.stringify(user,null,2)} \n

@@ -5,7 +5,6 @@ CREATE TABLE IF NOT EXISTS ${grantsTableName} (
     id                INTEGER     PRIMARY KEY AUTOINCREMENT,
     namePost          STRING      COLLATE NOCASE,
     dateCreationPost  STRING,
-    direction         STRING,
     organization      STRING,
     deadline          STRING,
     summary           STRING,

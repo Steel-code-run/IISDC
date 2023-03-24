@@ -1,22 +1,25 @@
 import {TGrant} from "@iisdc/types";
 import {DefaultOperation} from "../DefaultOperations";
 import {consoleLog} from "../../../utils/consoleLog";
-import path from "path";
-import {__projectPath} from "../../../utils/projectPath";
 import {getMetaphone} from "../helpers/getMetaphone";
 import {createTableGrantsQuery} from "../configurateDataBase/grantTable";
+import {IDirectionsOperations} from "../DirectionsOperations";
+import {directionsConstTableName, directionsTableName, parserDb} from "../config";
+import {Database} from "better-sqlite3";
+import {shieldIt} from "@iisdc/utils";
 
 export interface IGrantsOperations {
-    insertGrant(grant:TGrant):number;
+    insertGrant(grant:TGrant): number
     getGrant(id:number):TGrant;
-    // getGrantsByLevensteinDirInName(name:string):TGrant[];
 }
 
 export class GrantOperations extends DefaultOperation implements IGrantsOperations{
+    private directionsOperations: IDirectionsOperations
 
-    constructor(db:any,tableName:string) {
+    constructor(db:Database,tableName:string,directionsOperations: IDirectionsOperations) {
         super(db,tableName);
         this.createTable();
+        this.directionsOperations =directionsOperations
     }
     insertGrant(grant:TGrant): number {
         const query = `
@@ -24,7 +27,6 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         (
         namePost,
         dateCreationPost,
-        direction,
         organization,
         deadline,
         summary,
@@ -37,14 +39,14 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         metaphone
         )
         VALUES
-        (?,?,?,?,?,?,?,?,?,?,?,?,?);
+        (?,?,?,?,?,?,?,?,?,?,?,?);
         `
 
         try {
-            return this.db.prepare(query).run(
+
+            let grantId = Number(this.db.prepare(query).run(
                 grant.namePost,
                 grant.dateCreationPost,
-                JSON.stringify(grant.direction),
                 grant.organization,
                 grant.deadline,
                 grant.summary,
@@ -55,7 +57,20 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
                 grant.timeOfParse,
                 grant.sourceLink,
                 getMetaphone(grant.namePost)
-            ).lastInsertRowid
+            ).lastInsertRowid)
+
+
+            if (Array.isArray(grant.direction)){
+                grant.direction.forEach(direction=>{
+                    this.directionsOperations.insertDirection({
+                        direction: direction,
+                        parentID: grantId,
+                        tableNamePost: this.tableName
+                    })
+                })
+            }
+
+            return grantId
         } catch (e) {
             consoleLog(`
             Ошибка в GrantOperations, insertGrant ${JSON.stringify(grant,null,2)} \n
@@ -73,7 +88,6 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         id,
         namePost,
         dateCreationPost,
-        direction,
         organization,
         deadline,
         summary,
@@ -82,14 +96,14 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         link,
         linkPDF,
         timeOfParse,
-        sourceLink,
+        sourceLink
         FROM ${this.tableName}
         WHERE
-        id = ${id};
+        id = ?;
         `
         try {
-            let grant = this.db.prepare(query).get();
-            grant.direction = JSON.parse(grant.direction)
+            let grant = this.db.prepare(query).get(id);
+            grant.direction = this.getGrantDirectionsByGrantId(grant.id)
             return grant
         } catch (e) {
             consoleLog(`
@@ -102,6 +116,31 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         }
     }
 
+    getGrantDirectionsByGrantId(id:number):string[]{
+        let query = `
+            SELECT 
+            ${directionsConstTableName}.directionName,
+            ${this.tableName}.id
+            FROM ${directionsConstTableName}, ${directionsTableName}, ${this.tableName}
+            WHERE 
+            (${directionsTableName}.${this.tableName}_id = ${this.tableName}.id) AND
+            (${directionsConstTableName}.id = ${directionsTableName}.${directionsConstTableName}_id) AND
+            (${this.tableName}.id = ${id})
+        `
+        try {
+            return this.db.prepare(query).all().map(el=>el.directionName)
+        } catch (e) {
+            // consoleLog(`
+            // Ошибка в GrantOperations, getGrantDirectionsByGrantId id = ${id} \n
+            // query ->\n
+            // ${query}\n
+            // ${e}
+            // `);
+            throw new Error(e);
+        }
+
+    }
+
     setGrantToBlackList(id:number){
         const query  = `
         UPDATE ${this.tableName}
@@ -111,17 +150,17 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         try {
             let grant = this.db.prepare(query).get();
         } catch (e) {
-            consoleLog(`
-            Ошибка в GrantOperations, setGrantToBlackList id = ${id} \n
-            query ->\n
-            ${query}\n
-            ${e}            
-            `);
+            // consoleLog(`
+            // Ошибка в GrantOperations, setGrantToBlackList id = ${id} \n
+            // query ->\n
+            // ${query}\n
+            // ${e}
+            // `);
             throw new Error(e);
         }
     }
 
-    unGrantToBlackList(id:number){
+    removeFromBlackList(id:number){
         const query  = `
         UPDATE ${this.tableName}
         SET blackList = 0
@@ -130,12 +169,12 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         try {
             let grant = this.db.prepare(query).get();
         } catch (e) {
-            consoleLog(`
-            Ошибка в GrantOperations, setGrantToBlackList id = ${id} \n
-            query ->\n
-            ${query}\n
-            ${e}            
-            `);
+            // consoleLog(`
+            // Ошибка в GrantOperations, setGrantToBlackList id = ${id} \n
+            // query ->\n
+            // ${query}\n
+            // ${e}
+            // `);
             throw new Error(e);
         }
     }
@@ -146,38 +185,66 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         try {
             return this.db.prepare(query).run()
         } catch (e) {
-            consoleLog(`
-            Ошибка в createTable\n
-            query ->\n
-            ${query}\n
-            ${e}            
-            `);
+            // consoleLog(`
+            // Ошибка в GrantOperations, createTable\n
+            // query ->\n
+            // ${query}\n
+            // ${e}
+            // `);
             throw new Error(e);
         }
     }
 
-    getGrants(direction:string[],name:string){
+    getGrants(directions:string[] = [],namePost:string = ''){
+        let whereInQuery = false
         let query = `
         SELECT 
-        id,
-        namePost,
-        dateCreationPost,
-        direction,
-        organization,
-        deadline,
-        summary,
-        directionForSpent,
-        fullText,
-        link,
-        linkPDF,
-        timeOfParse,
-        sourceLink,
-        FROM ${this.tableName}
+        ${this.tableName}.id,
+        directions_const.directionName
+        FROM ${this.tableName}, ${directionsTableName}, ${directionsConstTableName}
         WHERE 
-        ${direction[0]?'direction':''}
+
+        (grants.namePost like "%а%")
         `
+        if (directions.length > 0){
+            if (whereInQuery)
+                query+=" WHERE "
+            else
+                query+= " AND "
 
+            let strDirections = directions.map(el=> `"${shieldIt(el)}"`).join(', ')
+            query+=`
+            (${directionsConstTableName}.directionName IN (${directions})) AND
+            (${directionsTableName}.grants_id = ${this.tableName}.id) AND
+            (${directionsTableName}.direction_id = ${directionsConstTableName}.id)
+            `
+        }
+        if (namePost.length>0) {
+            if (whereInQuery)
+                query+=" WHERE "
+            else
+                query+= " AND "
+            query+=`
+            (${this.tableName}.namePost like "%${shieldIt(namePost)}%")
+            `
+        }
+        query+= ` GROUP BY ${this.tableName}.id `
 
+        try {
+            let grants = this.db.prepare(query).all()
+            grants.map((grant)=>{
+                this.getGrant(grant.id)
+            })
+            return grants
+        } catch (e) {
+            // consoleLog(`
+            // Ошибка в GrantOperations, getGrants ${directions}, ${namePost}, ${query}\n
+            // query ->\n
+            // ${query}\n
+            // ${e}
+            // `);
+            throw new Error(e);
+        }
     }
 
 }

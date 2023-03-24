@@ -7,3 +7,7 @@ export const usersDb = require('better-sqlite3')(path.join(__projectPath, '../..
 export const parserDb = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','parser.db'));
 
 export const grantsTableName = "grants"
+
+export const directionsTableName = "directions"
+
+export const directionsConstTableName = "directions_const"
