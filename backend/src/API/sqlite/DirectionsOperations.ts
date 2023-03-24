@@ -3,7 +3,7 @@ import {consoleLog} from "../../utils/consoleLog";
 import {createDirectionsTable} from "./configurateDataBase/createDirectionsTable";
 import {Database} from "better-sqlite3";
 import {IDirectionsConstOperations} from "./DirectionsConstOperations";
-import {directionsConstTableName} from "../../../tests/sqlite/config";
+import {directionsConstTableName} from "./config";
 
 export interface IDirectionsOperations {
     insertDirection(props:{
@@ -48,18 +48,11 @@ export class DirectionsOperations extends DefaultOperation implements IDirection
         )
         VALUES (?,?)
         `
-        let direction_id
-        try {
-            direction_id = this.directionsConstOperations.getIdByName(props.direction)
-        } catch (e) {
-            // consoleLog(`
-            // Ошибка в DirectionsOperations, insertDirection ${props.direction}, ${direction_id}, ${props.parentID}, ${props.tableNamePost} \n
-            // query ->\n
-            // ${query}\n
-            // ${e}
-            // `);
-            throw new Error("directionsConstOperations.getIdByName");
-        }
+        let direction_id = this.directionsConstOperations.getIdByName(props.direction)
+
+        if (!direction_id)
+            throw new Error("direction_id is undefined")
+
         try {
             return Number(this.db.prepare(query).run(props.parentID,direction_id).lastInsertRowid)
         } catch (e) {
@@ -81,12 +74,12 @@ export class DirectionsOperations extends DefaultOperation implements IDirection
         try {
             return this.db.prepare(query).all()
         } catch (e) {
-            // consoleLog(`
-            // Ошибка в DirectionsOperations, getDirections ${parentId}, ${tableNamePost} \n
-            // query ->\n
-            // ${query}\n
-            // ${e}
-            // `);
+            consoleLog(`
+            Ошибка в DirectionsOperations, getDirections ${parentId}, ${tableNamePost} \n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
             throw new Error(e);
         }
     }
@@ -97,12 +90,12 @@ export class DirectionsOperations extends DefaultOperation implements IDirection
         try {
             return this.db.prepare(query).run()
         } catch (e) {
-            // consoleLog(`
-            // Ошибка в GrantsDirectionsOperations, createTable\n
-            // query ->\n
-            // ${query}\n
-            // ${e}
-            // `);
+            consoleLog(`
+            Ошибка в GrantsDirectionsOperations, createTable\n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
             throw new Error(e);
         }
     }

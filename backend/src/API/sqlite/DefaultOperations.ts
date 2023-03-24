@@ -6,7 +6,7 @@ import {Database} from "better-sqlite3";
  * Стандартные операции с таблицами
  */
 export interface IDefaultOperations {
-    // dropTable():void;
+    deleteAll():void;
 }
 
 /**
@@ -19,4 +19,15 @@ export class DefaultOperation implements IDefaultOperations{
         this.db = db
         this.tableName = tableName
     };
+    deleteAll() {
+        try {
+            this.db.prepare(`DELETE FROM ${this.tableName}`).run()
+        } catch (e) {
+            consoleLog(`
+            Ошибка в DefaultOperation, deleteAll ${this.tableName}\n
+            ${e}
+            `);
+            throw new Error(e);
+        }
+    }
  }

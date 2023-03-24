@@ -1,24 +1,32 @@
-import {describe,test, expect,beforeAll,beforeEach} from '@jest/globals';
+import {afterAll, beforeEach, describe, expect, test} from '@jest/globals';
 import {TGrant} from "@iisdc/types";
-import {directionsTableName, grantsTableName, usersTableName} from "../../src/API/sqlite/config";
+import {directionsConstTableName, directionsTableName, grantsTableName} from "../../src/API/sqlite/config";
 import {GrantOperations, IGrantsOperations} from "../../src/API/sqlite/parser/GrantsOperations";
 import {grantFixture} from "../fixtures/grantFixture";
-import {directionsConstTableName, parserDb} from "./config";
+import {parserDb} from "./config";
 import {DirectionsOperations} from "../../src/API/sqlite/DirectionsOperations";
 import {DirectionsConstOperations} from "../../src/API/sqlite/DirectionsConstOperations";
 
 
 let grantsOperations: IGrantsOperations
+let directionsConstOperations: DirectionsConstOperations
 let randomGrant:TGrant
+
 
 describe("GrantsOperations",()=>{
     beforeEach(()=>{
         randomGrant = grantFixture()
     })
+    afterAll(()=>{
+        directionsConstOperations.removeConst("direction1")
+        directionsConstOperations.removeConst("direction2")
+        directionsConstOperations.removeConst("direction3")
+        directionsConstOperations.removeConst("direction4")
+        directionsConstOperations.removeConst("direction5")
+    })
 
     test("Init object",()=>{
-        // На всякий случай запустим обьекты чтобы они создали зависимые таблицы
-        let directionsConstOperations = new DirectionsConstOperations(parserDb,directionsConstTableName)
+        directionsConstOperations = new DirectionsConstOperations(parserDb,directionsConstTableName)
         let directionsOperations = new DirectionsOperations(parserDb, directionsTableName, directionsConstOperations)
 
         grantsOperations = new GrantOperations(
@@ -26,12 +34,22 @@ describe("GrantsOperations",()=>{
             grantsTableName,
             directionsOperations
         )
+        grantsOperations.deleteAll()
     })
 
     describe("Create and get grant", ()=>{
         let grant:TGrant;
 
+        test("Create directionsConst",()=>{
+            directionsConstOperations.insertConst("direction1")
+            directionsConstOperations.insertConst("direction2")
+            directionsConstOperations.insertConst("direction3")
+            directionsConstOperations.insertConst("direction4")
+            directionsConstOperations.insertConst("direction5")
+        })
         test("Create grant", ()=>{
+            randomGrant.direction = ["direction1","direction2"]
+            randomGrant.namePost="d12"
             let newGrantId = grantsOperations.insertGrant(randomGrant)
             grant = randomGrant
             grant.id = newGrantId
@@ -45,6 +63,91 @@ describe("GrantsOperations",()=>{
 
             expect(grantsOperations.getGrant(grant.id)).toMatchObject(grant)
         })
+
+        test("add grant2",()=>{
+            randomGrant.direction = ["direction2"]
+            randomGrant.namePost="d2"
+            let newGrantId = grantsOperations.insertGrant(randomGrant)
+            grant = randomGrant
+            grant.id = newGrantId
+
+            expect(typeof newGrantId).toMatch('number')
+        })
+
+        test("add grant3",()=>{
+            randomGrant.direction = ["direction2", "direction3"]
+            randomGrant.namePost="d23"
+            let newGrantId = grantsOperations.insertGrant(randomGrant)
+            grant = randomGrant
+            grant.id = newGrantId
+
+            expect(typeof newGrantId).toMatch('number')
+        })
+
+        test("get grants without directions",()=>{
+
+            expect(grantsOperations.getGrants({
+                namePost:""
+            }).length).toBe(3)
+        })
+
+        test("get grants without directions",()=>{
+
+            expect(grantsOperations.getGrants({
+                namePost:"3"
+            }).length).toBe(1)
+        })
+
+        test("get grants with directions 1 ",()=>{
+
+            expect(grantsOperations.getGrants({
+                directions:["direction3"],
+                namePost:""
+            }).length).toBe(1)
+        })
+
+        test("get grants with directions 2",()=>{
+
+            expect(grantsOperations.getGrants({
+                directions:["direction2"],
+                namePost:""
+            }).length).toBe(3)
+        })
+
+        test("get grants with directions 3",()=>{
+
+            expect(grantsOperations.getGrants({
+                directions:["direction2"],
+                namePost:""
+            }).length).toBe(3)
+        })
+
+        test("get grants",()=>{
+            let grant = grantFixture()
+            grant.namePost = "aaaaaaaaaaaaaaaaaaaaaaaaa"
+            grant.id = grantsOperations.insertGrant(grant)
+            let expectedGrant = grantsOperations.getGrants({
+                namePost:"aaaaaaaaaaaaaaaaaaaaaaaaa"
+            })[0]
+            console.log(grant);
+            console.log(expectedGrant);
+            expect(expectedGrant).toMatchObject(grant)
+
+        })
+
+        test("get no grants",()=>{
+
+            expect(grantsOperations.getGrants({
+                directions:["direction2as"],
+                namePost:"3asfasfas"
+            }).length).toBe(0)
+        })
+
+        // test("Delete grant",()=>{
+        //     if (!grant.id)
+        //         throw new Error("grant.id not defined")
+        //
+        // })
 
     })
 

@@ -7,7 +7,7 @@ export interface IDirectionsConstOperations {
     insertConst(directionName:string):number;
     removeConst(directionName:string):number;
     getAll():string[];
-    getIdByName(directionName:string):number;
+    getIdByName(directionName:string):number |undefined;
 }
 
 export class DirectionsConstOperations extends DefaultOperation implements IDirectionsConstOperations{
@@ -22,12 +22,12 @@ export class DirectionsConstOperations extends DefaultOperation implements IDire
         try {
             return this.db.prepare(query).run()
         } catch (e) {
-            // consoleLog(`
-            // Ошибка в DirectionsConstOperations, createTable\n
-            // query ->\n
-            // ${query}\n
-            // ${e}
-            // `);
+            consoleLog(`
+            Ошибка в DirectionsConstOperations, createTable\n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
             throw new Error(e);
         }
     }
@@ -42,12 +42,12 @@ export class DirectionsConstOperations extends DefaultOperation implements IDire
         try {
             return Number(this.db.prepare(query).run(directionName).lastInsertRowid);
         } catch (e) {
-            // consoleLog(`
-            // Ошибка в DirectionsConstOperations, insertConst ${directionName} \n
-            // query ->\n
-            // ${query}\n
-            // ${e}
-            // `);
+            consoleLog(`
+            Ошибка в DirectionsConstOperations, insertConst ${directionName} \n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
             throw new Error(e);
         }
     }
@@ -60,12 +60,12 @@ export class DirectionsConstOperations extends DefaultOperation implements IDire
         try {
             return Number(this.db.prepare(query).run(directionName).lastInsertRowid);
         } catch (e) {
-            // consoleLog(`
-            // Ошибка в DirectionsConstOperations, removeConst ${directionName} \n
-            // query ->\n
-            // ${query}\n
-            // ${e}
-            // `);
+            consoleLog(`
+            Ошибка в DirectionsConstOperations, removeConst ${directionName} \n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
             throw new Error(e);
         }
     }
@@ -78,30 +78,30 @@ export class DirectionsConstOperations extends DefaultOperation implements IDire
             let arr = this.db.prepare(query).all();
             return arr.map(el=>el.directionName)
         } catch (e) {
-            // consoleLog(`
-            // Ошибка в DirectionsConstOperations, getAll \n
-            // query ->\n
-            // ${query}\n
-            // ${e}
-            // `);
+            consoleLog(`
+            Ошибка в DirectionsConstOperations, getAll \n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
             throw new Error(e);
         }
     }
 
-    getIdByName(directionName:string):number{
+    getIdByName(directionName:string):number | undefined{
         let query = `
         SELECT id FROM ${this.tableName}
         WHERE directionName = ?
         `
         try {
-            return this.db.prepare(query).get(directionName).id;
+            return this.db.prepare(query).get(directionName)?.id || undefined;
         } catch (e) {
-            // consoleLog(`
-            // Ошибка в DirectionsConstOperations, getIdByName ${directionName} \n
-            // query ->\n
-            // ${query}\n
-            // ${e}
-            // `);
+            consoleLog(`
+            Ошибка в DirectionsConstOperations, getIdByName ${directionName} \n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
             throw new Error(e);
         }
     }

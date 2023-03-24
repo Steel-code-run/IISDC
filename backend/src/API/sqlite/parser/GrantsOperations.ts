@@ -1,5 +1,5 @@
 import {TGrant} from "@iisdc/types";
-import {DefaultOperation} from "../DefaultOperations";
+import {DefaultOperation, IDefaultOperations} from "../DefaultOperations";
 import {consoleLog} from "../../../utils/consoleLog";
 import {getMetaphone} from "../helpers/getMetaphone";
 import {createTableGrantsQuery} from "../configurateDataBase/grantTable";
@@ -8,9 +8,14 @@ import {directionsConstTableName, directionsTableName, parserDb} from "../config
 import {Database} from "better-sqlite3";
 import {shieldIt} from "@iisdc/utils";
 
-export interface IGrantsOperations {
+export interface IGrantsOperations extends IDefaultOperations{
     insertGrant(grant:TGrant): number
     getGrant(id:number):TGrant;
+    getGrants(props:{
+        namePost: string,
+        directions?: string[],
+        blackListed?: number
+    }):TGrant[]
 }
 
 export class GrantOperations extends DefaultOperation implements IGrantsOperations{
@@ -82,6 +87,7 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         }
     }
 
+
     getGrant(id: number): TGrant {
         const query = `
         SELECT 
@@ -130,12 +136,12 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         try {
             return this.db.prepare(query).all().map(el=>el.directionName)
         } catch (e) {
-            // consoleLog(`
-            // Ошибка в GrantOperations, getGrantDirectionsByGrantId id = ${id} \n
-            // query ->\n
-            // ${query}\n
-            // ${e}
-            // `);
+            consoleLog(`
+            Ошибка в GrantOperations, getGrantDirectionsByGrantId id = ${id} \n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
             throw new Error(e);
         }
 
@@ -150,12 +156,12 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         try {
             let grant = this.db.prepare(query).get();
         } catch (e) {
-            // consoleLog(`
-            // Ошибка в GrantOperations, setGrantToBlackList id = ${id} \n
-            // query ->\n
-            // ${query}\n
-            // ${e}
-            // `);
+            consoleLog(`
+            Ошибка в GrantOperations, setGrantToBlackList id = ${id} \n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
             throw new Error(e);
         }
     }
@@ -169,12 +175,12 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         try {
             let grant = this.db.prepare(query).get();
         } catch (e) {
-            // consoleLog(`
-            // Ошибка в GrantOperations, setGrantToBlackList id = ${id} \n
-            // query ->\n
-            // ${query}\n
-            // ${e}
-            // `);
+            consoleLog(`
+            Ошибка в GrantOperations, setGrantToBlackList id = ${id} \n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
             throw new Error(e);
         }
     }
@@ -185,64 +191,77 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
         try {
             return this.db.prepare(query).run()
         } catch (e) {
-            // consoleLog(`
-            // Ошибка в GrantOperations, createTable\n
-            // query ->\n
-            // ${query}\n
-            // ${e}
-            // `);
+            consoleLog(`
+            Ошибка в GrantOperations, createTable\n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
             throw new Error(e);
         }
     }
 
-    getGrants(directions:string[] = [],namePost:string = ''){
-        let whereInQuery = false
+    getGrants(props:{
+        namePost: string,
+        directions?: string[],
+        blackListed?: number
+    }):TGrant[]{
+        if (props.blackListed === undefined)
+            props.blackListed = 0
+
+        if (props.directions === undefined)
+            props.directions = []
+
+        let whereInQuery = true
         let query = `
         SELECT 
         ${this.tableName}.id,
         directions_const.directionName
         FROM ${this.tableName}, ${directionsTableName}, ${directionsConstTableName}
-        WHERE 
-
-        (grants.namePost like "%а%")
+        WHERE
+        (${this.tableName}.blackListed = ${props.blackListed})
         `
-        if (directions.length > 0){
-            if (whereInQuery)
+        if (props.directions.length > 0){
+            if (!whereInQuery){
+                whereInQuery = true
                 query+=" WHERE "
+            }
             else
                 query+= " AND "
 
-            let strDirections = directions.map(el=> `"${shieldIt(el)}"`).join(', ')
+            let strDirections = props.directions.map(el=> `'${shieldIt(el)}'`).join(', ')
             query+=`
-            (${directionsConstTableName}.directionName IN (${directions})) AND
+            (${directionsConstTableName}.directionName IN (${strDirections})) AND
             (${directionsTableName}.grants_id = ${this.tableName}.id) AND
-            (${directionsTableName}.direction_id = ${directionsConstTableName}.id)
+            (${directionsTableName}.${directionsConstTableName}_id = ${directionsConstTableName}.id)
             `
         }
-        if (namePost.length>0) {
-            if (whereInQuery)
+        if (props.namePost.length>0) {
+            if (!whereInQuery){
+                whereInQuery = true
                 query+=" WHERE "
+            }
             else
                 query+= " AND "
             query+=`
-            (${this.tableName}.namePost like "%${shieldIt(namePost)}%")
+            (${this.tableName}.namePost like '%${shieldIt(props.namePost)}%')
             `
         }
         query+= ` GROUP BY ${this.tableName}.id `
 
         try {
             let grants = this.db.prepare(query).all()
-            grants.map((grant)=>{
-                this.getGrant(grant.id)
+            grants = grants.map((grant)=>{
+                return this.getGrant(grant.id)
             })
             return grants
         } catch (e) {
-            // consoleLog(`
-            // Ошибка в GrantOperations, getGrants ${directions}, ${namePost}, ${query}\n
-            // query ->\n
-            // ${query}\n
-            // ${e}
-            // `);
+            consoleLog(`
+            Ошибка в GrantOperations, getGrants ${JSON.stringify(props)}, ${query}\n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
             throw new Error(e);
         }
     }

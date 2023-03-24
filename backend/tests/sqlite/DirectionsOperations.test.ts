@@ -1,10 +1,11 @@
 import {describe,test, expect,beforeAll,beforeEach} from '@jest/globals';
 import {DirectionsConstOperations, IDirectionsConstOperations} from "../../src/API/sqlite/DirectionsConstOperations";
-import {directionsConstTableName, directionsTableName, grantsTableName, parserDb} from "./config";
+import {parserDb} from "./config";
 import {sampleRange} from "../../src/utils/samleRange";
 import {DirectionsOperations, IDirectionsOperations} from "../../src/API/sqlite/DirectionsOperations";
 import {GrantOperations, IGrantsOperations} from "../../src/API/sqlite/parser/GrantsOperations";
 import {grantFixture} from "../fixtures/grantFixture";
+import {directionsConstTableName, directionsTableName, grantsTableName} from "../../src/API/sqlite/config";
 
 let directionsConstOperations: IDirectionsConstOperations
 let directionsOperations: IDirectionsOperations
@@ -56,17 +57,21 @@ describe("DirectionsOperations",()=>{
             let grant = grantFixture();
             grant.direction = []
             let grantId = grantsOperations.insertGrant(grant)
-            let consta = Math.random()+"s"
-            directionsConstOperations.insertConst(consta)
-            console.log(directionsConstOperations.getIdByName(consta));
+            testDirectionName = Math.random()+"s"
+            directionsConstOperations.insertConst(testDirectionName)
+            console.log(directionsConstOperations.getIdByName(testDirectionName));
 
             expect(directionsOperations.insertDirection({
-                direction: consta,
+                direction: testDirectionName,
                 parentID:grantId,
                 tableNamePost: grantsTableName
             })).toBeGreaterThan(0)
 
-            // directionsConstOperations.removeConst(consta)
+            directionsConstOperations.removeConst(testDirectionName)
+        })
+
+        test("После удаления не должно остаться константы, а также direction",()=>{
+            expect(directionsConstOperations.getIdByName(testDirectionName)).toBeUndefined()
         })
     })
 
