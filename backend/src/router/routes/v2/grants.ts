@@ -46,8 +46,30 @@ router.get(routes.v2.grants.get,(req:ICustomRequest,res)=>{
             blackListed: grant.blackListed,
             from:req.query.from as number | undefined,
             limit: req.query.limit as number | undefined,
-            directions: grant.direction
+            directions: grant.direction,
+            justCountIt: !!req.query.justCountIt,
         });
+        res.statusCode = 200;
+        res.json(generateAnswer({message: answerMessage.success, data: grantsForReturn}))
+        return
+    } catch (e) {
+        res.statusCode = 500
+        res.json(generateAnswer({message: answerMessage.unknownError, data: e.message}))
+    }
+})
+
+router.get(routes.v2.grants.count,(req:ICustomRequest,res)=>{
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+
+    try {
+        let grantsForReturn;
+            grantsForReturn = grantsOperations.getGrants({
+                from:0,
+                limit: 1000000000,
+                justCountIt: true,
+            });
         res.statusCode = 200;
         res.json(generateAnswer({message: answerMessage.success, data: grantsForReturn}))
         return
@@ -132,6 +154,7 @@ router.patch(routes.v2.grants.update,(req:ICustomRequest,res)=>{
         grantsOperations.updateGrant(newGrant)
         res.statusCode = 200;
         res.json(generateAnswer({message: answerMessage.success}))
+        return
     } catch (e) {
         res.statusCode = 500
         res.json(generateAnswer({message: answerMessage.unknownError, data: e.message}))

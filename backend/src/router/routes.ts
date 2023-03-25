@@ -12,7 +12,8 @@ export const routes = {
             delete: "/v2/grants/delete",
             addToBlackList: "/v2/grants/addToBlackList",
             removeFromBlackList: "/v2/grants/removeFromBlackList",
-            update: "/v2/grants/update"
+            update: "/v2/grants/update",
+            count: "/v2/grants/count"
         },
     }
 }

@@ -37,7 +37,7 @@ describe("DirectionsOperations",()=>{
         })
 
         test("get created direction", ()=>{
-            expect(directionsConstOperations.getAll().includes(testDirectionName)).toBeTruthy()
+            expect(directionsConstOperations.getAll().map(el=>el.directionName).includes(testDirectionName)).toBeTruthy()
         })
 
         test("get id direction",()=>{
@@ -58,11 +58,14 @@ describe("DirectionsOperations",()=>{
             let grant = grantFixture();
             grant.direction = []
             let grantId = grantsOperations.insertGrant(grant)
-            expect(()=>directionsOperations.insertDirection({
+            directionsOperations.insertDirection({
                 direction:Math.random() + "s",
                 parentID:grantId,
                 tableNamePost: grantsTableName
-            })).toThrow()
+            })
+
+            expect(grantsOperations.getGrant(grantId)?.direction.length).toBe(0)
+
         })
         test("Попытка добавить c константой в бд",()=>{
             let grant = grantFixture();

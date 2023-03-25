@@ -25,8 +25,8 @@ import parsers from "./router/routes/parsers";
 import competitions from "./router/routes/competitions";
 import internships from "./router/routes/internships";
 import database from "./router/routes/database";
-import {levensteinInPercent} from "./helpers/isPostInDbByLevenstein";
 import v2Grants from "./router/routes/v2/grants"
+import v2Directions from "./router/routes/v2/directions"
 configureAll()
 
 
@@ -47,7 +47,8 @@ app.use(competitions)
 app.use(vacancies);
 app.use(database);
 app.use(internships);
-app.use(v2Grants)
+app.use(v2Grants);
+app.use(v2Directions)
 
 // routes end
 app.listen(port, () => {

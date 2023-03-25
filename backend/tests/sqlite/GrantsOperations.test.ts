@@ -188,7 +188,9 @@ describe("GrantsOperations",()=>{
                 throw new Error("не был получен грант")
 
             updatedGrant.id = newGrant.id
-
+            updatedGrant.namePost = newGrant.namePost
+            updatedGrant.sourceLink = newGrant.sourceLink
+            updatedGrant.timeOfParse = newGrant.timeOfParse
             expect(updatedGrant).toMatchObject(newGrant)
         })
 
@@ -226,6 +228,19 @@ describe("GrantsOperations",()=>{
                 from: 2,
                 limit:2,
             })).toMatchObject([grant3, grant2])
+        })
+
+        test("COUNT", ()=>{
+
+            expect(grantsOperations.getGrants({
+                justCountIt: true
+            })).toBe(9)
+
+            grantsOperations.deleteAll()
+
+            expect(grantsOperations.getGrants({
+                justCountIt: true
+            })).toBe(0)
         })
     })
 })

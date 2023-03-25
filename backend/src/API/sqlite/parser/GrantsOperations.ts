@@ -17,6 +17,7 @@ export interface IGrantsOperations extends IDefaultOperations{
         blackListed?: number,
         limit?:number,
         from?:number,
+        justCountIt?:boolean
     }):TGrant[]
     setGrantToBlackList(id:number):void;
     removeFromBlackList(id:number):void;
@@ -145,7 +146,6 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
         }
     }
 
-
     getGrant(id: number): TGrant | undefined{
         const query = `
         SELECT 
@@ -269,6 +269,7 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
         blackListed?: number,
         limit?:number,
         from?:number,
+        justCountIt?:boolean
     }={}):TGrant[]{
         if (props.namePost === undefined)
             props.namePost = ''
@@ -286,7 +287,16 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
             props.from = 0
 
         let whereInQuery = true
-        let query = `
+        let query = "";
+
+        if (props.justCountIt)
+            query +=`
+            SELECT 
+            COUNT (*)
+            FROM
+            (
+            `
+        query += `
         SELECT 
         ${this.tableName}.id,
         directions_const.directionName
@@ -305,7 +315,7 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
             let strDirections = props.directions.map(el=> `'${shieldIt(el)}'`).join(', ')
             query+=`
             (${directionsConstTableName}.directionName IN (${strDirections})) AND
-            (${directionsTableName}.grants_id = ${this.tableName}.id) AND
+            (${directionsTableName}.${this.tableName}_id = ${this.tableName}.id) AND
             (${directionsTableName}.${directionsConstTableName}_id = ${directionsConstTableName}.id)
             `
         }
@@ -327,7 +337,14 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
         query+= ` LIMIT ${props.from}, ${props.limit} `
 
 
+        if (props.justCountIt)
+            query+=" ) "
+
         try {
+
+            if (props.justCountIt)
+                return this.db.prepare(query).all()[0]["COUNT (*)"]
+
             let grants = this.db.prepare(query).all()
             grants = grants.map((grant)=>{
                 return this.getGrant(grant.id)

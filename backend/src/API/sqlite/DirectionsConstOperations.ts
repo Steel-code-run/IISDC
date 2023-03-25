@@ -6,7 +6,7 @@ import {createDirectionsConstTable, createDirectionsTable} from "./configurateDa
 export interface IDirectionsConstOperations {
     insertConst(directionName:string):number;
     removeConst(directionName:string):number;
-    getAll():string[];
+    getAll():any[];
     getIdByName(directionName:string):number |undefined;
 }
 
@@ -72,11 +72,10 @@ export class DirectionsConstOperations extends DefaultOperation implements IDire
 
     getAll(){
         let query = `
-        SELECT directionName FROM ${this.tableName}
+        SELECT id, directionName FROM ${this.tableName}
         `
         try {
-            let arr = this.db.prepare(query).all();
-            return arr.map(el=>el.directionName)
+            return this.db.prepare(query).all();
         } catch (e) {
             consoleLog(`
             Ошибка в DirectionsConstOperations, getAll \n
