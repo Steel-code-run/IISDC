@@ -6,12 +6,12 @@ export const routes = {
             removeConstDirection: "/v2/directions/removeConstDirection",
         },
         grants: {
-            getGrants: "/v2/grants/getGrants",
-            addGrant: "/v2/grants/addGrants",
-            deleteGrant: "/v2/grants/deleteGrant",
-            addGrantToBlackList: "/v2/grants/addGrantToBlackList",
-            removeGrantFromBlackList: "/v2/grants/removeGrantFromBlackList",
-            updateGrant: "/v2/grants/updateGrant"
+            getGrants: "/v2/grants/get",
+            addGrant: "/v2/grants/add",
+            deleteGrant: "/v2/grants/delete",
+            addGrantToBlackList: "/v2/grants/addToBlackList",
+            removeGrantFromBlackList: "/v2/grants/removeFromBlackList",
+            updateGrant: "/v2/grants/update"
         },
     }
 }

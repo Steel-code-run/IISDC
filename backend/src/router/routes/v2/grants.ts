@@ -37,7 +37,11 @@ router.get(routes.v2.grants.getGrants,(req:ICustomRequest,res)=>{
         grant.direction = [grant.direction]
 
     try {
-        let grantsForReturn = grantsOperations.getGrants({
+        let grantsForReturn;
+        if (grant.id)
+            grantsForReturn = grantsOperations.getGrant(grant.id)
+        else
+        grantsForReturn = grantsOperations.getGrants({
             namePost: grant.namePost,
             blackListed: grant.blackListed,
             from:req.query.from as number | undefined,
