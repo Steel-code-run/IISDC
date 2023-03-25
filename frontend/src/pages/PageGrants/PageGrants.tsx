@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './PageGrants.module.scss';
-import {useGetCountGrantsQuery, useGetDirectionsGrantsQuery, useGetGrantsQuery} from "../../api/grants.api";
+import {useGetCountGrantsQuery, useGetDirectionsQuery, useGetGrantsQuery} from "../../api/grants.api";
 import CardPost from "../../components/CardPost/CardPost";
 import Header from "../../components/Header/Header";
 import {TGrant, TPostType} from "@iisdc/types";
@@ -77,7 +77,9 @@ const PageGrants: FC<PageGrantsProps> = () => {
             : 'noDirection'));
 
 
-    const {data: directions} = useGetDirectionsGrantsQuery({
+
+
+    const {data: directions} = useGetDirectionsQuery({
         token: token
     });
 

@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './DropdownTags.module.scss';
 import Tag from "../Tag/Tag";
-import {useGetDirectionsGrantsQuery} from "../../../api/grants.api";
+import {useGetDirectionsQuery} from "../../../api/grants.api";
 
 export interface IDropdownTagsProps {
     direction: string[] | string,
@@ -29,7 +29,7 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => 
 
     }
     const token = window.localStorage.getItem('token')
-    const {data: dataDirections} = useGetDirectionsGrantsQuery({token})
+    const {data: dataDirections} = useGetDirectionsQuery({token})
     useEffect(() => {
         setDirections(dataDirections?.data?.filter((direction: string) => !tags.includes(direction)))
     }, [dataDirections, tags])

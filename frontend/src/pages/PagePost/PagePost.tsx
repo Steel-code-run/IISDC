@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import styles from './PagePost.module.scss';
 import Header from "../../components/Header/Header";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {isPropsCompetition, isPropsGrant} from "../../types/typeGuards";
 import DropdownTags from "../../components/UI/DropdownTags/DropdownTags";
 import {useMediaQuery} from "react-responsive";
+import {useDeletePostGrantMutation} from "../../api/grants.api";
 
 // interface IPropsPagePost {
 //
@@ -21,6 +22,10 @@ const PagePost = () => {
         return  new Date(date)?.toLocaleDateString();
 
     }
+
+    const [deletePost] = useDeletePostGrantMutation();
+    const navigate = useNavigate();
+    const token = window.localStorage.getItem('token')
 
 
     return (
@@ -77,7 +82,12 @@ const PagePost = () => {
                                     <>
                                         {isVisionBtns &&
                                             <>
-                                                <button
+                                                <button onClick={async () => {
+                                                    if (data.id) {
+                                                        await deletePost({token, id: data.id});
+                                                        navigate('/grants');
+                                                    }
+                                                }}
                                                     className={styles.pagePost__delete + ' ' + styles.pagePost__btn}>Удалить
                                                 </button>
                                                 <button onClick={() => {

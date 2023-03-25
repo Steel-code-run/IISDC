@@ -4,14 +4,19 @@ import dropdownIcon from '../../../assets/images/dropdownIcon.svg'
 
 export interface DropdownProps {
 
-    listDirections: string[],
+    listDirections: IDirectionsResponse[],
     cbChoicedDirection: React.Dispatch<React.SetStateAction<string>>
+}
+
+export interface IDirectionsResponse {
+    id: number,
+    directionName: string
 }
 
 const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
     const [isOpen, setIsOpen] = useState(false)
     const [value, setValue] = useState<string>('Все направления')
-    const [filterList, setFilterList] = useState<string[]>(listDirections);
+    const [filterList, setFilterList] = useState<IDirectionsResponse[]>(listDirections);
 
     const handleClickItemDropdown = (e: any) => {
         const target = e.target as HTMLLIElement;
@@ -26,8 +31,8 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
                 <input onChange={(e) => {
                     setValue(e.target.value)
                     setFilterList(listDirections.filter(direction => {
-                        return direction.toLowerCase().startsWith(e.target.value.toLowerCase())
-                            || direction.toLowerCase() === 'Все направления'
+                        return direction.directionName.toLowerCase().startsWith(e.target.value.toLowerCase())
+                            || direction.directionName.toLowerCase() === 'Все направления'
                             || e.target.value === ''
                     }))
                     if(!e.target.value) setIsOpen(true)
@@ -48,11 +53,11 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
                     </li>
                     {
                         filterList?.map((direction, index) => {
-                            if (direction) {
+                            if (direction.directionName) {
                                 return (
                                     <li className={styles.dropdown__itemList__item}
                                         onClick={(e) => handleClickItemDropdown(e)}
-                                        key={index}>{direction}</li>
+                                        key={index + direction.id}>{direction.directionName}</li>
                                 )
                             } else return null
                         })
