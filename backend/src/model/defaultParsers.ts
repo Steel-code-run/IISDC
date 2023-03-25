@@ -145,6 +145,12 @@ const parsersParams = [
         fileUrl: "moyastrana",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'world-it-planet',
+        url: ".",
+        fileUrl: "world-it-planet",
+        parserType: TParserType.nodejs
+    },
 
 
 ]
