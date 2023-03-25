@@ -51,8 +51,6 @@ router.get(routes.v2.grants.getGrants,(req:ICustomRequest,res)=>{
         res.statusCode = 500
         res.json(generateAnswer({message: answerMessage.unknownError, data: e}))
     }
-
-
 })
 
 export default router
