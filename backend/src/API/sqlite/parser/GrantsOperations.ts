@@ -1,7 +1,6 @@
 import {TGrant} from "@iisdc/types";
 import {DefaultOperation, IDefaultOperations} from "../DefaultOperations";
 import {consoleLog} from "../../../utils/consoleLog";
-import {getMetaphone} from "../helpers/getMetaphone";
 import {createTableGrantsQuery} from "../configurateDataBase/grantTable";
 import {IDirectionsOperations} from "../DirectionsOperations";
 import {directionsConstTableName, directionsTableName, parserDb} from "../config";
@@ -48,7 +47,7 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
         linkPDF,
         timeOfParse,
         sourceLink,
-        metaphone
+        namePost_lowerCase
         )
         VALUES
         (?,?,?,?,?,?,?,?,?,?,?,?);
@@ -68,7 +67,7 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
                 grant.linkPDF || '',
                 grant.timeOfParse || '',
                 grant.sourceLink || '',
-                getMetaphone(grant.namePost)
+                grant.namePost.toLowerCase()
             ).lastInsertRowid)
 
 
@@ -162,7 +161,7 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
         timeOfParse,
         blackListed,
         sourceLink,
-        metaphone
+        namePost_lowerCase
         FROM ${this.tableName}
         WHERE
         id = ?;
@@ -327,7 +326,7 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
             else
                 query+= " AND "
             query+=`
-            (${this.tableName}.namePost like '%${shieldIt(props.namePost)}%')
+            (${this.tableName}.namePost_lowerCase like '%${shieldIt(props.namePost.toLowerCase())}%')
             `
         }
         query+= ` GROUP BY ${this.tableName}.id `

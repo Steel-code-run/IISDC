@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS ${competitionsTableName} (
     linkPDF          STRING,
     organization     STRING,
     timeOfParse      DATETIME,
-    deadline         STRING
+    deadline         STRING,
+    namePost_lowerCase         STRING
 );
 
 `
