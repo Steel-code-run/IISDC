@@ -160,7 +160,9 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
         link,
         linkPDF,
         timeOfParse,
-        sourceLink
+        blackListed,
+        sourceLink,
+        metaphone
         FROM ${this.tableName}
         WHERE
         id = ?;

@@ -27,7 +27,7 @@ const getGrant = (obj:any) => {
     return grant
 }
 
-router.get(routes.v2.grants.getGrants,(req:ICustomRequest,res)=>{
+router.get(routes.v2.grants.get,(req:ICustomRequest,res)=>{
     if (!isUserCanEnter(req,res)){
         return;
     }
@@ -56,7 +56,7 @@ router.get(routes.v2.grants.getGrants,(req:ICustomRequest,res)=>{
         res.json(generateAnswer({message: answerMessage.unknownError, data: e.message}))
     }
 })
-router.delete(routes.v2.grants.deleteGrant,(req:ICustomRequest,res)=>{
+router.delete(routes.v2.grants.delete,(req:ICustomRequest,res)=>{
     if (!isUserCanEnter(req,res)){
         return;
     }
@@ -80,7 +80,7 @@ router.delete(routes.v2.grants.deleteGrant,(req:ICustomRequest,res)=>{
     }
 })
 
-router.patch(routes.v2.grants.updateGrant,(req:ICustomRequest,res)=>{
+router.patch(routes.v2.grants.update,(req:ICustomRequest,res)=>{
     if (!isUserCanEnter(req,res)){
         return;
     }
@@ -132,6 +132,57 @@ router.patch(routes.v2.grants.updateGrant,(req:ICustomRequest,res)=>{
         grantsOperations.updateGrant(newGrant)
         res.statusCode = 200;
         res.json(generateAnswer({message: answerMessage.success}))
+    } catch (e) {
+        res.statusCode = 500
+        res.json(generateAnswer({message: answerMessage.unknownError, data: e.message}))
+        return
+    }
+
+})
+
+router.patch(routes.v2.grants.addToBlackList, (req:ICustomRequest,res)=>{
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+
+    let id = req.body.id
+
+    if ((!id) || (Number.isNaN(id)) || (id < 0)){
+        res.statusCode = 400
+        res.json(generateAnswer({message: answerMessage.requiredParams, data: "id - integer, required"}))
+        return
+    }
+
+    try {
+        grantsOperations.setGrantToBlackList(id)
+        res.statusCode = 200;
+        res.json(generateAnswer({message: answerMessage.success}))
+        return;
+    } catch (e) {
+        res.statusCode = 500
+        res.json(generateAnswer({message: answerMessage.unknownError, data: e.message}))
+        return
+    }
+})
+
+router.patch(routes.v2.grants.removeFromBlackList, (req:ICustomRequest,res)=>{
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+
+    let id = req.body.id
+
+    if ((!id) || (Number.isNaN(id)) || (id < 0)){
+        res.statusCode = 400
+        res.json(generateAnswer({message: answerMessage.requiredParams, data: "id - integer, required"}))
+        return
+    }
+
+    try {
+        grantsOperations.removeFromBlackList(id)
+        res.statusCode = 200;
+        res.json(generateAnswer({message: answerMessage.success}))
+        return;
     } catch (e) {
         res.statusCode = 500
         res.json(generateAnswer({message: answerMessage.unknownError, data: e.message}))
