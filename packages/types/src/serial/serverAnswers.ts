@@ -11,7 +11,8 @@ export enum answerMessage  {
 	"wrongPasswordOrEmailOrName"= "Wrong password or name or email",
 	"userAlreadyExists"= "User already exists",
 	"insufficientRole" = "Insufficient role",
-	"requiredParams" = "requiredParams"
+	"requiredParams" = "requiredParams",
+	"postNotFound" = "postNotFound"
 }
 
 

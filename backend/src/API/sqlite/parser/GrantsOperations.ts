@@ -96,7 +96,6 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
     updateGrant(grant:TGrant):void{
         const query = `
         UPDATE ${this.tableName} SET
-        namePost = ?,
         dateCreationPost = ?,
         organization = ?,
         deadline = ?,
@@ -104,17 +103,13 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
         directionForSpent = ?,
         fullText = ?,
         link = ?,
-        linkPDF = ?,
-        timeOfParse = ?,
-        sourceLink = ?,
-        metaphone = ?
+        linkPDF = ?
         WHERE id = ${grant.id}
         `
 
         try {
 
-            let grantId = Number(this.db.prepare(query).run(
-                grant.namePost,
+            this.db.prepare(query).run(
                 grant.dateCreationPost,
                 grant.organization,
                 grant.deadline,
@@ -123,18 +118,17 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
                 grant.fullText,
                 grant.link,
                 grant.linkPDF,
-                grant.timeOfParse,
-                grant.sourceLink,
-                getMetaphone(grant.namePost)
-            ).lastInsertRowid)
+            )
 
-            this.directionsOperations.deleteDirections(grantId, this.tableName)
+            if (grant.id === undefined)
+                throw new Error("grant.id undefined")
+            this.directionsOperations.deleteDirections(grant.id, this.tableName)
 
             if (Array.isArray(grant.direction)){
                 grant.direction.forEach(direction=>{
                     this.directionsOperations.insertDirection({
                         direction: direction,
-                        parentID: grantId,
+                        parentID: grant.id!,
                         tableNamePost: this.tableName
                     })
                 })

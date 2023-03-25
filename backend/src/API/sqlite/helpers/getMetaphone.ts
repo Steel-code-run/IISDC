@@ -1,4 +1,5 @@
 export const getMetaphone = (str:string)=>{
+
     str = str.toLowerCase()
         .trim()
         .replaceAll(/(йо)|(ио)|(йе)|(ие)/gi,'и')

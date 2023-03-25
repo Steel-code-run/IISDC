@@ -49,7 +49,7 @@ router.get(routes.v2.grants.getGrants,(req:ICustomRequest,res)=>{
         return
     } catch (e) {
         res.statusCode = 500
-        res.json(generateAnswer({message: answerMessage.unknownError, data: e}))
+        res.json(generateAnswer({message: answerMessage.unknownError, data: e.message}))
     }
 })
 router.delete(routes.v2.grants.deleteGrant,(req:ICustomRequest,res)=>{
@@ -59,7 +59,7 @@ router.delete(routes.v2.grants.deleteGrant,(req:ICustomRequest,res)=>{
     let id = Number(req.query.id)
     if ((!id) || (Number.isNaN(id)) || (id < 0)){
         res.statusCode = 400
-        res.json(generateAnswer({message: answerMessage.requiredParams, data: "id - integer,  is required"}))
+        res.json(generateAnswer({message: answerMessage.requiredParams, data: "id - integer, required"}))
         return
     }
 
@@ -71,7 +71,66 @@ router.delete(routes.v2.grants.deleteGrant,(req:ICustomRequest,res)=>{
         return
     } catch (e) {
         res.statusCode = 500
-        res.json(generateAnswer({message: answerMessage.unknownError, data: e}))
+        res.json(generateAnswer({message: answerMessage.unknownError, data: e.message}))
+        return
+    }
+})
+
+router.patch(routes.v2.grants.updateGrant,(req:ICustomRequest,res)=>{
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+    let newGrant: TGrant
+    let reqGrant = getGrant(req.body)
+
+
+    if (!reqGrant.id) {
+        res.statusCode = 400
+        res.json(generateAnswer({message: answerMessage.requiredParams, data: "grant.id - integer, required"}))
+        return
+    }
+
+    try {
+        let oldGrant = grantsOperations.getGrant(reqGrant.id)
+
+        if (oldGrant === undefined) {
+            res.statusCode = 400
+            res.json(generateAnswer({message: answerMessage.postNotFound}))
+            return
+        }
+
+
+        newGrant = {
+            namePost: oldGrant.namePost,
+            blackListed: oldGrant.blackListed,
+            id: oldGrant.id,
+            timeOfParse: oldGrant.timeOfParse,
+            sourceLink: oldGrant.sourceLink,
+
+            direction: reqGrant.direction || oldGrant.direction,
+            linkPDF: reqGrant.linkPDF || oldGrant.linkPDF,
+            link: reqGrant.link || oldGrant.link,
+            fullText: reqGrant.fullText || oldGrant.fullText,
+            summary: reqGrant.summary || oldGrant.summary,
+            directionForSpent: reqGrant.directionForSpent || oldGrant.directionForSpent,
+            organization: reqGrant.organization || oldGrant.organization,
+            deadline: reqGrant.deadline || oldGrant.deadline,
+            dateCreationPost: reqGrant.dateCreationPost || oldGrant.dateCreationPost,
+        }
+
+    } catch (e) {
+        res.statusCode = 400
+        res.json(generateAnswer({message: answerMessage.unknownError, data: e.message}))
+        return
+    }
+
+    try {
+        grantsOperations.updateGrant(newGrant)
+        res.statusCode = 200;
+        res.json(generateAnswer({message: answerMessage.success}))
+    } catch (e) {
+        res.statusCode = 500
+        res.json(generateAnswer({message: answerMessage.unknownError, data: e.message}))
         return
     }
 })

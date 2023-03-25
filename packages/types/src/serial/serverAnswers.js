@@ -11,4 +11,5 @@ var answerMessage;
     answerMessage["userAlreadyExists"] = "User already exists";
     answerMessage["insufficientRole"] = "Insufficient role";
     answerMessage["requiredParams"] = "requiredParams";
+    answerMessage["postNotFound"] = "postNotFound";
 })(answerMessage = exports.answerMessage || (exports.answerMessage = {}));
