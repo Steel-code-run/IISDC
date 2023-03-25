@@ -17,6 +17,11 @@ const PagePost = () => {
 
     const isVisionBtns = useMediaQuery({query: '(min-width: 540px)'})
 
+    const convertDate = (date: string) => {
+        return  new Date(date)?.toLocaleDateString();
+
+    }
+
     return (
         <>
             <Header/>
@@ -63,7 +68,7 @@ const PagePost = () => {
                                 {data.linkPDF && <a href={data.linkPDF} rel="noopener noreferrer" target="_blank"
                                                     className={styles.pagePost__link}>Прикрепленный файл</a>}
                             </div>
-                            <div className={styles.pagePost__timeParsing}>{'Время парсинга: ' + data.timeOfParse}</div>
+                            <div className={styles.pagePost__timeParsing}>{'Время парсинга: ' + convertDate(data.timeOfParse)}</div>
                         </div>
                         <div className={styles.pagePost__btns}>
                             {
