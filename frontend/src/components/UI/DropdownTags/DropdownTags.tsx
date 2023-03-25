@@ -34,7 +34,8 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => 
         setDirections(dataDirections?.data?.filter((direction: string) => !tags.includes(direction)))
     }, [dataDirections, tags])
 
-console.log(isActive, isActiveDropdown)
+
+
     return (
         <div className={(isActive && isActiveDropdown)
             ? styles.dropdownTags + ' ' + styles.dropdownTags__activeDropdownBorders

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './PagePost.module.scss';
 import Header from "../../components/Header/Header";
 import {useLocation, useNavigate} from "react-router-dom";
@@ -27,6 +27,11 @@ const PagePost = () => {
     const navigate = useNavigate();
     const token = window.localStorage.getItem('token')
 
+    useEffect(() => {
+        if(!isVisionBtns) {
+            setIsEdit(false)
+        }
+    }, [isVisionBtns])
 
     return (
         <>
