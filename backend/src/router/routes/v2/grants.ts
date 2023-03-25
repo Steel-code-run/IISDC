@@ -52,5 +52,28 @@ router.get(routes.v2.grants.getGrants,(req:ICustomRequest,res)=>{
         res.json(generateAnswer({message: answerMessage.unknownError, data: e}))
     }
 })
+router.delete(routes.v2.grants.deleteGrant,(req:ICustomRequest,res)=>{
+    if (!isUserCanEnter(req,res)){
+        return;
+    }
+    let id = Number(req.query.id)
+    if ((!id) || (Number.isNaN(id)) || (id < 0)){
+        res.statusCode = 400
+        res.json(generateAnswer({message: answerMessage.requiredParams, data: "id - integer,  is required"}))
+        return
+    }
+
+
+    try {
+        grantsOperations.deleteGrant(Number(req.query.id))
+        res.statusCode = 200;
+        res.json(generateAnswer({message: answerMessage.success}))
+        return
+    } catch (e) {
+        res.statusCode = 500
+        res.json(generateAnswer({message: answerMessage.unknownError, data: e}))
+        return
+    }
+})
 
 export default router

@@ -10,4 +10,5 @@ var answerMessage;
     answerMessage["wrongPasswordOrEmailOrName"] = "Wrong password or name or email";
     answerMessage["userAlreadyExists"] = "User already exists";
     answerMessage["insufficientRole"] = "Insufficient role";
+    answerMessage["requiredParams"] = "requiredParams";
 })(answerMessage = exports.answerMessage || (exports.answerMessage = {}));
