@@ -119,6 +119,13 @@ $textBtns: #fff;
 		text-decoration-line: underline;
 
 		color: #3934A3;
+
+		&:hover {
+			color: #7671DD;
+		}
+		&:active {
+			color: #050066 !important;
+		}
 	}
 
 	&__btn {
