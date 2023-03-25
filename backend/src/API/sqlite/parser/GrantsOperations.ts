@@ -341,7 +341,6 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
             query+=" ) "
 
         try {
-
             if (props.justCountIt)
                 return this.db.prepare(query).all()[0]["COUNT (*)"]
 

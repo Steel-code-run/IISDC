@@ -73,7 +73,6 @@ describe("DirectionsOperations",()=>{
             let grantId = grantsOperations.insertGrant(grant)
             testDirectionName = Math.random()+"s"
             directionsConstOperations.insertConst(testDirectionName)
-            console.log(directionsConstOperations.getIdByName(testDirectionName));
 
             expect(directionsOperations.insertDirection({
                 direction: testDirectionName,

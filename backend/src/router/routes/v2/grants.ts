@@ -63,9 +63,17 @@ router.get(routes.v2.grants.count,(req:ICustomRequest,res)=>{
         return;
     }
 
+    let grant = getGrant(req.query)
+
+    if (!Array.isArray(grant.direction))
+        grant.direction = []
+
     try {
         let grantsForReturn;
             grantsForReturn = grantsOperations.getGrants({
+                directions: grant.direction,
+                blackListed: grant.blackListed || 0,
+                namePost: grant.namePost || '',
                 from:0,
                 limit: 1000000000,
                 justCountIt: true,
