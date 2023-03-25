@@ -96,8 +96,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
     React.useEffect(() => {
         window.addEventListener('resize', () => checkSizeWindow())
         checkSizeWindow();
-
-        (data.message === 'unauthorized')
+        (error)
             ? navigate('/')
             : navigate('/grants')
     }, [isLoading])
