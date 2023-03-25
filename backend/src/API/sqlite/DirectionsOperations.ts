@@ -5,18 +5,11 @@ import {Database} from "better-sqlite3";
 import {IDirectionsConstOperations} from "./DirectionsConstOperations";
 import {directionsConstTableName} from "./config";
 
-export interface IDirectionsOperations {
-    insertDirection(props:{
-        direction: string,
-        parentID: number,
-        tableNamePost: string,
-    }):number | undefined,
-    getDirections(parentId:number, tableNamePost:string):string[];
-    deleteDirections(parentId:number, parentTableName:string):void
+export interface IDirectionsOperations extends DirectionsOperations{
 }
 
 
-export class DirectionsOperations extends DefaultOperation implements IDirectionsOperations{
+export class DirectionsOperations extends DefaultOperation {
 
     private directionsConstOperations:IDirectionsConstOperations
     /**
