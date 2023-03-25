@@ -1,15 +1,15 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './PageGrants.module.scss';
-import {useGetCountGrantsQuery, useGetDirectionsGrantsQuery, useGetGrantsQuery} from "../../api/grants.api";
-import CardPost from "../../components/CardGrant/CardPost";
+import {useGetCountGrantsQuery, useGetDirectionsQuery, useGetGrantsQuery} from "../../api/grants.api";
+import CardPost from "../../components/CardPost/CardPost";
 import Header from "../../components/Header/Header";
-import {TGrant} from "@iisdc/types";
+import {TGrant, TPostType} from "@iisdc/types";
 import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
-import {Dna} from "react-loader-spinner";
 import '../../styles/spinner-loader.scss';
 import {useNavigate} from "react-router-dom";
+import {Dna} from "react-loader-spinner";
 
 export interface PageGrantsProps {
 }
@@ -20,9 +20,8 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState('Все направления')
-    const navigate = useNavigate()
-
-
+    const navigate = useNavigate();
+    const token = window.localStorage.getItem('token');
     const generatorRequestGrant = (type: string) => {
 
         if (type === 'haveDirection') {
@@ -30,13 +29,15 @@ const PageGrants: FC<PageGrantsProps> = () => {
                 limit: amountPostsPerPage,
                 from: (page - 1) * amountPostsPerPage,
                 namePost: debounceValue,
-                direction: choicedDirection
+                direction: choicedDirection,
+                token: token
             }
         }
         return {
             limit: amountPostsPerPage,
             from: (page - 1) * amountPostsPerPage,
             namePost: debounceValue,
+            token: token
         }
 
     }
@@ -45,26 +46,16 @@ const PageGrants: FC<PageGrantsProps> = () => {
         if (type === 'haveDirection') {
             return {
                 namePost: debounceValue,
-                direction: choicedDirection
+                direction: choicedDirection,
+                token: token
             }
         }
         return {
             namePost: debounceValue,
+            token: token
         }
 
     }
-
-    const {data: totalCountPosts} = useGetCountGrantsQuery(generatorRequestGrantCount(
-        (choicedDirection !== 'Все направления')
-            ? 'haveDirection'
-            : 'noDirection'));
-
-    const {data = [], error, isLoading} = useGetGrantsQuery(
-        generatorRequestGrant((choicedDirection !== 'Все направления')
-            ? 'haveDirection'
-            : 'noDirection'));
-    const {data: directions} = useGetDirectionsGrantsQuery();
-
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
         if (sizeWindow <= 768 && sizeWindow >= 414) {
@@ -76,10 +67,21 @@ const PageGrants: FC<PageGrantsProps> = () => {
         }
     }
 
-    useEffect(() => {
-        window.addEventListener('resize', () => checkSizeWindow())
-        checkSizeWindow()
-    }, [])
+    const {data: totalCountPosts} = useGetCountGrantsQuery(generatorRequestGrantCount(
+        (choicedDirection !== 'Все направления')
+            ? 'haveDirection'
+            : 'noDirection'));
+    const {data = [], error, isLoading} = useGetGrantsQuery(
+        generatorRequestGrant((choicedDirection !== 'Все направления')
+            ? 'haveDirection'
+            : 'noDirection'));
+
+
+
+
+    const {data: directions} = useGetDirectionsQuery({
+        token: token
+    });
 
 
     useEffect(() => {
@@ -92,10 +94,13 @@ const PageGrants: FC<PageGrantsProps> = () => {
     }, [totalCountPosts, setAmountPages, amountPostsPerPage])
 
     React.useEffect(() => {
-        (!error)
-            ? navigate('/grants')
-            : navigate('/')
-    }, [])
+        window.addEventListener('resize', () => checkSizeWindow())
+        checkSizeWindow();
+
+        (data.message === 'unauthorized')
+            ? navigate('/')
+            : navigate('/grants')
+    }, [isLoading])
 
     if (!directions?.data || isLoading) return <Dna visible={true}
                                                               height="250"
@@ -117,20 +122,23 @@ const PageGrants: FC<PageGrantsProps> = () => {
                             {
                                 data?.data?.map((post: TGrant) => {
                                     return (
-                                        <CardPost
+                                        <CardPost<TPostType.grant>
+                                            props={{
+                                                dateCreationPost: post.dateCreationPost,
+                                                linkPDF: post.linkPDF,
+                                                link: post.link,
+                                                deadline: post.deadline,
+                                                summary: post.summary,
+                                                directionForSpent: post.directionForSpent,
+                                                fullText: post.fullText,
+                                                id: post.id,
+                                                direction: post.direction,
+                                                namePost: post.namePost,
+                                                organization: post.organization,
+                                                timeOfParse: post.timeOfParse
+                                            }}
                                             key={post.id}
-                                            id={post.id}
-                                            dateCreationPost={post.dateCreationPost}
-                                            direction={post.direction}
-                                            namePost={post.namePost}
-                                            organization={post.organization}
-                                            deadline={post.deadline}
-                                            directionForSpent={post.directionForSpent}
-                                            fullText={post.fullText}
-                                            link={post.link}
-                                            linkPDF={post.linkPDF}
-                                            summary={post.summary}
-                                            timeOfParse={post.timeOfParse}
+                                            postType={TPostType.grant}
                                         />
                                     )
                                 })

@@ -2,7 +2,6 @@ import {configureStore} from "@reduxjs/toolkit";
 import {grantsApi} from "../api/grants.api";
 import {competitionsApi} from "../api/competitions.api";
 
-
 export const store = configureStore({
     reducer: {
         [grantsApi.reducerPath]: grantsApi.reducer,

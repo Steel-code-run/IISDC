@@ -134,7 +134,7 @@ export type TCompetition = {
 	// ссылка
 	link: string;
 	// ссылка на PDF
-	linkPDF: string;
+	linkPDF: string | string[];
 	// время парсинга
 	timeOfParse?: number;
 	sourceLink?:string;

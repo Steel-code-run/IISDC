@@ -1,7 +1,7 @@
 import {callParser} from "../index";
-import {TParserCallParams, TParserResult} from "@iisdc/types";
+import {TParserResult} from "@iisdc/types";
 import {parserCallParamsFixture} from "./fixtures/parserCallParams";
-import { beforeEach, describe, expect, jest, test } from '@jest/globals';
+import {describe, expect, test} from '@jest/globals';
 
 const parserFileUrl = "RSCI"
 

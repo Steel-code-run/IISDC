@@ -1,5 +1,4 @@
-import { Config } from 'jest';
-import { pathsToModuleNameMapper } from 'ts-jest';
+import {Config} from 'jest';
 
 
 const config: Config = {

@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './PageCompetition.module.scss';
 import Header from "../../components/Header/Header";
-import {TGrant} from "@iisdc/types";
+import {TGrant, TPostType} from "@iisdc/types";
 import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import {Dna} from "react-loader-spinner";
@@ -11,8 +11,8 @@ import {
     useGetCountСompetitionsQuery,
     useGetDirectionsCompetitionsQuery
 } from "../../api/competitions.api";
-import CardCompetition from "../../components/CardCompetition/CardCompetition";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
+import CardPost from "../../components/CardPost/CardPost";
 import {useNavigate} from "react-router-dom";
 
 export interface PageCompetitionsProps {
@@ -24,22 +24,25 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState('Все направления')
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const token = window.localStorage.getItem('token');
+
 
     const generatorRequestCompetitions = (type: string) => {
-
         if (type === 'haveDirection') {
             return {
                 limit: amountPostsPerPage,
                 from: (page - 1) * amountPostsPerPage,
                 namePost: debounceValue,
-                direction: choicedDirection
+                direction: choicedDirection,
+                token
             }
         }
         return {
             limit: amountPostsPerPage,
             from: (page - 1) * amountPostsPerPage,
             namePost: debounceValue,
+            token
         }
 
     }
@@ -48,25 +51,16 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
         if (type === 'haveDirection') {
             return {
                 namePost: debounceValue,
-                direction: choicedDirection
+                direction: choicedDirection,
+                token
             }
         }
         return {
             namePost: debounceValue,
+            token
         }
 
     }
-    const {data: totalCountPosts} = useGetCountСompetitionsQuery(
-        generatorRequestCompetitionsCount((choicedDirection !== 'Все направления')
-        ? 'haveDirection'
-        : 'noDirection'));
-
-    const {data = [], error, isLoading} = useGetCompetitionsQuery(
-        generatorRequestCompetitions((choicedDirection !== 'Все направления')
-            ? 'haveDirection'
-            : 'noDirection'));
-    const {data: directions} = useGetDirectionsCompetitionsQuery();
-
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
         if (sizeWindow <= 768 && sizeWindow >= 414) {
@@ -77,6 +71,19 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
             setAmountPostsPerPage(12)
         }
     }
+
+
+    const {data: totalCountPosts} = useGetCountСompetitionsQuery(
+        generatorRequestCompetitionsCount((choicedDirection !== 'Все направления')
+        ? 'haveDirection'
+        : 'noDirection'));
+
+    const {data = [], error, isLoading} = useGetCompetitionsQuery(
+        generatorRequestCompetitions((choicedDirection !== 'Все направления')
+            ? 'haveDirection'
+            : 'noDirection'));
+    const {data: directions} = useGetDirectionsCompetitionsQuery({token});
+
 
     useEffect(() => {
         window.addEventListener('resize', () => checkSizeWindow())
@@ -93,12 +100,12 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
         setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
     }, [totalCountPosts, setAmountPages, amountPostsPerPage])
 
-    React.useEffect(() => {
-        (!error)
-            ? navigate('/competitions')
-            : navigate('/')
-    }, [])
 
+    React.useEffect(() => {
+        (data.message === 'unauthorized')
+            ? navigate('/')
+            : navigate('/competitions')
+    }, [])
     if (!directions?.data || isLoading) return <Dna visible={true}
                                                     height="250"
                                                     width="250"
@@ -119,18 +126,21 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                             {
                                 data?.data?.map((post: TGrant) => {
                                     return (
-                                        <CardCompetition
+                                        <CardPost<TPostType.competition>
+                                            props={{
+                                                dateCreationPost: post.dateCreationPost,
+                                                linkPDF: post.linkPDF,
+                                                link: post.link,
+                                                deadline: post.deadline,
+                                                fullText: post.fullText,
+                                                id: post.id,
+                                                direction: post.direction,
+                                                namePost: post.namePost,
+                                                organization: post.organization,
+                                                timeOfParse: post.timeOfParse
+                                            }}
                                             key={post.id}
-                                            id={post.id}
-                                            dateCreationPost={post.dateCreationPost}
-                                            direction={post.direction}
-                                            namePost={post.namePost}
-                                            organization={post.organization}
-                                            deadline={post.deadline}
-                                            fullText={post.fullText}
-                                            link={post.link}
-                                            linkPDF={post.linkPDF}
-                                            timeOfParse={post.timeOfParse}
+                                            postType={TPostType.competition}
                                         />
                                     )
                                 })

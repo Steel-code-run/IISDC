@@ -1,49 +1,43 @@
 import '@reduxjs/toolkit/query/react';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {IUpdateData} from "../components/UI/PopupPost/PopupPost";
 
 export interface IGetGrants {
     limit: number,
     from: number,
     namePost: string,
-    direction?: string
-}
-export interface IGetCompetitions {
-    limit: number,
-    from: number,
-    namePost: string,
-    direction?: string
+    direction?: string,
+    token: string | null
 }
 
 interface IGetCountGrants {
     namePost?: string,
-    direction?: string
+    direction?: string,
+    token: string | null
 }
+
 
 export const grantsApi = createApi({
     reducerPath: 'grantsApi',
     baseQuery: fetchBaseQuery(
         {
             baseUrl: process.env.REACT_APP_SERVER_URL,
-            headers: {
-                'Authorization': `Bearer ${window.localStorage.getItem('token')}`,
-            },
-            method: 'POST'
-
         }),
     tagTypes: ['Grants'],
     endpoints: (builder) => ({
-
         getGrants: builder.query<any, IGetGrants>({
-            query: ({limit, from, namePost, direction}) => {
+            query: ({limit, from, namePost, direction, token}) => {
                 return {
-                    url: 'grants/get',
-                    body: {
+                    url: `v2/grants/get`,
+                    params: {
                         limit: limit,
                         from,
                         namePost,
                         direction
-                    }
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    method: 'GET'
                 }
             },
             providesTags: (result) =>
@@ -55,49 +49,72 @@ export const grantsApi = createApi({
                     : [{ type: 'Grants', id: 'LIST' }],
         }),
         getCountGrants: builder.query<any, IGetCountGrants>({
-            query: ({namePost, direction}) => {
+            query: ({namePost, direction, token}) => {
                 return {
-                    url: 'grants/count',
-                    body: {
+                    url: 'v2/grants/count',
+                    params: {
                         namePost,
                         direction
-                    }
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    method: 'GET'
                 }
             }
         }),
-        deletePostGrant: builder.mutation<any, number>({
-            query: (id) => (
+        deletePostGrant: builder.mutation<any, any>({
+            query: ({token, id}, ) => (
                 {
-                    url: 'grants/delete',
+                    url: 'v2/grants/addToBlackList',
                     body: {
                         id
-                    }
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    method: 'PATCH'
                 }
             ),
             invalidatesTags: [{type: 'Grants', id: 'LIST'}]
         }),
-        updatePostGrant: builder.mutation<any, IUpdateData>({
-            query: (updateData) => ({
-                url: 'grants/update',
-                body: updateData
-            }),
-            invalidatesTags: [{type: 'Grants', id: 'LIST'}]
-        }),
-        getDirectionsGrants: builder.query<any, void>({
-            query: () => 'grants/getDirections'
+
+        // updatePostGrant: builder.mutation<any, IUpdateData>({
+        //     query: (updateData) => ({
+        //         url: 'grants/update',
+        //         body: updateData
+        //     }),
+        //     invalidatesTags: [{type: 'Grants', id: 'LIST'}]
+        // }),
+
+        getDirections: builder.query<any, any>({
+            query: ({token}) => (
+                {
+                    url:'v2/directions/get',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    method: 'GET'
+                }
+            )
         }),
 
-        getBeautifulStats : builder.query<any, void>({
-            query: () => 'stats/getBeautifulStats'
+        getBeautifulStats : builder.query<any, any>({
+            query: ({token}) => ({
+                url: 'stats/getBeautifulStats',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                method: 'POST'
+            })
         })
 
     })
 });
 
 export const {
-    useUpdatePostGrantMutation,
     useDeletePostGrantMutation,
-    useGetDirectionsGrantsQuery,
+    useGetDirectionsQuery,
     useGetBeautifulStatsQuery,
     useGetGrantsQuery,
     useGetCountGrantsQuery,

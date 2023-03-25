@@ -1,13 +1,13 @@
 import React from 'react';
 // import {screen} from '@testing-library/react';
 // import '@testing-library/jest-dom/extend-expect';
-// import CardGrant from './CardGrant';
+// import CardPost from './CardPost';
 //
-// describe('<CardGrant />', () => {
+// describe('<CardPost />', () => {
 //   test('it should mount', () => {
-//     // render(<CardGrant />);
+//     // render(<CardPost />);
 //
-//     const cardPost = screen.getByTestId('CardGrant');
+//     const cardPost = screen.getByTestId('CardPost');
 //
 //     expect(cardPost).toBeInTheDocument();
 //   });

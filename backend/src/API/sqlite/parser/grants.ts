@@ -6,13 +6,17 @@ import {TGrant} from "@iisdc/types";
 import {
     createTableIfNotExist,
     universalAddPost,
-    universalCount, universalDeletePost, universalDropTable,
+    universalCount,
+    universalDeletePost,
+    universalDropTable,
     universalGetPosts,
     universalIsPostExist,
-    universalIsTableExist, universalUpdatePost
+    universalIsTableExist,
+    universalUpdatePost
 } from "../helpers/tableManipulations";
 import * as fs from "fs";
 import {decoderShieldIt} from "@iisdc/utils";
+
 let dbPath = path.join(__projectPath, '../../','sqlite','db','parser.db');
 let db:any;
 setDb(dbPath)
@@ -162,7 +166,7 @@ export const getGrants = (post:Partial<TGrant> = {},
         })
 
     } catch (e) {
-        consoleLog("from "+__filename +"\n" + "Error in getVacancies")
+        consoleLog("from "+__filename +"\n" + "Error in getGrants")
         throw new Error(e)
     }
 

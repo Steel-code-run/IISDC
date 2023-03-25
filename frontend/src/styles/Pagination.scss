@@ -21,3 +21,12 @@
   display: flex;
   align-items: center;
 }
+
+// Adaptive
+
+@media (max-width: 768px) {
+  .MuiPagination-root {
+    justify-content: center;
+  }
+
+}

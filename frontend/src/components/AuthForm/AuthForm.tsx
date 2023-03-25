@@ -30,9 +30,8 @@ const AuthForm: FC<AuthFormProps> = () => {
                 role: 1
             })
             const token = answer.headers.authorization.replace('Bearer ', '')
+            window.localStorage.setItem("token", token)
             if(answer.data.message === 'success') navigate('/grants')
-            window.location.reload();
-            window.localStorage.setItem('token', token)
 
         } catch (err: any) {
             if(err) {
@@ -71,10 +70,10 @@ const AuthForm: FC<AuthFormProps> = () => {
 
             <button type={'submit'} className={styles.authForm__btnSubmit}>Продолжить</button>
 
-            <div className={styles.authForm__footerForm}>
-                <p> Забыли <a href="#">пароль?</a></p>
-                <a href="#">Зарегистрироваться</a>
-            </div>
+            {/*<div className={styles.authForm__footerForm}>*/}
+            {/*    <p> Забыли <a href="#">пароль?</a></p>*/}
+            {/*    <a href="#">Зарегистрироваться</a>*/}
+            {/*</div>*/}
         </form>
 
     )

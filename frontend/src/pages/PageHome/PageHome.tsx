@@ -12,9 +12,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 
 const PageHome: FC<PageHomeProps> = () => {
-    const {data: stats} = useGetBeautifulStatsQuery();
-    console.log(stats)
-
+    const {data: stats} = useGetBeautifulStatsQuery({token: window.localStorage.getItem('token')});
     const arrayStats = []
 
     for (let stat in stats?.data) {
@@ -54,6 +52,7 @@ const PageHome: FC<PageHomeProps> = () => {
             <div className={styles.pageHome} data-testid="PageHome">
                 <div className="container">
                     <div className={styles.pageHome__graphic}>
+                        {'Получено за день парсерами: '}
                         <Pie
                             data={data}
                         />

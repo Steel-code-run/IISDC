@@ -1,20 +1,18 @@
 import {callParser} from "../index";
-import {TParserResult} from "@iisdc/types";
+import {TParserResult, TPostType} from "@iisdc/types";
 import {parserCallParamsFixture} from "./fixtures/parserCallParams";
 import {describe, expect, test} from '@jest/globals';
 
-const parserFileUrl = "guap"
+const parserFileUrl = "moyastrana"
 
 let parserCallParams = parserCallParamsFixture(parserFileUrl)
 let data:  TParserResult;
-let dataFromPage2:  TParserResult;
 
 describe(parserFileUrl,()=>{
 
     test(":: have connection with parser", ()=>{
         async function getPosts(){
             data = await callParser(parserCallParams)
-            dataFromPage2 = await callParser({...parserCallParams, page: 2})
             return true
         }
 
@@ -47,22 +45,9 @@ describe(parserFileUrl,()=>{
 
     test(":: all posts contains link", ()=>{
         let res = true;
+
         data.forEach((el)=>{
-            if (el.postDescription.link.length < 1)
-                res = false
-        })
-        expect(res).toBe(true)
-    })
-
-    test(":: page 2 started with new posts", ()=>{
-        let res = true;
-        data.forEach((el,index)=>{
-            if (!dataFromPage2[index])
-                return
-
-            if ((dataFromPage2[index].postDescription.namePost ===
-                data[index].postDescription.namePost) && (dataFromPage2[index].postDescription.link ===
-                data[index].postDescription.link))
+            if((el.postType === TPostType.grant || el.postType === TPostType.competition) && el.postDescription.link.length < 1)
                 res = false
         })
         expect(res).toBe(true)
