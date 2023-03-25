@@ -7,9 +7,6 @@ import DropdownTags from "../../components/UI/DropdownTags/DropdownTags";
 import {useMediaQuery} from "react-responsive";
 import {useDeletePostGrantMutation} from "../../api/grants.api";
 
-// interface IPropsPagePost {
-//
-// }
 
 const PagePost = () => {
     const [isEdit, setIsEdit] = useState(false);
@@ -18,20 +15,19 @@ const PagePost = () => {
 
     const isVisionBtns = useMediaQuery({query: '(min-width: 540px)'})
 
-    const convertDate = (date: string) => {
-        return  new Date(date)?.toLocaleDateString();
-
-    }
+    const convertDate = (date: string) => new Date(date)?.toLocaleDateString();
 
     const [deletePost] = useDeletePostGrantMutation();
     const navigate = useNavigate();
     const token = window.localStorage.getItem('token')
 
     useEffect(() => {
-        if(!isVisionBtns) {
+        if (!isVisionBtns) {
             setIsEdit(false)
         }
     }, [isVisionBtns])
+
+    const highLightField = (turn: boolean) => (turn) ? ' ' + styles.pagePost__highlightField : '';
 
     return (
         <>
@@ -54,21 +50,21 @@ const PagePost = () => {
                         isPropsGrant(postType, data) &&
                         <>
                             <div
-                                className={styles.pagePost__field + ' ' + styles.pagePost__summary}>{'Сумма гранта: ' + data.summary}</div>
+                                className={styles.pagePost__field + ' ' + styles.pagePost__summary + highLightField(isEdit)}>{'Сумма гранта: ' + data.summary}</div>
                             <DropdownTags direction={data.direction} isActiveDropdown={isEdit && isVisionBtns}/>
-                            <div className={styles.pagePost__field}>{'Организаторы: ' + data.organization}</div>
+                            <div className={styles.pagePost__field + highLightField(isEdit)}>{'Организаторы: ' + data.organization}</div>
                             <div
-                                className={styles.pagePost__field}>{'Направление расходования средств: ' + data.directionForSpent}</div>
+                                className={styles.pagePost__field + highLightField(isEdit)}>{'Направление расходования средств: ' + data.directionForSpent}</div>
                         </>
                     }
                     {
                         isPropsCompetition(postType, data) &&
                         <>
-                            <div className={styles.pagePost__field}>{'Организаторы: ' + data.organization}</div>
+                            <div className={styles.pagePost__field + highLightField(isEdit)}>{'Организаторы: ' + data.organization}</div>
                         </>
                     }
                     {data.fullText &&
-                        <div className={styles.pagePost__field + ' ' + styles.pagePost__fullText}>{data.fullText}</div>
+                        <div className={styles.pagePost__field + highLightField(isEdit) + ' ' + styles.pagePost__fullText}>{data.fullText}</div>
 
                     }
                     <div className={styles.pagePost__footerRow}>
@@ -79,7 +75,8 @@ const PagePost = () => {
                                 {data.linkPDF && <a href={data.linkPDF} rel="noopener noreferrer" target="_blank"
                                                     className={styles.pagePost__link}>Прикрепленный файл</a>}
                             </div>
-                            <div className={styles.pagePost__timeParsing}>{'Время парсинга: ' + convertDate(data.timeOfParse)}</div>
+                            <div
+                                className={styles.pagePost__timeParsing}>{'Время парсинга: ' + convertDate(data.timeOfParse)}</div>
                         </div>
                         <div className={styles.pagePost__btns}>
                             {
@@ -93,7 +90,7 @@ const PagePost = () => {
                                                         navigate('/grants');
                                                     }
                                                 }}
-                                                    className={styles.pagePost__delete + ' ' + styles.pagePost__btn}>Удалить
+                                                        className={styles.pagePost__delete + ' ' + styles.pagePost__btn}>Удалить
                                                 </button>
                                                 <button onClick={() => {
                                                     setIsEdit(false)

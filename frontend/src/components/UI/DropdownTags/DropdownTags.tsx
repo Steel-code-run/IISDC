@@ -8,12 +8,16 @@ export interface IDropdownTagsProps {
     isActiveDropdown: boolean
 }
 
+interface IDirectionsResponse {
+    id: number,
+    directionName: string
+}
+
 const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => {
     const [isActive, setIsActive] = useState(false);
     const [tags, setTags] = useState<string[] | string>(direction);
-    const [directions, setDirections] = useState<string[]>([])
+    const [directions, setDirections] = useState<IDirectionsResponse[]>([])
     const [search, setSearch] = useState('')
-
 
     const deleteTag = (deletedTag: string) => {
         if (Array.isArray(tags))
@@ -21,25 +25,30 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => 
         else setTags('')
 
     }
+
+
     const addTag = (addedTag: string) => {
-        if(addedTag === 'Не определено') return
+        if (addedTag === 'Не определено') return
         if (Array.isArray(tags))
             setTags([...tags, addedTag])
         else setTags(addedTag)
 
     }
     const token = window.localStorage.getItem('token')
-    const {data: dataDirections} = useGetDirectionsQuery({token})
+    const {data: dataDirections} = useGetDirectionsQuery({token});
+
     useEffect(() => {
-        setDirections(dataDirections?.data?.filter((direction: string) => !tags.includes(direction)))
-    }, [dataDirections, tags])
+        setDirections(dataDirections?.data?.filter((direction: IDirectionsResponse) => !tags.includes(direction.directionName)))
+    }, [dataDirections, tags]);
 
-
+    const highLightField = (turn: boolean) => (turn) ? ' ' + styles.dropdownTags__highlightField : '';
 
     return (
         <div className={(isActive && isActiveDropdown)
-            ? styles.dropdownTags + ' ' + styles.dropdownTags__activeDropdownBorders
-            : styles.dropdownTags} data-testid="DropdownTags">
+            ? styles.dropdownTags + ' ' + styles.dropdownTags__activeDropdownBorders + highLightField(isActiveDropdown)
+            : (!isActive && isActiveDropdown)
+                ? styles.dropdownTags + highLightField(isActiveDropdown)
+                : styles.dropdownTags} data-testid="DropdownTags">
             <div className={styles.dropdownTags__direction}>{'Направления: '}
                 {
                     (!isActive || !isActiveDropdown) ?
@@ -85,10 +94,10 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => 
                     <ul className={styles.dropdownTags__listDirections}>
                         {
                             directions
-                                .filter(direction => direction.toLowerCase().startsWith(search.toLowerCase()))
-                                .map((direction: string, ix) =>
-                                    <li key={direction + ix} onClick={() => addTag(direction)}
-                                        className={styles.dropdownTags__listDirections__direction}>{direction}</li>)
+                                .filter(direction => direction.directionName.toLowerCase().startsWith(search.toLowerCase()))
+                                .map((direction: IDirectionsResponse) =>
+                                    <li key={direction.id} onClick={() => addTag(direction.directionName)}
+                                        className={styles.dropdownTags__listDirections__direction}>{direction.directionName}</li>)
                         }
                     </ul>
 
