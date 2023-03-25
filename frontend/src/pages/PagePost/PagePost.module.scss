@@ -4,144 +4,222 @@ $textBtns: #fff;
 
 
 .pagePost {
-  margin: 20px 0 30px 0;
+	margin: 20px 0 30px 0;
 
-  &__container {
-    max-width: 1280px;
-    width: 100%;
-    margin: 0 auto;
+	&__container {
+		max-width: 1280px;
+		width: 100%;
+		margin: 0 auto;
 
-    display: flex;
-    flex-direction: column;
-    gap: 10px 0;
-    padding: 0 20px;
-  }
+		display: flex;
+		flex-direction: column;
+		gap: 10px 0;
+		padding: 0 20px;
+	}
 
-  &__row {
-    display: flex;
-    width: 100%;
+	&__row {
+		display: flex;
+		width: 100%;
 
-  }
-  &__row:last-child {
-    margin-top: 10px;
-  }
+	}
 
-  &__namePost {
-    font-weight: 700;
-    font-size: 32px;
-    line-height: 40px;
-    color: $title;
-    margin-right: 60px;
-    flex: 2 1 70%;
+	&__row:last-child {
+		margin-top: 10px;
+	}
 
-  }
+	&__namePost {
+		font-weight: 700;
+		font-size: 32px;
+		line-height: 40px;
+		color: $title;
+		margin-right: 60px;
+		flex: 2 1 70%;
 
-  &__dateCreationPost {
-    background: #00BA95;
-    margin-right: 20px;
-    flex: 1 1 30%;
-  }
+	}
 
-  &__deadline {
-    background: #BA2E36;
-    flex: 1 1 30%;
-  }
+	&__dates {
+		display: flex;
+		gap: 0 20px;
+	}
 
-  &__dateCreationPost, &__deadline {
-    min-width: 140px;
-    width: auto;
-    max-width: 300px;
+	&__dateCreationPost {
+		background: #00BA95;
+		flex: 1 1 30%;
+	}
 
-    min-height: 100px;
-    height: fit-content;
+	&__deadline {
+		background: #BA2E36;
+		flex: 1 1 30%;
+	}
 
-    display: flex;
-    align-items: center;
-    text-align: center;
-    flex-direction: column;
-    border-radius: 10px;
-    color: $fieldText;
-    padding: 5px 10px;
+	&__dateCreationPost, &__deadline {
+		min-width: 140px;
+		width: auto;
+		max-width: 300px;
 
-    font-weight: 800;
-    font-size: 13px;
-    line-height: 20px;
+		min-height: 100px;
+		height: fit-content;
 
-  }
+		display: flex;
+		align-items: center;
+		text-align: center;
+		flex-direction: column;
+		border-radius: 10px;
+		color: $fieldText;
+		padding: 5px 10px;
 
-  &__dateCreationPost p, &__deadline p {
-    font-weight: 800;
-    font-size: 16px;
-    line-height: 22px;
-  }
+		font-weight: 800;
+		font-size: 13px;
+		line-height: 20px;
 
-  &__field {
-    width: 100%;
-    height: auto;
-    border: 3px solid #A7A7A7;
-    border-radius: 10px;
+	}
 
-    padding: 10px 20px;
+	&__dateCreationPost p, &__deadline p {
+		font-weight: 800;
+		font-size: 16px;
+		line-height: 22px;
+	}
 
-    font-style: normal;
-    font-weight: 200;
-    font-size: 16px;
-    line-height: 22px;
-  }
+	&__field {
+		width: 100%;
+		height: auto;
+		border: 3px solid #A7A7A7;
+		border-radius: 10px;
 
-  &__summary {
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 33px;
-    display: flex;
-    align-items: center;
+		padding: 10px 20px;
 
-    color: #363636;
-  }
+		font-style: normal;
+		font-weight: 200;
+		font-size: 20px;
+		line-height: 27px;
+	}
 
-  &__link {
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 33px;
+	&__summary {
+		font-weight: 700;
+		font-size: 24px;
+		line-height: 33px;
+		display: flex;
+		align-items: center;
 
-    text-decoration-line: underline;
+		color: #363636;
+	}
+	&__links {
+		display: flex;
+		gap: 5px 20px;
+		flex-wrap: wrap;
+		margin-bottom: 5px;
+	}
 
-    color: #3934A3;
-  }
+	&__link {
+		font-style: normal;
+		font-weight: 700;
+		font-size: 24px;
+		line-height: 33px;
 
-  &__btn {
-    width: 250px;
-    height: 50px;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 33px;
-    align-items: center;
-    text-align: center;
-    border-radius: 10px;
-    color: $textBtns;
+		text-decoration-line: underline;
 
-  }
-  &__btns {
-    display: flex;
-    align-self: flex-end;
-    gap: 0 19px;
-  }
-  &__footerRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+		color: #3934A3;
+	}
 
-  &__delete {
-    background: #BA2E36;
-  }
-  &__edit {
-    background: #FF963C;
-  }
-  &__save {
-    background: #00BA95;
-  }
+	&__btn {
+		width: 250px;
+		height: 50px;
+		font-style: normal;
+		font-weight: 700;
+		font-size: 24px;
+		line-height: 33px;
+		align-items: center;
+		text-align: center;
+		border-radius: 10px;
+		color: $textBtns;
+
+	}
+
+	&__btns {
+		display: flex;
+		align-self: flex-end;
+		gap: 0 19px;
+	}
+
+	&__footerRow {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	&__delete {
+		background: #BA2E36;
+	}
+
+	&__edit {
+		background: #FF963C;
+
+	}
+
+	&__save {
+		background: #00BA95;
+	}
+
+	&__fullText {
+		font-weight: 200;
+		font-size: 16px;
+		line-height: 22px;
+		overflow-x: hidden;
+	}
 
 }
+
+
+// Adaptive
+
+@media (max-width: 768px) {
+	.pagePost {
+		&__namePost {
+			font-style: normal;
+			font-weight: 700;
+			font-size: 24px;
+			line-height: 33px;
+			flex: 2 1 50%;
+		}
+
+		&__dateCreationPost p, &__deadline p {
+			font-weight: 700;
+			font-size: 14px;
+			line-height: 19px;
+		}
+		&__summary {
+			font-weight: 700;
+			font-size: 20px;
+			line-height: 27px;
+		}
+
+		&__field {
+			font-weight: 200;
+			font-size: 16px;
+			line-height: 22px;
+		}
+		&__fullText {
+			font-weight: 200;
+			font-size: 15px;
+			line-height: 20px;
+		}
+		&__dates {
+			gap: 0 10px;
+		}
+	}
+}
+
+@media (max-width: 600px) {
+	.pagePost {
+
+		&__header {
+			flex-direction: column-reverse;
+		}
+		&__namePost {
+			margin-right: 0;
+		}
+	}
+
+}
+
+

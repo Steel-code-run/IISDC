@@ -21,3 +21,12 @@
   display: flex;
   align-items: center;
 }
+
+// Apadtive
+
+@media (max-width: 768px) {
+  .MuiPagination-root {
+    justify-content: center;
+  }
+
+}
