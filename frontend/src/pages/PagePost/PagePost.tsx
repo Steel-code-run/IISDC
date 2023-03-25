@@ -22,6 +22,7 @@ const PagePost = () => {
 
     }
 
+
     return (
         <>
             <Header/>
@@ -30,10 +31,10 @@ const PagePost = () => {
                     <div className={styles.pagePost__row + ' ' + styles.pagePost__header}>
                         <h1 className={styles.pagePost__namePost}>{data.namePost}</h1>
                         <div className={styles.pagePost__dates}>
-                            {data.dateCreationPost && <div
+                            {(data.dateCreationPost || isEdit) && <div
                                 className={styles.pagePost__dateCreationPost}>{'Дата создания поста \n'}
                                 <p>{data.dateCreationPost}</p></div>}
-                            {data.deadline && <div
+                            {(data.deadline || isEdit) && <div
                                 className={styles.pagePost__deadline}>{'Дата окончания подачи заявок \n'}
                                 <p>{data.deadline}</p></div>}
                         </div>
@@ -47,7 +48,7 @@ const PagePost = () => {
                             <DropdownTags direction={data.direction} isActiveDropdown={isEdit && isVisionBtns}/>
                             <div className={styles.pagePost__field}>{'Организаторы: ' + data.organization}</div>
                             <div
-                                className={styles.pagePost__field}>{'Направление расходывания средств: ' + data.directionForSpent}</div>
+                                className={styles.pagePost__field}>{'Направление расходования средств: ' + data.directionForSpent}</div>
                         </>
                     }
                     {
@@ -79,7 +80,9 @@ const PagePost = () => {
                                                 <button
                                                     className={styles.pagePost__delete + ' ' + styles.pagePost__btn}>Удалить
                                                 </button>
-                                                <button onClick={() => setIsEdit(false)}
+                                                <button onClick={() => {
+                                                    setIsEdit(false)
+                                                }}
                                                         className={styles.pagePost__save + ' ' + styles.pagePost__btn}>Сохранить
                                                 </button>
                                             </>

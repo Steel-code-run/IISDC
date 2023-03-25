@@ -45,11 +45,13 @@ $textBtns: #fff;
 	&__dateCreationPost {
 		background: #00BA95;
 		flex: 1 1 30%;
+		border: 3px solid #008E72;
 	}
 
 	&__deadline {
 		background: #BA2E36;
 		flex: 1 1 30%;
+		border: 3px solid #9E262C;
 	}
 
 	&__dateCreationPost, &__deadline {
@@ -83,7 +85,7 @@ $textBtns: #fff;
 	&__field {
 		width: 100%;
 		height: auto;
-		border: 3px solid #A7A7A7;
+		border: 3px solid #9D9BCA;
 		border-radius: 10px;
 
 		padding: 10px 20px;
@@ -173,6 +175,9 @@ $textBtns: #fff;
 		line-height: 22px;
 		overflow-x: hidden;
 	}
+	&__footer {
+		margin-right: 10px;
+	}
 
 }
 
@@ -212,6 +217,13 @@ $textBtns: #fff;
 		}
 		&__dates {
 			gap: 0 10px;
+		}
+		&__btn {
+			font-weight: 700;
+			font-size: 14px;
+			line-height: 19px;
+			width: 130px;
+			height: 50px;
 		}
 	}
 }

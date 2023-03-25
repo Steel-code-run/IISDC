@@ -14,6 +14,7 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => 
     const [directions, setDirections] = useState<string[]>([])
     const [search, setSearch] = useState('')
 
+
     const deleteTag = (deletedTag: string) => {
         if (Array.isArray(tags))
             setTags(tags.filter(tag => tag !== deletedTag))
@@ -21,6 +22,7 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => 
 
     }
     const addTag = (addedTag: string) => {
+        if(addedTag === 'Не определено') return
         if (Array.isArray(tags))
             setTags([...tags, addedTag])
         else setTags(addedTag)
@@ -32,14 +34,14 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => 
         setDirections(dataDirections?.data?.filter((direction: string) => !tags.includes(direction)))
     }, [dataDirections, tags])
 
-
+console.log(isActive, isActiveDropdown)
     return (
-        <div className={(isActive)
+        <div className={(isActive && isActiveDropdown)
             ? styles.dropdownTags + ' ' + styles.dropdownTags__activeDropdownBorders
             : styles.dropdownTags} data-testid="DropdownTags">
             <div className={styles.dropdownTags__direction}>{'Направления: '}
                 {
-                    (!isActive) ?
+                    (!isActive || !isActiveDropdown) ?
                         (Array.isArray(tags))
                             ? tags.map((dir, ix) => {
                                 return (
@@ -52,7 +54,7 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => 
                         }}
                                  value={search}
                                  className={styles.dropdownTags__input}
-                                 placeholder={'Тут же опять можно ввести и найти нужное направление '}/>
+                                 placeholder={'Введите направление '}/>
                 }
             </div>
             {
@@ -61,11 +63,13 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => 
                     <div className={styles.dropdownTags__openBtn__line}></div>
                     <div className={(isActive)
                         ? styles.dropdownTags__openBtn__line + ' ' + styles.dropdownTags__activeDropdown
-                        : styles.dropdownTags__openBtn__line}></div>
+                        : styles.dropdownTags__openBtn__line}>
+                    </div>
                 </div>
             }
             {
-                isActive && <div className={styles.dropdownTags__dropdown}>
+                isActive && isActiveDropdown &&
+                <div className={styles.dropdownTags__dropdown}>
                     <div className={styles.dropdownTags__dropdown__listTags}>
                         {
                             (Array.isArray(tags))
