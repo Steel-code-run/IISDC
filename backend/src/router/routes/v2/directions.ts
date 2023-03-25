@@ -55,11 +55,11 @@ router.delete(routes.v2.directions.remove,(req:ICustomRequest,res)=>{
         return;
     }
 
-    let directionName = req.body.directionName
+    let directionName = req.query.directionName
 
-    if (!directionName) {
+    if (typeof directionName !== "string") {
         res.statusCode = 400
-        res.json(generateAnswer({message: answerMessage.requiredParams, data: "directionName - integer, required"}))
+        res.json(generateAnswer({message: answerMessage.requiredParams, data: "directionName - string, required"}))
         return
     }
 
