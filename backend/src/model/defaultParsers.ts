@@ -139,6 +139,13 @@ const parsersParams = [
         fileUrl: "премия.мывместе",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'moyastrana',
+        url: ".",
+        fileUrl: "moyastrana",
+        parserType: TParserType.nodejs
+    },
+
 
 ]
 export const generateDefaultParsers = ():TParser[] => {

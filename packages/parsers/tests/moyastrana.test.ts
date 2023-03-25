@@ -3,7 +3,7 @@ import {TParserResult, TPostType} from "@iisdc/types";
 import {parserCallParamsFixture} from "./fixtures/parserCallParams";
 import {describe, expect, test} from '@jest/globals';
 
-const parserFileUrl = "sdtech"
+const parserFileUrl = "moyastrana"
 
 let parserCallParams = parserCallParamsFixture(parserFileUrl)
 let data:  TParserResult;
