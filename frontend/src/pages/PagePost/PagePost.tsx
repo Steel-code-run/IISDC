@@ -60,7 +60,7 @@ const PagePost = () => {
                             <div className={styles.pagePost__links}>
                                 {data.link && <a href={data.link} rel="noopener noreferrer" target="_blank"
                                                  className={styles.pagePost__link}>Страница гранта</a>}
-                                {!data.linkPDF && <a href={data.linkPDF} rel="noopener noreferrer" target="_blank"
+                                {data.linkPDF && <a href={data.linkPDF} rel="noopener noreferrer" target="_blank"
                                                     className={styles.pagePost__link}>Прикрепленный файл</a>}
                             </div>
                             <div className={styles.pagePost__timeParsing}>{'Время парсинга: ' + data.timeOfParse}</div>
