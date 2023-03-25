@@ -4,11 +4,11 @@ import {createTableGrantsQuery} from "../configurateDataBase/grantTable";
 import {consoleLog} from "../../../utils/consoleLog";
 import {createCompetitionsTable} from "../configurateDataBase/createCompetitionsTable";
 
-export interface ICompetitionsOperation extends IDefaultOperations{
+export interface ICompetitionOperations extends IDefaultOperations{
 
 }
 
-export class CompetitionsOperation extends DefaultOperation implements ICompetitionsOperation {
+export class CompetitionOperations extends DefaultOperation implements ICompetitionOperations {
     constructor(db:Database,tableName:string) {
         super(db,tableName);
         this.createTable()

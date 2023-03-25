@@ -2,7 +2,7 @@ import {describe,test, expect,beforeAll,beforeEach} from '@jest/globals';
 import {DirectionsConstOperations, IDirectionsConstOperations} from "../../src/API/sqlite/DirectionsConstOperations";
 import {sampleRange} from "../../src/utils/samleRange";
 import {DirectionsOperations, IDirectionsOperations} from "../../src/API/sqlite/DirectionsOperations";
-import {GrantOperations, IGrantsOperations} from "../../src/API/sqlite/parser/GrantsOperations";
+import {GrantsOperations, IGrantsOperations} from "../../src/API/sqlite/parser/GrantsOperations";
 import {grantFixture} from "../fixtures/grantFixture";
 import {
     competitionsTableName,
@@ -12,7 +12,8 @@ import {
 } from "../../src/API/sqlite/config";
 import path from "path";
 import {__projectPath} from "../../src/utils/projectPath";
-import {CompetitionsOperation} from "../../src/API/sqlite/parser/CompetitionsOperation";
+import {CompetitionOperations} from "../../src/API/sqlite/parser/CompetitionsOperation";
+
 
 let directionsConstOperations: IDirectionsConstOperations
 let directionsOperations: IDirectionsOperations
@@ -24,10 +25,10 @@ let parserDb = require('better-sqlite3')(path.join(__projectPath, '../','tests',
 describe("DirectionsOperations",()=>{
 
     test("Init object",()=>{
-        new CompetitionsOperation(parserDb, competitionsTableName)
+        new CompetitionOperations(parserDb, competitionsTableName)
         directionsConstOperations = new DirectionsConstOperations(parserDb,directionsConstTableName)
         directionsOperations = new DirectionsOperations(parserDb,directionsTableName, directionsConstOperations)
-        grantsOperations = new GrantOperations(parserDb,grantsTableName, directionsOperations)
+        grantsOperations = new GrantsOperations(parserDb,grantsTableName, directionsOperations)
     })
 
     describe("Testing const", ()=>{

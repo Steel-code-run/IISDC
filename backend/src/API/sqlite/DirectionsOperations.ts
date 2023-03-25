@@ -10,7 +10,7 @@ export interface IDirectionsOperations {
         direction: string,
         parentID: number,
         tableNamePost: string,
-    }):number,
+    }):number | undefined,
     getDirections(parentId:number, tableNamePost:string):string[];
     deleteDirections(parentId:number, parentTableName:string):void
 }
@@ -41,7 +41,7 @@ export class DirectionsOperations extends DefaultOperation implements IDirection
                         parentID: number,
                         tableNamePost: string,
                     }
-    ): number {
+    ): number | undefined {
         let query = `
         INSERT INTO ${this.tableName}(
         ${props.tableNamePost}_id,
@@ -52,7 +52,7 @@ export class DirectionsOperations extends DefaultOperation implements IDirection
         let direction_id = this.directionsConstOperations.getIdByName(props.direction)
 
         if (!direction_id)
-            throw new Error("direction_id is undefined")
+            return undefined
 
         try {
             return Number(this.db.prepare(query).run(props.parentID,direction_id).lastInsertRowid)

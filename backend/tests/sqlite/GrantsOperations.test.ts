@@ -6,14 +6,14 @@ import {
     directionsTableName,
     grantsTableName
 } from "../../src/API/sqlite/config";
-import {GrantOperations, IGrantsOperations} from "../../src/API/sqlite/parser/GrantsOperations";
+import {GrantsOperations, IGrantsOperations} from "../../src/API/sqlite/parser/GrantsOperations";
 import {grantFixture} from "../fixtures/grantFixture";
 
 import {DirectionsOperations} from "../../src/API/sqlite/DirectionsOperations";
 import {DirectionsConstOperations} from "../../src/API/sqlite/DirectionsConstOperations";
 import path from "path";
 import {__projectPath} from "../../src/utils/projectPath";
-import {CompetitionsOperation} from "../../src/API/sqlite/parser/CompetitionsOperation";
+import {CompetitionOperations} from "../../src/API/sqlite/parser/CompetitionsOperation";
 
 
 let grantsOperations: IGrantsOperations
@@ -34,11 +34,11 @@ describe("GrantsOperations",()=>{
     })
 
     test("Init object",()=>{
-        new CompetitionsOperation(parserDb, competitionsTableName)
+        new CompetitionOperations(parserDb, competitionsTableName)
         directionsConstOperations = new DirectionsConstOperations(parserDb,directionsConstTableName)
         let directionsOperations = new DirectionsOperations(parserDb, directionsTableName, directionsConstOperations)
 
-        grantsOperations = new GrantOperations(
+        grantsOperations = new GrantsOperations(
             parserDb,
             grantsTableName,
             directionsOperations
@@ -199,6 +199,33 @@ describe("GrantsOperations",()=>{
             grantsOperations.deleteGrant(grant.id)
             expect(grantsOperations.getGrant(grant.id)).toBeUndefined()
 
+        })
+
+        let grant1 = grantFixture()
+        let grant2 = grantFixture()
+        let grant3 = grantFixture()
+        let grant4 = grantFixture()
+        let grant5 = grantFixture()
+
+        test("add 5 grants",()=>{
+            grant1.id = grantsOperations.insertGrant(grant1)
+            grant2.id = grantsOperations.insertGrant(grant2)
+            grant3.id = grantsOperations.insertGrant(grant3)
+            grant4.id = grantsOperations.insertGrant(grant4)
+            grant5.id = grantsOperations.insertGrant(grant5)
+        })
+
+        test("get limited last 2 grants",()=>{
+            expect(grantsOperations.getGrants({
+                limit:2,
+            })).toMatchObject([grant5, grant4])
+        })
+
+        test("get limited last 2 from 2 grants",()=>{
+            expect(grantsOperations.getGrants({
+                from: 2,
+                limit:2,
+            })).toMatchObject([grant3, grant2])
         })
     })
 })

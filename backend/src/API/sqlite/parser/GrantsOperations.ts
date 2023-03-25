@@ -11,10 +11,12 @@ import {shieldIt} from "@iisdc/utils";
 export interface IGrantsOperations extends IDefaultOperations{
     insertGrant(grant:TGrant): number
     getGrant(id: number): TGrant | undefined
-    getGrants(props:{
-        namePost: string,
+    getGrants(props?:{
+        namePost?: string,
         directions?: string[],
-        blackListed?: number
+        blackListed?: number,
+        limit?:number,
+        from?:number,
     }):TGrant[]
     setGrantToBlackList(id:number):void;
     removeFromBlackList(id:number):void;
@@ -22,7 +24,7 @@ export interface IGrantsOperations extends IDefaultOperations{
     updateGrant(grant:TGrant):void
 }
 
-export class GrantOperations extends DefaultOperation implements IGrantsOperations{
+export class GrantsOperations extends DefaultOperation implements IGrantsOperations{
     private directionsOperations: IDirectionsOperations
 
     constructor(db:Database,tableName:string,directionsOperations: IDirectionsOperations) {
@@ -55,16 +57,16 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
 
             let grantId = Number(this.db.prepare(query).run(
                 grant.namePost,
-                grant.dateCreationPost,
-                grant.organization,
-                grant.deadline,
-                grant.summary,
-                grant.directionForSpent,
-                grant.fullText,
-                grant.link,
-                grant.linkPDF,
-                grant.timeOfParse,
-                grant.sourceLink,
+                grant.dateCreationPost || '',
+                grant.organization || '',
+                grant.deadline || '',
+                grant.summary || '',
+                grant.directionForSpent || '',
+                grant.fullText || '',
+                grant.link || '',
+                grant.linkPDF || '',
+                grant.timeOfParse || '',
+                grant.sourceLink || '',
                 getMetaphone(grant.namePost)
             ).lastInsertRowid)
 
@@ -266,15 +268,26 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
     }
 
     getGrants(props:{
-        namePost: string,
+        namePost?: string,
         directions?: string[],
-        blackListed?: number
-    }):TGrant[]{
+        blackListed?: number,
+        limit?:number,
+        from?:number,
+    }={}):TGrant[]{
+        if (props.namePost === undefined)
+            props.namePost = ''
+
         if (props.blackListed === undefined)
             props.blackListed = 0
 
         if (props.directions === undefined)
             props.directions = []
+
+        if (props.limit === undefined)
+            props.limit = 10
+
+        if (props.from === undefined)
+            props.from = 0
 
         let whereInQuery = true
         let query = `
@@ -312,6 +325,11 @@ export class GrantOperations extends DefaultOperation implements IGrantsOperatio
             `
         }
         query+= ` GROUP BY ${this.tableName}.id `
+
+        query+= ` ORDER BY ${this.tableName}.id DESC `
+
+        query+= ` LIMIT ${props.from}, ${props.limit} `
+
 
         try {
             let grants = this.db.prepare(query).all()

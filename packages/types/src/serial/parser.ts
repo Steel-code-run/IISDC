@@ -53,10 +53,12 @@ export type TGrant = {
 	// ссылка на грант
 	link: string;
 	// ссылка на PDF
-	linkPDF: string;
+	linkPDF: string | string[];
 	sourceLink?:string;
 	// время парсинга
 	timeOfParse?: number;
+	// В черном ли списке
+	blackListed?:0|1;
 }
 
 export type TVacancy = {
