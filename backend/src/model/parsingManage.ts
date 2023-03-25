@@ -8,6 +8,7 @@ import {toNormalCompetition, toNormalGrant, toNormalInternship, toNormalVacancy}
 import {isPostInDbByLevenstein} from "../helpers/isPostInDbByLevenstein";
 import {sendNewGrantToTelegram} from "../telegram/frequentlySendPosts";
 import classify from "@iisdc/ai"
+import {grantsOperations} from "../API/sqlite/OperationInstances";
 
 
 export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallParams) => {
@@ -16,20 +17,21 @@ export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallPara
 
     for (let i = 0; i < grants.length; i++) {
         const grant = grants[i];
-        const last500Posts = sqliteGrants.getGrants({},0,500)
+        const last500Posts = grantsOperations.getGrants({
+            limit:500,
+        })
 
         if (!isPostInDbByLevenstein(grant,last500Posts)) {
             // добавляем в бд
             grant.direction = classify(grant.fullText)
             grant.timeOfParse = new Date().getTime()
-            sqliteGrants.add(toNormalGrant(grant));
+            grantsOperations.insertGrant(toNormalGrant(grant));
             sendNewGrantToTelegram(toNormalGrant(grant))
             if (newGrants === 0) parseNextPage = true;
             newGrants++;
         } else {
             // Если нашли совпадение в бд, то больше не парсим
             parseNextPage = false;
-            break;
         }
     }
     consoleLog(parsersCallParams.parser.name + " new grants added in DB: " + newGrants);
@@ -52,7 +54,6 @@ export const vacanciesManage = (vacancies: TVacancy[], parsersCallParams:TParser
         } else {
             // Если нашли совпадение в бд, то больше не парсим
             parseNextPage = false;
-            break;
         }
     }
     consoleLog(parsersCallParams.parser.name + " new vacancies added in DB: " + newVacancies)
@@ -75,7 +76,6 @@ export const internshipsManage = (internships: TInternship[], parsersCallParams:
         } else {
             // Если нашли совпадение в бд, то больше не парсим
             parseNextPage = false;
-            break;
         }
     }
     consoleLog(parsersCallParams.parser.name + " new internships added in DB: " + newInternships);
@@ -99,7 +99,6 @@ export const competitionsManage = (competitions: TCompetition[], parsersCallPara
         } else {
             // Если нашли совпадение в бд, то больше не парсим
             parseNextPage = false;
-            break;
         }
     }
     consoleLog(parsersCallParams.parser.name + " new competitions added in DB: " + newCompetitions);

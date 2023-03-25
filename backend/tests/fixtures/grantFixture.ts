@@ -1,11 +1,11 @@
 import {TGrant} from "@iisdc/types";
 import {sampleRange} from "../../src/utils/samleRange";
+import sampleArray from "../../src/utils/sampleArray";
 
 export function grantFixture():TGrant{
     return {
         organization: sampleRange(0,100).toString()+"a",
-        // TODO:: array sample
-        direction: sampleRange(0,100).toString()+"a",
+        direction: [],
         link: sampleRange(0,100).toString() +"a",
         fullText: sampleRange(0,100).toString()+"a",
         id: sampleRange(0,100),
@@ -16,5 +16,6 @@ export function grantFixture():TGrant{
         summary: sampleRange(0,100).toString()+"a",
         deadline: sampleRange(0,100).toString()+"a",
         directionForSpent: sampleRange(0,100).toString()+"a",
+        sourceLink: sampleRange(0,100).toString()+"a",
     }
 }

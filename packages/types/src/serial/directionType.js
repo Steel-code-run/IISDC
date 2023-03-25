@@ -19,5 +19,4 @@ var DirectionType;
     DirectionType["Philology"] = "\u0424\u0438\u043B\u043E\u043B\u043E\u0433\u0438\u044F";
     DirectionType["libraryScience"] = "\u0411\u0438\u0431\u043B\u0438\u043E\u0442\u0435\u043A\u043E\u0432\u0435\u0434\u0435\u043D\u0438\u0435";
     DirectionType["Physiology"] = "\u0424\u0438\u0437\u0438\u043E\u043B\u043E\u0433\u0438\u044F";
-    DirectionType["ResourceState"] = "\u0420\u0435\u0441\u0443\u0440\u0441\u043D\u043E\u0435 \u0441\u043E\u0441\u0442\u043E\u044F\u043D\u0438\u0435";
 })(DirectionType = exports.DirectionType || (exports.DirectionType = {}));
