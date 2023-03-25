@@ -1,6 +1,5 @@
 import {TGrant} from "@iisdc/types";
 import {sampleRange} from "../../src/utils/samleRange";
-import sampleArray from "../../src/utils/sampleArray";
 
 export function grantFixture():TGrant{
     return {

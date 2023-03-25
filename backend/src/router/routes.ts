@@ -15,5 +15,14 @@ export const routes = {
             update: "/v2/grants/update",
             count: "/v2/grants/count"
         },
+        competitions: {
+            get: "/v2/competitions/get",
+            // add: "/v2/competitions/add",
+            delete: "/v2/competitions/delete",
+            addToBlackList: "/v2/competitions/addToBlackList",
+            removeFromBlackList: "/v2/competitions/removeFromBlackList",
+            update: "/v2/competitions/update",
+            count: "/v2/competitions/count"
+        },
     }
 }

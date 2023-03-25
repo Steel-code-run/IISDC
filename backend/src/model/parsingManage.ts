@@ -1,6 +1,4 @@
 import {consoleLog} from "../utils/consoleLog";
-import * as sqliteGrants from "../API/sqlite/parser/grants";
-import * as sqliteCompetitions from "../API/sqlite/parser/competitions";
 import * as sqliteVacancies from "../API/sqlite/parser/vacancies"
 import * as sqliteInternships from "../API/sqlite/parser/internships"
 import {TCompetition, TGrant, TInternship, TParserCallParams, TVacancy} from "@iisdc/types";
@@ -8,7 +6,7 @@ import {toNormalCompetition, toNormalGrant, toNormalInternship, toNormalVacancy}
 import {isPostInDbByLevenstein} from "../helpers/isPostInDbByLevenstein";
 import {sendNewGrantToTelegram} from "../telegram/frequentlySendPosts";
 import classify from "@iisdc/ai"
-import {grantsOperations} from "../API/sqlite/OperationInstances";
+import {competitionsOperations, grantsOperations} from "../API/sqlite/OperationInstances";
 
 
 export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallParams) => {
@@ -87,13 +85,15 @@ export const competitionsManage = (competitions: TCompetition[], parsersCallPara
     let newCompetitions = 0;
     for (let i = 0; i < competitions.length; i++) {
         const competition = competitions[i];
-        const last500Posts = sqliteCompetitions.getCompetitions({},0,500)
+        const last500Posts = competitionsOperations.getPosts({
+            limit:500
+        })
 
         if (!isPostInDbByLevenstein(competition,last500Posts)) {
             // добавляем в бд
             competition.direction = classify(competition.fullText)
             competition.timeOfParse = new Date().getTime()
-            sqliteCompetitions.add(toNormalCompetition(competition));
+            competitionsOperations.insert(toNormalCompetition(competition));
             if (newCompetitions === 0) parseNextPage = true;
             newCompetitions++;
         } else {
