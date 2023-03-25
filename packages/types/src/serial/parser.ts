@@ -86,6 +86,7 @@ export type TVacancy = {
 	// время парсинга
 	timeOfParse?: number;
 	sourceLink?:string;
+	blackListed?:0|1;
 }
 
 export type TInternship = {
@@ -112,6 +113,8 @@ export type TInternship = {
 	link: string;
 	// время парсинга
 	timeOfParse?: number;
+	blackListed?:0|1;
+	sourceLink?:string;
 }
 
 export type TCompetition = {
@@ -135,6 +138,7 @@ export type TCompetition = {
 	// время парсинга
 	timeOfParse?: number;
 	sourceLink?:string;
+	blackListed?:0|1;
 }
 
 export type TPost<T extends TPostType> = {
