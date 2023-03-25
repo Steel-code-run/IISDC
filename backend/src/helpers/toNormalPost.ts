@@ -76,7 +76,7 @@ const toNormalPost = <T extends TGrant|TCompetition|TVacancy|TInternship>(obj:an
         if ((obj[key] === null) || (obj[key] === undefined)) newObject[key] = ""
         else newObject[key] = obj[key]
     }
-    if (Array.isArray(newObject.direction))
-        newObject.direction = JSON.stringify(newObject.direction)
+    if (Array.isArray(obj.linkPDF))
+        newObject.linkPDF = JSON.stringify(obj.linkPDF)
     return newObject as T;
 }

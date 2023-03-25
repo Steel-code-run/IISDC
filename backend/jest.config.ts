@@ -8,4 +8,5 @@ module.exports = {
 	moduleNameMapper: pathsToModuleNameMapper({}, {
 		prefix: '<rootDir>/',
 	}),
+	maxWorkers: 1
 } as Config;
