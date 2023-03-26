@@ -15,6 +15,6 @@ CREATE TABLE IF NOT EXISTS ${grantsTableName} (
     timeOfParse       DATETIME,
     sourceLink        TEXT,
     blackListed       INTEGER (1) DEFAULT (0),
-    metaphone         STRING
+    namePost_lowerCase         STRING
 );
 `
