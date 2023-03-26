@@ -141,8 +141,7 @@ const PagePost = () => {
                     {
                         isPropsCompetition(postType, data) &&
                         <>
-                            <div
-                                className={styles.pagePost__field + highLightField(isEdit)}>{'Организаторы: ' + data.organization}</div>
+                            <div className={styles.pagePost__field + highLightField(isEdit)}>{'Организаторы: ' + data.organization}</div>
                         </>
                     }
                     {data.fullText &&

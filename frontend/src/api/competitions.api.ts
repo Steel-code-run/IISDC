@@ -29,7 +29,7 @@ export const competitionsApi = createApi({
             query: ({limit, from, namePost, direction, token}) => {
                 return {
                     url: 'v2/competitions/get',
-                    params: {
+                    body: {
                         limit: limit,
                         from,
                         namePost,
@@ -53,7 +53,7 @@ export const competitionsApi = createApi({
             query: ({namePost, direction, token}) => {
                 return {
                     url: 'v2/competitions/count',
-                    params: {
+                    body: {
                         namePost,
                         direction
                     },

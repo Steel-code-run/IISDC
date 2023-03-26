@@ -25,7 +25,6 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
 
     const token = window.localStorage.getItem('token');
 
-    console.log(choicedDirection)
     const generatorRequestCompetitions = (type: string) => {
         if (type === 'haveDirection') {
             return {

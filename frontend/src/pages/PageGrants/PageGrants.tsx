@@ -40,7 +40,6 @@ const PageGrants: FC<PageGrantsProps> = () => {
             namePost: debounceValue,
             token: token
         }
-
     }
 
     const generatorRequestGrantCount = (type: string) => {
@@ -82,9 +81,6 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const {data: directions} = useGetDirectionsQuery({
         token: token
     });
-
-    console.log(totalCountPosts)
-
 
     useEffect(() => {
         setPage(1)
