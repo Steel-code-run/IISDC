@@ -19,13 +19,13 @@ export const authorizationScript = (userId:number, key:string) =>{
         throw new Error("Wrong key");
     }
     let userToDB:Partial<telegramUser> = {};
+
     userToDB.telegramId = userId;
     userToDB.settings = {}
     userToDB.settings.intervalSettings = {
         end: "24:00:00",
         start:"00:00:00",
     }
-
     // Добавляем в бд
     try {
         sqliteTelegramUsers.add(userToDB)

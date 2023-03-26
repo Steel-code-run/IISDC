@@ -3,15 +3,19 @@ import authBtn from "./btns/authBtn";
 import getGrantsBtn from "./btns/getGrantsBtn";
 import toSettings from "./btns/toSettings";
 import getCompetitionsBtn from "./btns/getCompetitionsBtn";
-import getInternshipsBtn from "./btns/getInternshipsBtn";
-import getVacanciesBtn from "./btns/getVacanciesBtn";
 import setAllowedTimeBtn from "./btns/setAllowedTimeBtn";
-import TelegramBot from "node-telegram-bot-api";
 import getGrantsBtn5 from "./btns/getGrants5";
-import getGrantsBtn10 from "./btns/getGrants10";
 import showMeBtn from "./btns/showMeBtn";
+import getGrantsBtn1 from "./btns/getGrants1";
+import getGrantsBtn3 from "./btns/getGrants3";
+import getGrantsBtn2 from "./btns/getGrants2";
+import getGrantsBtn4 from "./btns/getGrants4";
+import setDirectionsBtn from "./btns/setDirectionsBtn";
+import getCompetitions1Btn from "./btns/getCompetitions1Btn";
+import getCompetitions2Btn from "./btns/getCompetitions2Btn";
+import getCompetitions3Btn from "./btns/getCompetitions3Btn";
+import getCompetitions4Btn from "./btns/getCompetitions4Btn";
 import getCompetitions5Btn from "./btns/getCompetitions5Btn";
-import getCompetitions10Btn from "./btns/getCompetitions10Btn";
 
 
 
@@ -33,10 +37,19 @@ const keyboards = {
             homeBtn,
         ],
         [
-            getGrantsBtn5
+            getGrantsBtn1
         ],
         [
-            getGrantsBtn10
+            getGrantsBtn2
+        ],
+        [
+            getGrantsBtn3
+        ],
+        [
+            getGrantsBtn4
+        ],
+        [
+            getGrantsBtn5
         ],
     ],
     getCompetitions:[
@@ -44,11 +57,21 @@ const keyboards = {
             homeBtn
         ],
         [
-            getCompetitions5Btn
+            getCompetitions1Btn
         ],
         [
-            getCompetitions10Btn
-        ]
+            getCompetitions2Btn
+        ],
+        [
+            getCompetitions3Btn
+        ],
+        [
+            getCompetitions4Btn
+        ],
+        [
+            getCompetitions5Btn
+        ],
+
     ],
     settings:[
         [
@@ -56,6 +79,9 @@ const keyboards = {
         ],
         [
             setAllowedTimeBtn,
+        ],
+        [
+            setDirectionsBtn
         ],
         [
             showMeBtn
