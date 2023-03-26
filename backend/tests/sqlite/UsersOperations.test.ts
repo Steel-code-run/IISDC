@@ -9,7 +9,7 @@ import {usersTableName} from "../../src/API/sqlite/config";
 
 let usersOperations: IUsersOperations
 
-const testingSqliteDb = require('better-sqlite3')(path.join(__projectPath,'../','tests','testingSqlite','users.db'));
+const testingSqliteDb = require('better-sqlite3')(path.join(__projectPath,'../','tests','testingSqlite','UsersOperations-parser.db'));
 
 let randomUser:IUser
 describe("UsersOperations",()=>{
@@ -43,9 +43,24 @@ describe("UsersOperations",()=>{
             expect(usersOperations.getUserByName(user.name)).toMatchObject(user)
         })
 
+        test("Update user",()=>{
+            if (!user.id)
+                throw new Error("user.id not defined")
+
+            let updateUser = userFixture()
+            updateUser.id = user.id
+            usersOperations.update(updateUser)
+
+            expect(usersOperations.getUser(updateUser.id)).toMatchObject(updateUser)
+        })
+
+        test("delete user",()=>{
+            if (!user.id)
+                throw new Error("user.id not defined")
+
+            usersOperations.delete(user.id)
+
+            expect(usersOperations.getUser(user.id)).toBeUndefined()
+        })
     })
-
-
-
-
 })

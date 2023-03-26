@@ -132,6 +132,14 @@ describe("CompetitionOperations",()=>{
             }).length).toBe(3)
         })
 
+        test("get post with directions 2, 1",()=>{
+
+            expect(competitionOperations.getPosts({
+                directions:["direction3","direction2"],
+                namePost:""
+            }).length).toBe(1)
+        })
+
         test("get post",()=>{
             let post = competitionFixture()
             post.namePost = "aaaaaaaaaaaaaaaaaaaaaaaaa"
