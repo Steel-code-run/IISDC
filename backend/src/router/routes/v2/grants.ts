@@ -27,11 +27,11 @@ const getGrant = (obj:any) => {
     return grant
 }
 
-router.get(routes.v2.grants.get,(req:ICustomRequest,res)=>{
+router.post(routes.v2.grants.get,(req:ICustomRequest,res)=>{
     if (!isUserCanEnter(req,res)){
         return;
     }
-    let grant = getGrant(req.query)
+    let grant = getGrant(req.body)
 
     if (typeof grant.direction === "string")
         grant.direction = [grant.direction]
@@ -58,12 +58,12 @@ router.get(routes.v2.grants.get,(req:ICustomRequest,res)=>{
     }
 })
 
-router.get(routes.v2.grants.count,(req:ICustomRequest,res)=>{
+router.post(routes.v2.grants.count,(req:ICustomRequest,res)=>{
     if (!isUserCanEnter(req,res)){
         return;
     }
 
-    let grant = getGrant(req.query)
+    let grant = getGrant(req.body)
 
     if (!Array.isArray(grant.direction))
         grant.direction = []
