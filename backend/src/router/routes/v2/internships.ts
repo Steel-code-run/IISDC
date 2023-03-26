@@ -42,9 +42,9 @@ router.post(routes.v2.internships.get,(req:ICustomRequest,res)=>{
         postForReturn = internshipOperations.getPosts({
             namePost: competition.namePost,
             blackListed: competition.blackListed,
-            from:req.query.from as number | undefined,
-            limit: req.query.limit as number | undefined,
-            justCountIt: !!req.query.justCountIt,
+            from:req.body.from as number | undefined,
+            limit: req.body.limit as number | undefined,
+            justCountIt: !!req.body.justCountIt,
         });
         res.statusCode = 200;
         res.json(generateAnswer({message: answerMessage.success, data: postForReturn}))
