@@ -33,5 +33,14 @@ export const routes = {
             update: "/v2/internships/update",
             count: "/v2/internships/count"
         },
+        vacancies: {
+            get: "/v2/vacancies/get",
+            // add: "/v2/vacancies/add",
+            delete: "/v2/vacancies/delete",
+            addToBlackList: "/v2/vacancies/addToBlackList",
+            removeFromBlackList: "/v2/vacancies/removeFromBlackList",
+            update: "/v2/vacancies/update",
+            count: "/v2/vacancies/count"
+        },
     }
 }

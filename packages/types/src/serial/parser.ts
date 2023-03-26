@@ -64,7 +64,7 @@ export type TGrant = {
 export type TVacancy = {
 	id?:number,
 	// Направление
-	direction: string;
+	direction?: string;
 	//требования
 	requirements: string;
 	// обязанности

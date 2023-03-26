@@ -29,6 +29,7 @@ import v2Grants from "./router/routes/v2/grants"
 import v2Directions from "./router/routes/v2/directions"
 import v2Competitions from "./router/routes/v2/competitions"
 import v2Internships from "./router/routes/v2/internships"
+import v2Vacancies from "./router/routes/v2/vacancies"
 configureAll()
 
 
@@ -53,6 +54,7 @@ app.use(v2Grants);
 app.use(v2Directions);
 app.use(v2Competitions)
 app.use(v2Internships)
+app.use(v2Vacancies)
 
 // routes end
 app.listen(port, () => {
