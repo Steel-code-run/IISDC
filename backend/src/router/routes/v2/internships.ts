@@ -27,11 +27,11 @@ const getInternship = (obj:any) => {
     return grant
 }
 
-router.get(routes.v2.internships.get,(req:ICustomRequest,res)=>{
+router.post(routes.v2.internships.get,(req:ICustomRequest,res)=>{
     if (!isUserCanEnter(req,res)){
         return;
     }
-    let competition = getInternship(req.query)
+    let competition = getInternship(req.body)
 
 
     try {
@@ -55,12 +55,12 @@ router.get(routes.v2.internships.get,(req:ICustomRequest,res)=>{
     }
 })
 
-router.get(routes.v2.internships.count,(req:ICustomRequest,res)=>{
+router.post(routes.v2.internships.count,(req:ICustomRequest,res)=>{
     if (!isUserCanEnter(req,res)){
         return;
     }
 
-    let competition = getInternship(req.query)
+    let competition = getInternship(req.body)
 
 
     try {

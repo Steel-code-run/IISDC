@@ -26,11 +26,11 @@ const getCompetition = (obj:any) => {
     return grant
 }
 
-router.get(routes.v2.competitions.get,(req:ICustomRequest,res)=>{
+router.post(routes.v2.competitions.get,(req:ICustomRequest,res)=>{
     if (!isUserCanEnter(req,res)){
         return;
     }
-    let competition = getCompetition(req.query)
+    let competition = getCompetition(req.body)
 
     if (typeof competition.direction === "string")
         competition.direction = [competition.direction]
@@ -57,12 +57,12 @@ router.get(routes.v2.competitions.get,(req:ICustomRequest,res)=>{
     }
 })
 
-router.get(routes.v2.competitions.count,(req:ICustomRequest,res)=>{
+router.post(routes.v2.competitions.count,(req:ICustomRequest,res)=>{
     if (!isUserCanEnter(req,res)){
         return;
     }
 
-    let competition = getCompetition(req.query)
+    let competition = getCompetition(req.body)
 
     if (!Array.isArray(competition.direction))
         competition.direction = []
