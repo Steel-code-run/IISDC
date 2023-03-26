@@ -45,7 +45,7 @@ const parserScheduler = async () => {
             }
         }
     }
-    setTimeout(parserScheduler, 10 )
+    setTimeout(parserScheduler, 10000 )
 }
 const parse = async(parsersCallParams:TParserCallParams)=>{
     // Парсим 1 страницу сайтов
