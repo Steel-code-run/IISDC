@@ -28,11 +28,11 @@ const getVacancy = (obj:any) => {
     return grant
 }
 
-router.get(routes.v2.vacancies.get,(req:ICustomRequest,res)=>{
+router.post(routes.v2.vacancies.get,(req:ICustomRequest,res)=>{
     if (!isUserCanEnter(req,res)){
         return;
     }
-    let competition = getVacancy(req.query)
+    let competition = getVacancy(req.body)
 
 
     try {
@@ -43,8 +43,8 @@ router.get(routes.v2.vacancies.get,(req:ICustomRequest,res)=>{
         postForReturn = vacanciesOperations.getPosts({
             namePost: competition.namePost,
             blackListed: competition.blackListed,
-            from:req.query.from as number | undefined,
-            limit: req.query.limit as number | undefined,
+            from:req.body.from as number | undefined,
+            limit: req.body.limit as number | undefined,
             justCountIt: !!req.query.justCountIt,
         });
         res.statusCode = 200;

@@ -44,10 +44,10 @@ router.post(routes.v2.grants.get,(req:ICustomRequest,res)=>{
         grantsForReturn = grantsOperations.getGrants({
             namePost: grant.namePost,
             blackListed: grant.blackListed,
-            from:req.query.from as number | undefined,
-            limit: req.query.limit as number | undefined,
+            from:req.body.from as number | undefined,
+            limit: req.body.limit as number | undefined,
             directions: grant.direction,
-            justCountIt: !!req.query.justCountIt,
+            justCountIt: !!req.body.justCountIt,
         });
         res.statusCode = 200;
         res.json(generateAnswer({message: answerMessage.success, data: grantsForReturn}))
