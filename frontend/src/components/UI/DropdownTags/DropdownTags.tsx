@@ -5,7 +5,8 @@ import {useGetDirectionsQuery} from "../../../api/grants.api";
 
 export interface IDropdownTagsProps {
     direction: string[] | string,
-    isActiveDropdown: boolean
+    isActiveDropdown: boolean,
+    isHighlight: boolean
 }
 
 interface IDirectionsResponse {
@@ -13,7 +14,7 @@ interface IDirectionsResponse {
     directionName: string
 }
 
-const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => {
+const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown, isHighlight}) => {
     const [isActive, setIsActive] = useState(false);
     const [tags, setTags] = useState<string[] | string>(direction);
     const [directions, setDirections] = useState<IDirectionsResponse[]>([])
@@ -25,8 +26,6 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => 
         else setTags('')
 
     }
-
-
     const addTag = (addedTag: string) => {
         if (addedTag === 'Не определено') return
         if (Array.isArray(tags))
@@ -45,11 +44,11 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => 
 
     return (
         <div className={(isActive && isActiveDropdown)
-            ? styles.dropdownTags + ' ' + styles.dropdownTags__activeDropdownBorders + highLightField(isActiveDropdown)
+            ? styles.dropdownTags + ' ' + styles.dropdownTags__activeDropdownBorders + highLightField(isHighlight)
             : (!isActive && isActiveDropdown)
-                ? styles.dropdownTags + highLightField(isActiveDropdown)
+                ? styles.dropdownTags + highLightField(isHighlight)
                 : styles.dropdownTags} data-testid="DropdownTags">
-            <div className={styles.dropdownTags__direction}>{'Направления: '}
+            <div className={styles.dropdownTags__direction}>
                 {
                     (!isActive || !isActiveDropdown) ?
                         (Array.isArray(tags))

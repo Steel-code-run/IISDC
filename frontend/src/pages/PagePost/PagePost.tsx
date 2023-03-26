@@ -49,12 +49,18 @@ const PagePost = () => {
                     {
                         isPropsGrant(postType, data) &&
                         <>
-                            <div
-                                className={styles.pagePost__field + ' ' + styles.pagePost__summary + highLightField(isEdit)}>{'Сумма гранта: ' + data.summary}</div>
-                            <DropdownTags direction={data.direction} isActiveDropdown={isEdit && isVisionBtns}/>
+                            {
+                                data.summary && <div className={styles.pagePost__field + ' ' + styles.pagePost__summary + highLightField(isEdit)}>{'Сумма гранта: ' + data.summary}</div>
+                            }
+
+                            <DropdownTags direction={data.direction} isActiveDropdown={isEdit && isVisionBtns} isHighlight={true}/>
+
                             <div className={styles.pagePost__field + highLightField(isEdit)}>{'Организаторы: ' + data.organization}</div>
+                            {
+                                data.directionForSpent &&
                             <div
                                 className={styles.pagePost__field + highLightField(isEdit)}>{'Направление расходования средств: ' + data.directionForSpent}</div>
+                            }
                         </>
                     }
                     {

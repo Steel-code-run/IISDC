@@ -5,13 +5,13 @@ export interface IGetGrants {
     limit: number,
     from: number,
     namePost: string,
-    direction?: string,
+    direction?: string | string[],
     token: string | null
 }
 
 interface IGetCountGrants {
     namePost?: string,
-    direction?: string,
+    direction?: string | string[],
     token: string | null
 }
 

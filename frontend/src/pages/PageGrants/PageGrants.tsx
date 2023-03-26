@@ -6,10 +6,10 @@ import Header from "../../components/Header/Header";
 import {TGrant, TPostType} from "@iisdc/types";
 import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
-import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import '../../styles/spinner-loader.scss';
 import {useNavigate} from "react-router-dom";
 import {Dna} from "react-loader-spinner";
+import Dropdown from "../../components/UI/Dropdown/Dropdown";
 
 export interface PageGrantsProps {
 }
@@ -19,7 +19,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [page, setPage] = useState<number>(1)
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
-    const [choicedDirection, setChoicedDirection] = useState('Все направления')
+    const [choicedDirection, setChoicedDirection] = useState<string[] | string>('Все направления')
     const navigate = useNavigate();
     const token = window.localStorage.getItem('token');
     const generatorRequestGrant = (type: string) => {
@@ -42,7 +42,6 @@ const PageGrants: FC<PageGrantsProps> = () => {
 
     }
     const generatorRequestGrantCount = (type: string) => {
-
         if (type === 'haveDirection') {
             return {
                 namePost: debounceValue,
@@ -68,20 +67,21 @@ const PageGrants: FC<PageGrantsProps> = () => {
     }
 
     const {data: totalCountPosts} = useGetCountGrantsQuery(generatorRequestGrantCount(
-        (choicedDirection !== 'Все направления')
+        (choicedDirection !== 'Все направления' && choicedDirection.length > 0)
             ? 'haveDirection'
             : 'noDirection'));
+
     const {data = [], error, isLoading} = useGetGrantsQuery(
-        generatorRequestGrant((choicedDirection !== 'Все направления')
+        generatorRequestGrant((
+            choicedDirection !== 'Все направления' && choicedDirection.length > 0)
             ? 'haveDirection'
             : 'noDirection'));
-
-
-
 
     const {data: directions} = useGetDirectionsQuery({
         token: token
     });
+
+    console.log(totalCountPosts)
 
 
     useEffect(() => {
@@ -113,7 +113,10 @@ const PageGrants: FC<PageGrantsProps> = () => {
             <div className={styles.pageGrants} data-testid="PageGrants">
                 <div className="container">
                     <Search cbDebounce={setDebounceValue}/>
-                    <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
+                    <div className={styles.pageGrants__directionBlock}>
+                        <p className={styles.pageGrants__directionBlock__titleBlock}>{'Направление: '}</p>
+                        <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
+                    </div>
 
                     <div className={styles.pageGrants__wrapper}>
                         <div className={styles.pageGrants__posts}>
