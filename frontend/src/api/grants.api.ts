@@ -32,7 +32,7 @@ export const grantsApi = createApi({
                         limit: limit,
                         from,
                         namePost,
-                        direction
+                        'direction[]': direction
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,

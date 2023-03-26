@@ -33,7 +33,7 @@ export const competitionsApi = createApi({
                         limit: limit,
                         from,
                         namePost,
-                        direction : direction
+                        'direction[]' : direction
                     },
                     method: 'GET',
                     headers: {
