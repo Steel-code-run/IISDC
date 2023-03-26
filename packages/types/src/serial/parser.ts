@@ -64,7 +64,7 @@ export type TGrant = {
 export type TVacancy = {
 	id?:number,
 	// Направление
-	direction: string;
+	direction?: string;
 	//требования
 	requirements: string;
 	// обязанности
@@ -100,7 +100,7 @@ export type TInternship = {
 	// Зарплата
 	salary: string;
 	// Направление
-	direction: string;
+	direction?: string;
 	// полный текст
 	fullText: string;
 	// название поста

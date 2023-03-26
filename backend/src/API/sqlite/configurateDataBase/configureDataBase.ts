@@ -1,10 +1,8 @@
-import * as sqliteUsers from "../users/users";
-import {createDefaultUsers} from "./createDefaultUsers";
 import {consoleLog} from "../../../utils/consoleLog";
 import {generateDefaultParsers} from "../../../model/defaultParsers";
 import * as sqliteParser from "../parser/parser";
-import {directionsConstOperations} from "../OperationInstances";
-import {DirectionType} from "@iisdc/types";
+import {directionsConstOperations, usersOperations} from "../OperationInstances";
+import {DirectionType, UserRole} from "@iisdc/types";
 
 export const configureAll = () => {
     configureDefaultUsers()
@@ -13,12 +11,14 @@ export const configureAll = () => {
 }
 
 export const configureDefaultUsers = () => {
-    if (sqliteUsers.getUsers({}).length < 1) {
-        consoleLog("started configure default users")
-        sqliteUsers.dropTable()
-        sqliteUsers.createTable()
-        createDefaultUsers();
+    if (usersOperations.getAllUsers().length<1) {
+        usersOperations.insertUser({
+            name: "admin",
+            role: UserRole.admin,
+            password: "admin",
+        })
     }
+
 }
 
 export const configureDefaultParsers = () =>{

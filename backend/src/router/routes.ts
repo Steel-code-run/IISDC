@@ -24,5 +24,29 @@ export const routes = {
             update: "/v2/competitions/update",
             count: "/v2/competitions/count"
         },
+        internships: {
+            get: "/v2/internships/get",
+            // add: "/v2/internships/add",
+            delete: "/v2/internships/delete",
+            addToBlackList: "/v2/internships/addToBlackList",
+            removeFromBlackList: "/v2/internships/removeFromBlackList",
+            update: "/v2/internships/update",
+            count: "/v2/internships/count"
+        },
+        vacancies: {
+            get: "/v2/vacancies/get",
+            // add: "/v2/vacancies/add",
+            delete: "/v2/vacancies/delete",
+            addToBlackList: "/v2/vacancies/addToBlackList",
+            removeFromBlackList: "/v2/vacancies/removeFromBlackList",
+            update: "/v2/vacancies/update",
+            count: "/v2/vacancies/count"
+        },
+        users: {
+            getAll: "/v2/users/getAll",
+            get: "/v2/users/get",
+            update: "/v2/users/get",
+            delete: "/v2/users/get"
+        }
     }
 }

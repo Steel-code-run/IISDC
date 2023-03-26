@@ -15,10 +15,13 @@ export const answers = {
     settings: {
         setAllowedTime: "Чтобы установить рабочее время отправьте боту следующую команду" +
             "```io\n/setAllowedTime 00:00:00 24:00:00```где первое число не может быть меньше 00:00:00," +
-            " а второе 24:00:00"
+            " а второе 24:00:00",
+        setDirections: "Чтобы установить направления отправь ```io\n/setDirections direction1, direction2```, " +
+            "где direction1 и direction2 выбранные направления"
     },
     error:{
         sqlite: "Ошибка свзяанная с БД"
     }
+
 
 }

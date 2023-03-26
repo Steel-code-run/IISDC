@@ -5,38 +5,29 @@ import {usersDb, usersTableName} from "../config";
 import {IUser} from "@iisdc/types";
 import {query} from "express";
 import {DefaultOperation, IDefaultOperations} from "../DefaultOperations";
+import {Database} from "better-sqlite3";
+import {createTableGrantsQuery} from "../configurateDataBase/createGrantTable";
+import {createUsersTable} from "../configurateDataBase/createUsersTable";
 
 /**
  * класс для операции с пользователями из БД
  */
-export interface IUsersOperations extends IDefaultOperations{
-    /**
-     * Получаем пользователя из бд по id
-     * @param id
-     */
-    getUser(id:number): IUser;
-
-    /**
-     * Вставляет в таблицу пользователя
-     * @param user
-     */
-    insertUser(user:IUser): number;
-
-    /**
-     * Получаем пользователя из бд по имени
-     * @param name
-     */
-    getUserByName(name:string):IUser;
+export interface IUsersOperations extends UsersOperations{
 }
 
 
 /**
  * класс для операции с пользователями из БД
  */
-export class UsersOperations extends DefaultOperation implements IUsersOperations{
+export class UsersOperations extends DefaultOperation{
 
 
-    getUser(id:number){
+    constructor(db:Database,tableName:string) {
+        super(db,tableName);
+        this.createTable()
+    }
+
+    getUser(id:number): IUser | undefined{
 
         const  query = `SELECT id,name,password,role FROM ${this.tableName} WHERE id = '${id}'`
 
@@ -54,6 +45,34 @@ export class UsersOperations extends DefaultOperation implements IUsersOperation
         }
     }
 
+    createTable(){
+        let query = createUsersTable;
+        try {
+            return this.db.prepare(query).run()
+        } catch (e) {
+            consoleLog(`
+            Ошибка в UsersOperations, createTable\n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
+            throw new Error(e);
+        }
+    }
+
+    getAllUsers(){
+        try {
+            return this.db.prepare(`SELECT * FROM ${this.tableName}`).all()
+        } catch (e) {
+            consoleLog(`
+            Ошибка в UsersOperations, createTable\n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
+            throw new Error(e);
+        }
+    }
 
     getUserByName(name:string){
 
@@ -85,6 +104,50 @@ export class UsersOperations extends DefaultOperation implements IUsersOperation
         } catch (e) {
             consoleLog(`
             Ошибка в UsersOperations, insertUser ${JSON.stringify(user,null,2)} \n
+            query ->\n
+            ${query}\n
+            ${e}            
+            `);
+            throw new Error(e);
+        }
+    }
+    update(post:IUser):void{
+        const query = `
+        UPDATE ${this.tableName} SET
+        name = ?,
+        password = ?,
+        role = ?
+        WHERE id = ${post.id}
+        `
+        try {
+
+            this.db.prepare(query).run(
+                post.name,
+                post.password,
+                post.role
+            )
+
+
+        } catch (e) {
+            consoleLog(`
+            Ошибка в UsersOperations, insertGrant ${JSON.stringify(post,null,2)} \n
+            query ->\n
+            ${query}\n
+            ${e}            
+            `);
+            throw new Error(e);
+        }
+    }
+
+    delete(id:number){
+        try {
+
+            this.db.prepare(`DELETE FROM ${this.tableName} WHERE id = ?`).run(id)
+
+
+        } catch (e) {
+            consoleLog(`
+            Ошибка в UsersOperations, delete ${id} \n
             query ->\n
             ${query}\n
             ${e}            
