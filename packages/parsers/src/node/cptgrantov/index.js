@@ -7,7 +7,9 @@ const options = {
 	offset: 0,
 };
 
-const keyWords = ['гранты', 'грант', 'гранту', 'грантам', 'грантом', 'гранте'];
+const keyWords = ['гранты', 'грант', 'гранту', 'грантам', 'грантом', 'гранте',
+	'конкурс', 'конкурсе', 'конкурсам', 'конкурсу', 'конкурса', 'конкурсом', 'конкурсы', 'конкурсами',
+	'хакатон', 'хакатону', 'хакатоном', 'хакатоне', 'хакатона', 'хакатоны', 'хакатонами'];
 const exceptionWords = [
 	'вебинар',
 	'вебинара',
@@ -55,7 +57,7 @@ getPostsChannel(options)
 	.then((data) => {
 		const receivedPosts = getInfoPost(data);
 		const filterPosts = isFilterPosts(receivedPosts);
-		console.log(JSON.stringify(filterPosts));
+		console.log(JSON.stringify(filterPosts, null, 2));
 
 	})
 	.catch((err) => {

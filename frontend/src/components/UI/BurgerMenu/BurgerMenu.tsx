@@ -29,9 +29,9 @@ const BurgerMenu: FC<BurgerMenuProps> = () => {
                 <div className={styles.burgerMenu__menu}>
                     <div className={styles.burgerMenu__wrapper}>
                         <ul className={styles.burgerMenu__nav}>
-                            <li className={styles.burgerMenu__nav__navItem}>
-                                <Link to={'/home'}>Статистика</Link>
-                            </li>
+                            {/*<li className={styles.burgerMenu__nav__navItem}>*/}
+                            {/*    <Link to={'/home'}>Статистика</Link>*/}
+                            {/*</li>*/}
                             <li className={styles.burgerMenu__nav__navItem}>
                                 <Link to={'/grants'}>Гранты</Link>
                             </li>

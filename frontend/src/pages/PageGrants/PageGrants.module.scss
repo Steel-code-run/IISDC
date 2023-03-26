@@ -12,11 +12,13 @@
   }
 
   &__posts {
-    display: flex;
     flex-wrap: wrap;
     gap: 10px 10px;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    justify-items: center;
   }
+
   &__directionBlock {
     max-width: 531px;
     display: flex;
