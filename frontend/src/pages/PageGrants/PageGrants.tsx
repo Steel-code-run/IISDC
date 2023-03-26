@@ -95,7 +95,11 @@ const PageGrants: FC<PageGrantsProps> = () => {
         window.addEventListener('resize', () => checkSizeWindow())
         checkSizeWindow();
         (error)
-            ? navigate('/')
+            ? navigate('/', {
+                state: {
+                    error
+                }
+            })
             : navigate('/grants')
     }, [isLoading])
 
