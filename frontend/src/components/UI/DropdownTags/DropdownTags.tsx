@@ -1,46 +1,82 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {Dispatch, FC, SetStateAction, useEffect, useState} from 'react';
 import styles from './DropdownTags.module.scss';
 import Tag from "../Tag/Tag";
 import {useGetDirectionsQuery} from "../../../api/grants.api";
+import {IUpdateData} from "../../../pages/PagePost/PagePost";
 
 export interface IDropdownTagsProps {
     direction: string[] | string,
-    isActiveDropdown: boolean
+    isActiveDropdown: boolean,
+    isHighlight: boolean,
+    setUpdateData: Dispatch<SetStateAction<IUpdateData>>,
+    updateData: IUpdateData
 }
 
-const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => {
+interface IDirectionsResponse {
+    id: number,
+    directionName: string
+}
+
+const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown, isHighlight, setUpdateData, updateData}) => {
     const [isActive, setIsActive] = useState(false);
     const [tags, setTags] = useState<string[] | string>(direction);
-    const [directions, setDirections] = useState<string[]>([])
+    const [directions, setDirections] = useState<IDirectionsResponse[]>([])
     const [search, setSearch] = useState('')
 
-
     const deleteTag = (deletedTag: string) => {
-        if (Array.isArray(tags))
-            setTags(tags.filter(tag => tag !== deletedTag))
-        else setTags('')
+        if (Array.isArray(tags)){
+            setTags(tags.filter(tag => tag !== deletedTag));
+            setUpdateData({
+                ...updateData,
+                direction: tags.filter(tag => tag !== deletedTag)
+            })
+        }
+
+        else {
+            setTags('')
+            setUpdateData({
+                ...updateData,
+                direction: ''
+            })
+        }
+
 
     }
     const addTag = (addedTag: string) => {
-        if(addedTag === 'Не определено') return
-        if (Array.isArray(tags))
+        if (addedTag === 'Не определено') return
+        if (Array.isArray(tags)) {
             setTags([...tags, addedTag])
-        else setTags(addedTag)
+            setUpdateData({
+                ...updateData,
+                direction: [...tags, addedTag]
+            })
+
+        }
+        else {
+            setTags(addedTag)
+            setUpdateData({
+                ...updateData,
+                direction: addedTag
+            })
+        }
 
     }
     const token = window.localStorage.getItem('token')
-    const {data: dataDirections} = useGetDirectionsQuery({token})
+    const {data: dataDirections} = useGetDirectionsQuery({token});
+
     useEffect(() => {
-        setDirections(dataDirections?.data?.filter((direction: string) => !tags.includes(direction)))
-    }, [dataDirections, tags])
+        setDirections(dataDirections?.data?.filter((direction: IDirectionsResponse) => !tags.includes(direction.directionName)))
+    }, [dataDirections, tags]);
 
-
+    const highLightField = (turn: boolean) => (turn) ? ' ' + styles.dropdownTags__highlightField : '';
 
     return (
         <div className={(isActive && isActiveDropdown)
-            ? styles.dropdownTags + ' ' + styles.dropdownTags__activeDropdownBorders
-            : styles.dropdownTags} data-testid="DropdownTags">
-            <div className={styles.dropdownTags__direction}>{'Направления: '}
+            ? styles.dropdownTags + ' ' + styles.dropdownTags__activeDropdownBorders + highLightField(isHighlight)
+            : (!isActive && isActiveDropdown)
+                ? styles.dropdownTags + highLightField(isHighlight)
+                : styles.dropdownTags} data-testid="DropdownTags">
+            <div className={styles.dropdownTags__direction}>
                 {
                     (!isActive || !isActiveDropdown) ?
                         (Array.isArray(tags))
@@ -85,10 +121,10 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown}) => 
                     <ul className={styles.dropdownTags__listDirections}>
                         {
                             directions
-                                .filter(direction => direction.toLowerCase().startsWith(search.toLowerCase()))
-                                .map((direction: string, ix) =>
-                                    <li key={direction + ix} onClick={() => addTag(direction)}
-                                        className={styles.dropdownTags__listDirections__direction}>{direction}</li>)
+                                .filter(direction => direction.directionName.toLowerCase().startsWith(search.toLowerCase()))
+                                .map((direction: IDirectionsResponse) =>
+                                    <li key={direction.id} onClick={() => addTag(direction.directionName)}
+                                        className={styles.dropdownTags__listDirections__direction}>{direction.directionName}</li>)
                         }
                     </ul>
 

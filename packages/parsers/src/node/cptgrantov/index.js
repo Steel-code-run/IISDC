@@ -3,11 +3,13 @@ const {defineTypeDescriptionTelegram, defineTypePost, getNamePost} = require('..
 
 const options = {
 	nameUrl: 'https://t.me/cptgrantov',
-	limit: 15,
+	limit: 40,
 	offset: 0,
 };
 
-const keyWords = ['гранты', 'грант', 'гранту', 'грантам', 'грантом', 'гранте'];
+const keyWords = ['гранты', 'грант', 'гранту', 'грантам', 'грантом', 'гранте',
+	'конкурс', 'конкурсе', 'конкурсам', 'конкурсу', 'конкурса', 'конкурсом', 'конкурсы', 'конкурсами',
+	'хакатон', 'хакатону', 'хакатоном', 'хакатоне', 'хакатона', 'хакатоны', 'хакатонами'];
 const exceptionWords = [
 	'вебинар',
 	'вебинара',
@@ -22,6 +24,8 @@ const exceptionWords = [
 	'вебинарами',
 	'вебинарах',
 	'Традиционная образовательная подборка: ',
+	'выступал',
+	'выступала'
 ];
 
 const isFilterPosts = (posts) => {
@@ -55,7 +59,7 @@ getPostsChannel(options)
 	.then((data) => {
 		const receivedPosts = getInfoPost(data);
 		const filterPosts = isFilterPosts(receivedPosts);
-		console.log(JSON.stringify(filterPosts));
+		console.log(JSON.stringify(filterPosts, null, 2));
 
 	})
 	.catch((err) => {

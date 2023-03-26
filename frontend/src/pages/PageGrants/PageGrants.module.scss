@@ -12,10 +12,25 @@
   }
 
   &__posts {
-    display: flex;
     flex-wrap: wrap;
     gap: 10px 10px;
-    align-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    justify-items: center;
+  }
+
+  &__directionBlock {
+    max-width: 531px;
+    display: flex;
+    align-items: center;
+    gap: 0 14px;
+
+    &__titleBlock {
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 33px;
+      color: #000000;
+    }
   }
 }
 
@@ -25,8 +40,41 @@
     &__posts {
       justify-content: space-evenly;
     }
+  }
+}
 
+@media (max-width: 768px) {
+  .pageGrants {
 
+    &__directionBlock {
+      gap: 0 10px;
+
+      &__titleBlock {
+        font-size: 16px;
+        line-height: 22px;
+      }
+    }
+  }
+
+}
+@media (max-width: 360px) {
+  .pageGrants {
+
+    &__directionBlock {
+      gap: 0 8px;
+
+    }
+  }
+
+}
+@media (max-width: 350px) {
+  .pageGrants {
+
+    &__directionBlock {
+      flex-wrap: wrap;
+      gap: 10px 8px;
+
+    }
   }
 
 }

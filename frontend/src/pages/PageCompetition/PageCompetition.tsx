@@ -6,14 +6,11 @@ import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import {Dna} from "react-loader-spinner";
 import '../../styles/spinner-loader.scss';
-import {
-    useGetCompetitionsQuery,
-    useGetCountСompetitionsQuery,
-    useGetDirectionsCompetitionsQuery
-} from "../../api/competitions.api";
+import {useGetCompetitionsQuery, useGetCountСompetitionsQuery,} from "../../api/competitions.api";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import CardPost from "../../components/CardPost/CardPost";
 import {useNavigate} from "react-router-dom";
+import {useGetDirectionsQuery} from "../../api/grants.api";
 
 export interface PageCompetitionsProps {
 }
@@ -23,10 +20,10 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     const [page, setPage] = useState<number>(1)
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
-    const [choicedDirection, setChoicedDirection] = useState('Все направления')
+    const [choicedDirection, setChoicedDirection] = useState<string[] | string>('Все направления')
     const navigate = useNavigate();
-    const token = window.localStorage.getItem('token');
 
+    const token = window.localStorage.getItem('token');
 
     const generatorRequestCompetitions = (type: string) => {
         if (type === 'haveDirection') {
@@ -38,6 +35,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                 token
             }
         }
+
         return {
             limit: amountPostsPerPage,
             from: (page - 1) * amountPostsPerPage,
@@ -74,15 +72,16 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
 
 
     const {data: totalCountPosts} = useGetCountСompetitionsQuery(
-        generatorRequestCompetitionsCount((choicedDirection !== 'Все направления')
-        ? 'haveDirection'
-        : 'noDirection'));
-
-    const {data = [], error, isLoading} = useGetCompetitionsQuery(
-        generatorRequestCompetitions((choicedDirection !== 'Все направления')
+        generatorRequestCompetitionsCount((choicedDirection !== 'Все направления' && choicedDirection.length > 0)
             ? 'haveDirection'
             : 'noDirection'));
-    const {data: directions} = useGetDirectionsCompetitionsQuery({token});
+
+    const {data = [], error, isLoading} = useGetCompetitionsQuery(
+        generatorRequestCompetitions((choicedDirection !== 'Все направления' && choicedDirection.length > 0)
+            ? 'haveDirection'
+            : 'noDirection'));
+
+    const {data: directions} = useGetDirectionsQuery({token});
 
 
     useEffect(() => {
@@ -118,8 +117,10 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
             <div className={styles.pageCompetition} data-testid="PageCompetition">
                 <div className="container">
                     <Search cbDebounce={setDebounceValue}/>
-                    <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
-
+                    <div className={styles.pageCompetition__directionBlock}>
+                        <p className={styles.pageCompetition__directionBlock__titleBlock}>{'Направление: '}</p>
+                        <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
+                    </div>
 
                     <div className={styles.pageCompetition__wrapper}>
                         <div className={styles.pageCompetition__posts}>

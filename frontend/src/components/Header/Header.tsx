@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import styles from './Header.module.scss';
 import {Link} from "react-router-dom";
-import Avatar from '../../assets/images/Profile.svg'
 import BurgerMenu from "../UI/BurgerMenu/BurgerMenu";
 import LogoutBtn from "../UI/LogoutBtn/LogoutBtn";
 
@@ -29,9 +28,9 @@ const Header: FC<HeaderProps> = () => {
                         (!isBurgerVisibility) ?
                             <>
                                 <ul className={styles.header__nav}>
-                                    <li className={styles.header__nav__navItem}>
-                                        <Link to={'/home'}>Статистика</Link>
-                                    </li>
+                                    {/*<li className={styles.header__nav__navItem}>*/}
+                                    {/*    <Link to={'/home'}>Статистика</Link>*/}
+                                    {/*</li>*/}
                                     <li className={styles.header__nav__navItem}>
                                         <Link to={'/grants'}>Гранты</Link>
                                     </li>
@@ -46,7 +45,7 @@ const Header: FC<HeaderProps> = () => {
                                     </li>
                                 </ul>
                                 <div className={styles.header__blockUser}>
-                                    <img className={styles.header__avatar} src={Avatar} alt="icon"/>
+                                    {/*<img className={styles.header__avatar} src={Avatar} alt="icon"/>*/}
                                     <LogoutBtn type={'headerBtn'}/>
                                 </div>
                             </>
