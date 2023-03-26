@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const getPostsChannel = async ({ nameUrl, limit = 10, offset = 0 }) => {
+const getPostsChannel = async ({ nameUrl, limit = 40, offset = 0 }) => {
 	const options = {
 		method: 'GET',
 		url: 'https://telegram92.p.rapidapi.com/api/history/chat',

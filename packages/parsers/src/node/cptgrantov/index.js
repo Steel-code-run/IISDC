@@ -3,7 +3,7 @@ const {defineTypeDescriptionTelegram, defineTypePost, getNamePost} = require('..
 
 const options = {
 	nameUrl: 'https://t.me/cptgrantov',
-	limit: 15,
+	limit: 40,
 	offset: 0,
 };
 
@@ -24,6 +24,8 @@ const exceptionWords = [
 	'вебинарами',
 	'вебинарах',
 	'Традиционная образовательная подборка: ',
+	'выступал',
+	'выступала'
 ];
 
 const isFilterPosts = (posts) => {
