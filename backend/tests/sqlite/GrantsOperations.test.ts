@@ -34,9 +34,9 @@ describe("GrantsOperations",()=>{
     })
 
     test("Init object",()=>{
-        new CompetitionOperations(parserDb, competitionsTableName)
         directionsConstOperations = new DirectionsConstOperations(parserDb,directionsConstTableName)
         let directionsOperations = new DirectionsOperations(parserDb, directionsTableName, directionsConstOperations)
+        new CompetitionOperations(parserDb, competitionsTableName,directionsOperations)
 
         grantsOperations = new GrantsOperations(
             parserDb,

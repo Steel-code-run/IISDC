@@ -25,10 +25,10 @@ let parserDb = require('better-sqlite3')(path.join(__projectPath, '../','tests',
 describe("DirectionsOperations",()=>{
 
     test("Init object",()=>{
-        new CompetitionOperations(parserDb, competitionsTableName)
         directionsConstOperations = new DirectionsConstOperations(parserDb,directionsConstTableName)
         directionsOperations = new DirectionsOperations(parserDb,directionsTableName, directionsConstOperations)
         grantsOperations = new GrantsOperations(parserDb,grantsTableName, directionsOperations)
+        new CompetitionOperations(parserDb, competitionsTableName,directionsOperations)
     })
 
     describe("Testing const", ()=>{
