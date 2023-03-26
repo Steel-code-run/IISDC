@@ -1,10 +1,10 @@
-import {query, Router} from "express";
+import {Router} from "express";
 import {routes} from "../../routes";
 import {ICustomRequest} from "../../../types/request";
 import {isUserCanEnter} from "../../../auth/isUserCanEnter";
-import {answerMessage, IUser, TCompetition, TGrant, TInternship, TVacancy} from "@iisdc/types";
+import {answerMessage, IUser} from "@iisdc/types";
 import {generateAnswer} from "../../../utils/generateServerAnswer";
-import {usersOperations, vacanciesOperations} from "../../../API/sqlite/OperationInstances";
+import {usersOperations} from "../../../API/sqlite/OperationInstances";
 
 const router = Router();
 
