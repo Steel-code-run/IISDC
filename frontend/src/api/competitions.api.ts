@@ -55,7 +55,7 @@ export const competitionsApi = createApi({
                     url: 'v2/competitions/count',
                     params: {
                         namePost,
-                        direction
+                        'direction[]': direction
                     },
                     method: 'GET',
                     headers: {

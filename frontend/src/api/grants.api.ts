@@ -54,7 +54,7 @@ export const grantsApi = createApi({
                     url: 'v2/grants/count',
                     params: {
                         namePost,
-                        direction
+                        'direction[]': direction
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,

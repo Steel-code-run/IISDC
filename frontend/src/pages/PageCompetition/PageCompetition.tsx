@@ -119,7 +119,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                 <div className="container">
                     <Search cbDebounce={setDebounceValue}/>
                     <div className={styles.pageCompetition__directionBlock}>
-                        <p className={styles.pageGrants__directionBlock__titleBlock}>{'Направление: '}</p>
+                        <p className={styles.pageCompetition__directionBlock__titleBlock}>{'Направление: '}</p>
                         <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
                     </div>
 
