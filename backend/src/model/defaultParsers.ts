@@ -151,7 +151,12 @@ const parsersParams = [
         fileUrl: "world-it-planet",
         parserType: TParserType.nodejs
     },
-
+    {
+        name: 'tyvigre',
+        url: ".",
+        fileUrl: "tyvigre",
+        parserType: TParserType.nodejs
+    },
 
 ]
 export const generateDefaultParsers = ():TParser[] => {
