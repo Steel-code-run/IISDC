@@ -42,5 +42,11 @@ export const routes = {
             update: "/v2/vacancies/update",
             count: "/v2/vacancies/count"
         },
+        users: {
+            getAll: "/v2/users/getAll",
+            get: "/v2/users/get",
+            update: "/v2/users/get",
+            delete: "/v2/users/get"
+        }
     }
 }

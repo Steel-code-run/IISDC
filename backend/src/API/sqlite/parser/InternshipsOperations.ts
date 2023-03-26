@@ -1,6 +1,6 @@
 import {DefaultOperation} from "../DefaultOperations";
 import {Database} from "better-sqlite3";
-import {createTableGrantsQuery} from "../configurateDataBase/grantTable";
+import {createTableGrantsQuery} from "../configurateDataBase/createGrantTable";
 import {consoleLog} from "../../../utils/consoleLog";
 import {createInternshipsTable} from "../configurateDataBase/createInternshipsTable";
 import {directionsConstTableName, directionsTableName} from "../config";

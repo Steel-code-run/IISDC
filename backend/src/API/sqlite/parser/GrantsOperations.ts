@@ -1,7 +1,7 @@
 import {TGrant} from "@iisdc/types";
 import {DefaultOperation, IDefaultOperations} from "../DefaultOperations";
 import {consoleLog} from "../../../utils/consoleLog";
-import {createTableGrantsQuery} from "../configurateDataBase/grantTable";
+import {createTableGrantsQuery} from "../configurateDataBase/createGrantTable";
 import {IDirectionsOperations} from "../DirectionsOperations";
 import {directionsConstTableName, directionsTableName, parserDb} from "../config";
 import {Database} from "better-sqlite3";
