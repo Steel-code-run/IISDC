@@ -33,9 +33,9 @@ export const competitionsApi = createApi({
                         limit: limit,
                         from,
                         namePost,
-                        'direction[]' : direction
+                        direction
                     },
-                    method: 'GET',
+                    method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`
                     },
@@ -55,9 +55,9 @@ export const competitionsApi = createApi({
                     url: 'v2/competitions/count',
                     params: {
                         namePost,
-                        'direction[]': direction
+                        direction
                     },
-                    method: 'GET',
+                    method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`
                     },

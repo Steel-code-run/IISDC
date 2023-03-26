@@ -1,12 +1,15 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {Dispatch, FC, SetStateAction, useEffect, useState} from 'react';
 import styles from './DropdownTags.module.scss';
 import Tag from "../Tag/Tag";
 import {useGetDirectionsQuery} from "../../../api/grants.api";
+import {IUpdateData} from "../../../pages/PagePost/PagePost";
 
 export interface IDropdownTagsProps {
     direction: string[] | string,
     isActiveDropdown: boolean,
-    isHighlight: boolean
+    isHighlight: boolean,
+    setUpdateData: Dispatch<SetStateAction<IUpdateData>>,
+    updateData: IUpdateData
 }
 
 interface IDirectionsResponse {
@@ -14,23 +17,48 @@ interface IDirectionsResponse {
     directionName: string
 }
 
-const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown, isHighlight}) => {
+const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown, isHighlight, setUpdateData, updateData}) => {
     const [isActive, setIsActive] = useState(false);
     const [tags, setTags] = useState<string[] | string>(direction);
     const [directions, setDirections] = useState<IDirectionsResponse[]>([])
     const [search, setSearch] = useState('')
 
     const deleteTag = (deletedTag: string) => {
-        if (Array.isArray(tags))
-            setTags(tags.filter(tag => tag !== deletedTag))
-        else setTags('')
+        if (Array.isArray(tags)){
+            setTags(tags.filter(tag => tag !== deletedTag));
+            setUpdateData({
+                ...updateData,
+                direction: tags.filter(tag => tag !== deletedTag)
+            })
+        }
+
+        else {
+            setTags('')
+            setUpdateData({
+                ...updateData,
+                direction: ''
+            })
+        }
+
 
     }
     const addTag = (addedTag: string) => {
         if (addedTag === 'Не определено') return
-        if (Array.isArray(tags))
+        if (Array.isArray(tags)) {
             setTags([...tags, addedTag])
-        else setTags(addedTag)
+            setUpdateData({
+                ...updateData,
+                direction: [...tags, addedTag]
+            })
+
+        }
+        else {
+            setTags(addedTag)
+            setUpdateData({
+                ...updateData,
+                direction: addedTag
+            })
+        }
 
     }
     const token = window.localStorage.getItem('token')

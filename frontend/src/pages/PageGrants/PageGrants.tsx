@@ -22,6 +22,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [choicedDirection, setChoicedDirection] = useState<string[] | string>('Все направления')
     const navigate = useNavigate();
     const token = window.localStorage.getItem('token');
+
     const generatorRequestGrant = (type: string) => {
 
         if (type === 'haveDirection') {
@@ -41,6 +42,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
         }
 
     }
+
     const generatorRequestGrantCount = (type: string) => {
         if (type === 'haveDirection') {
             return {

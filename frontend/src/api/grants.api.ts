@@ -28,16 +28,16 @@ export const grantsApi = createApi({
             query: ({limit, from, namePost, direction, token}) => {
                 return {
                     url: `v2/grants/get`,
-                    params: {
+                    body: {
                         limit: limit,
                         from,
                         namePost,
-                        'direction[]': direction
+                        direction
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
-                    method: 'GET'
+                    method: 'POST'
                 }
             },
             providesTags: (result) =>
@@ -51,15 +51,15 @@ export const grantsApi = createApi({
         getCountGrants: builder.query<any, IGetCountGrants>({
             query: ({namePost, direction, token}) => {
                 return {
-                    url: 'v2/grants/count',
-                    params: {
+                    url: `v2/grants/count`,
+                    body: {
                         namePost,
-                        'direction[]': direction
+                        direction
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
-                    method: 'GET'
+                    method: 'POST'
                 }
             }
         }),
@@ -79,13 +79,17 @@ export const grantsApi = createApi({
             invalidatesTags: [{type: 'Grants', id: 'LIST'}]
         }),
 
-        // updatePostGrant: builder.mutation<any, IUpdateData>({
-        //     query: (updateData) => ({
-        //         url: 'grants/update',
-        //         body: updateData
-        //     }),
-        //     invalidatesTags: [{type: 'Grants', id: 'LIST'}]
-        // }),
+        updatePostGrant: builder.mutation<any, any>({
+            query: ({updateData, token}) => ({
+                url: 'v2/grants/update',
+                body: updateData,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                method: 'PATCH'
+            }),
+            invalidatesTags: [{type: 'Grants', id: 'LIST'}]
+        }),
 
         getDirections: builder.query<any, any>({
             query: ({token}) => (
@@ -113,6 +117,7 @@ export const grantsApi = createApi({
 });
 
 export const {
+    useUpdatePostGrantMutation,
     useDeletePostGrantMutation,
     useGetDirectionsQuery,
     useGetBeautifulStatsQuery,
