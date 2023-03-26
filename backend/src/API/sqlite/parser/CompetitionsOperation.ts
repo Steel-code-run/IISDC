@@ -271,10 +271,19 @@ export class CompetitionOperations extends DefaultOperation {
             FROM
             (
             `
+
+        if (props.directions.length > 0)
+            query+= `
+            SELECT
+            *
+            FROM (
+            `
+
         query += `
         SELECT 
         ${this.tableName}.id,
-        directions_const.directionName
+        directions_const.directionName,
+        count(*) as count
         FROM ${this.tableName}, ${directionsTableName}, ${directionsConstTableName}
         WHERE
         (${this.tableName}.blackListed = ${props.blackListed})
@@ -287,13 +296,27 @@ export class CompetitionOperations extends DefaultOperation {
             else
                 query+= " AND "
 
-            let strDirections = props.directions.map(el=> `'${shieldIt(el)}'`).join(', ')
+
+            // query+=`
+            // (${directionsConstTableName}.directionName = '') AND
+            // (${directionsTableName}.${this.tableName}_id = ${this.tableName}.id) AND
+            // (${directionsTableName}.${directionsConstTableName}_id = ${directionsConstTableName}.id)
+            // `
+
+            query+="("
+            props.directions.forEach(el=>{
+                query+= ` (${directionsConstTableName}.directionName = '${el}') OR `
+            })
+            query=query.slice(0,-3)
+            query+=" ) AND"
+
             query+=`
-            (${directionsConstTableName}.directionName IN (${strDirections})) AND
             (${directionsTableName}.${this.tableName}_id = ${this.tableName}.id) AND
             (${directionsTableName}.${directionsConstTableName}_id = ${directionsConstTableName}.id)
             `
         }
+
+
         if (props.namePost.length>0) {
             if (!whereInQuery){
                 whereInQuery = true
@@ -309,11 +332,16 @@ export class CompetitionOperations extends DefaultOperation {
 
         query+= ` ORDER BY ${this.tableName}.id DESC `
 
-        query+= ` LIMIT ${props.from}, ${props.limit} `
+        if (props.directions.length > 0)
+            query+= ` ) 
+            WHERE "count" = ${props.directions.length}
+            `
 
 
         if (props.justCountIt)
             query+=" ) "
+
+        query+= ` LIMIT ${props.from}, ${props.limit} `
 
         try {
             if (props.justCountIt)
@@ -326,7 +354,7 @@ export class CompetitionOperations extends DefaultOperation {
             return grants
         } catch (e) {
             consoleLog(`
-            Ошибка в CompetitionOperations, getPosts ${JSON.stringify(props)}, ${query}\n
+            Ошибка в GrantOperations, getGrants ${JSON.stringify(props)}, ${query}\n
             query ->\n
             ${query}\n
             ${e}
