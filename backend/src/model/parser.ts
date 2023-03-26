@@ -20,7 +20,7 @@ import {activateAutomateAddingParsers} from "./automateAddingParsers";
 const parserOptions = {
     isFirstBoot: true,
     parsersInThisMoment: 0,
-    maxParsersInThisMoment: 1,
+    maxParsersInThisMoment: 3,
 }
 
 export const enableParserScheduler = () => {
