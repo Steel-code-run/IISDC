@@ -24,5 +24,14 @@ export const routes = {
             update: "/v2/competitions/update",
             count: "/v2/competitions/count"
         },
+        internships: {
+            get: "/v2/internships/get",
+            // add: "/v2/internships/add",
+            delete: "/v2/internships/delete",
+            addToBlackList: "/v2/internships/addToBlackList",
+            removeFromBlackList: "/v2/internships/removeFromBlackList",
+            update: "/v2/internships/update",
+            count: "/v2/internships/count"
+        },
     }
 }

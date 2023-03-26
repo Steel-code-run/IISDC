@@ -6,7 +6,7 @@ import {toNormalCompetition, toNormalGrant, toNormalInternship, toNormalVacancy}
 import {isPostInDbByLevenstein} from "../helpers/isPostInDbByLevenstein";
 import {sendNewGrantToTelegram} from "../telegram/frequentlySendPosts";
 import classify from "@iisdc/ai"
-import {competitionsOperations, grantsOperations} from "../API/sqlite/OperationInstances";
+import {competitionsOperations, grantsOperations, internshipOperations} from "../API/sqlite/OperationInstances";
 
 
 export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallParams) => {
@@ -63,12 +63,14 @@ export const internshipsManage = (internships: TInternship[], parsersCallParams:
     let newInternships = 0;
     for (let i = 0; i < internships.length; i++) {
         const internship = internships[i];
-        const last500Posts = sqliteInternships.getInternships({},0,500)
+        const last500Posts = internshipOperations.getPosts({
+            limit: 500,
+        })
 
         if (!isPostInDbByLevenstein(internship,last500Posts)) {
             // добавляем в бд
             internship.timeOfParse = new Date().getTime()
-            sqliteInternships.add(toNormalInternship(internship));
+            internshipOperations.insert(toNormalInternship(internship));
             if (newInternships === 0) parseNextPage = true;
             newInternships++;
         } else {
