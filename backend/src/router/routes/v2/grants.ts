@@ -36,6 +36,7 @@ router.post(routes.v2.grants.get,(req:ICustomRequest,res)=>{
     if (typeof grant.direction === "string")
         grant.direction = [grant.direction]
 
+
     try {
         let grantsForReturn;
         if (grant.id)
@@ -43,7 +44,7 @@ router.post(routes.v2.grants.get,(req:ICustomRequest,res)=>{
         else
         grantsForReturn = grantsOperations.getGrants({
             namePost: grant.namePost,
-            blackListed: grant.blackListed,
+            blackListed: grant.blackListed || 0,
             from:req.body.from as number | undefined,
             limit: req.body.limit as number | undefined,
             directions: grant.direction,
