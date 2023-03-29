@@ -193,6 +193,12 @@ const parsersParams = [
         fileUrl: "project.lanbook",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'inno-media',
+        url: ".",
+        fileUrl: "inno-media",
+        parserType: TParserType.nodejs
+    },
 
 ]
 export const generateDefaultParsers = ():TParser[] => {
