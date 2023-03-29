@@ -42,7 +42,7 @@ router.post(routes.v2.vacancies.get,(req:ICustomRequest,res)=>{
         else
         postForReturn = vacanciesOperations.getPosts({
             namePost: competition.namePost,
-            blackListed: competition.blackListed,
+            blackListed: competition.blackListed || 0,
             from:req.body.from as number | undefined,
             limit: req.body.limit as number | undefined,
             justCountIt: !!req.query.justCountIt,

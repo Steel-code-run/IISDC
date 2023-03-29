@@ -249,8 +249,7 @@ export class CompetitionOperations extends DefaultOperation {
         if (props.namePost === undefined)
             props.namePost = ''
 
-        if (props.blackListed === undefined)
-            props.blackListed = 0
+
 
         if (props.directions === undefined)
             props.directions = []
@@ -261,7 +260,7 @@ export class CompetitionOperations extends DefaultOperation {
         if (props.from === undefined)
             props.from = 0
 
-        let whereInQuery = true
+        let whereInQuery = false
         let query = "";
 
         if (props.justCountIt)
@@ -285,9 +284,18 @@ export class CompetitionOperations extends DefaultOperation {
         directions_const.directionName,
         count(*) as count
         FROM ${this.tableName}, ${directionsTableName}, ${directionsConstTableName}
-        WHERE
-        (${this.tableName}.blackListed = ${props.blackListed})
         `
+
+        if (typeof props.blackListed === "number") {
+            if (!whereInQuery){
+                whereInQuery = true
+                query+=" WHERE "
+            }
+            else
+                query+= " AND "
+
+            query+= ` (${this.tableName}.blackListed = ${props.blackListed}) `
+        }
         if (props.directions.length > 0){
             if (!whereInQuery){
                 whereInQuery = true
