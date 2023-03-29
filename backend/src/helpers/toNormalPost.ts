@@ -78,5 +78,11 @@ const toNormalPost = <T extends TGrant|TCompetition|TVacancy|TInternship>(obj:an
     }
     if (Array.isArray(obj.linkPDF))
         newObject.linkPDF = JSON.stringify(obj.linkPDF)
+
+    let date = new Date(newObject.dateCreationPost).toLocaleDateString(newObject.dateCreationPost)
+
+    if (date !== 'Invalid Date') {
+        newObject.dateCreationPost = date
+    }
     return newObject as T;
 }
