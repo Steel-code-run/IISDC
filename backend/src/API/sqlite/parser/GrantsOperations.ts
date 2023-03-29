@@ -372,7 +372,6 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
             query+=" ) "
 
         query+= ` LIMIT ${props.from}, ${props.limit} `
-        console.log(query);
         try {
             if (props.justCountIt)
                 return this.db.prepare(query).all()[0]["COUNT (*)"]
