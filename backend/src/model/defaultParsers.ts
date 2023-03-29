@@ -181,6 +181,12 @@ const parsersParams = [
         fileUrl: "ruseasons",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'rscf',
+        url: ".",
+        fileUrl: "rscf",
+        parserType: TParserType.nodejs
+    },
 
 ]
 export const generateDefaultParsers = ():TParser[] => {
