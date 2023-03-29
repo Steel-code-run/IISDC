@@ -9,7 +9,8 @@ const normalCompetition:TCompetition = {
     linkPDF: "",
     link: "",
     organization: "",
-    timeOfParse: 0
+    timeOfParse: 0,
+    sourceLink: ""
 }
 
 const normalGrant:TGrant = {
@@ -23,7 +24,8 @@ const normalGrant:TGrant = {
     organization: "",
     summary: "",
     directionForSpent: "",
-    timeOfParse: 0
+    timeOfParse: 0,
+    sourceLink: ""
 }
 
 const normalVacancy:TVacancy = {
@@ -38,6 +40,7 @@ const normalVacancy:TVacancy = {
     requirements: "",
     responsibilities: "",
     conditions: "",
+    sourceLink: ""
 }
 
 const normalInternship:TInternship = {
@@ -52,6 +55,7 @@ const normalInternship:TInternship = {
     requirements: "",
     responsibilities: "",
     conditions: "",
+    sourceLink: "",
 }
 
 export const toNormalGrant = (obj:any) => {
