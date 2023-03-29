@@ -151,6 +151,66 @@ const parsersParams = [
         fileUrl: "world-it-planet",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'chemeco',
+        url: "http://www.chemeco.ru",
+        fileUrl: "chemeco",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'basis-foundation',
+        url: "https://basis-foundation.ru",
+        fileUrl: "basis-foundation",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'case-in',
+        url: "https://case-in.ru/",
+        fileUrl: "case-in",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'generation-startup',
+        url: "https://generation-startup.ru/",
+        fileUrl: "generation-startup",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'gnesin-academy',
+        url: "https://gnesin-academy.ru",
+        fileUrl: "gnesin-academy",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'iclrc',
+        url: "https://iclrc.ru/ru",
+        fileUrl: "iclrc",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'steel2real',
+        url: "https://www.steel2real.ru/",
+        fileUrl: "steel2real",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'prlib',
+        url: "https://www.prlib.ru/",
+        fileUrl: "prlib",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'imoscow',
+        url: "https://i.moscow",
+        fileUrl: "imoscow",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'bfsistema',
+        url: "https://bf.sistema.ru",
+        fileUrl: "bfsistema",
+        parserType: TParserType.nodejs
+    },
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
