@@ -39,11 +39,11 @@ const BurgerMenu: FC<BurgerMenuProps> = () => {
                                 {/*<li className={styles.burgerMenu__nav__navItem}>*/}
                                 {/*    <Link to={'/vacancies'}>Вакансии</Link>*/}
                                 {/*</li>*/}
-                                {/*<li className={styles.burgerMenu__nav__navItem}>*/}
-                                {/*    <Link to={'/internships'}>Стажировки</Link>*/}
-                                {/*</li>*/}
                                 <li className={styles.burgerMenu__nav__navItem}>
                                     <Link to={'/competitions'}>Конкурсы</Link>
+                                </li>
+                                <li className={styles.burgerMenu__nav__navItem}>
+                                    <Link to={'/internships'}>Стажировки</Link>
                                 </li>
                                 <li className={styles.burgerMenu__nav__navItem}>
                                     <LogoutBtn type={'burgerBtn'}/>

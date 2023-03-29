@@ -2,9 +2,10 @@ import React, {useEffect, useState} from 'react';
 import styles from './PagePost.module.scss';
 import Header from "../../components/Header/Header";
 import {useLocation, useNavigate} from "react-router-dom";
-import {isPropsCompetition, isPropsGrant} from "../../types/typeGuards";
+import {isPropsCompetition, isPropsGrant, isPropsInternship} from "../../types/typeGuards";
 import DropdownTags from "../../components/UI/DropdownTags/DropdownTags";
 import {useMediaQuery} from "react-responsive";
+import {TPostType} from "@iisdc/types";
 import {useDeletePostGrantMutation, useUpdatePostGrantMutation} from "../../api/grants.api";
 
 export interface IUpdateData {
@@ -50,6 +51,7 @@ const PagePost = () => {
     }, [isVisionBtns])
 
     const highLightField = (turn: boolean) => (turn) ? ' ' + styles.pagePost__highlightField : '';
+
 
     return (
         <>
@@ -141,8 +143,22 @@ const PagePost = () => {
                     {
                         isPropsCompetition(postType, data) &&
                         <>
-                            <div className={styles.pagePost__field + highLightField(isEdit)}>{'Организаторы: ' + data.organization}</div>
+                            <div
+                                className={styles.pagePost__field + highLightField(isEdit)}>{'Организаторы: ' + data.organization}</div>
                         </>
+                    }
+                    {
+                        isPropsInternship(postType, data) &&
+                        <>
+                            <div
+                                className={styles.pagePost__field + highLightField(isEdit)}>{'Зарплата: ' + data.salary}</div>
+                            {/*<div className={styles.pagePost__field + highLightField(isEdit)}>{'Возможности: ' + data.responsibilities}</div>*/}
+                            <div
+                                className={styles.pagePost__field + highLightField(isEdit)}>{'Требования: ' + data.requirements}</div>
+                            <div
+                                className={styles.pagePost__field + highLightField(isEdit)}>{'Условия: ' + data.conditions}</div>
+                        </>
+
                     }
                     {data.fullText &&
                         <div
@@ -163,7 +179,12 @@ const PagePost = () => {
                         <div className={styles.pagePost__footer}>
                             <div className={styles.pagePost__links}>
                                 {data.link && <a href={data.link} rel="noopener noreferrer" target="_blank"
-                                                 className={styles.pagePost__link}>Страница гранта</a>}
+                                                 className={styles.pagePost__link}>{
+                                    (postType === TPostType.grant) ? 'Страница гранта'
+                                        : (postType === TPostType.internship) ? 'Страница стажировки'
+                                            : (postType === TPostType.competition) ? 'Страница конкурса'
+                                                : 'Ссылка'
+                                }</a>}
                                 {data.linkPDF && <a href={data.linkPDF} rel="noopener noreferrer" target="_blank"
                                                     className={styles.pagePost__link}>Прикрепленный файл</a>}
                             </div>
@@ -186,7 +207,10 @@ const PagePost = () => {
                                                 </button>
                                                 <button onClick={async () => {
                                                     setIsEdit(false);
-                                                    await updatePost({updateData, token: window.localStorage.getItem('token')});
+                                                    await updatePost({
+                                                        updateData,
+                                                        token: window.localStorage.getItem('token')
+                                                    });
                                                 }}
                                                         className={styles.pagePost__save + ' ' + styles.pagePost__btn}>Сохранить
                                                 </button>

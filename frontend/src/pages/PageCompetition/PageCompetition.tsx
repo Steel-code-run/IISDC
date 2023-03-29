@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './PageCompetition.module.scss';
 import Header from "../../components/Header/Header";
-import {TGrant, TPostType} from "@iisdc/types";
+import {TCompetition, TPostType} from "@iisdc/types";
 import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import {Dna} from "react-loader-spinner";
@@ -125,7 +125,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                     <div className={styles.pageCompetition__wrapper}>
                         <div className={styles.pageCompetition__posts}>
                             {
-                                data?.data?.map((post: TGrant) => {
+                                data?.data?.map((post: TCompetition) => {
                                     return (
                                         <CardPost<TPostType.competition>
                                             props={{

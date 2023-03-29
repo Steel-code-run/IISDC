@@ -157,6 +157,12 @@ const parsersParams = [
         fileUrl: "tyvigre",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'start.kontur',
+        url: ".",
+        fileUrl: "start.kontur",
+        parserType: TParserType.nodejs
+    },
 
 ]
 export const generateDefaultParsers = ():TParser[] => {
