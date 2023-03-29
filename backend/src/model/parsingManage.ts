@@ -27,6 +27,7 @@ export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallPara
         if (!isPostInDbByLevenstein(grant,last500Posts)) {
             // добавляем в бд
             grant.direction = classify(grant.fullText)
+            grant.sourceLink = parsersCallParams.parser.url
             grant.timeOfParse = new Date().getTime()
             grantsOperations.insertGrant(toNormalGrant(grant));
             sendNewGrantToTelegram(toNormalGrant(grant))
@@ -53,6 +54,7 @@ export const vacanciesManage = (vacancies: TVacancy[], parsersCallParams:TParser
         if (!isPostInDbByLevenstein(vacancy,last500Posts)) {
             // добавляем в бд
             vacancy.timeOfParse = new Date().getTime()
+            vacancy.sourceLink = parsersCallParams.parser.url
             vacanciesOperations.insert(toNormalVacancy(vacancy));
             if (newVacancies === 0) parseNextPage = true;
             newVacancies++;
@@ -77,6 +79,7 @@ export const internshipsManage = (internships: TInternship[], parsersCallParams:
         if (!isPostInDbByLevenstein(internship,last500Posts)) {
             // добавляем в бд
             internship.timeOfParse = new Date().getTime()
+            internship.sourceLink = parsersCallParams.parser.url
             internshipOperations.insert(toNormalInternship(internship));
             if (newInternships === 0) parseNextPage = true;
             newInternships++;
@@ -102,6 +105,7 @@ export const competitionsManage = (competitions: TCompetition[], parsersCallPara
             // добавляем в бд
             competition.direction = classify(competition.fullText)
             competition.timeOfParse = new Date().getTime()
+            competition.sourceLink = parsersCallParams.parser.url
             competitionsOperations.insert(toNormalCompetition(competition));
             if (newCompetitions === 0) parseNextPage = true;
             newCompetitions++;
