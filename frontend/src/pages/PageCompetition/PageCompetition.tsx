@@ -138,7 +138,8 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                                                 direction: post.direction,
                                                 namePost: post.namePost,
                                                 organization: post.organization,
-                                                timeOfParse: post.timeOfParse
+                                                timeOfParse: post.timeOfParse,
+                                                sourceLink: post.sourceLink
                                             }}
                                             key={post.id}
                                             postType={TPostType.competition}

@@ -135,6 +135,7 @@ const PageInternships: FC<PageInternshipsProps> = () => {
                                                 responsibilities: post.responsibilities,
                                                 conditions: post.conditions,
                                                 direction: post.direction,
+                                                sourceLink: post.sourceLink
                                             }}
                                             key={post.id}
                                             postType={TPostType.internship}

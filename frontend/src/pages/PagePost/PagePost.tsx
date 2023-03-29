@@ -61,9 +61,9 @@ const PagePost = () => {
                     <div className={styles.pagePost__row + ' ' + styles.pagePost__header}>
                         <h1 className={styles.pagePost__namePost}>{data.namePost}</h1>
                         <div className={styles.pagePost__dates}>
-                            {(data.dateCreationPost || isEdit) && <div
+                            {(isEdit || data.dateCreationPost) && <div
                                 className={styles.pagePost__dateCreationPost}>{'Дата создания поста \n'}
-                                <p contentEditable={true}
+                                <p contentEditable={isEdit}
                                    suppressContentEditableWarning={true}
                                    onInput={(e) => {
                                        const target = e.target as HTMLElement;
@@ -73,9 +73,9 @@ const PagePost = () => {
                                        })
                                    }}
                                 >{data.dateCreationPost}</p></div>}
-                            {(data.deadline || isEdit) && <div
+                            {(isEdit || data.deadline) && <div
                                 className={styles.pagePost__deadline}>{'Дата окончания подачи заявок \n'}
-                                <p contentEditable={true}
+                                <p contentEditable={isEdit}
                                    suppressContentEditableWarning={true}
                                    onInput={(e) => {
                                        const target = e.target as HTMLElement;
@@ -92,9 +92,9 @@ const PagePost = () => {
                         isPropsGrant(postType, data) &&
                         <>
                             {
-                                data.summary && <div
+                                (isEdit || data.summary) && <div
                                     className={styles.pagePost__field + ' ' + styles.pagePost__summary + highLightField(isEdit)}
-                                    contentEditable={true}
+                                    contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     onInput={(e) => {
                                         const target = e.target as HTMLElement;
@@ -112,9 +112,11 @@ const PagePost = () => {
                                           updateData={updateData}
                                           isHighlight={true}/>
 
+                            {
+                                (isEdit || data.organization) &&
                             <div
                                 className={styles.pagePost__field + highLightField(isEdit)}
-                                contentEditable={true}
+                                contentEditable={isEdit}
                                 suppressContentEditableWarning={true}
                                 onInput={(e) => {
                                     const target = e.target as HTMLElement;
@@ -124,10 +126,11 @@ const PagePost = () => {
                                     })
                                 }}
                             >{'Организаторы: ' + data.organization}</div>
+                            }
                             {
-                                data.directionForSpent &&
+                                (isEdit || data.directionForSpent) &&
                                 <div
-                                    contentEditable={true}
+                                    contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     onInput={(e) => {
                                         const target = e.target as HTMLElement;
@@ -143,8 +146,7 @@ const PagePost = () => {
                     {
                         isPropsCompetition(postType, data) &&
                         <>
-                            <div
-                                className={styles.pagePost__field + highLightField(isEdit)}>{'Организаторы: ' + data.organization}</div>
+                            <div className={styles.pagePost__field + highLightField(isEdit)}>{'Организаторы: ' + data.organization}</div>
                         </>
                     }
                     {
@@ -163,7 +165,7 @@ const PagePost = () => {
                     {data.fullText &&
                         <div
                             className={styles.pagePost__field + highLightField(isEdit) + ' ' + styles.pagePost__fullText}
-                            contentEditable={true}
+                            contentEditable={isEdit}
                             suppressContentEditableWarning={true}
                             onInput={(e) => {
                                 const target = e.target as HTMLElement;
@@ -188,8 +190,13 @@ const PagePost = () => {
                                 {data.linkPDF && <a href={data.linkPDF} rel="noopener noreferrer" target="_blank"
                                                     className={styles.pagePost__link}>Прикрепленный файл</a>}
                             </div>
-                            <div
-                                className={styles.pagePost__timeParsing}>{'Время парсинга: ' + convertDate(data.timeOfParse)}</div>
+                            <div className={styles.pagePost__infoFooter}>
+
+                                <div className={styles.pagePost__timeParsing}>{'Время парсинга: ' + convertDate(data.timeOfParse)}</div>
+                                <a href={data.sourceLink} rel="noopener noreferrer" target="_blank"
+                                   className={styles.pagePost__timeParsing}>Source link</a>
+                            </div>
+
                         </div>
                         <div className={styles.pagePost__btns}>
                             {

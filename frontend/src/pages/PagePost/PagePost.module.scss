@@ -182,6 +182,11 @@ $textBtns: #fff;
 	&__highlightField {
 		border: 3px solid #9D9BCA;
 	}
+
+	&__infoFooter {
+		display: flex;
+		gap: 0 10px;
+	}
 }
 
 

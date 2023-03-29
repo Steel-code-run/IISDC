@@ -29,7 +29,6 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
     }
 
     const addTag = (addedTag: string, id: number) => {
-        if (addedTag === 'Не определено') return
         setTags([...tags, {
             id,
             directionName: addedTag

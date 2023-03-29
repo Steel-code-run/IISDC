@@ -64,7 +64,6 @@ describe(parserFileUrl,()=>{
             if ((dataFromPage2[index].postDescription.namePost ===
                 data[index].postDescription.namePost) && (dataFromPage2[index].postDescription.link ===
                 data[index].postDescription.link)) {
-                console.log(dataFromPage2[index].postDescription.namePost, data[index].postDescription.namePost)
                 res = false
 
             }
