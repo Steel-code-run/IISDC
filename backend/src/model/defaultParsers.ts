@@ -175,6 +175,12 @@ const parsersParams = [
         fileUrl: "sberstudent",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'ruseasons',
+        url: ".",
+        fileUrl: "ruseasons",
+        parserType: TParserType.nodejs
+    },
 
 ]
 export const generateDefaultParsers = ():TParser[] => {
