@@ -187,6 +187,12 @@ const parsersParams = [
         fileUrl: "rscf",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'project.lanbook',
+        url: ".",
+        fileUrl: "project.lanbook",
+        parserType: TParserType.nodejs
+    },
 
 ]
 export const generateDefaultParsers = ():TParser[] => {
