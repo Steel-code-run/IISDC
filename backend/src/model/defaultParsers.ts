@@ -33,126 +33,124 @@ const parsersParams = [
     },
     {
         name: "rb.ru",
-        url:"...",
+        url:"https://rb.ru",
         fileUrl: "rb.ru",
         parserType: TParserType.nodejs
     },
     {
         name: "rcfoundation",
-        url: '.',
+        url: 'https://rcfoundation.ru',
         fileUrl: "rcfoundation",
         parserType: TParserType.nodejs
     },
     {
         name: "sowa-ru",
-        url: ".",
+        url: "https://sowa-ru.com/",
         fileUrl: "sowa-ru",
         parserType: TParserType["nodejs"]
     },
     {
         name: "tvoyhod",
-        url: ".",
+        url: "https://tvoyhod.online/",
         fileUrl: "tvoyhod",
         parserType: TParserType.nodejs
     },
     // {
     //     name: "cptgrantov",
-    //     url: ".",
+    //     url: "https://t.me/cptcptgrantov",
     //     fileUrl: "cptgrantov",
     //     parserType: TParserType.nodejs
     // },
     {
         name: "fadm.gov",
-        url: ".",
+        url: "https://fadm.gov.ru/",
         fileUrl: "fadm.gov",
         parserType: TParserType.nodejs
     },
     {
         name: "oreluniver",
-        url: ".",
+        url: "https://oreluniver.ru",
         fileUrl: "oreluniver",
         parserType: TParserType.nodejs
     },
     {
         name: "rsv",
-        url: ".",
+        url: "https://rsv.ru/",
         fileUrl: "rsv",
         parserType: TParserType.nodejs
     },
     {
         name: "vsekonkursy",
-        url: ".",
+        url: "https://vsekonkursy.ru/",
         fileUrl: "vsekonkursy",
         parserType: TParserType.nodejs
     },
     {
         name: "eee-science",
-        url: ".",
+        url: "https://eee-science.ru",
         fileUrl: "eee-science",
         parserType: TParserType.nodejs
     },
     {
         name: 'фонд_культ._иниц',
-        url: ".",
+        url: "https://фондкультурныхинициатив.рф/",
         fileUrl: "фонд_культ._иниц",
         parserType: TParserType.nodejs
     },
     {
         name: 'президентские_гранты',
-        url: ".",
+        url: "https://президентскиегранты.рф/",
         fileUrl: "президентские_гранты",
         parserType: TParserType.nodejs
     },
     {
         name: 'docs.edu.gov',
-        url: ".",
+        url: "https://docs.edu.gov.ru/",
         fileUrl: "docs.edu.gov",
         parserType: TParserType.nodejs
     },
     {
         name: 'skyconf',
-        url: ".",
+        url: "https://sfy-conf.ru",
         fileUrl: "skyconf",
         parserType: TParserType.nodejs
     },
     {
         name: 'sdtech',
-        url: ".",
+        url: "https://sdtech.sk.ru",
         fileUrl: "sdtech",
         parserType: TParserType.nodejs
     },
     {
         name: 'itonecup',
-        url: ".",
+        url: "https://itonecup.sk.ru",
         fileUrl: "itonecup",
         parserType: TParserType.nodejs
     },
     {
         name: 'konkurs.rcfoundation',
-        url: ".",
+        url: "https://konkurs.rcfoundation.ru",
         fileUrl: "konkurs.rcfoundation",
         parserType: TParserType.nodejs
     },
     {
         name: 'премия.мывместе',
-        url: ".",
+        url: "https://премия.мывместе.рф/",
         fileUrl: "премия.мывместе",
         parserType: TParserType.nodejs
     },
     {
         name: 'moyastrana',
-        url: ".",
+        url: "https://www.moyastrana.ru/",
         fileUrl: "moyastrana",
         parserType: TParserType.nodejs
     },
     {
         name: 'world-it-planet',
-        url: ".",
+        url: "https://world-it-planet.org/",
         fileUrl: "world-it-planet",
         parserType: TParserType.nodejs
     },
-
-
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
