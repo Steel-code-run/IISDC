@@ -163,6 +163,12 @@ const parsersParams = [
         fileUrl: "start.kontur",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'smallhomeland',
+        url: ".",
+        fileUrl: "smallhomeland",
+        parserType: TParserType.nodejs
+    },
 
 ]
 export const generateDefaultParsers = ():TParser[] => {
