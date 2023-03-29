@@ -3,7 +3,7 @@ import styles from './AuthForm.module.scss';
 import loginIcon from '../../assets/images/inputLoginIcon.svg';
 import passwordIcon from '../../assets/images/inputPasswordIcon.svg';
 import {useForm} from "react-hook-form";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 
 export interface AuthFormProps {
@@ -19,7 +19,9 @@ const AuthForm: FC<AuthFormProps> = () => {
     const {register, formState:{
         errors
     }, handleSubmit} = useForm<IFormReceivedData>()
+
     const navigate = useNavigate()
+    const {state} = useLocation();
 
     const onSubmit = async ({login, password}: IFormReceivedData) => {
 
@@ -66,6 +68,9 @@ const AuthForm: FC<AuthFormProps> = () => {
                 (errors?.login || errors?.password || serverErrors)
                     ? <p className={styles.authForm__unvalidMessage}>Некорректные учетные данные</p>
                     : null
+            }
+            {
+                state?.error?.status === 401 && <p className={styles.authForm__unvalidMessage}>Вы не авторизованы</p>
             }
 
             <button type={'submit'} className={styles.authForm__btnSubmit}>Продолжить</button>

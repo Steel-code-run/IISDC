@@ -95,7 +95,11 @@ const PageGrants: FC<PageGrantsProps> = () => {
         window.addEventListener('resize', () => checkSizeWindow())
         checkSizeWindow();
         (error)
-            ? navigate('/')
+            ? navigate('/', {
+                state: {
+                    error
+                }
+            })
             : navigate('/grants')
     }, [isLoading])
 
@@ -134,7 +138,8 @@ const PageGrants: FC<PageGrantsProps> = () => {
                                                 direction: post.direction,
                                                 namePost: post.namePost,
                                                 organization: post.organization,
-                                                timeOfParse: post.timeOfParse
+                                                timeOfParse: post.timeOfParse,
+                                                sourceLink: post.sourceLink
                                             }}
                                             key={post.id}
                                             postType={TPostType.grant}

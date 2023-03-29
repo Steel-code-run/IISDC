@@ -40,8 +40,9 @@ const CardPost = <T extends TPostType>({postType, props}: TComponentPage<T>) => 
                     }
                     {isPropsInternship(postType, props) &&
                         <>
-                            <h1 className={styles.cardPost__name}>{props.namePost}</h1>
-                            <h4 className={styles.cardPost__organization}>{props.organization}</h4>
+                            <Link to={'/post'} state={{data: props, postType}}>
+                                <h1 className={styles.cardPost__name}>{props.namePost}</h1>
+                            </Link>
                         </>
                     }
                     {isPropsVacancy(postType, props) &&

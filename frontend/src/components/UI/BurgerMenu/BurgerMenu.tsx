@@ -26,30 +26,33 @@ const BurgerMenu: FC<BurgerMenuProps> = () => {
 
             {
                 isActiveBurgerMenu &&
-                <div className={styles.burgerMenu__menu}>
-                    <div className={styles.burgerMenu__wrapper}>
-                        <ul className={styles.burgerMenu__nav}>
-                            {/*<li className={styles.burgerMenu__nav__navItem}>*/}
-                            {/*    <Link to={'/home'}>Статистика</Link>*/}
-                            {/*</li>*/}
-                            <li className={styles.burgerMenu__nav__navItem}>
-                                <Link to={'/grants'}>Гранты</Link>
-                            </li>
-                            {/*<li className={styles.burgerMenu__nav__navItem}>*/}
-                            {/*    <Link to={'/vacancies'}>Вакансии</Link>*/}
-                            {/*</li>*/}
-                            {/*<li className={styles.burgerMenu__nav__navItem}>*/}
-                            {/*    <Link to={'/internships'}>Стажировки</Link>*/}
-                            {/*</li>*/}
-                            <li className={styles.burgerMenu__nav__navItem}>
-                                <Link to={'/competitions'}>Конкурсы</Link>
-                            </li>
-                            <li className={styles.burgerMenu__nav__navItem}>
-                                <LogoutBtn type={'burgerBtn'}/>
-                            </li>
-                        </ul>
+                <>
+                    <div className={styles.burgerMenu__menu}>
+                        <div className={styles.burgerMenu__wrapper}>
+                            <ul className={styles.burgerMenu__nav}>
+                                {/*<li className={styles.burgerMenu__nav__navItem}>*/}
+                                {/*    <Link to={'/home'}>Статистика</Link>*/}
+                                {/*</li>*/}
+                                <li className={styles.burgerMenu__nav__navItem}>
+                                    <Link to={'/grants'}>Гранты</Link>
+                                </li>
+                                {/*<li className={styles.burgerMenu__nav__navItem}>*/}
+                                {/*    <Link to={'/vacancies'}>Вакансии</Link>*/}
+                                {/*</li>*/}
+                                <li className={styles.burgerMenu__nav__navItem}>
+                                    <Link to={'/competitions'}>Конкурсы</Link>
+                                </li>
+                                <li className={styles.burgerMenu__nav__navItem}>
+                                    <Link to={'/internships'}>Стажировки</Link>
+                                </li>
+                                <li className={styles.burgerMenu__nav__navItem}>
+                                    <LogoutBtn type={'burgerBtn'}/>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                    <div className={styles.burgerMenu__shadowFon}></div>
+                </>
             }
         </div>
 

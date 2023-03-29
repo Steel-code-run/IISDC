@@ -1,2 +1,80 @@
 .pageInternships {
+	margin: 20px 0;
+
+	&__wrapper {
+		min-height: 70vh;
+		height: 920px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 30px 0;
+		margin-top: 30px;
+	}
+
+	&__posts {
+		flex-wrap: wrap;
+		gap: 10px 10px;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+		justify-items: center;
+	}
+
+	&__directionBlock {
+		max-width: 531px;
+		display: flex;
+		align-items: center;
+		gap: 0 14px;
+
+		&__titleBlock {
+			font-weight: 500;
+			font-size: 24px;
+			line-height: 33px;
+			color: #000000;
+		}
+	}
+}
+
+@media (max-width: 1180px) {
+	.pageInternships {
+
+		&__posts {
+			justify-content: space-evenly;
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.pageInternships {
+
+		&__directionBlock {
+			gap: 0 10px;
+
+			&__titleBlock {
+				font-size: 16px;
+				line-height: 22px;
+			}
+		}
+	}
+
+}
+@media (max-width: 360px) {
+	.pageInternships {
+
+		&__directionBlock {
+			gap: 0 8px;
+
+		}
+	}
+
+}
+@media (max-width: 350px) {
+	.pageInternships {
+
+		&__directionBlock {
+			flex-wrap: wrap;
+			gap: 10px 8px;
+
+		}
+	}
+
 }
