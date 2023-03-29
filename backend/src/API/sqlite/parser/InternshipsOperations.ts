@@ -209,8 +209,6 @@ export class InternshipOperations extends DefaultOperation{
         if (props.namePost === undefined)
             props.namePost = ''
 
-        if (props.blackListed === undefined)
-            props.blackListed = 0
 
         if (props.limit === undefined)
             props.limit = 10
@@ -218,7 +216,7 @@ export class InternshipOperations extends DefaultOperation{
         if (props.from === undefined)
             props.from = 0
 
-        let whereInQuery = true
+        let whereInQuery = false
         let query = "";
 
         if (props.justCountIt)
@@ -232,9 +230,18 @@ export class InternshipOperations extends DefaultOperation{
         SELECT 
         ${this.tableName}.id
         FROM ${this.tableName} 
-        WHERE
-        (${this.tableName}.blackListed = ${props.blackListed})
         `
+        if (typeof props.blackListed === "number") {
+            if (!whereInQuery){
+                whereInQuery = true
+                query+=" WHERE "
+            }
+            else
+                query+= " AND "
+
+            query+= ` (${this.tableName}.blackListed = ${props.blackListed}) `
+        }
+
         if (props.namePost.length>0) {
             if (!whereInQuery){
                 whereInQuery = true

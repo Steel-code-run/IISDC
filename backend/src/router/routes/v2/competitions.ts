@@ -42,7 +42,7 @@ router.post(routes.v2.competitions.get,(req:ICustomRequest,res)=>{
         else
         postForReturn = competitionsOperations.getPosts({
             namePost: competition.namePost,
-            blackListed: competition.blackListed,
+            blackListed: competition.blackListed || 0,
             from:req.body.from as number | undefined,
             limit: req.body.limit as number | undefined,
             directions: competition.direction,
@@ -70,7 +70,7 @@ router.post(routes.v2.competitions.count,(req:ICustomRequest,res)=>{
     try {
         let postsForReturn;
             postsForReturn = competitionsOperations.getPosts({
-                directions: competition.direction,
+                directions: competition.direction ,
                 blackListed: competition.blackListed || 0,
                 namePost: competition.namePost || '',
                 from:0,

@@ -41,7 +41,7 @@ router.post(routes.v2.internships.get,(req:ICustomRequest,res)=>{
         else
         postForReturn = internshipOperations.getPosts({
             namePost: competition.namePost,
-            blackListed: competition.blackListed,
+            blackListed: competition.blackListed || 0,
             from:req.body.from as number | undefined,
             limit: req.body.limit as number | undefined,
             justCountIt: !!req.body.justCountIt,
