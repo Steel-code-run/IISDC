@@ -169,6 +169,12 @@ const parsersParams = [
         fileUrl: "smallhomeland",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'sberstudent',
+        url: ".",
+        fileUrl: "sberstudent",
+        parserType: TParserType.nodejs
+    },
 
 ]
 export const generateDefaultParsers = ():TParser[] => {
