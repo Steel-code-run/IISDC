@@ -26,7 +26,15 @@ async function getPosts(page)  {
         httpsAgent
     })
     .then((res)=>{
-        return JSON.parse(res.data.slice(res.data.lastIndexOf('\t')));
+        try {
+            return JSON.parse(res.data.slice(res.data.lastIndexOf('\t')));
+        } catch (e) {
+            try {
+                return JSON.parse(res.data);
+            } catch (e) {
+                return res.data
+            }
+        }
     })
 
 
