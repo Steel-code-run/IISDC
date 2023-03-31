@@ -1,16 +1,66 @@
 import {TCompetition, TGrant, TInternship, TPostType, TVacancy} from "@iisdc/types";
 
 export type TComponentPage<T extends TPostType> = {
-    postType : T;
+    postType: T;
     props: T extends TPostType.grant
-            ? TGrant
-            : T extends TPostType.vacancy
-                ? TVacancy
-                : T extends TPostType.internship
-                    ? TInternship
-                    : T extends TPostType.competition
-                        ? TCompetition
-                        : never
+        ? TGrant
+        : T extends TPostType.vacancy
+            ? TVacancy
+            : T extends TPostType.internship
+                ? TInternship
+                : T extends TPostType.competition
+                    ? TCompetition
+                    : never
 }
 
 export type TTypesOfPosts = TGrant | TCompetition | TInternship | TVacancy;
+export type TTypesUpdateData = IUpdateDataGrant | IUpdateDataCompetition | IUpdateDataInternship | IUpdateDataVacancy;
+
+export interface IUpdateDataGrant {
+    id: number | undefined,
+    organization?: string | null,
+    direction?: string | string[] | null,
+    directionForSpent?: string | null,
+    dateCreationPost: string | null,
+    deadline: string | null,
+    summary: string | null,
+    fullText: string | null,
+    link: string | null,
+    linkPDF: string | null
+}
+
+export interface IUpdateDataCompetition {
+    id: number | undefined,
+    organization: string  | null,
+    direction: string | string[] | null,
+    dateCreationPost: string | null,
+    deadline: string | null,
+    fullText: string | null,
+    link: string | null,
+    linkPDF: string | null
+
+}
+export interface IUpdateDataInternship {
+    id: number | undefined,
+    requirements: string | null,
+    responsibilities: string | null,
+    conditions: string | null,
+    salary: string | null,
+    fullText: string | null,
+    dateCreationPost: string | null,
+    organization: string | null,
+    link: string | null,
+
+}
+
+export interface IUpdateDataVacancy {
+    id: number | undefined,
+
+}
+
+
+export type TDefineUpdateData<T extends TPostType> = T extends TPostType.grant
+    ? IUpdateDataGrant : T extends TPostType.competition
+        ? IUpdateDataCompetition : T extends TPostType.internship
+            ? IUpdateDataInternship : T extends TPostType.vacancy
+                ? IUpdateDataVacancy : never

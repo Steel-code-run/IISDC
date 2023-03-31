@@ -38,6 +38,11 @@ ul, li {
   height: 100%;
   padding: 0 10px;
 }
+
 img {
   user-select: none;
+}
+
+[contentEditable]:not(:focus):before {
+  content: attr(data-text)
 }

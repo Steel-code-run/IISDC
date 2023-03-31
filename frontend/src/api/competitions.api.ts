@@ -16,6 +16,7 @@ interface IGetCountCompetitions {
     direction?: string[] | string,
     token: string | null
 }
+
 export const competitionsApi = createApi({
     reducerPath: 'competitionsApi',
     baseQuery: fetchBaseQuery(
@@ -65,18 +66,23 @@ export const competitionsApi = createApi({
             }
         }),
 
-        // updateCompetitions: builder.mutation<any, IUpdateData>({
-        //     query: (updateData) => ({
-        //         url: 'competitions/update',
-        //         body: updateData
-        //     }),
-        //     invalidatesTags: [{type: 'Competitions', id: 'LIST'}]
-        // }),
+        updateCompetitions: builder.mutation<any, any>({
+            query: ({updateData, token}) => ({
+                url: 'v2/competitions/update',
+                body: updateData,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                method: 'PATCH'
+            }),
+            invalidatesTags: [{type: 'Competitions', id: 'LIST'}]
+        }),
 
     })
 });
 
 export const {
     useGetCountСompetitionsQuery,
-    useGetCompetitionsQuery
+    useGetCompetitionsQuery,
+    useUpdateCompetitionsMutation
 } = competitionsApi;
