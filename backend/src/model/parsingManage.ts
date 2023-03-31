@@ -21,7 +21,7 @@ export const grantsManage = (grants: TGrant[], parsersCallParams:TParserCallPara
     for (let i = 0; i < grants.length; i++) {
         const grant = grants[i];
         const last500Posts = grantsOperations.getGrants({
-            limit:500,
+            limit:300,
         })
 
         if (!isPostInDbByLevenstein(grant,last500Posts)) {
@@ -48,7 +48,7 @@ export const vacanciesManage = (vacancies: TVacancy[], parsersCallParams:TParser
     for (let i = 0; i < vacancies.length; i++) {
         const vacancy = vacancies[i];
         const last500Posts = vacanciesOperations.getPosts({
-            limit:500,
+            limit:300,
         })
 
         if (!isPostInDbByLevenstein(vacancy,last500Posts)) {
@@ -73,7 +73,7 @@ export const internshipsManage = (internships: TInternship[], parsersCallParams:
     for (let i = 0; i < internships.length; i++) {
         const internship = internships[i];
         const last500Posts = internshipOperations.getPosts({
-            limit: 500,
+            limit: 300,
         })
 
         if (!isPostInDbByLevenstein(internship,last500Posts)) {
@@ -98,7 +98,7 @@ export const competitionsManage = (competitions: TCompetition[], parsersCallPara
     for (let i = 0; i < competitions.length; i++) {
         const competition = competitions[i];
         const last500Posts = competitionsOperations.getPosts({
-            limit:500
+            limit:300
         })
 
         if (!isPostInDbByLevenstein(competition,last500Posts)) {

@@ -136,16 +136,15 @@ router.patch(routes.v2.vacancies.update,(req:ICustomRequest,res)=>{
             timeOfParse: oldPost.timeOfParse,
             sourceLink: oldPost.sourceLink,
 
-            link: reqCompetition.link || oldPost.link,
-            fullText: reqCompetition.fullText || oldPost.fullText,
-            organization: reqCompetition.organization || oldPost.organization,
-            dateCreationPost: reqCompetition.dateCreationPost || oldPost.dateCreationPost,
-
-            salary: reqCompetition.salary || oldPost.salary,
-            conditions : reqCompetition.conditions || oldPost.conditions,
-            responsibilities : reqCompetition.responsibilities || oldPost.responsibilities,
-            requirements : reqCompetition.requirements || oldPost.requirements,
-            direction : reqCompetition.direction || oldPost.direction,
+            link: reqCompetition.link || '',
+            fullText: reqCompetition.fullText || '',
+            organization: reqCompetition.organization || '',
+            dateCreationPost: reqCompetition.dateCreationPost || '',
+            salary: reqCompetition.salary || '',
+            conditions : reqCompetition.conditions || '',
+            responsibilities : reqCompetition.responsibilities || '',
+            requirements : reqCompetition.requirements || '',
+            direction : reqCompetition.direction || '',
         }
 
     } catch (e) {
