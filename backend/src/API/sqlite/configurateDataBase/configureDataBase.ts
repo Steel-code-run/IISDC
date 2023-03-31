@@ -25,7 +25,7 @@ export const configureDefaultParsers = () =>{
     const parsers = generateDefaultParsers();
     consoleLog("started configure default parsers")
     parsers.forEach(parser => {
-        if (sqliteParser.getParsers(parser).length < 1)
+        if (sqliteParser.getParsers({name:parser.name}).length < 1)
             sqliteParser.addParser(parser)
     });
 }
