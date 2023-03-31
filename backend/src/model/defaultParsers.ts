@@ -283,6 +283,12 @@ const parsersParams = [
         fileUrl: "тымолод",
         parserType: TParserType.nodejs
     },
+    {
+        name: "allfest",
+        url: "https://allfest.ru/",
+        fileUrl: "allfest",
+        parserType: TParserType.nodejs
+    },
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
