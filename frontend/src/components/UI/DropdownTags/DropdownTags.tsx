@@ -1,15 +1,20 @@
-import React, {Dispatch, FC, SetStateAction, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import styles from './DropdownTags.module.scss';
 import Tag from "../Tag/Tag";
 import {useGetDirectionsQuery} from "../../../api/grants.api";
-import {IUpdateData} from "../../../pages/PagePost/PagePost";
+import {
+    IUpdateDataCompetition,
+    IUpdateDataGrant,
+    IUpdateDataInternship,
+    IUpdateDataVacancy
+} from "../../../types/types";
 
 export interface IDropdownTagsProps {
     direction: string[] | string,
     isActiveDropdown: boolean,
     isHighlight: boolean,
-    setUpdateData: Dispatch<SetStateAction<IUpdateData>>,
-    updateData: IUpdateData
+    setUpdateData:  React.Dispatch<React.SetStateAction<IUpdateDataGrant | IUpdateDataVacancy | IUpdateDataInternship | IUpdateDataCompetition>>,
+    updateData: IUpdateDataGrant
 }
 
 interface IDirectionsResponse {

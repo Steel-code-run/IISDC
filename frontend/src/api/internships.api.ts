@@ -67,7 +67,7 @@ export const internshipsApi = createApi({
             }
         }),
 
-        deletePostGrant: builder.mutation<any, any>({
+        deletePostInternship: builder.mutation<any, any>({
             query: ({token, id}, ) => (
                 {
                     url: 'v2/internships/addToBlackList',
@@ -83,24 +83,24 @@ export const internshipsApi = createApi({
             invalidatesTags: [{type: 'Internships', id: 'LIST'}]
         }),
 
-        // updatePostGrant: builder.mutation<any, any>({
-        //     query: ({updateData, token}) => ({
-        //         url: 'v2/internships/update',
-        //         body: updateData,
-        //         headers: {
-        //             'Authorization': `Bearer ${token}`,
-        //         },
-        //         method: 'PATCH'
-        //     }),
-        //     invalidatesTags: [{type: 'Internships', id: 'LIST'}]
-        // }),
+        updatePostInternship: builder.mutation<any, any>({
+            query: ({updateData, token}) => ({
+                url: 'v2/internships/update',
+                body: updateData,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                method: 'PATCH'
+            }),
+            invalidatesTags: [{type: 'Internships', id: 'LIST'}]
+        }),
 
 
     })
 });
 
 export const {
-   useDeletePostGrantMutation,
     useGetInternshipsQuery,
     useGetCountInternshipsQuery,
+    useUpdatePostInternshipMutation
 } = internshipsApi;

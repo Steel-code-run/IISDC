@@ -41,3 +41,6 @@ ul, li {
 img {
   user-select: none;
 }
+[contentEditable]:not(:focus):before {
+  content: attr(data-text)
+}

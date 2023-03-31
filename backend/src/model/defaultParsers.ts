@@ -271,6 +271,12 @@ const parsersParams = [
         fileUrl: "komissarov-foundation",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'welcomecup',
+        url: "https://welcomecup.rsv.ru/managers",
+        fileUrl: "welcomecup",
+        parserType: TParserType.nodejs
+    },
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
