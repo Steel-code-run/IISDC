@@ -265,6 +265,12 @@ const parsersParams = [
         fileUrl: "fondpotanin",
         parserType: TParserType.nodejs
     },
+    {
+        name: "komissarov-foundation",
+        url: "https://komissarov-foundation.ru/",
+        fileUrl: "komissarov-foundation",
+        parserType: TParserType.nodejs
+    },
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
