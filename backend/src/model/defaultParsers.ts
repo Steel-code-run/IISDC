@@ -297,7 +297,7 @@ const parsersParams = [
     },
     {
         name: 'digitalwind',
-        url: "",
+        url: "http://www.digitalwind.ru/",
         fileUrl: "digitalwind",
         parserType: TParserType.nodejs
     }
