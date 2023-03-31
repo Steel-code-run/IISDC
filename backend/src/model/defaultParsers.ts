@@ -277,6 +277,12 @@ const parsersParams = [
         fileUrl: "get-investor",
         parserType: TParserType.nodejs
     },
+    {
+        name: "тымолод",
+        url: "https://тымолод.рф/",
+        fileUrl: "тымолод",
+        parserType: TParserType.nodejs
+    },
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
