@@ -277,6 +277,12 @@ const parsersParams = [
         fileUrl: "welcomecup",
         parserType: TParserType.nodejs
     },
+    {
+        name: 'digitalwind',
+        url: "",
+        fileUrl: "digitalwind",
+        parserType: TParserType.nodejs
+    }
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
