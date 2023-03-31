@@ -272,6 +272,24 @@ const parsersParams = [
         parserType: TParserType.nodejs
     },
     {
+        name: "get-investor",
+        url: "https://get-investor.ru/",
+        fileUrl: "get-investor",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: "тымолод",
+        url: "https://тымолод.рф/",
+        fileUrl: "тымолод",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: "allfest",
+        url: "https://allfest.ru/",
+        fileUrl: "allfest",
+        parserType: TParserType.nodejs
+    },
+    {
         name: 'welcomecup',
         url: "https://welcomecup.rsv.ru/managers",
         fileUrl: "welcomecup",
@@ -283,6 +301,7 @@ const parsersParams = [
         fileUrl: "digitalwind",
         parserType: TParserType.nodejs
     }
+
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
