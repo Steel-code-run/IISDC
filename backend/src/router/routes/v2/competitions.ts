@@ -140,13 +140,13 @@ router.patch(routes.v2.competitions.update,(req:ICustomRequest,res)=>{
             timeOfParse: oldGrant.timeOfParse,
             sourceLink: oldGrant.sourceLink,
 
-            direction: reqCompetition.direction || oldGrant.direction,
-            linkPDF: reqCompetition.linkPDF || oldGrant.linkPDF,
-            link: reqCompetition.link || oldGrant.link,
-            fullText: reqCompetition.fullText || oldGrant.fullText,
-            organization: reqCompetition.organization || oldGrant.organization,
-            deadline: reqCompetition.deadline || oldGrant.deadline,
-            dateCreationPost: reqCompetition.dateCreationPost || oldGrant.dateCreationPost,
+            direction: reqCompetition.direction || '',
+            linkPDF: reqCompetition.linkPDF || '',
+            link: reqCompetition.link || '',
+            fullText: reqCompetition.fullText || '',
+            organization: reqCompetition.organization || '',
+            deadline: reqCompetition.deadline || '',
+            dateCreationPost: reqCompetition.dateCreationPost || '',
         }
 
     } catch (e) {

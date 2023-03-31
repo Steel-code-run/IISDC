@@ -134,7 +134,6 @@ router.patch(routes.v2.grants.update,(req:ICustomRequest,res)=>{
             return
         }
 
-
         newGrant = {
             namePost: oldGrant.namePost,
             blackListed: oldGrant.blackListed,
@@ -142,15 +141,15 @@ router.patch(routes.v2.grants.update,(req:ICustomRequest,res)=>{
             timeOfParse: oldGrant.timeOfParse,
             sourceLink: oldGrant.sourceLink,
 
-            direction: reqGrant.direction || oldGrant.direction,
-            linkPDF: reqGrant.linkPDF || oldGrant.linkPDF,
-            link: reqGrant.link || oldGrant.link,
-            fullText: reqGrant.fullText || oldGrant.fullText,
-            summary: reqGrant.summary || oldGrant.summary,
-            directionForSpent: reqGrant.directionForSpent || oldGrant.directionForSpent,
-            organization: reqGrant.organization || oldGrant.organization,
-            deadline: reqGrant.deadline || oldGrant.deadline,
-            dateCreationPost: reqGrant.dateCreationPost || oldGrant.dateCreationPost,
+            direction: reqGrant.direction || [],
+            linkPDF: reqGrant.linkPDF || '',
+            link: reqGrant.link || '',
+            fullText: reqGrant.fullText || '',
+            summary: reqGrant.summary || '',
+            directionForSpent: reqGrant.directionForSpent || '',
+            organization: reqGrant.organization || '',
+            deadline: reqGrant.deadline || '',
+            dateCreationPost: reqGrant.dateCreationPost || '',
         }
 
     } catch (e) {

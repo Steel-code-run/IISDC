@@ -212,12 +212,65 @@ const parsersParams = [
         parserType: TParserType.nodejs
     },
     {
-        name: 'welcomecup',
-        url: "https://welcomecup.rsv.ru/managers",
-        fileUrl: "welcomecup",
+        name: 'inno-media',
+        url: "http://inno-media.festivalnauki.ru/",
+        fileUrl: "inno-media",
         parserType: TParserType.nodejs
     },
-
+    {
+        name: 'project.lanbook',
+        url: "https://project.lanbook.com",
+        fileUrl: "project.lanbook",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'rscf',
+        url: "https://rscf.ru",
+        fileUrl: "rscf",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'ruseasons',
+        url: "https://ruseasons.com",
+        fileUrl: "ruseasons",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'sberstudent',
+        url: "https://sberstudent.sberclass.ru/",
+        fileUrl: "sberstudent",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'start.kontur',
+        url: "https://start.kontur.ru/",
+        fileUrl: "start.kontur",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'smallhomeland',
+        url: "https://smallhomeland.ru/",
+        fileUrl: "smallhomeland",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'tyvigre',
+        url: "https://tyvigre.ru/",
+        fileUrl: "tyvigre",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: 'fondpotanin',
+        url: "https://fondpotanin.ru",
+        fileUrl: "fondpotanin",
+        parserType: TParserType.nodejs
+    },
+    {
+        name: "komissarov-foundation",
+        url: "https://komissarov-foundation.ru/",
+        fileUrl: "komissarov-foundation",
+        parserType: TParserType.nodejs
+    },
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
