@@ -271,6 +271,12 @@ const parsersParams = [
         fileUrl: "komissarov-foundation",
         parserType: TParserType.nodejs
     },
+    {
+        name: "get-investor",
+        url: "https://get-investor.ru/",
+        fileUrl: "get-investor",
+        parserType: TParserType.nodejs
+    },
 ]
 export const generateDefaultParsers = ():TParser[] => {
     const defaultParsers: TParser[] = [];
