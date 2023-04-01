@@ -19,43 +19,10 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [page, setPage] = useState<number>(1)
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
-    const [choicedDirection, setChoicedDirection] = useState<string[] | string>('Все направления')
+    const [choicedDirection, setChoicedDirection] = useState<string[] | string>([])
     const navigate = useNavigate();
     const token = window.localStorage.getItem('token');
 
-    const generatorRequestGrant = (type: string) => {
-
-        if (type === 'haveDirection') {
-            return {
-                limit: amountPostsPerPage,
-                from: (page - 1) * amountPostsPerPage,
-                namePost: debounceValue,
-                direction: choicedDirection,
-                token: token
-            }
-        }
-        return {
-            limit: amountPostsPerPage,
-            from: (page - 1) * amountPostsPerPage,
-            namePost: debounceValue,
-            token: token
-        }
-    }
-
-    const generatorRequestGrantCount = (type: string) => {
-        if (type === 'haveDirection') {
-            return {
-                namePost: debounceValue,
-                direction: choicedDirection,
-                token: token
-            }
-        }
-        return {
-            namePost: debounceValue,
-            token: token
-        }
-
-    }
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
         if (sizeWindow <= 768 && sizeWindow >= 414) {
@@ -67,16 +34,19 @@ const PageGrants: FC<PageGrantsProps> = () => {
         }
     }
 
-    const {data: totalCountPosts} = useGetCountGrantsQuery(generatorRequestGrantCount(
-        (choicedDirection !== 'Все направления' && choicedDirection.length > 0)
-            ? 'haveDirection'
-            : 'noDirection'));
+    const {data: totalCountPosts} = useGetCountGrantsQuery({
+        namePost: debounceValue,
+        direction: choicedDirection,
+        token: token
+    });
 
-    const {data = [], error, isLoading} = useGetGrantsQuery(
-        generatorRequestGrant((
-            choicedDirection !== 'Все направления' && choicedDirection.length > 0)
-            ? 'haveDirection'
-            : 'noDirection'));
+    const {data = [], error, isLoading} = useGetGrantsQuery({
+        limit: amountPostsPerPage,
+        from: (page - 1) * amountPostsPerPage,
+        namePost: debounceValue,
+        direction: choicedDirection,
+        token: token
+    });
 
     const {data: directions} = useGetDirectionsQuery({
         token: token

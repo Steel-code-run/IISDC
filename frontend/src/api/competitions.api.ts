@@ -51,9 +51,9 @@ export const competitionsApi = createApi({
                 result?.data
                     ? [
                         ...result?.data.map(({id}: any) => ({type: 'Competitions' as const, id})),
-                        {type: 'Competitions', id: 'LIST'},
+                        ['Competitions'],
                     ]
-                    : [{type: 'Competitions', id: 'LIST'}],
+                    : ['Competitions'],
         }),
         getCountСompetitions: builder.query<any, IGetCountCompetitions>({
             query: ({namePost, direction, token}) => {
@@ -84,7 +84,7 @@ export const competitionsApi = createApi({
                     method: 'PATCH'
                 }
             ),
-            invalidatesTags: [{type: 'Competitions', id: 'LIST'}]
+            invalidatesTags: ['Competitions']
         }),
 
         updateCompetitions: builder.mutation<any, IUpdateInput>({
@@ -96,7 +96,7 @@ export const competitionsApi = createApi({
                 },
                 method: 'PATCH'
             }),
-            invalidatesTags: [{type: 'Competitions', id: 'LIST'}]
+            invalidatesTags: ['Competitions']
         }),
 
     })
