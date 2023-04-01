@@ -1,5 +1,6 @@
 import '@reduxjs/toolkit/query/react';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {TTypesUpdateData} from "../types/types";
 
 // import {IUpdateData} from "../components/UI/PopupPost/PopupPost";
 
@@ -14,6 +15,10 @@ export interface IGetCompetitions {
 interface IGetCountCompetitions {
     namePost?: string,
     direction?: string[] | string,
+    token: string | null
+}
+interface IUpdateInput {
+    updateData: TTypesUpdateData,
     token: string | null
 }
 
@@ -66,7 +71,23 @@ export const competitionsApi = createApi({
             }
         }),
 
-        updateCompetitions: builder.mutation<any, any>({
+        deletePostCompetition: builder.mutation<any, any>({
+            query: ({token, id}, ) => (
+                {
+                    url: 'v2/competitions/addToBlackList',
+                    body: {
+                        id
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    method: 'PATCH'
+                }
+            ),
+            invalidatesTags: [{type: 'Competitions', id: 'LIST'}]
+        }),
+
+        updateCompetitions: builder.mutation<any, IUpdateInput>({
             query: ({updateData, token}) => ({
                 url: 'v2/competitions/update',
                 body: updateData,
@@ -84,5 +105,6 @@ export const competitionsApi = createApi({
 export const {
     useGetCountСompetitionsQuery,
     useGetCompetitionsQuery,
-    useUpdateCompetitionsMutation
+    useUpdateCompetitionsMutation,
+    useDeletePostCompetitionMutation
 } = competitionsApi;

@@ -6,8 +6,8 @@ import {isPropsCompetition, isPropsGrant, isPropsInternship, isUpdateDataGrant} 
 import DropdownTags from "../../components/UI/DropdownTags/DropdownTags";
 import {useMediaQuery} from "react-responsive";
 import {TPostType} from "@iisdc/types";
-import {useDeletePostGrantMutation} from "../../api/grants.api";
-import {useUniversalUpdateHook, useUpdateData} from "../../store/hooks/universalUpdateHook";
+import {useUniversalDeleteSwitchHook, useUniversalUpdateSwitchHook,} from "../../store/hooks/universalSwitchHooks";
+import {TTypesUpdateData} from "../../types/types";
 
 interface ILocationState {
     state: {
@@ -21,18 +21,8 @@ const PagePost = () => {
     const {data, postType} = location.state;
 
     const [isEdit, setIsEdit] = useState(false);
-    // const [updateData, setUpdateData] = useState<TDefineUpdateData<typeof postType>>({
-    //     id: data.id,
-    //     organization: data.organization,
-    //     direction: data.direction,
-    //     directionForSpent: data.directionForSpent,
-    //     dateCreationPost: data.dateCreationPost,
-    //     deadline: data.deadline,
-    //     summary: data.summary,
-    //     fullText: data.fullText,
-    // })
 
-    const [updateData, setUpdateData] = useUpdateData(postType, data)({
+    const [updateData, setUpdateData] = useState<TTypesUpdateData>({
         id: data.id,
         organization: data.organization,
         direction: data.direction,
@@ -53,8 +43,8 @@ const PagePost = () => {
 
     const convertDate = (date: string) => new Date(date)?.toLocaleDateString();
 
-    const [deletePost] = useDeletePostGrantMutation();
-    const [updatePost] = useUniversalUpdateHook(postType, data)();
+    const [deletePost] = useUniversalDeleteSwitchHook(postType, data)();
+    const [updatePost] = useUniversalUpdateSwitchHook(postType, data)();
 
     useEffect(() => {
 
@@ -72,6 +62,7 @@ const PagePost = () => {
     const highLightField = (turn: boolean) => (turn) ? ' ' + styles.pagePost__highlightField : '';
 
 
+    console.log(data.fullText)
     return (
         <>
             <Header/>
@@ -169,19 +160,22 @@ const PagePost = () => {
                     {
                         isPropsCompetition(postType, data) &&
                         <>
-                            <div
-                                className={styles.pagePost__field + highLightField(isEdit)}
-                                contentEditable={isEdit}
-                                suppressContentEditableWarning={true}
-                                data-text={'Организаторы: '}
-                                onInput={(e) => {
-                                    const target = e.target as HTMLElement;
-                                    setUpdateData({
-                                        ...updateData,
-                                        organization: target.textContent
-                                    })
-                                }}
-                            >{data.organization}</div>
+                            {
+                                (isEdit || data.organization) &&
+                                <div
+                                    className={styles.pagePost__field + highLightField(isEdit)}
+                                    contentEditable={isEdit}
+                                    suppressContentEditableWarning={true}
+                                    data-text={'Организаторы: '}
+                                    onInput={(e) => {
+                                        const target = e.target as HTMLElement;
+                                        setUpdateData({
+                                            ...updateData,
+                                            organization: target.textContent
+                                        })
+                                    }}
+                                >{data.organization}</div>
+                            }
                         </>
                     }
                     {
@@ -240,7 +234,7 @@ const PagePost = () => {
                         </>
 
                     }
-                    {data.fullText &&
+                    {(isEdit || data.fullText) &&
                         <div
                             className={styles.pagePost__field + highLightField(isEdit) + ' ' + styles.pagePost__fullText}
                             contentEditable={isEdit}
@@ -289,14 +283,13 @@ const PagePost = () => {
                                                 <button onClick={async () => {
                                                     if (data.id) {
                                                         await deletePost({token, id: data.id});
-                                                        navigate('/grants');
+                                                        navigate(-1);
                                                     }
                                                 }}
                                                         className={styles.pagePost__delete + ' ' + styles.pagePost__btn}>Удалить
                                                 </button>
                                                 <button onClick={async () => {
                                                     setIsEdit(false);
-                                                    console.log(updateData)
                                                     await updatePost({
                                                         updateData,
                                                         token: window.localStorage.getItem('token')

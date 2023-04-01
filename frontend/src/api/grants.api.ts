@@ -1,5 +1,6 @@
 import '@reduxjs/toolkit/query/react';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {TTypesUpdateData} from "../types/types";
 
 export interface IGetGrants {
     limit: number,
@@ -12,6 +13,11 @@ export interface IGetGrants {
 interface IGetCountGrants {
     namePost?: string,
     direction?: string | string[],
+    token: string | null
+}
+
+interface IUpdateInput {
+    updateData: TTypesUpdateData,
     token: string | null
 }
 
@@ -79,7 +85,7 @@ export const grantsApi = createApi({
             invalidatesTags: [{type: 'Grants', id: 'LIST'}]
         }),
 
-        updatePostGrant: builder.mutation<any, any>({
+        updatePostGrant: builder.mutation<any, IUpdateInput>({
             query: ({updateData, token}) => ({
                 url: 'v2/grants/update',
                 body: updateData,
