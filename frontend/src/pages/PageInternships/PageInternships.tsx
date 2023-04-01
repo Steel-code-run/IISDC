@@ -9,7 +9,7 @@ import Search from "../../components/UI/Search/Search";
 import '../../styles/spinner-loader.scss';
 import {useNavigate} from "react-router-dom";
 import {Dna} from "react-loader-spinner";
-import {useGetDirectionsQuery} from "../../api/grants.api";
+import {useGetDirectionsQuery} from "../../api/auxiliaryRequests.api";
 
 export interface PageInternshipsProps {
 }
@@ -19,43 +19,10 @@ const PageInternships: FC<PageInternshipsProps> = () => {
     const [page, setPage] = useState<number>(1)
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
-    const [choicedDirection, setChoicedDirection] = useState<string[] | string>('Все направления')
+    const [choicedDirection, setChoicedDirection] = useState<string[] | string>([])
     const navigate = useNavigate();
     const token = window.localStorage.getItem('token');
 
-    const generatorRequestGrant = (type: string) => {
-
-        if (type === 'haveDirection') {
-            return {
-                limit: amountPostsPerPage,
-                from: (page - 1) * amountPostsPerPage,
-                namePost: debounceValue,
-                direction: choicedDirection,
-                token: token
-            }
-        }
-        return {
-            limit: amountPostsPerPage,
-            from: (page - 1) * amountPostsPerPage,
-            namePost: debounceValue,
-            token: token
-        }
-    }
-
-    const generatorRequestGrantCount = (type: string) => {
-        if (type === 'haveDirection') {
-            return {
-                namePost: debounceValue,
-                direction: choicedDirection,
-                token: token
-            }
-        }
-        return {
-            namePost: debounceValue,
-            token: token
-        }
-
-    }
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
         if (sizeWindow <= 768 && sizeWindow >= 414) {
@@ -67,16 +34,19 @@ const PageInternships: FC<PageInternshipsProps> = () => {
         }
     }
 
-    const {data: totalCountPosts} = useGetCountInternshipsQuery(generatorRequestGrantCount(
-        (choicedDirection !== 'Все направления' && choicedDirection.length > 0)
-            ? 'haveDirection'
-            : 'noDirection'));
+    const {data: totalCountPosts} = useGetCountInternshipsQuery({
+        namePost: debounceValue,
+        direction: choicedDirection,
+        token: token
+    });
 
-    const {data = [], error, isLoading} = useGetInternshipsQuery(
-        generatorRequestGrant((
-            choicedDirection !== 'Все направления' && choicedDirection.length > 0)
-            ? 'haveDirection'
-            : 'noDirection'));
+    const {data = [], error, isLoading} = useGetInternshipsQuery({
+        limit: amountPostsPerPage,
+        from: (page - 1) * amountPostsPerPage,
+        namePost: debounceValue,
+        direction: choicedDirection,
+        token: token
+    });
 
     const {data: directions} = useGetDirectionsQuery({
         token: token
@@ -100,7 +70,7 @@ const PageInternships: FC<PageInternshipsProps> = () => {
                     error
                 }
             })
-            : navigate('/Internships')
+            : navigate('/internships')
     }, [isLoading])
 
     if (!directions?.data || isLoading) return <Dna visible={true}

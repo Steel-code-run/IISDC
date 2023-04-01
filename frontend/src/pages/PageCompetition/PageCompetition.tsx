@@ -10,7 +10,7 @@ import {useGetCompetitionsQuery, useGetCountСompetitionsQuery,} from "../../api
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import CardPost from "../../components/CardPost/CardPost";
 import {useNavigate} from "react-router-dom";
-import {useGetDirectionsQuery} from "../../api/grants.api";
+import {useGetDirectionsQuery} from "../../api/auxiliaryRequests.api";
 
 export interface PageCompetitionsProps {
 }
@@ -20,45 +20,11 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     const [page, setPage] = useState<number>(1)
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
-    const [choicedDirection, setChoicedDirection] = useState<string[] | string>('Все направления')
+    const [choicedDirection, setChoicedDirection] = useState<string[] | string>([])
     const navigate = useNavigate();
 
     const token = window.localStorage.getItem('token');
 
-    const generatorRequestCompetitions = (type: string) => {
-        if (type === 'haveDirection') {
-            return {
-                limit: amountPostsPerPage,
-                from: (page - 1) * amountPostsPerPage,
-                namePost: debounceValue,
-                direction: choicedDirection,
-                token
-            }
-        }
-
-        return {
-            limit: amountPostsPerPage,
-            from: (page - 1) * amountPostsPerPage,
-            namePost: debounceValue,
-            token
-        }
-
-    }
-    const generatorRequestCompetitionsCount = (type: string) => {
-
-        if (type === 'haveDirection') {
-            return {
-                namePost: debounceValue,
-                direction: choicedDirection,
-                token
-            }
-        }
-        return {
-            namePost: debounceValue,
-            token
-        }
-
-    }
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
         if (sizeWindow <= 768 && sizeWindow >= 414) {
@@ -71,15 +37,19 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     }
 
 
-    const {data: totalCountPosts} = useGetCountСompetitionsQuery(
-        generatorRequestCompetitionsCount((choicedDirection !== 'Все направления' && choicedDirection.length > 0)
-            ? 'haveDirection'
-            : 'noDirection'));
+    const {data: totalCountPosts} = useGetCountСompetitionsQuery({
+        namePost: debounceValue,
+        direction: choicedDirection,
+        token
+    });
 
-    const {data = [], error, isLoading} = useGetCompetitionsQuery(
-        generatorRequestCompetitions((choicedDirection !== 'Все направления' && choicedDirection.length > 0)
-            ? 'haveDirection'
-            : 'noDirection'));
+    const {data = [], error, isLoading} = useGetCompetitionsQuery( {
+        limit: amountPostsPerPage,
+        from: (page - 1) * amountPostsPerPage,
+        namePost: debounceValue,
+        direction: choicedDirection,
+        token
+    });
 
     const {data: directions} = useGetDirectionsQuery({token});
 
@@ -101,10 +71,17 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
 
 
     React.useEffect(() => {
-        (data.message === 'unauthorized')
-            ? navigate('/')
+        window.addEventListener('resize', () => checkSizeWindow())
+        checkSizeWindow();
+        (error)
+            ? navigate('/', {
+                state: {
+                    error
+                }
+            })
             : navigate('/competitions')
-    }, [])
+    }, [isLoading])
+
     if (!directions?.data || isLoading) return <Dna visible={true}
                                                     height="250"
                                                     width="250"

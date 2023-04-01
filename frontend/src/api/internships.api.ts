@@ -1,5 +1,6 @@
 import '@reduxjs/toolkit/query/react';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {TTypesUpdateData} from "../types/types";
 
 export interface IGetInternships {
     limit: number,
@@ -12,6 +13,11 @@ export interface IGetInternships {
 interface IGetCountInternships {
     namePost?: string,
     direction?: string | string[],
+    token: string | null
+}
+
+interface IUpdateInput {
+    updateData: TTypesUpdateData,
     token: string | null
 }
 
@@ -83,7 +89,7 @@ export const internshipsApi = createApi({
             invalidatesTags: [{type: 'Internships', id: 'LIST'}]
         }),
 
-        updatePostInternship: builder.mutation<any, any>({
+        updatePostInternship: builder.mutation<any, IUpdateInput>({
             query: ({updateData, token}) => ({
                 url: 'v2/internships/update',
                 body: updateData,
@@ -102,5 +108,6 @@ export const internshipsApi = createApi({
 export const {
     useGetInternshipsQuery,
     useGetCountInternshipsQuery,
-    useUpdatePostInternshipMutation
+    useUpdatePostInternshipMutation,
+    useDeletePostInternshipMutation
 } = internshipsApi;

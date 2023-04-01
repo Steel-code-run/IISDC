@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './PageGrants.module.scss';
-import {useGetCountGrantsQuery, useGetDirectionsQuery, useGetGrantsQuery} from "../../api/grants.api";
+import {useGetCountGrantsQuery, useGetGrantsQuery} from "../../api/grants.api";
 import CardPost from "../../components/CardPost/CardPost";
 import Header from "../../components/Header/Header";
 import {TGrant, TPostType} from "@iisdc/types";
@@ -10,6 +10,7 @@ import '../../styles/spinner-loader.scss';
 import {useNavigate} from "react-router-dom";
 import {Dna} from "react-loader-spinner";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
+import {useGetDirectionsQuery} from "../../api/auxiliaryRequests.api";
 
 export interface PageGrantsProps {
 }
@@ -19,43 +20,10 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [page, setPage] = useState<number>(1)
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
-    const [choicedDirection, setChoicedDirection] = useState<string[] | string>('Все направления')
+    const [choicedDirection, setChoicedDirection] = useState<string[] | string>([])
     const navigate = useNavigate();
     const token = window.localStorage.getItem('token');
 
-    const generatorRequestGrant = (type: string) => {
-
-        if (type === 'haveDirection') {
-            return {
-                limit: amountPostsPerPage,
-                from: (page - 1) * amountPostsPerPage,
-                namePost: debounceValue,
-                direction: choicedDirection,
-                token: token
-            }
-        }
-        return {
-            limit: amountPostsPerPage,
-            from: (page - 1) * amountPostsPerPage,
-            namePost: debounceValue,
-            token: token
-        }
-    }
-
-    const generatorRequestGrantCount = (type: string) => {
-        if (type === 'haveDirection') {
-            return {
-                namePost: debounceValue,
-                direction: choicedDirection,
-                token: token
-            }
-        }
-        return {
-            namePost: debounceValue,
-            token: token
-        }
-
-    }
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
         if (sizeWindow <= 768 && sizeWindow >= 414) {
@@ -67,16 +35,19 @@ const PageGrants: FC<PageGrantsProps> = () => {
         }
     }
 
-    const {data: totalCountPosts} = useGetCountGrantsQuery(generatorRequestGrantCount(
-        (choicedDirection !== 'Все направления' && choicedDirection.length > 0)
-            ? 'haveDirection'
-            : 'noDirection'));
+    const {data: totalCountPosts} = useGetCountGrantsQuery({
+        namePost: debounceValue,
+        direction: choicedDirection,
+        token: token
+    });
 
-    const {data = [], error, isLoading} = useGetGrantsQuery(
-        generatorRequestGrant((
-            choicedDirection !== 'Все направления' && choicedDirection.length > 0)
-            ? 'haveDirection'
-            : 'noDirection'));
+    const {data = [], error, isLoading} = useGetGrantsQuery({
+        limit: amountPostsPerPage,
+        from: (page - 1) * amountPostsPerPage,
+        namePost: debounceValue,
+        direction: choicedDirection,
+        token: token
+    });
 
     const {data: directions} = useGetDirectionsQuery({
         token: token

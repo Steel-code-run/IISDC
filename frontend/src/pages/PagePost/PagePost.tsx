@@ -2,12 +2,19 @@ import React, {useEffect, useState} from 'react';
 import styles from './PagePost.module.scss';
 import Header from "../../components/Header/Header";
 import {useLocation, useNavigate} from "react-router-dom";
-import {isPropsCompetition, isPropsGrant, isPropsInternship, isUpdateDataGrant} from "../../types/typeGuards";
+import {
+    isPropsCompetition,
+    isPropsGrant,
+    isPropsInternship,
+    isUpdateDataCompetition,
+    isUpdateDataGrant,
+    isUpdateDataInternship
+} from "../../types/typeGuards";
 import DropdownTags from "../../components/UI/DropdownTags/DropdownTags";
 import {useMediaQuery} from "react-responsive";
 import {TPostType} from "@iisdc/types";
-import {useDeletePostGrantMutation} from "../../api/grants.api";
-import {useUniversalUpdateHook, useUpdateData} from "../../store/hooks/universalUpdateHook";
+import {useUniversalDeleteSwitchHook, useUniversalUpdateSwitchHook,} from "../../store/hooks/universalSwitchHooks";
+import {TTypesUpdateData} from "../../types/types";
 
 interface ILocationState {
     state: {
@@ -21,18 +28,8 @@ const PagePost = () => {
     const {data, postType} = location.state;
 
     const [isEdit, setIsEdit] = useState(false);
-    // const [updateData, setUpdateData] = useState<TDefineUpdateData<typeof postType>>({
-    //     id: data.id,
-    //     organization: data.organization,
-    //     direction: data.direction,
-    //     directionForSpent: data.directionForSpent,
-    //     dateCreationPost: data.dateCreationPost,
-    //     deadline: data.deadline,
-    //     summary: data.summary,
-    //     fullText: data.fullText,
-    // })
 
-    const [updateData, setUpdateData] = useUpdateData(postType, data)({
+    const [updateData, setUpdateData] = useState<TTypesUpdateData>({
         id: data.id,
         organization: data.organization,
         direction: data.direction,
@@ -53,8 +50,8 @@ const PagePost = () => {
 
     const convertDate = (date: string) => new Date(date)?.toLocaleDateString();
 
-    const [deletePost] = useDeletePostGrantMutation();
-    const [updatePost] = useUniversalUpdateHook(postType, data)();
+    const [deletePost] = useUniversalDeleteSwitchHook(postType, data)();
+    const [updatePost] = useUniversalUpdateSwitchHook(postType, data)();
 
     useEffect(() => {
 
@@ -80,7 +77,7 @@ const PagePost = () => {
                     <div className={styles.pagePost__row + ' ' + styles.pagePost__header}>
                         <h1 className={styles.pagePost__namePost}>{data.namePost}</h1>
                         <div className={styles.pagePost__dates}>
-                            {(isEdit || data.dateCreationPost) && <div
+                            {(isEdit || updateData.dateCreationPost) && <div
                                 className={styles.pagePost__dateCreationPost}>{'Дата создания поста \n'}
                                 <p contentEditable={isEdit}
                                    suppressContentEditableWarning={true}
@@ -91,19 +88,23 @@ const PagePost = () => {
                                            dateCreationPost: target.textContent
                                        })
                                    }}
-                                >{data.dateCreationPost}</p></div>}
-                            {(isEdit || data.deadline) && <div
-                                className={styles.pagePost__deadline}>{'Дата окончания подачи заявок \n'}
-                                <p contentEditable={isEdit}
-                                   suppressContentEditableWarning={true}
-                                   onInput={(e) => {
-                                       const target = e.target as HTMLElement;
-                                       setUpdateData({
-                                           ...updateData,
-                                           deadline: target.textContent
-                                       })
-                                   }}
-                                >{data.deadline}</p></div>}
+                                >{updateData.dateCreationPost}</p></div>}
+                            {
+                                (isUpdateDataGrant(postType, updateData)
+                                    || isUpdateDataCompetition(postType, updateData)) &&
+                                (isEdit || updateData.deadline) && <div
+                                    className={styles.pagePost__deadline}>{'Дата окончания подачи заявок \n'}
+                                    <p contentEditable={isEdit}
+                                       suppressContentEditableWarning={true}
+                                       onInput={(e) => {
+                                           const target = e.target as HTMLElement;
+                                           setUpdateData({
+                                               ...updateData,
+                                               deadline: target.textContent
+                                           })
+                                       }}
+                                    >{updateData.deadline}</p></div>
+                            }
                         </div>
 
                     </div>
@@ -111,7 +112,7 @@ const PagePost = () => {
                         (isPropsGrant(postType, data) && isUpdateDataGrant(postType, updateData)) &&
                         <>
                             {
-                                (isEdit || data.summary) && <div
+                                (isEdit || updateData.summary) && <div
                                     className={styles.pagePost__field + ' ' + styles.pagePost__summary + highLightField(isEdit)}
                                     contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
@@ -123,7 +124,7 @@ const PagePost = () => {
                                             summary: target.textContent
                                         })
                                     }}
-                                >{data.summary}</div>
+                                >{updateData.summary}</div>
                             }
 
                             <DropdownTags direction={data.direction}
@@ -133,7 +134,7 @@ const PagePost = () => {
                                           isHighlight={true}/>
 
                             {
-                                (isEdit || data.organization) &&
+                                (isEdit || updateData.organization) &&
                                 <div
                                     className={styles.pagePost__field + highLightField(isEdit)}
                                     contentEditable={isEdit}
@@ -146,7 +147,7 @@ const PagePost = () => {
                                             organization: target.textContent
                                         })
                                     }}
-                                >{data.organization}</div>
+                                >{updateData.organization}</div>
                             }
                             {
                                 (isEdit || data.directionForSpent) &&
@@ -167,28 +168,31 @@ const PagePost = () => {
                         </>
                     }
                     {
-                        isPropsCompetition(postType, data) &&
+                        (isPropsCompetition(postType, data) && isUpdateDataCompetition(postType, updateData)) &&
                         <>
-                            <div
-                                className={styles.pagePost__field + highLightField(isEdit)}
-                                contentEditable={isEdit}
-                                suppressContentEditableWarning={true}
-                                data-text={'Организаторы: '}
-                                onInput={(e) => {
-                                    const target = e.target as HTMLElement;
-                                    setUpdateData({
-                                        ...updateData,
-                                        organization: target.textContent
-                                    })
-                                }}
-                            >{data.organization}</div>
+                            {
+                                (isEdit || updateData.organization) &&
+                                <div
+                                    className={styles.pagePost__field + highLightField(isEdit)}
+                                    contentEditable={isEdit}
+                                    suppressContentEditableWarning={true}
+                                    data-text={'Организаторы: '}
+                                    onInput={(e) => {
+                                        const target = e.target as HTMLElement;
+                                        setUpdateData({
+                                            ...updateData,
+                                            organization: target.textContent
+                                        })
+                                    }}
+                                >{updateData.organization}</div>
+                            }
                         </>
                     }
                     {
-                        isPropsInternship(postType, data) &&
+                        (isPropsInternship(postType, data)  && isUpdateDataInternship(postType, updateData)) &&
                         <>
                             {
-                                (isEdit || data.salary) &&
+                                (isEdit || updateData.salary) &&
                                 <div
                                     className={styles.pagePost__field + highLightField(isEdit)}
                                     contentEditable={isEdit}
@@ -201,12 +205,12 @@ const PagePost = () => {
                                             salary: target.textContent
                                         })
                                     }}
-                                >{data.salary}</div>
+                                >{updateData.salary}</div>
 
                             }
                             {/*<div className={styles.pagePost__field + highLightField(isEdit)}>{'Возможности: ' + data.responsibilities}</div>*/}
                             {
-                                (isEdit || data.requirements) &&
+                                (isEdit || updateData.requirements) &&
                                 <div
                                     className={styles.pagePost__field + highLightField(isEdit)}
                                     contentEditable={isEdit}
@@ -219,10 +223,10 @@ const PagePost = () => {
                                             requirements: target.textContent
                                         })
                                     }}
-                                >{data.requirements}</div>
+                                >{updateData.requirements}</div>
                             }
                             {
-                                (isEdit || data.conditions) &&
+                                (isEdit || updateData.conditions) &&
                                 <div
                                     className={styles.pagePost__field + highLightField(isEdit)}
                                     contentEditable={isEdit}
@@ -235,16 +239,17 @@ const PagePost = () => {
                                             conditions: target.textContent
                                         })
                                     }}
-                                >{data.conditions}</div>
+                                >{updateData.conditions}</div>
                             }
                         </>
-
                     }
-                    {data.fullText &&
+
+                    {(isEdit || updateData.fullText?.replace(/(\r\n|\n|\r| )/gm, '')) &&
                         <div
                             className={styles.pagePost__field + highLightField(isEdit) + ' ' + styles.pagePost__fullText}
                             contentEditable={isEdit}
                             suppressContentEditableWarning={true}
+                            data-text={'Описание: '}
                             onInput={(e) => {
                                 const target = e.target as HTMLElement;
                                 setUpdateData({
@@ -252,7 +257,7 @@ const PagePost = () => {
                                     fullText: target.textContent
                                 })
                             }}
-                        >{data.fullText}</div>
+                        >{updateData.fullText}</div>
 
                     }
                     <div className={styles.pagePost__footerRow}>
@@ -273,7 +278,7 @@ const PagePost = () => {
                                 <div
                                     className={styles.pagePost__timeParsing}>{'Время парсинга: ' + convertDate(data.timeOfParse)}</div>
                                 {
-                                    data.sourceLin &&
+                                    data.sourceLink &&
                                     <a href={data.sourceLink} rel="noopener noreferrer" target="_blank"
                                        className={styles.pagePost__timeParsing}>Source link</a>
                                 }
@@ -289,20 +294,17 @@ const PagePost = () => {
                                                 <button onClick={async () => {
                                                     if (data.id) {
                                                         await deletePost({token, id: data.id});
-                                                        navigate('/grants');
+                                                        navigate(-1);
                                                     }
-                                                }}
-                                                        className={styles.pagePost__delete + ' ' + styles.pagePost__btn}>Удалить
+                                                }} className={styles.pagePost__delete + ' ' + styles.pagePost__btn}>Удалить
                                                 </button>
                                                 <button onClick={async () => {
                                                     setIsEdit(false);
-                                                    console.log(updateData)
                                                     await updatePost({
                                                         updateData,
                                                         token: window.localStorage.getItem('token')
                                                     });
-                                                }}
-                                                        className={styles.pagePost__save + ' ' + styles.pagePost__btn}>Сохранить
+                                                }} className={styles.pagePost__save + ' ' + styles.pagePost__btn}>Сохранить
                                                 </button>
                                             </>
                                         }

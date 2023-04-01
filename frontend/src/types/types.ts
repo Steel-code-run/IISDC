@@ -55,6 +55,14 @@ export interface IUpdateDataInternship {
 
 export interface IUpdateDataVacancy {
     id: number | undefined,
+    direction?: string | string[] | null;
+    requirements: string | null;
+    responsibilities: string | null;
+    conditions: string | null;
+    salary: string | null;
+    fullText: string | null;
+    dateCreationPost: string | null;
+    organization: string | null;
 
 }
 

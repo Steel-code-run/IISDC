@@ -22,6 +22,7 @@ const AuthForm: FC<AuthFormProps> = () => {
 
     const navigate = useNavigate()
     const {state} = useLocation();
+    console.log(state)
 
     const onSubmit = async ({login, password}: IFormReceivedData) => {
 
@@ -70,7 +71,9 @@ const AuthForm: FC<AuthFormProps> = () => {
                     : null
             }
             {
-                state?.error?.status === 401 && <p className={styles.authForm__unvalidMessage}>Вы не авторизованы</p>
+                (state?.error?.status === 401) ? <p className={styles.authForm__unvalidMessage}>Вы не авторизованы</p>
+                    : (state?.error?.originalStatus === 404) ? <p className={styles.authForm__unvalidMessage}>Страница не найдена</p>
+                    : null
             }
 
             <button type={'submit'} className={styles.authForm__btnSubmit}>Продолжить</button>
