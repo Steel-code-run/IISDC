@@ -249,6 +249,7 @@ const PagePost = () => {
                             className={styles.pagePost__field + highLightField(isEdit) + ' ' + styles.pagePost__fullText}
                             contentEditable={isEdit}
                             suppressContentEditableWarning={true}
+                            data-text={'Описание: '}
                             onInput={(e) => {
                                 const target = e.target as HTMLElement;
                                 setUpdateData({
@@ -277,7 +278,7 @@ const PagePost = () => {
                                 <div
                                     className={styles.pagePost__timeParsing}>{'Время парсинга: ' + convertDate(data.timeOfParse)}</div>
                                 {
-                                    data.sourceLin &&
+                                    data.sourceLink &&
                                     <a href={data.sourceLink} rel="noopener noreferrer" target="_blank"
                                        className={styles.pagePost__timeParsing}>Source link</a>
                                 }
@@ -295,8 +296,7 @@ const PagePost = () => {
                                                         await deletePost({token, id: data.id});
                                                         navigate(-1);
                                                     }
-                                                }}
-                                                        className={styles.pagePost__delete + ' ' + styles.pagePost__btn}>Удалить
+                                                }} className={styles.pagePost__delete + ' ' + styles.pagePost__btn}>Удалить
                                                 </button>
                                                 <button onClick={async () => {
                                                     setIsEdit(false);
@@ -304,8 +304,7 @@ const PagePost = () => {
                                                         updateData,
                                                         token: window.localStorage.getItem('token')
                                                     });
-                                                }}
-                                                        className={styles.pagePost__save + ' ' + styles.pagePost__btn}>Сохранить
+                                                }} className={styles.pagePost__save + ' ' + styles.pagePost__btn}>Сохранить
                                                 </button>
                                             </>
                                         }

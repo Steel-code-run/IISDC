@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './PageGrants.module.scss';
-import {useGetCountGrantsQuery, useGetDirectionsQuery, useGetGrantsQuery} from "../../api/grants.api";
+import {useGetCountGrantsQuery, useGetGrantsQuery} from "../../api/grants.api";
 import CardPost from "../../components/CardPost/CardPost";
 import Header from "../../components/Header/Header";
 import {TGrant, TPostType} from "@iisdc/types";
@@ -10,6 +10,7 @@ import '../../styles/spinner-loader.scss';
 import {useNavigate} from "react-router-dom";
 import {Dna} from "react-loader-spinner";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
+import {useGetDirectionsQuery} from "../../api/auxiliaryRequests.api";
 
 export interface PageGrantsProps {
 }

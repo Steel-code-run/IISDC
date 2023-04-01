@@ -9,7 +9,7 @@ import Search from "../../components/UI/Search/Search";
 import '../../styles/spinner-loader.scss';
 import {useNavigate} from "react-router-dom";
 import {Dna} from "react-loader-spinner";
-import {useGetDirectionsQuery} from "../../api/grants.api";
+import {useGetDirectionsQuery} from "../../api/auxiliaryRequests.api";
 
 export interface PageInternshipsProps {
 }

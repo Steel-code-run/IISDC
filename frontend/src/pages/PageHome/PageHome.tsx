@@ -3,7 +3,7 @@ import styles from './PageHome.module.scss';
 import Header from "../../components/Header/Header";
 import {ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip,} from 'chart.js';
 import {Pie,} from 'react-chartjs-2';
-import {useGetBeautifulStatsQuery} from "../../api/grants.api";
+import {useGetBeautifulStatsQuery} from "../../api/auxiliaryRequests.api";
 
 
 export interface PageHomeProps {

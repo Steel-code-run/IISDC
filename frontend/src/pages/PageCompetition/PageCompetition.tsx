@@ -10,7 +10,7 @@ import {useGetCompetitionsQuery, useGetCountСompetitionsQuery,} from "../../api
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import CardPost from "../../components/CardPost/CardPost";
 import {useNavigate} from "react-router-dom";
-import {useGetDirectionsQuery} from "../../api/grants.api";
+import {useGetDirectionsQuery} from "../../api/auxiliaryRequests.api";
 
 export interface PageCompetitionsProps {
 }

@@ -158,15 +158,33 @@ $textBtns: #fff;
 
 	&__delete {
 		background: #BA2E36;
+		&:hover {
+			background: #9E262C;
+		}
+		&:active {
+			background: #892329 !important;
+		}
 	}
 
 	&__edit {
 		background: #FF963C;
+		&:hover {
+			background: #CC7830;
+		}
+		&:active {
+			background: #8F4200 !important;
+		}
 
 	}
 
 	&__save {
 		background: #00BA95;
+		&:hover {
+			background: #008E72;
+		}
+		&:active {
+			background: #006551 !important;
+		}
 	}
 
 	&__fullText {

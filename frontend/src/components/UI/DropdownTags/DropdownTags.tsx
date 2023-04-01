@@ -1,13 +1,13 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './DropdownTags.module.scss';
 import Tag from "../Tag/Tag";
-import {useGetDirectionsQuery} from "../../../api/grants.api";
 import {
     IUpdateDataCompetition,
     IUpdateDataGrant,
     IUpdateDataInternship,
     IUpdateDataVacancy
 } from "../../../types/types";
+import {useGetDirectionsQuery} from "../../../api/auxiliaryRequests.api";
 
 export interface IDropdownTagsProps {
     direction: string[] | string,

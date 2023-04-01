@@ -97,36 +97,12 @@ export const grantsApi = createApi({
             invalidatesTags: [{type: 'Grants', id: 'LIST'}]
         }),
 
-        getDirections: builder.query<any, any>({
-            query: ({token}) => (
-                {
-                    url:'v2/directions/get',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    method: 'GET'
-                }
-            )
-        }),
-
-        getBeautifulStats : builder.query<any, any>({
-            query: ({token}) => ({
-                url: 'stats/getBeautifulStats',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-                method: 'POST'
-            })
-        })
-
     })
 });
 
 export const {
     useUpdatePostGrantMutation,
     useDeletePostGrantMutation,
-    useGetDirectionsQuery,
-    useGetBeautifulStatsQuery,
     useGetGrantsQuery,
     useGetCountGrantsQuery,
 } = grantsApi;
