@@ -70,7 +70,7 @@ const PageInternships: FC<PageInternshipsProps> = () => {
                     error
                 }
             })
-            : navigate('/Internships')
+            : navigate('/internships')
     }, [isLoading])
 
     if (!directions?.data || isLoading) return <Dna visible={true}

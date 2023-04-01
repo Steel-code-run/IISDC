@@ -71,10 +71,17 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
 
 
     React.useEffect(() => {
-        (data.message === 'unauthorized')
-            ? navigate('/')
+        window.addEventListener('resize', () => checkSizeWindow())
+        checkSizeWindow();
+        (error)
+            ? navigate('/', {
+                state: {
+                    error
+                }
+            })
             : navigate('/competitions')
-    }, [])
+    }, [isLoading])
+
     if (!directions?.data || isLoading) return <Dna visible={true}
                                                     height="250"
                                                     width="250"
