@@ -88,7 +88,7 @@ const PagePost = () => {
                                            dateCreationPost: target.textContent
                                        })
                                    }}
-                                >{updateData.dateCreationPost}</p></div>}
+                                >{data.dateCreationPost}</p></div>}
                             {
                                 (isUpdateDataGrant(postType, updateData)
                                     || isUpdateDataCompetition(postType, updateData)) &&
@@ -103,7 +103,7 @@ const PagePost = () => {
                                                deadline: target.textContent
                                            })
                                        }}
-                                    >{updateData.deadline}</p></div>
+                                    >{data.deadline}</p></div>
                             }
                         </div>
 
@@ -124,7 +124,7 @@ const PagePost = () => {
                                             summary: target.textContent
                                         })
                                     }}
-                                >{updateData.summary}</div>
+                                >{data.summary}</div>
                             }
 
                             <DropdownTags direction={data.direction}
@@ -147,7 +147,7 @@ const PagePost = () => {
                                             organization: target.textContent
                                         })
                                     }}
-                                >{updateData.organization}</div>
+                                >{data.organization}</div>
                             }
                             {
                                 (isEdit || data.directionForSpent) &&
@@ -184,7 +184,7 @@ const PagePost = () => {
                                             organization: target.textContent
                                         })
                                     }}
-                                >{updateData.organization}</div>
+                                >{data.organization}</div>
                             }
                         </>
                     }
@@ -205,7 +205,7 @@ const PagePost = () => {
                                             salary: target.textContent
                                         })
                                     }}
-                                >{updateData.salary}</div>
+                                >{data.salary}</div>
 
                             }
                             {/*<div className={styles.pagePost__field + highLightField(isEdit)}>{'Возможности: ' + data.responsibilities}</div>*/}
@@ -223,7 +223,7 @@ const PagePost = () => {
                                             requirements: target.textContent
                                         })
                                     }}
-                                >{updateData.requirements}</div>
+                                >{data.requirements}</div>
                             }
                             {
                                 (isEdit || updateData.conditions) &&
@@ -239,7 +239,7 @@ const PagePost = () => {
                                             conditions: target.textContent
                                         })
                                     }}
-                                >{updateData.conditions}</div>
+                                >{data.conditions}</div>
                             }
                         </>
                     }
@@ -257,7 +257,7 @@ const PagePost = () => {
                                     fullText: target.textContent
                                 })
                             }}
-                        >{updateData.fullText}</div>
+                        >{data.fullText}</div>
 
                     }
                     <div className={styles.pagePost__footerRow}>
