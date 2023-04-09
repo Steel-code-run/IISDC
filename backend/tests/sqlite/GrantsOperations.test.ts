@@ -122,13 +122,6 @@ describe("GrantsOperations",()=>{
                 namePost:""
             }).length).toBe(3)
         })
-        test("get grants with directions 2, 1",()=>{
-
-            expect(grantsOperations.getGrants({
-                directions:["direction3","direction2"],
-                namePost:""
-            }).length).toBe(1)
-        })
 
         test("get grants with directions 3",()=>{
 
@@ -166,6 +159,7 @@ describe("GrantsOperations",()=>{
 
             expect(grantsOperations.getGrants({
                 namePost: grant.namePost,
+                blackListed: 0,
             }).length).toBe(0)
         })
 

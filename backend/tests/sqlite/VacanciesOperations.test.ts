@@ -95,6 +95,7 @@ describe("IVacanciesOperations",()=>{
 
             expect(vacanciesOperations.getPosts({
                 namePost: post.namePost,
+                blackListed: 0,
             }).length).toBe(0)
         })
 
@@ -107,6 +108,7 @@ describe("IVacanciesOperations",()=>{
 
             expect(vacanciesOperations.getPosts({
                 namePost: post.namePost,
+                blackListed: 0,
             }).length).toBe(1)
         })
 

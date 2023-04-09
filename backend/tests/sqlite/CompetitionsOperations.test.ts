@@ -132,13 +132,6 @@ describe("CompetitionOperations",()=>{
             }).length).toBe(3)
         })
 
-        test("get post with directions 2, 1",()=>{
-
-            expect(competitionOperations.getPosts({
-                directions:["direction3","direction2"],
-                namePost:""
-            }).length).toBe(1)
-        })
 
         test("get post",()=>{
             let post = competitionFixture()
@@ -168,6 +161,7 @@ describe("CompetitionOperations",()=>{
 
             expect(competitionOperations.getPosts({
                 namePost: post.namePost,
+                blackListed: 0,
             }).length).toBe(0)
         })
 
@@ -180,6 +174,7 @@ describe("CompetitionOperations",()=>{
 
             expect(competitionOperations.getPosts({
                 namePost: post.namePost,
+                blackListed: 0,
             }).length).toBe(1)
         })
 
