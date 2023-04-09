@@ -101,10 +101,11 @@ describe("CompetitionOperations",()=>{
 
             expect(internshipsOperations.getPosts({
                 namePost: post.namePost,
+                blackListed: 0,
             }).length).toBe(0)
         })
 
-        test("BlackList test 1",()=>{
+        test("BlackList test 2",()=>{
 
             if (!post.id)
                 throw new Error("grant id undefined")
@@ -113,6 +114,7 @@ describe("CompetitionOperations",()=>{
 
             expect(internshipsOperations.getPosts({
                 namePost: post.namePost,
+                blackListed: 0,
             }).length).toBe(1)
         })
 

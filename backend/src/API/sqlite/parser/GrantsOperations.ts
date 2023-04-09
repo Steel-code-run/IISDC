@@ -361,11 +361,9 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
         query+= ` GROUP BY ${this.tableName}.id `
 
         query+= ` ORDER BY ${this.tableName}.id DESC `
-
         if (props.directions.length > 0)
-            query+= ` ) 
-            WHERE "count" = ${props.directions.length}
-            `
+            query+= ` )`
+
 
 
         if (props.justCountIt)
@@ -373,6 +371,7 @@ export class GrantsOperations extends DefaultOperation implements IGrantsOperati
 
         query+= ` LIMIT ${props.from}, ${props.limit} `
         try {
+
             if (props.justCountIt)
                 return this.db.prepare(query).all()[0]["COUNT (*)"]
 
