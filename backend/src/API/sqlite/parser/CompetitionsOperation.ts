@@ -341,10 +341,7 @@ export class CompetitionOperations extends DefaultOperation {
         query+= ` ORDER BY ${this.tableName}.id DESC `
 
         if (props.directions.length > 0)
-            query+= ` ) 
-            WHERE "count" = ${props.directions.length}
-            `
-
+            query+= ` ) `
 
         if (props.justCountIt)
             query+=" ) "
