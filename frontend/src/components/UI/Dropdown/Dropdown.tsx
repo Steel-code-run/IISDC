@@ -1,6 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './Dropdown.module.scss';
 import Tag from "../Tag/Tag";
+import classNames from "classnames";
 
 export interface DropdownProps {
 
@@ -55,7 +56,7 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
                 {
                     (!isActive) ?
                         (tags.length > 0)
-                            ? tags.map((dir, ix) => {
+                            ? tags.map((dir) => {
                                 return (
                                     <Tag key={dir.id} nameDirection={dir.directionName} isDelete={true}
                                          cbDeleteTag={deleteTag}/>
@@ -73,10 +74,9 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
 
             <div onClick={() => setIsActive(!isActive)} className={styles.dropdown__openBtn}>
                 <div className={styles.dropdown__openBtn__line}></div>
-                <div className={(isActive)
-                    ? styles.dropdown__openBtn__line + ' ' + styles.dropdown__activeDropdown
-                    : styles.dropdown__openBtn__line}>
-                </div>
+                <div className={classNames(styles.dropdown__openBtn__line, {
+                    [`${styles.dropdown__activeDropdown}`]: isActive
+                })}></div>
             </div>
             {
                 isActive &&
@@ -84,7 +84,7 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
                     <div className={styles.dropdown__dropdown__listTags}>
                         {
                             (tags.length > 0) ?
-                                 tags.map((tag) =>
+                                tags.map((tag) =>
                                     (<Tag key={tag.id}
                                           nameDirection={tag.directionName}
                                           isDelete={true}

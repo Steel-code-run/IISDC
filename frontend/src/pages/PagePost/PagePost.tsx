@@ -15,6 +15,7 @@ import {useMediaQuery} from "react-responsive";
 import {TPostType} from "@iisdc/types";
 import {useUniversalDeleteSwitchHook, useUniversalUpdateSwitchHook,} from "../../store/hooks/universalSwitchHooks";
 import {TTypesUpdateData} from "../../types/types";
+import classNames from "classnames";
 
 interface ILocationState {
     state: {
@@ -66,7 +67,7 @@ const PagePost = () => {
         }
     }, [isVisionBtns])
 
-    const highLightField = (turn: boolean) => (turn) ? ' ' + styles.pagePost__highlightField : '';
+    const highLightField = (turn: boolean) => (turn) ? styles.pagePost__highlightField : '';
 
 
     return (
@@ -74,11 +75,14 @@ const PagePost = () => {
             <Header/>
             <div className={styles.pagePost} data-testid="PagePost">
                 <div className={styles.pagePost__container}>
-                    <div className={styles.pagePost__row + ' ' + styles.pagePost__header}>
-                        <h1 className={styles.pagePost__namePost}>{data.namePost}</h1>
-                        <div className={styles.pagePost__dates}>
+                    <div className={classNames(
+                        styles.pagePost__row,
+                        styles.pagePost__header)}>
+                        <h1 className={classNames(styles.pagePost__namePost)}>{data.namePost}</h1>
+                        <div className={classNames(styles.pagePost__dates)}>
                             {(isEdit || updateData.dateCreationPost) && <div
-                                className={styles.pagePost__dateCreationPost}>{'Дата создания поста \n'}
+                                className={classNames(
+                                    styles.pagePost__dateCreationPost)}>{'Дата создания поста \n'}
                                 <p contentEditable={isEdit}
                                    suppressContentEditableWarning={true}
                                    onInput={(e) => {
@@ -93,7 +97,8 @@ const PagePost = () => {
                                 (isUpdateDataGrant(postType, updateData)
                                     || isUpdateDataCompetition(postType, updateData)) &&
                                 (isEdit || updateData.deadline) && <div
-                                    className={styles.pagePost__deadline}>{'Дата окончания подачи заявок \n'}
+                                    className={classNames(
+                                        styles.pagePost__deadline)}>{'Дата окончания подачи заявок \n'}
                                     <p contentEditable={isEdit}
                                        suppressContentEditableWarning={true}
                                        onInput={(e) => {
@@ -113,7 +118,7 @@ const PagePost = () => {
                         <>
                             {
                                 (isEdit || updateData.summary) && <div
-                                    className={styles.pagePost__field + ' ' + styles.pagePost__summary + highLightField(isEdit)}
+                                    className={classNames(styles.pagePost__field, styles.pagePost__summary, highLightField(isEdit))}
                                     contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     data-text={'Сумма гранта: '}
@@ -136,7 +141,9 @@ const PagePost = () => {
                             {
                                 (isEdit || updateData.organization) &&
                                 <div
-                                    className={styles.pagePost__field + highLightField(isEdit)}
+                                    className={classNames(
+                                        styles.pagePost__field,
+                                        highLightField(isEdit))}
                                     contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     data-text={'Организаторы: '}
@@ -162,7 +169,9 @@ const PagePost = () => {
                                             directionForSpent: target.textContent
                                         })
                                     }}
-                                    className={styles.pagePost__field + highLightField(isEdit)}>
+                                    className={classNames(
+                                        styles.pagePost__field,
+                                        highLightField(isEdit))}>
                                     {data.directionForSpent}</div>
                             }
                         </>
@@ -173,7 +182,9 @@ const PagePost = () => {
                             {
                                 (isEdit || updateData.organization) &&
                                 <div
-                                    className={styles.pagePost__field + highLightField(isEdit)}
+                                    className={classNames(
+                                        styles.pagePost__field,
+                                        highLightField(isEdit))}
                                     contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     data-text={'Организаторы: '}
@@ -189,12 +200,14 @@ const PagePost = () => {
                         </>
                     }
                     {
-                        (isPropsInternship(postType, data)  && isUpdateDataInternship(postType, updateData)) &&
+                        (isPropsInternship(postType, data) && isUpdateDataInternship(postType, updateData)) &&
                         <>
                             {
                                 (isEdit || updateData.salary) &&
                                 <div
-                                    className={styles.pagePost__field + highLightField(isEdit)}
+                                    className={classNames(
+                                        styles.pagePost__field,
+                                        highLightField(isEdit))}
                                     contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     data-text={'Зарплата: '}
@@ -212,7 +225,9 @@ const PagePost = () => {
                             {
                                 (isEdit || updateData.requirements) &&
                                 <div
-                                    className={styles.pagePost__field + highLightField(isEdit)}
+                                    className={classNames(
+                                        styles.pagePost__field,
+                                        highLightField(isEdit))}
                                     contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     data-text={'Требования: '}
@@ -228,7 +243,9 @@ const PagePost = () => {
                             {
                                 (isEdit || updateData.conditions) &&
                                 <div
-                                    className={styles.pagePost__field + highLightField(isEdit)}
+                                    className={classNames(
+                                        styles.pagePost__field,
+                                        highLightField(isEdit))}
                                     contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     data-text={'Условия: '}
@@ -246,7 +263,10 @@ const PagePost = () => {
 
                     {(isEdit || updateData.fullText?.replace(/(\r\n|\n|\r| )/gm, '')) &&
                         <div
-                            className={styles.pagePost__field + highLightField(isEdit) + ' ' + styles.pagePost__fullText}
+                            className={classNames(
+                                styles.pagePost__field,
+                                highLightField(isEdit),
+                                styles.pagePost__fullText)}
                             contentEditable={isEdit}
                             suppressContentEditableWarning={true}
                             data-text={'Описание: '}
@@ -296,7 +316,10 @@ const PagePost = () => {
                                                         await deletePost({token, id: data.id});
                                                         navigate(-1);
                                                     }
-                                                }} className={styles.pagePost__delete + ' ' + styles.pagePost__btn}>Удалить
+                                                }}
+                                                        className={classNames(
+                                                            styles.pagePost__delete,
+                                                            styles.pagePost__btn)}>Удалить
                                                 </button>
                                                 <button onClick={async () => {
                                                     setIsEdit(false);
@@ -304,7 +327,10 @@ const PagePost = () => {
                                                         updateData,
                                                         token: window.localStorage.getItem('token')
                                                     });
-                                                }} className={styles.pagePost__save + ' ' + styles.pagePost__btn}>Сохранить
+                                                }}
+                                                        className={classNames(
+                                                            styles.pagePost__save,
+                                                            styles.pagePost__btn)}>Сохранить
                                                 </button>
                                             </>
                                         }
@@ -313,7 +339,9 @@ const PagePost = () => {
                                     <>
                                         {isVisionBtns
                                             && <button onClick={() => setIsEdit(!isEdit)}
-                                                       className={styles.pagePost__edit + ' ' + styles.pagePost__btn}>Редактировать</button>}
+                                                       className={classNames(
+                                                           styles.pagePost__edit,
+                                                           styles.pagePost__btn)}>Редактировать</button>}
                                     </>
                             }
                         </div>

@@ -69,7 +69,10 @@ const definePostDescription = (postType, jsdom, querySelectors, link, url) => {
                     direction: [],
                     fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
                     linkPDF: getLinksPDF(jsdom, querySelectors?.linkPDF, url),
+                    organization: '',
                     link,
+
+
                 },
             };
         case 'vacancy':
@@ -169,6 +172,7 @@ const defineTypeDescriptionTelegram = (postType, post, link) => {
                     organization: getOrganization(post),
                     direction: getDirection(post),
                     directionForSpent: "",
+                    linkPDF: '',
                     link,
                 },
             };
@@ -181,8 +185,9 @@ const defineTypeDescriptionTelegram = (postType, post, link) => {
                     deadline: getDeadline(post),
                     direction: getDirection(post),
                     fullText: post.text,
-                    link,
                     organization: getOrganization(post),
+                    linkPDF: '',
+                    link,
 
                 },
             };

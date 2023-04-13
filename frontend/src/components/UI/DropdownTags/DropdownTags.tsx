@@ -8,12 +8,13 @@ import {
     IUpdateDataVacancy
 } from "../../../types/types";
 import {useGetDirectionsQuery} from "../../../api/auxiliaryRequests.api";
+import classNames from "classnames";
 
 export interface IDropdownTagsProps {
     direction: string[] | string,
     isActiveDropdown: boolean,
     isHighlight: boolean,
-    setUpdateData:  React.Dispatch<React.SetStateAction<IUpdateDataGrant | IUpdateDataVacancy | IUpdateDataInternship | IUpdateDataCompetition>>,
+    setUpdateData: React.Dispatch<React.SetStateAction<IUpdateDataGrant | IUpdateDataVacancy | IUpdateDataInternship | IUpdateDataCompetition>>,
     updateData: IUpdateDataGrant
 }
 
@@ -22,22 +23,26 @@ interface IDirectionsResponse {
     directionName: string
 }
 
-const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown, isHighlight, setUpdateData, updateData}) => {
+const DropdownTags: FC<IDropdownTagsProps> = ({
+                                                  direction,
+                                                  isActiveDropdown,
+                                                  isHighlight,
+                                                  setUpdateData,
+                                                  updateData
+                                              }) => {
     const [isActive, setIsActive] = useState(false);
     const [tags, setTags] = useState<string[] | string>(direction);
     const [directions, setDirections] = useState<IDirectionsResponse[]>([])
     const [search, setSearch] = useState('')
 
     const deleteTag = (deletedTag: string) => {
-        if (Array.isArray(tags)){
+        if (Array.isArray(tags)) {
             setTags(tags.filter(tag => tag !== deletedTag));
             setUpdateData({
                 ...updateData,
                 direction: tags.filter(tag => tag !== deletedTag)
             })
-        }
-
-        else {
+        } else {
             setTags('')
             setUpdateData({
                 ...updateData,
@@ -56,8 +61,7 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown, isHi
                 direction: [...tags, addedTag]
             })
 
-        }
-        else {
+        } else {
             setTags(addedTag)
             setUpdateData({
                 ...updateData,
@@ -76,11 +80,11 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown, isHi
     const highLightField = (turn: boolean) => (turn) ? ' ' + styles.dropdownTags__highlightField : '';
 
     return (
-        <div className={(isActive && isActiveDropdown)
-            ? styles.dropdownTags + ' ' + styles.dropdownTags__activeDropdownBorders + highLightField(isHighlight)
-            : (!isActive && isActiveDropdown)
-                ? styles.dropdownTags + highLightField(isHighlight)
-                : styles.dropdownTags} data-testid="DropdownTags">
+        <div className={classNames(
+            styles.dropdownTags, {
+            [highLightField(isHighlight)]: isActiveDropdown && isActive,
+            [styles.dropdownTags__activeDropdownBorders]: !isActive && isActiveDropdown
+        })} data-testid="DropdownTags">
             <div className={styles.dropdownTags__direction}>
                 {
                     (!isActive || !isActiveDropdown) ?
@@ -103,9 +107,10 @@ const DropdownTags: FC<IDropdownTagsProps> = ({direction, isActiveDropdown, isHi
                 isActiveDropdown &&
                 <div onClick={() => setIsActive(!isActive)} className={styles.dropdownTags__openBtn}>
                     <div className={styles.dropdownTags__openBtn__line}></div>
-                    <div className={(isActive)
-                        ? styles.dropdownTags__openBtn__line + ' ' + styles.dropdownTags__activeDropdown
-                        : styles.dropdownTags__openBtn__line}>
+                    <div className={classNames(
+                        styles.dropdownTags__openBtn__line, {
+                        [styles.dropdownTags__activeDropdown]: isActive
+                    })}>
                     </div>
                 </div>
             }
