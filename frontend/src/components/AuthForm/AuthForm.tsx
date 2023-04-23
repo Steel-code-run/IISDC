@@ -22,7 +22,6 @@ const AuthForm: FC<AuthFormProps> = () => {
 
     const navigate = useNavigate()
     const {state} = useLocation();
-    console.log(state)
 
     const onSubmit = async ({login, password}: IFormReceivedData) => {
 
