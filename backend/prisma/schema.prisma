@@ -43,7 +43,8 @@ model User_telegram {
   id       Int    @id @default(autoincrement())
   user_id  Int
   user     User   @relation(fields: [user_id], references: [id])
-  username String
+  settings User_telegram_settings[]
+  telegram_id String
   key      String
 }
 
@@ -54,4 +55,12 @@ model User_acessing {
   ip      String
   date    String
   path    String
+}
+
+model User_telegram_settings {
+  id       Int    @id @default(autoincrement())
+  User_telegram  Int
+  user     User_telegram   @relation(fields: [User_telegram], references: [id])
+  workTime DateTime
+  directions String
 }
