@@ -8,3 +8,4 @@
 /**/*.db
 *.local
 ./release.tar.gz
+.env
