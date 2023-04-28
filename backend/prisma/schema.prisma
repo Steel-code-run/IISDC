@@ -18,7 +18,7 @@ model Grant {
   dateCreationPost  String
   direction         String
   organization      String
-  deadline          String
+  deadline          DateTime
   summary           String
   directionForSpent String
   fullText          String @db.LongText()
@@ -31,13 +31,12 @@ model Grant {
 
 model User {
   id            Int             @id @default(autoincrement())
-  name          String
+  name          String          @unique
   email         String
   password      String
-  role          String
-  telegramSettings    String
-  blocked       Int
-  User_acessing User_acessing[]
+  role          User_roles_constant
+  blocked       Boolean         @default(false)
+  User_acessing User_ations[]
   User_telegram User_telegram[]
 }
 
@@ -50,13 +49,13 @@ model User_telegram {
   key      String
 }
 
-model User_acessing {
+model User_ations {
   id      Int  @id @default(autoincrement())
   user_id Int
   user    User @relation(fields: [user_id], references: [id])
   ip      String
   date    String
-  path    String
+  action  User_actions_constant
 }
 
 model User_telegram_settings {
@@ -65,4 +64,32 @@ model User_telegram_settings {
   user     User_telegram   @relation(fields: [User_telegram], references: [id])
   workTime DateTime
   directions String
+}
+
+enum User_actions_constant {
+  LOGIN
+  LOGOUT
+  REGISTER
+  CHANGE_PASSWORD
+  CHANGE_EMAIL
+  CHANGE_ROLE
+  BLOCK
+  UNBLOCK
+}
+
+enum User_roles_constant {
+  ADMIN
+  WORKER
+  USER
+}
+
+enum grant_directions {
+  SCIENCE
+  EDUCATION
+  CULTURE
+  SOCIAL
+  SPORT
+  MEDICINE
+  ECOLOGY
+  OTHER
 }

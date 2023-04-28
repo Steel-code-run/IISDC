@@ -5,27 +5,15 @@ const grantsRouter = Router();
 
 grantsRouter.get('/v1/grants', async (req, res) => {
 
+    return res.json(await prisma.user.findMany({
+        where:{
+            id:{
 
-    const grant = await prisma.grant.create({
-        data: {
-            namePost: 'namePost',
-            dateCreationPost: 'dateCreationPost',
-            direction: 'direction',
-            organization: 'organization',
-            deadline: 'deadline',
-            summary: 'summary',
-            directionForSpent: 'directionForSpent',
-            fullText: 'fullText',
-            link: 'link',
-            linkPDF: 'linkPDF',
-            timeOfParse: new Date(),
-            sourceLink: 'sourceLink'
+            }
         }
-    })
+    }))
 
-
-    console.log(grant);
-    return res.json(grant)
+    return res.json("is Alive")
 })
 
 export default grantsRouter;
