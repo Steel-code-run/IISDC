@@ -1,32 +1,31 @@
-import {DefaultOperation, IDefaultOperations} from "../DefaultOperations";
+//@ts-ignore
+import {DefaultOperation} from "../DefaultOperations";
 import {Database} from "better-sqlite3";
+import {createTableGrantsQuery} from "../configurateDataBase/createGrantTable";
 import {consoleLog} from "../../../utils/consoleLog";
-import {createCompetitionsTable} from "../configurateDataBase/createCompetitionsTable";
+import {createInternshipsTable} from "../configurateDataBase/createInternshipsTable";
 import {directionsConstTableName, directionsTableName} from "../config";
 import {shieldIt} from "@iisdc/utils";
-import {TCompetition} from "@iisdc/types";
-import {IDirectionsOperations} from "../DirectionsOperations";
+import {TInternship, TVacancy} from "@iisdc/types";
+import {createVacanciesTable} from "../configurateDataBase/createVacanciesTable";
 
-export interface ICompetitionOperations extends CompetitionOperations{
+export interface IVacanciesOperations extends VacanciesOperations{}
 
-}
+export class VacanciesOperations extends DefaultOperation{
 
-export class CompetitionOperations extends DefaultOperation {
-
-    private directionsOperations: IDirectionsOperations;
-    constructor(db:Database,tableName:string, directionsOperations: IDirectionsOperations) {
+    constructor(db:Database,tableName:string) {
         super(db,tableName);
         this.createTable()
-        this.directionsOperations = directionsOperations
     }
 
     createTable(){
-        let query = createCompetitionsTable;
+        let query = createVacanciesTable;
         try {
+
             return this.db.prepare(query).run()
         } catch (e) {
             consoleLog(`
-            Ошибка в GrantOperations, createTable\n
+            Ошибка в VacanciesOperations, createTable\n
             query ->\n
             ${query}\n
             ${e}
@@ -35,23 +34,25 @@ export class CompetitionOperations extends DefaultOperation {
         }
     }
 
-    insert(post:TCompetition): number {
+    insert(post:TVacancy): number {
         const query = `
         INSERT INTO ${this.tableName}
         (
         namePost,
         dateCreationPost,
         organization,
-        deadline,
         fullText,
         link,
-        linkPDF,
         timeOfParse,
         sourceLink,
+        salary,
+        responsibilities,
+        requirements,
+        conditions,
         namePost_lowerCase
         )
         VALUES
-        (?,?,?,?,?,?,?,?,?,?);
+        (?,?,?,?,?,?,?,?,?,?,?,?);
         `
 
         try {
@@ -60,29 +61,22 @@ export class CompetitionOperations extends DefaultOperation {
                 post.namePost,
                 post.dateCreationPost || '',
                 post.organization || '',
-                post.deadline || '',
                 post.fullText || '',
                 post.link || '',
-                post.linkPDF || '',
                 post.timeOfParse || '',
                 post.sourceLink || '',
+                post.salary || '',
+                post.responsibilities || '',
+                post.requirements || '',
+                post.conditions || '',
                 post.namePost.toLowerCase()
             ).lastInsertRowid)
 
-            if (Array.isArray(post.direction)){
-                post.direction.forEach(direction=>{
-                    this.directionsOperations.insertDirection({
-                        direction: direction,
-                        parentID: postId,
-                        tableNamePost: this.tableName
-                    })
-                })
-            }
 
             return postId
         } catch (e) {
             consoleLog(`
-            Ошибка в CompetitionOperations, insertGrant ${JSON.stringify(post,null,2)} \n
+            Ошибка в VacanciesOperations, insertGrant ${JSON.stringify(post,null,2)} \n
             query ->\n
             ${query}\n
             ${e}            
@@ -91,46 +85,38 @@ export class CompetitionOperations extends DefaultOperation {
         }
     }
 
-    update(post:TCompetition):void{
+    update(post:TInternship):void{
         const query = `
         UPDATE ${this.tableName} SET
+        requirements = ?,
+        responsibilities = ?,
+        conditions = ?,
+        salary = ?,
+        fullText = ?,
         dateCreationPost = ?,
         organization = ?,
-        deadline = ?,
-        fullText = ?,
-        link = ?,
-        linkPDF = ?
+        link = ?
+        
         WHERE id = ${post.id}
         `
 
         try {
 
             this.db.prepare(query).run(
+                post.requirements,
+                post.responsibilities,
+                post.conditions,
+                post.salary,
+                post.fullText,
                 post.dateCreationPost,
                 post.organization,
-                post.deadline,
-                post.fullText,
-                post.link,
-                post.linkPDF,
+                post.link
             )
 
-            if (post.id === undefined)
-                throw new Error("post.id undefined")
-            this.directionsOperations.deleteDirections(post.id, this.tableName)
-
-            if (Array.isArray(post.direction)){
-                post.direction.forEach(direction=>{
-                    this.directionsOperations.insertDirection({
-                        direction: direction,
-                        parentID: post.id!,
-                        tableNamePost: this.tableName
-                    })
-                })
-            }
 
         } catch (e) {
             consoleLog(`
-            Ошибка в CompetitionOperations, insertGrant ${JSON.stringify(post,null,2)} \n
+            Ошибка в VacanciesOperations, insertGrant ${JSON.stringify(post,null,2)} \n
             query ->\n
             ${query}\n
             ${e}            
@@ -139,34 +125,36 @@ export class CompetitionOperations extends DefaultOperation {
         }
     }
 
-    get(id: number): TCompetition | undefined{
+    get(id: number): TInternship | undefined{
         const query = `
         SELECT 
         id,
+        requirements,
+        responsibilities,
+        conditions,
+        salary,
+        fullText,
         namePost,
         dateCreationPost,
         organization,
-        deadline,
-        fullText,
         link,
-        linkPDF,
         timeOfParse,
-        blackListed,
         sourceLink,
+        blackListed,
         namePost_lowerCase
         FROM ${this.tableName}
         WHERE
         id = ?;
         `
         try {
-            let grant = this.db.prepare(query).get(id);
-            if (!grant)
+            let post = this.db.prepare(query).get(id);
+            if (!post)
                 return undefined
-            grant.direction = this.getPostDirectionsByGrantId(grant.id)
-            return grant
+
+            return post
         } catch (e) {
             consoleLog(`
-            Ошибка в CompetitionOperations, getGrant id = ${id} \n
+            Ошибка в VacanciesOperations, getGrant id = ${id} \n
             query ->\n
             ${query}\n
             ${e}            
@@ -175,30 +163,6 @@ export class CompetitionOperations extends DefaultOperation {
         }
     }
 
-    getPostDirectionsByGrantId(id:number):string[]{
-        let query = `
-            SELECT 
-            ${directionsConstTableName}.directionName,
-            ${this.tableName}.id
-            FROM ${directionsConstTableName}, ${directionsTableName}, ${this.tableName}
-            WHERE 
-            (${directionsTableName}.${this.tableName}_id = ${this.tableName}.id) AND
-            (${directionsConstTableName}.id = ${directionsTableName}.${directionsConstTableName}_id) AND
-            (${this.tableName}.id = ${id})
-        `
-        try {
-            return this.db.prepare(query).all().map(el=>el.directionName)
-        } catch (e) {
-            consoleLog(`
-            Ошибка в CompetitionOperations, getPostDirectionsByGrantId id = ${id} \n
-            query ->\n
-            ${query}\n
-            ${e}
-            `);
-            throw new Error(e);
-        }
-
-    }
 
     setPostToBlackList(id:number){
         const query  = `
@@ -210,7 +174,7 @@ export class CompetitionOperations extends DefaultOperation {
             this.db.prepare(query).run();
         } catch (e) {
             consoleLog(`
-            Ошибка в CompetitionOperations, setPostToBlackList id = ${id} \n
+            Ошибка в VacanciesOperations, setPostToBlackList id = ${id} \n
             query ->\n
             ${query}\n
             ${e}
@@ -229,7 +193,7 @@ export class CompetitionOperations extends DefaultOperation {
             this.db.prepare(query).run();
         } catch (e) {
             consoleLog(`
-            Ошибка в CompetitionOperations, removeFromBlackList id = ${id} \n
+            Ошибка в VacanciesOperations, removeFromBlackList id = ${id} \n
             query ->\n
             ${query}\n
             ${e}
@@ -240,19 +204,14 @@ export class CompetitionOperations extends DefaultOperation {
 
     getPosts(props:{
         namePost?: string,
-        directions?: string[],
         blackListed?: number,
         limit?:number,
         from?:number,
         justCountIt?:boolean
-    }={}):TCompetition[]{
+    }={}):TInternship[]{
         if (props.namePost === undefined)
             props.namePost = ''
 
-
-
-        if (props.directions === undefined)
-            props.directions = []
 
         if (props.limit === undefined)
             props.limit = 10
@@ -270,22 +229,11 @@ export class CompetitionOperations extends DefaultOperation {
             FROM
             (
             `
-
-        if (props.directions.length > 0)
-            query+= `
-            SELECT
-            *
-            FROM (
-            `
-
         query += `
         SELECT 
-        ${this.tableName}.id,
-        directions_const.directionName,
-        count(*) as count
-        FROM ${this.tableName}, ${directionsTableName}, ${directionsConstTableName}
+        ${this.tableName}.id
+        FROM ${this.tableName} 
         `
-
         if (typeof props.blackListed === "number") {
             if (!whereInQuery){
                 whereInQuery = true
@@ -296,34 +244,6 @@ export class CompetitionOperations extends DefaultOperation {
 
             query+= ` (${this.tableName}.blackListed = ${props.blackListed}) `
         }
-        if (props.directions.length > 0){
-            if (!whereInQuery){
-                whereInQuery = true
-                query+=" WHERE "
-            }
-            else
-                query+= " AND "
-
-
-            // query+=`
-            // (${directionsConstTableName}.directionName = '') AND
-            // (${directionsTableName}.${this.tableName}_id = ${this.tableName}.id) AND
-            // (${directionsTableName}.${directionsConstTableName}_id = ${directionsConstTableName}.id)
-            // `
-
-            query+="("
-            props.directions.forEach(el=>{
-                query+= ` (${directionsConstTableName}.directionName = '${el}') OR `
-            })
-            query=query.slice(0,-3)
-            query+=" ) AND"
-
-            query+=`
-            (${directionsTableName}.${this.tableName}_id = ${this.tableName}.id) AND
-            (${directionsTableName}.${directionsConstTableName}_id = ${directionsConstTableName}.id)
-            `
-        }
-
 
         if (props.namePost.length>0) {
             if (!whereInQuery){
@@ -340,13 +260,11 @@ export class CompetitionOperations extends DefaultOperation {
 
         query+= ` ORDER BY ${this.tableName}.id DESC `
 
-        if (props.directions.length > 0)
-            query+= ` ) `
+        query+= ` LIMIT ${props.from}, ${props.limit} `
+
 
         if (props.justCountIt)
             query+=" ) "
-
-        query+= ` LIMIT ${props.from}, ${props.limit} `
 
         try {
             if (props.justCountIt)
@@ -359,7 +277,7 @@ export class CompetitionOperations extends DefaultOperation {
             return grants
         } catch (e) {
             consoleLog(`
-            Ошибка в GrantOperations, getGrants ${JSON.stringify(props)}, ${query}\n
+            Ошибка в VacanciesOperations, getPosts ${JSON.stringify(props)}, ${query}\n
             query ->\n
             ${query}\n
             ${e}
@@ -377,7 +295,7 @@ export class CompetitionOperations extends DefaultOperation {
             this.db.prepare(query).run()
         } catch (e) {
             consoleLog(`
-            Ошибка в CompetitionOperations, deletePost ${id}, ${query}\n
+            Ошибка в VacanciesOperations, deletePost ${id}, ${query}\n
             query ->\n
             ${query}\n
             ${e}
@@ -385,5 +303,4 @@ export class CompetitionOperations extends DefaultOperation {
             throw new Error(e);
         }
     }
-
 }

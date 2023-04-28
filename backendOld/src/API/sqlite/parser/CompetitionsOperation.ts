@@ -1,28 +1,34 @@
-import {DefaultOperation} from "../DefaultOperations";
+//@ts-ignore
+import {DefaultOperation, IDefaultOperations} from "../DefaultOperations";
 import {Database} from "better-sqlite3";
-import {createTableGrantsQuery} from "../configurateDataBase/createGrantTable";
 import {consoleLog} from "../../../utils/consoleLog";
-import {createInternshipsTable} from "../configurateDataBase/createInternshipsTable";
+import {createCompetitionsTable} from "../configurateDataBase/createCompetitionsTable";
 import {directionsConstTableName, directionsTableName} from "../config";
 import {shieldIt} from "@iisdc/utils";
-import {TInternship} from "@iisdc/types";
+import {TCompetition} from "@iisdc/types";
+import {IDirectionsOperations} from "../DirectionsOperations";
+//@ts-ignore
 
-export interface IInternshipOperations extends InternshipOperations{}
+export interface ICompetitionOperations extends CompetitionOperations{
 
-export class InternshipOperations extends DefaultOperation{
+}
 
-    constructor(db:Database,tableName:string) {
+export class CompetitionOperations extends DefaultOperation {
+
+    private directionsOperations: IDirectionsOperations;
+    constructor(db:Database,tableName:string, directionsOperations: IDirectionsOperations) {
         super(db,tableName);
         this.createTable()
+        this.directionsOperations = directionsOperations
     }
 
     createTable(){
-        let query = createInternshipsTable;
+        let query = createCompetitionsTable;
         try {
             return this.db.prepare(query).run()
         } catch (e) {
             consoleLog(`
-            Ошибка в InternshipOperations, createTable\n
+            Ошибка в GrantOperations, createTable\n
             query ->\n
             ${query}\n
             ${e}
@@ -31,25 +37,23 @@ export class InternshipOperations extends DefaultOperation{
         }
     }
 
-    insert(post:TInternship): number {
+    insert(post:TCompetition): number {
         const query = `
         INSERT INTO ${this.tableName}
         (
         namePost,
         dateCreationPost,
         organization,
+        deadline,
         fullText,
         link,
+        linkPDF,
         timeOfParse,
         sourceLink,
-        salary,
-        responsibilities,
-        requirements,
-        conditions,
         namePost_lowerCase
         )
         VALUES
-        (?,?,?,?,?,?,?,?,?,?,?,?);
+        (?,?,?,?,?,?,?,?,?,?);
         `
 
         try {
@@ -58,22 +62,29 @@ export class InternshipOperations extends DefaultOperation{
                 post.namePost,
                 post.dateCreationPost || '',
                 post.organization || '',
+                post.deadline || '',
                 post.fullText || '',
                 post.link || '',
+                post.linkPDF || '',
                 post.timeOfParse || '',
                 post.sourceLink || '',
-                post.salary || '',
-                post.responsibilities || '',
-                post.requirements || '',
-                post.conditions || '',
                 post.namePost.toLowerCase()
             ).lastInsertRowid)
 
+            if (Array.isArray(post.direction)){
+                post.direction.forEach(direction=>{
+                    this.directionsOperations.insertDirection({
+                        direction: direction,
+                        parentID: postId,
+                        tableNamePost: this.tableName
+                    })
+                })
+            }
 
             return postId
         } catch (e) {
             consoleLog(`
-            Ошибка в InternshipOperations, insertGrant ${JSON.stringify(post,null,2)} \n
+            Ошибка в CompetitionOperations, insertGrant ${JSON.stringify(post,null,2)} \n
             query ->\n
             ${query}\n
             ${e}            
@@ -82,38 +93,46 @@ export class InternshipOperations extends DefaultOperation{
         }
     }
 
-    update(post:TInternship):void{
+    update(post:TCompetition):void{
         const query = `
         UPDATE ${this.tableName} SET
-        requirements = ?,
-        responsibilities = ?,
-        conditions = ?,
-        salary = ?,
-        fullText = ?,
         dateCreationPost = ?,
         organization = ?,
-        link = ?
-        
+        deadline = ?,
+        fullText = ?,
+        link = ?,
+        linkPDF = ?
         WHERE id = ${post.id}
         `
 
         try {
 
             this.db.prepare(query).run(
-                post.requirements,
-                post.responsibilities,
-                post.conditions,
-                post.salary,
-                post.fullText,
                 post.dateCreationPost,
                 post.organization,
-                post.link
+                post.deadline,
+                post.fullText,
+                post.link,
+                post.linkPDF,
             )
 
+            if (post.id === undefined)
+                throw new Error("post.id undefined")
+            this.directionsOperations.deleteDirections(post.id, this.tableName)
+
+            if (Array.isArray(post.direction)){
+                post.direction.forEach(direction=>{
+                    this.directionsOperations.insertDirection({
+                        direction: direction,
+                        parentID: post.id!,
+                        tableNamePost: this.tableName
+                    })
+                })
+            }
 
         } catch (e) {
             consoleLog(`
-            Ошибка в InternshipOperations, insertGrant ${JSON.stringify(post,null,2)} \n
+            Ошибка в CompetitionOperations, insertGrant ${JSON.stringify(post,null,2)} \n
             query ->\n
             ${query}\n
             ${e}            
@@ -122,36 +141,34 @@ export class InternshipOperations extends DefaultOperation{
         }
     }
 
-    get(id: number): TInternship | undefined{
+    get(id: number): TCompetition | undefined{
         const query = `
         SELECT 
         id,
-        requirements,
-        responsibilities,
-        conditions,
-        salary,
-        fullText,
         namePost,
         dateCreationPost,
         organization,
+        deadline,
+        fullText,
         link,
+        linkPDF,
         timeOfParse,
-        sourceLink,
         blackListed,
+        sourceLink,
         namePost_lowerCase
         FROM ${this.tableName}
         WHERE
         id = ?;
         `
         try {
-            let post = this.db.prepare(query).get(id);
-            if (!post)
+            let grant = this.db.prepare(query).get(id);
+            if (!grant)
                 return undefined
-
-            return post
+            grant.direction = this.getPostDirectionsByGrantId(grant.id)
+            return grant
         } catch (e) {
             consoleLog(`
-            Ошибка в InternshipOperations, getGrant id = ${id} \n
+            Ошибка в CompetitionOperations, getGrant id = ${id} \n
             query ->\n
             ${query}\n
             ${e}            
@@ -160,6 +177,30 @@ export class InternshipOperations extends DefaultOperation{
         }
     }
 
+    getPostDirectionsByGrantId(id:number):string[]{
+        let query = `
+            SELECT 
+            ${directionsConstTableName}.directionName,
+            ${this.tableName}.id
+            FROM ${directionsConstTableName}, ${directionsTableName}, ${this.tableName}
+            WHERE 
+            (${directionsTableName}.${this.tableName}_id = ${this.tableName}.id) AND
+            (${directionsConstTableName}.id = ${directionsTableName}.${directionsConstTableName}_id) AND
+            (${this.tableName}.id = ${id})
+        `
+        try {
+            return this.db.prepare(query).all().map(el=>el.directionName)
+        } catch (e) {
+            consoleLog(`
+            Ошибка в CompetitionOperations, getPostDirectionsByGrantId id = ${id} \n
+            query ->\n
+            ${query}\n
+            ${e}
+            `);
+            throw new Error(e);
+        }
+
+    }
 
     setPostToBlackList(id:number){
         const query  = `
@@ -171,7 +212,7 @@ export class InternshipOperations extends DefaultOperation{
             this.db.prepare(query).run();
         } catch (e) {
             consoleLog(`
-            Ошибка в InternshipOperations, setPostToBlackList id = ${id} \n
+            Ошибка в CompetitionOperations, setPostToBlackList id = ${id} \n
             query ->\n
             ${query}\n
             ${e}
@@ -190,7 +231,7 @@ export class InternshipOperations extends DefaultOperation{
             this.db.prepare(query).run();
         } catch (e) {
             consoleLog(`
-            Ошибка в InternshipOperations, removeFromBlackList id = ${id} \n
+            Ошибка в CompetitionOperations, removeFromBlackList id = ${id} \n
             query ->\n
             ${query}\n
             ${e}
@@ -201,14 +242,19 @@ export class InternshipOperations extends DefaultOperation{
 
     getPosts(props:{
         namePost?: string,
+        directions?: string[],
         blackListed?: number,
         limit?:number,
         from?:number,
         justCountIt?:boolean
-    }={}):TInternship[]{
+    }={}):TCompetition[]{
         if (props.namePost === undefined)
             props.namePost = ''
 
+
+
+        if (props.directions === undefined)
+            props.directions = []
 
         if (props.limit === undefined)
             props.limit = 10
@@ -226,11 +272,22 @@ export class InternshipOperations extends DefaultOperation{
             FROM
             (
             `
+
+        if (props.directions.length > 0)
+            query+= `
+            SELECT
+            *
+            FROM (
+            `
+
         query += `
         SELECT 
-        ${this.tableName}.id
-        FROM ${this.tableName} 
+        ${this.tableName}.id,
+        directions_const.directionName,
+        count(*) as count
+        FROM ${this.tableName}, ${directionsTableName}, ${directionsConstTableName}
         `
+
         if (typeof props.blackListed === "number") {
             if (!whereInQuery){
                 whereInQuery = true
@@ -241,6 +298,34 @@ export class InternshipOperations extends DefaultOperation{
 
             query+= ` (${this.tableName}.blackListed = ${props.blackListed}) `
         }
+        if (props.directions.length > 0){
+            if (!whereInQuery){
+                whereInQuery = true
+                query+=" WHERE "
+            }
+            else
+                query+= " AND "
+
+
+            // query+=`
+            // (${directionsConstTableName}.directionName = '') AND
+            // (${directionsTableName}.${this.tableName}_id = ${this.tableName}.id) AND
+            // (${directionsTableName}.${directionsConstTableName}_id = ${directionsConstTableName}.id)
+            // `
+
+            query+="("
+            props.directions.forEach(el=>{
+                query+= ` (${directionsConstTableName}.directionName = '${el}') OR `
+            })
+            query=query.slice(0,-3)
+            query+=" ) AND"
+
+            query+=`
+            (${directionsTableName}.${this.tableName}_id = ${this.tableName}.id) AND
+            (${directionsTableName}.${directionsConstTableName}_id = ${directionsConstTableName}.id)
+            `
+        }
+
 
         if (props.namePost.length>0) {
             if (!whereInQuery){
@@ -257,11 +342,13 @@ export class InternshipOperations extends DefaultOperation{
 
         query+= ` ORDER BY ${this.tableName}.id DESC `
 
-        query+= ` LIMIT ${props.from}, ${props.limit} `
-
+        if (props.directions.length > 0)
+            query+= ` ) `
 
         if (props.justCountIt)
             query+=" ) "
+
+        query+= ` LIMIT ${props.from}, ${props.limit} `
 
         try {
             if (props.justCountIt)
@@ -274,7 +361,7 @@ export class InternshipOperations extends DefaultOperation{
             return grants
         } catch (e) {
             consoleLog(`
-            Ошибка в InternshipOperations, getPosts ${JSON.stringify(props)}, ${query}\n
+            Ошибка в GrantOperations, getGrants ${JSON.stringify(props)}, ${query}\n
             query ->\n
             ${query}\n
             ${e}
@@ -292,7 +379,7 @@ export class InternshipOperations extends DefaultOperation{
             this.db.prepare(query).run()
         } catch (e) {
             consoleLog(`
-            Ошибка в InternshipOperations, deletePost ${id}, ${query}\n
+            Ошибка в CompetitionOperations, deletePost ${id}, ${query}\n
             query ->\n
             ${query}\n
             ${e}
@@ -300,4 +387,5 @@ export class InternshipOperations extends DefaultOperation{
             throw new Error(e);
         }
     }
+
 }

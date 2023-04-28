@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist",
+		"target": "ESNext",
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"strict": true,
+		"useUnknownInCatchVariables": false,
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": false,
+		"downlevelIteration": true,
+		"baseUrl": ".",
+
+	},
+	"include": ["./src/**/*"],
+	"exclude": ["node_modules", "dist", "src/**/*.js"]
+}

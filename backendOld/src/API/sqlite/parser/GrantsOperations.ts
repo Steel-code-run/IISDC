@@ -1,3 +1,4 @@
+//@ts-ignore
 import {TGrant} from "@iisdc/types";
 import {DefaultOperation, IDefaultOperations} from "../DefaultOperations";
 import {consoleLog} from "../../../utils/consoleLog";

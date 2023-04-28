@@ -1,36 +1,68 @@
+import * as path from "path";
+import {consoleLog} from "../../../utils/consoleLog";
+import {__projectPath} from "../../../utils/projectPath";
+
+//@ts-ignore
+import {TGrant} from "@iisdc/types";
 import {
     createTableIfNotExist,
-    universalAddPost, universalCount,
-    universalCreateTable, universalDeletePost,
-    universalDropTable, universalGetPosts,
+    universalAddPost,
+    universalCount,
+    universalDeletePost,
+    universalDropTable,
+    universalGetPosts,
     universalIsPostExist,
-    universalIsTableExist, universalUpdatePost
+    universalIsTableExist,
+    universalUpdatePost
 } from "../helpers/tableManipulations";
-import path from "path";
-import {__projectPath} from "../../../utils/projectPath";
-import {TInternship} from "@iisdc/types";
-import {consoleLog} from "../../../utils/consoleLog";
-const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','parser.db'));
+import * as fs from "fs";
+import {decoderShieldIt} from "@iisdc/utils";
+
+let dbPath = path.join(__projectPath, '../../','sqlite','db','parser.db');
+let db:any;
+setDb(dbPath)
 
 
-export const tableName = "internships"
+/**
+ * Функция устанавливающая коннект к бд
+ * @param newPath
+ */
+export function setDb(newPath:string){
+    if (!fs.existsSync(newPath)){
+        const dir = path.parse(newPath).dir
+        try {
+            fs.mkdirSync(dir);
+        } catch {}
+    }
+    dbPath = newPath
+    db = require('better-sqlite3')(dbPath)
+}
+
+export const tableName = "grants"
 export const protectedFromDrop = false
 
 export const createTable = ()=>{
-    return universalCreateTable(db,tableName, {
-        "id" : "INTEGER PRIMARY KEY AUTOINCREMENT",
-        "requirements": "STRING",
-        "responsibilities": "STRING",
-        'conditions': 'STRING' ,
-        'salary': 'STRING' ,
-        'direction': 'STRING' ,
-        'fullText': 'STRING' ,
-        'namePost': 'STRING' ,
-        'dateCreationPost': 'STRING' ,
-        'organization': 'STRING' ,
-        'link': 'STRING' ,
-        'timeOfParse': 'DATETIME'
-    })
+    try {
+        db.prepare('CREATE TABLE grants(' +
+            'id INTEGER PRIMARY KEY AUTOINCREMENT,' +
+            'namePost STRING collate nocase,' +
+            'dateCreationPost STRING,' +
+            'direction STRING,' +
+            'organization STRING,' +
+            'deadline STRING,' +
+            'summary STRING,' +
+            'directionForSpent STRING,' +
+            'fullText STRING,' +
+            'link STRING,' +
+            'linkPDF STRING,' +
+            'timeOfParse DATETIME' +
+            ');').run()
+    }
+    catch (e) {
+        consoleLog("from "+__filename +"\n" + "Error in createGrantsTable")
+        throw new Error(e)
+    }
+    return true
 }
 
 export const dropTable = ()=>{
@@ -51,9 +83,10 @@ export const isTableExist = ()=>{
     }
 }
 
-export const isInternshipExist = (post:TInternship)=>{
+export const isGrantExist = (post:TGrant)=>{
     try {
         createTableIfNotExist(isTableExist,createTable)
+
         return universalIsPostExist(db,
             tableName,
             {namePost:post.namePost,dateCreationPost:post.dateCreationPost},
@@ -65,7 +98,7 @@ export const isInternshipExist = (post:TInternship)=>{
     }
 }
 
-export const add = (post: TInternship)=>{
+export const add = (post: TGrant)=>{
     try {
         createTableIfNotExist(isTableExist,createTable)
         return universalAddPost(db,tableName,post)
@@ -75,7 +108,7 @@ export const add = (post: TInternship)=>{
     }
 }
 
-export const deleteInternship = (id:number)=>{
+export const deleteGrant = (id:number)=>{
     try {
         createTableIfNotExist(isTableExist,createTable)
         universalDeletePost(db,tableName,id)
@@ -85,7 +118,7 @@ export const deleteInternship = (id:number)=>{
     }
 }
 
-export const count = (post:Partial<TInternship> = {},
+export const count = (post:Partial<TGrant> = {},
                       from:number = 0,
                       limit?:number,
                       orderBy:string = "DESC",
@@ -110,15 +143,15 @@ export const count = (post:Partial<TInternship> = {},
 
 }
 
-export const getInternships = (post:Partial<TInternship> = {},
-                               from:number = 0,
+export const getGrants = (post:Partial<TGrant> = {},
+                             from:number = 0,
                              limit?:number,
                              orderBy:string = "DESC",
                              timeOfParseSince?:number|string,
                              timeOfParseTo?:number|string)=> {
     try {
         createTableIfNotExist(isTableExist,createTable)
-        return universalGetPosts(
+        let posts = universalGetPosts(
             db,
             tableName,
             post,
@@ -128,13 +161,19 @@ export const getInternships = (post:Partial<TInternship> = {},
             timeOfParseSince,
             timeOfParseTo
         )
+        return posts.map((el)=> {
+            el.direction = JSON.parse(decoderShieldIt(el.direction as string))
+            return el
+        })
+
     } catch (e) {
-        consoleLog("from " + __filename + "\n" + "Error in getVacancies")
+        consoleLog("from "+__filename +"\n" + "Error in getGrants")
         throw new Error(e)
     }
+
 }
 
-export const update = (post:TInternship)=>{
+export const updateGrant = (post:TGrant)=>{
     if (post.id === undefined){
         throw new Error("Id - required")
     }
@@ -146,4 +185,8 @@ export const update = (post:TInternship)=>{
         consoleLog("from "+__filename +"\n" + "Error in updateGrant")
         throw new Error(e)
     }
+}
+
+export const getDirections = ()=>{
+    return db.prepare(`SELECT DISTINCT direction FROM grants`).all()
 }

@@ -1,3 +1,4 @@
+//@ts-ignore
 import * as path from "path";
 import {TParser} from "@iisdc/types";
 import {consoleLog} from "../../../utils/consoleLog";

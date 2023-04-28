@@ -9,15 +9,15 @@
     "./backend"
   ],
   "scripts": {
-    "test:backend": "cd ./backend && npm run test",
-    "dev:backend": "cd ./backend && npm run dev",
+    "test:backend": "cd backendOld && npm run test",
+    "dev:backend": "cd backendOld && npm run dev",
     "dev:frontend": "cd ./frontend && npm run start",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" ",
     "dev:built:frontend": "cd ./frontend/build && serve",
-    "dev:built:backend": "cd ./backend && cross-env NODE_ENV=development node src/app.js",
+    "dev:built:backend": "cd backendOld && cross-env NODE_ENV=development node src/app.js",
     "dev:built": "concurrently \"npm run dev:built:backend\" \"npm run dev:built:frontend\" ",
     "build": "gulp build",
-    "start": "concurrently \"npm run start:built:backend\" \"cd ./backend && pm2\"",
+    "start": "concurrently \\\"npm run start:built:backend\\\" \\\"cd backendOld && pm2\\\"",
     "test:parsers": "cd ./packages/parsers && npm run test"
   },
   "repository": {

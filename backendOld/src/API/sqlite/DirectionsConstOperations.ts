@@ -93,6 +93,7 @@ export class DirectionsConstOperations extends DefaultOperation implements IDire
         WHERE directionName = ?
         `
         try {
+            //@ts-ignore-next-line
             return this.db.prepare(query).get(directionName)?.id || undefined;
         } catch (e) {
             consoleLog(`

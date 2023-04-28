@@ -84,6 +84,7 @@ export class DirectionsOperations extends DefaultOperation {
         WHERE ${tableNamePost}.id = ${this.tableName}.${tableNamePost}_id = ${parentId}
         `
         try {
+            //@ts-ignore-next-line
             return this.db.prepare(query).all()
         } catch (e) {
             consoleLog(`

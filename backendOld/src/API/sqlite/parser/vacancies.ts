@@ -1,3 +1,4 @@
+//@ts-ignore
 import * as path from "path";
 import {__projectPath} from "../../../utils/projectPath";
 import {TVacancy} from "@iisdc/types";

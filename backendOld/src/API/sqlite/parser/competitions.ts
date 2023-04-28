@@ -1,7 +1,6 @@
 import * as path from "path";
 import {consoleLog} from "../../../utils/consoleLog";
 import {__projectPath} from "../../../utils/projectPath";
-import {TCompetition} from "@iisdc/types";
 import {
     createTableIfNotExist,
     universalAddPost,

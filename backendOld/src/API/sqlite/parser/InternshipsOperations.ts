@@ -5,12 +5,12 @@ import {consoleLog} from "../../../utils/consoleLog";
 import {createInternshipsTable} from "../configurateDataBase/createInternshipsTable";
 import {directionsConstTableName, directionsTableName} from "../config";
 import {shieldIt} from "@iisdc/utils";
-import {TInternship, TVacancy} from "@iisdc/types";
-import {createVacanciesTable} from "../configurateDataBase/createVacanciesTable";
+//@ts-ignore
+import {TInternship} from "@iisdc/types";
 
-export interface IVacanciesOperations extends VacanciesOperations{}
+export interface IInternshipOperations extends InternshipOperations{}
 
-export class VacanciesOperations extends DefaultOperation{
+export class InternshipOperations extends DefaultOperation{
 
     constructor(db:Database,tableName:string) {
         super(db,tableName);
@@ -18,13 +18,12 @@ export class VacanciesOperations extends DefaultOperation{
     }
 
     createTable(){
-        let query = createVacanciesTable;
+        let query = createInternshipsTable;
         try {
-
             return this.db.prepare(query).run()
         } catch (e) {
             consoleLog(`
-            Ошибка в VacanciesOperations, createTable\n
+            Ошибка в InternshipOperations, createTable\n
             query ->\n
             ${query}\n
             ${e}
@@ -33,7 +32,7 @@ export class VacanciesOperations extends DefaultOperation{
         }
     }
 
-    insert(post:TVacancy): number {
+    insert(post:TInternship): number {
         const query = `
         INSERT INTO ${this.tableName}
         (
@@ -75,7 +74,7 @@ export class VacanciesOperations extends DefaultOperation{
             return postId
         } catch (e) {
             consoleLog(`
-            Ошибка в VacanciesOperations, insertGrant ${JSON.stringify(post,null,2)} \n
+            Ошибка в InternshipOperations, insertGrant ${JSON.stringify(post,null,2)} \n
             query ->\n
             ${query}\n
             ${e}            
@@ -115,7 +114,7 @@ export class VacanciesOperations extends DefaultOperation{
 
         } catch (e) {
             consoleLog(`
-            Ошибка в VacanciesOperations, insertGrant ${JSON.stringify(post,null,2)} \n
+            Ошибка в InternshipOperations, insertGrant ${JSON.stringify(post,null,2)} \n
             query ->\n
             ${query}\n
             ${e}            
@@ -153,7 +152,7 @@ export class VacanciesOperations extends DefaultOperation{
             return post
         } catch (e) {
             consoleLog(`
-            Ошибка в VacanciesOperations, getGrant id = ${id} \n
+            Ошибка в InternshipOperations, getGrant id = ${id} \n
             query ->\n
             ${query}\n
             ${e}            
@@ -173,7 +172,7 @@ export class VacanciesOperations extends DefaultOperation{
             this.db.prepare(query).run();
         } catch (e) {
             consoleLog(`
-            Ошибка в VacanciesOperations, setPostToBlackList id = ${id} \n
+            Ошибка в InternshipOperations, setPostToBlackList id = ${id} \n
             query ->\n
             ${query}\n
             ${e}
@@ -192,7 +191,7 @@ export class VacanciesOperations extends DefaultOperation{
             this.db.prepare(query).run();
         } catch (e) {
             consoleLog(`
-            Ошибка в VacanciesOperations, removeFromBlackList id = ${id} \n
+            Ошибка в InternshipOperations, removeFromBlackList id = ${id} \n
             query ->\n
             ${query}\n
             ${e}
@@ -276,7 +275,7 @@ export class VacanciesOperations extends DefaultOperation{
             return grants
         } catch (e) {
             consoleLog(`
-            Ошибка в VacanciesOperations, getPosts ${JSON.stringify(props)}, ${query}\n
+            Ошибка в InternshipOperations, getPosts ${JSON.stringify(props)}, ${query}\n
             query ->\n
             ${query}\n
             ${e}
@@ -294,7 +293,7 @@ export class VacanciesOperations extends DefaultOperation{
             this.db.prepare(query).run()
         } catch (e) {
             consoleLog(`
-            Ошибка в VacanciesOperations, deletePost ${id}, ${query}\n
+            Ошибка в InternshipOperations, deletePost ${id}, ${query}\n
             query ->\n
             ${query}\n
             ${e}
