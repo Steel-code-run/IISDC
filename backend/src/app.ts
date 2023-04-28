@@ -2,11 +2,11 @@ import express from 'express';
 import cors from "cors";
 import dotenv from 'dotenv';
 import path from 'path';
+import baseRouter from "./router/baseRouter";
 
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3003;
-console.log(process.env)
 const corsOptions = {
 	credentials: true, //access-control-allow-credentials:true,
 	exposedHeaders: 'Authorization'
@@ -15,6 +15,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+
+app.use(baseRouter);
 
 
 // routes end

@@ -3,15 +3,14 @@
     "version": "1.0.0",
     "scripts": {
         "test": "jest",
-        "dev": "cross-env NODE_ENV=development WITHOUT_TELEGRAM_BOT=true nodemon src/app.ts --watch ../**/**.ts",
-        "devWithBot": "cross-env NODE_ENV=development WITH_TELEGRAM_BOT=false nodemon src/app.ts --watch ../**/**.ts",
-        "dev:prod": "cross-env NODE_ENV=development node dist/app.js --watch **.js",
+        "dev": "nodemon src/app.ts",
+        "devWithBot": "nodemon src/app.ts",
+        "dev:prod": "node dist/app.js",
         "build": "tsc"
     },
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "@types/better-sqlite3": "^7.6.3",
         "@types/cors": "^2.8.13",
         "@types/express": "^4.17.16",
         "@types/js-levenshtein": "^1.1.1",
