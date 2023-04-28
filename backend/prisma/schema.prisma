@@ -3,7 +3,9 @@
 
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
+
 
 datasource db {
   provider = "mysql"
@@ -23,8 +25,8 @@ model Grant {
   link              String
   linkPDF           String
   sourceLink        String
-  timeOfParse       Int
-  blackListed       Int
+  timeOfParse       DateTime
+  blackListed       Int   @default(0)
 }
 
 model User {

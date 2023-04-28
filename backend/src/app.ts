@@ -3,6 +3,8 @@ import cors from "cors";
 import dotenv from 'dotenv';
 import path from 'path';
 import baseRouter from "./router/baseRouter";
+import grantsRouter from "./router/v1/grantsRouter";
+import {connect} from "./prisma/connect";
 
 dotenv.config();
 const app = express();
@@ -18,6 +20,10 @@ app.use(express.json());
 
 
 app.use(baseRouter);
+app.use(grantsRouter);
+
+// db connect
+connect().then(_ => console.log("connected to db"))
 
 
 // routes end

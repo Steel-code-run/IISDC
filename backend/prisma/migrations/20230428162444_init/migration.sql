@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE `grant` MODIFY `namePost` VARCHAR(255) NOT NULL,
-    MODIFY `fullText` VARCHAR(1000) NOT NULL;
