@@ -24,7 +24,6 @@ docker_stop:
 docker_migrate:
 	docker compose exec -it backend npm run prisma:migrate
 
-
 # сделать дамп базы данных
 docker_dump:
 	docker compose exec -it mysql mysqldump -uroot -proot --all-databases > ./docker/mysql/dump.sql
