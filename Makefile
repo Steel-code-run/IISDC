@@ -16,6 +16,10 @@ docker_start:
 docker_backend_sh:
 	docker compose exec backend sh
 
+# остановить контейнеры
+docker_stop:
+	docker compose stop
+
 # сделать миграцию бд
 docker_migrate:
 	docker compose exec -it backend npm run prisma:migrate
