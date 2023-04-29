@@ -1,5 +1,4 @@
 import {Router} from 'express';
-import prisma from "../../prisma/connect";
 
 const grantsRouter = Router();
 
