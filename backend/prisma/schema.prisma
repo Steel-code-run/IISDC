@@ -2,10 +2,9 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
-
 
 datasource db {
   provider = "mysql"
@@ -13,83 +12,131 @@ datasource db {
 }
 
 model Grant {
-  id                Int    @id @default(autoincrement())
-  namePost          String @db.VarChar(255)
-  dateCreationPost  String
-  direction         String
-  organization      String
-  deadline          DateTime
-  summary           String
-  directionForSpent String
-  fullText          String @db.LongText()
-  link              String
-  linkPDF           String
-  sourceLink        String
-  timeOfParse       DateTime
-  blackListed       Int   @default(0)
+  id                 Int              @id @unique @default(autoincrement())
+  namePost           String           @db.VarChar(255)
+  dateCreationPost   String
+  direction          grants_direction @relation(fields: [grants_directionId], references: [id])
+  organization       String
+  deadline           DateTime
+  summary            String
+  directionForSpent  String
+  fullText           String           @db.LongText()
+  link               String
+  linkPDF            String
+  sourceLink         String
+  timeOfParse        DateTime
+  blackListed        Int              @default(0)
+  // События редактирования
+  editActions        User_actions[]
+  grants_directionId Int
+}
+
+model Competition {
+  id                       Int                    @id @unique @default(autoincrement())
+  namePost                 String                 @db.VarChar(255)
+  dateCreationPost         String
+  direction                competitions_direction @relation(fields: [competitions_directionId], references: [id])
+  organization             String
+  deadline                 DateTime
+  summary                  String
+  directionForSpent        String
+  fullText                 String                 @db.LongText()
+  link                     String
+  linkPDF                  String
+  sourceLink               String
+  timeOfParse              DateTime
+  blackListed              Int                    @default(0)
+  // События редактирования
+  editActions              User_actions[]
+  competitions_directionId Int
 }
 
 model User {
-  id            Int             @id @default(autoincrement())
-  name          String          @unique
-  email         String
-  password      String
-  role          User_roles_constant
-  blocked       Boolean         @default(false)
-  User_acessing User_ations[]
-  User_telegram User_telegram[]
+  id              Int            @id @unique @default(autoincrement())
+  name            String         @unique
+  email           String
+  password        String
+  role            User_role      @relation(fields: [roleId], references: [id])
+  roleId          Int
+  blocked         Boolean        @default(false)
+  User_actions    User_actions[] @relation("User_actions")
+  User_actionsFor User_actions[] @relation("User_actionsFor")
+  User_telegram   User_telegram? @relation(fields: [user_telegramId], references: [id])
+  user_telegramId Int?
 }
 
 model User_telegram {
-  id       Int    @id @default(autoincrement())
-  user_id  Int
-  user     User   @relation(fields: [user_id], references: [id])
-  settings User_telegram_settings[]
+  id          Int                     @id @unique @default(autoincrement())
   telegram_id String
-  key      String
+  key         String
+  User        User[]
+  settigns    User_telegram_settings? @relation(fields: [settingsId], references: [id])
+  settingsId  Int?
 }
 
-model User_ations {
-  id      Int  @id @default(autoincrement())
-  user_id Int
-  user    User @relation(fields: [user_id], references: [id])
-  ip      String
-  date    String
-  action  User_actions_constant
+model User_actions {
+  id                Int                @id @unique @default(autoincrement())
+  // от какого пользователя
+  user_id           Int
+  user              User               @relation("User_actions", fields: [user_id], references: [id])
+  // информация о действии
+  ip                String
+  date              String
+  actionType        User_actions_types
+  // Суда пишем о том что изменилось, что произошло, что было раньше, причину и тд
+  actionDescription String?
+  // с каким юзером связано действие
+  actionForUser     User?              @relation("User_actionsFor", fields: [actionForUserId], references: [id])
+  actionForUserId   Int?
+  // с каким грантом связано действие
+  Grant             Grant?             @relation(fields: [grantId], references: [id])
+  grantId           Int?
+  // с каким конкурсом связано действие
+  Competition       Competition?       @relation(fields: [competitionId], references: [id])
+  competitionId     Int?
 }
 
 model User_telegram_settings {
-  id       Int    @id @default(autoincrement())
-  User_telegram  Int
-  user     User_telegram   @relation(fields: [User_telegram], references: [id])
-  workTime DateTime
-  directions String
+  id                      Int                      @id @unique @default(autoincrement())
+  workTime                DateTime
+  grants_directions       grants_direction[]
+  competitions_directions competitions_direction[]
+  User_telegram           User_telegram[]
+  grants_directionsId     Int
 }
 
-enum User_actions_constant {
+model grants_direction {
+  id                Int                      @id @unique @default(autoincrement())
+  name              String
+  User_telegram_settings User_telegram_settings[]
+  Grant Grant[]
+}
+
+model competitions_direction {
+  id                      Int                      @id @unique @default(autoincrement())
+  name                    String
+  User_telegram_settings User_telegram_settings[]
+  Competition             Competition[]
+}
+
+model User_role {
+  id   Int    @id @unique @default(autoincrement())
+  name String
+  User User[]
+}
+
+enum User_actions_types {
   LOGIN
   LOGOUT
-  REGISTER
+  VISITPAGE
+  SENDREQUEST
   CHANGE_PASSWORD
-  CHANGE_EMAIL
   CHANGE_ROLE
+  CHANGE_WORKTIME
+  CHANGE_GRANTS_DIRECTIONS
+  CHANGE_COMPETITIONS_DIRECTIONS
+  CHANGE
   BLOCK
   UNBLOCK
-}
-
-enum User_roles_constant {
-  ADMIN
-  WORKER
-  USER
-}
-
-enum grant_directions {
-  SCIENCE
-  EDUCATION
-  CULTURE
-  SOCIAL
-  SPORT
-  MEDICINE
-  ECOLOGY
-  OTHER
+  EDIT
 }

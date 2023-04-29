@@ -27,7 +27,6 @@ const callNodeTsParser = (params:TParserCallParams): Promise<TParserResult> => {
 			throw new Error('Parser result is not valid');
 		return stdout;
 	})
-
 };
 
 // const callPythonParser: TCallParser = (params):TParserResult => {
