@@ -140,3 +140,9 @@ enum User_actions_types {
   UNBLOCK
   EDIT
 }
+
+model whitelist {
+  id   Int    @id @unique @default(autoincrement())
+  origin String @unique
+}
+
