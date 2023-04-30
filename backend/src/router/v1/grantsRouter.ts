@@ -2,7 +2,7 @@ import {Router} from 'express';
 
 const grantsRouter = Router();
 
-grantsRouter.get('/v1/grants', async (req, res) => {
+grantsRouter.post('/v1/grants/', async (req, res) => {
 
 })
 

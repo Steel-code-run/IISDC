@@ -11,25 +11,38 @@ import rolesRouter from "./router/v1/rolesRouter";
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3003;
-const corsOptions = {
-	credentials: true, //access-control-allow-credentials:true,
-	exposedHeaders: 'Authorization'
-};
+
+const whitelist = [
+	"0.0.0.0",
+	"localhost"
+]
+
+// Пока связи с бд нет, приложение не запускается
+connect().then(_ => {
+	console.log("connected to db")
+
+	const corsOptions = {
+		credentials: true, //access-control-allow-credentials:true,
+		exposedHeaders: 'Authorization',
+		origin: function (origin:any, callback:any) {
+			if (whitelist.indexOf(origin) !== -1) {
+				callback(null, true)
+			} else {
+				callback(new Error('Not allowed by CORS'))
+			}
+		}
+	};
 
 
-app.use(cors(corsOptions));
-app.use(express.json());
+	app.use(cors(corsOptions));
+	app.use(express.json());
 
 
-app.use(baseRouter);
-app.use(grantsRouter);
-app.use(usersRouter);
-app.use(rolesRouter);
-
-
-// db connect
-connect().then(_ => console.log("connected to db"))
-
+	app.use(baseRouter);
+	app.use(grantsRouter);
+	app.use(usersRouter);
+	app.use(rolesRouter);
+})
 
 // routes end
 app.listen(port, () => {

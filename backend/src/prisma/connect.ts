@@ -12,4 +12,3 @@ export async function connect(){
     }
 }
 export default prisma
-
