@@ -33,18 +33,18 @@ connect().then(_ => {
 		}
 	};
 
-
+	// плагины
 	app.use(cors(corsOptions));
 	app.use(express.json());
 
-
+	// routes start
 	app.use(baseRouter);
 	app.use(grantsRouter);
 	app.use(usersRouter);
 	app.use(rolesRouter);
+	// routes end
 })
 
-// routes end
 app.listen(port, () => {
 	console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
