@@ -102,7 +102,6 @@ model User_telegram_settings {
   grants_directions       grants_direction[]
   competitions_directions competitions_direction[]
   User_telegram           User_telegram[]
-  grants_directionsId     Int
 }
 
 model grants_direction {
