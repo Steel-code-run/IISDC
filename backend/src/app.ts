@@ -5,6 +5,8 @@ import path from 'path';
 import baseRouter from "./router/baseRouter";
 import grantsRouter from "./router/v1/grantsRouter";
 import {connect} from "./prisma/connect";
+import usersRouter from "./router/v1/usersRouter";
+import rolesRouter from "./router/v1/rolesRouter";
 
 dotenv.config();
 const app = express();
@@ -21,6 +23,9 @@ app.use(express.json());
 
 app.use(baseRouter);
 app.use(grantsRouter);
+app.use(usersRouter);
+app.use(rolesRouter);
+
 
 // db connect
 connect().then(_ => console.log("connected to db"))

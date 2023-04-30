@@ -121,7 +121,7 @@ model competitions_direction {
 
 model User_role {
   id   Int    @id @unique @default(autoincrement())
-  name String
+  name String @unique
   User User[]
 }
 
