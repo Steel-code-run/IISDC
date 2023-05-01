@@ -11,7 +11,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Grant {
+model grant {
   id                 Int              @id @unique @default(autoincrement())
   namePost           String           @db.VarChar(255)
   dateCreationPost   String
@@ -27,11 +27,11 @@ model Grant {
   timeOfParse        DateTime
   blackListed        Int              @default(0)
   // События редактирования
-  editActions        User_actions[]
+  editActions        user_actions[]
   grants_directionId Int
 }
 
-model Competition {
+model competition {
   id                       Int                    @id @unique @default(autoincrement())
   namePost                 String                 @db.VarChar(255)
   dateCreationPost         String
@@ -47,76 +47,76 @@ model Competition {
   timeOfParse              DateTime
   blackListed              Int                    @default(0)
   // События редактирования
-  editActions              User_actions[]
+  editActions              user_actions[]
   competitions_directionId Int
 }
 
-model User {
+model user {
   id              Int            @id @unique @default(autoincrement())
   name            String         @unique
   email           String
   password        String
-  role            User_role      @relation(fields: [roleId], references: [id])
+  role            user_role      @relation(fields: [roleId], references: [id])
   roleId          Int
   blocked         Boolean        @default(false)
-  User_actions    User_actions[] @relation("User_actions")
-  User_actionsFor User_actions[] @relation("User_actionsFor")
-  User_telegram   User_telegram? @relation(fields: [user_telegramId], references: [id])
+  User_actions    user_actions[] @relation("User_actions")
+  User_actionsFor user_actions[] @relation("User_actionsFor")
+  User_telegram   user_telegram? @relation(fields: [user_telegramId], references: [id])
   user_telegramId Int?
   acessing_log    acessing_log[]
 }
 
-model User_telegram {
+model user_telegram {
   id          Int                     @id @unique @default(autoincrement())
   telegram_id String
   key         String
-  User        User[]
-  settigns    User_telegram_settings? @relation(fields: [settingsId], references: [id])
+  User        user[]
+  settigns    user_telegram_settings? @relation(fields: [settingsId], references: [id])
   settingsId  Int?
 }
 
-model User_actions {
+model user_actions {
   id                Int                @id @unique @default(autoincrement())
   // от какого пользователя
   user_id           Int
-  user              User               @relation("User_actions", fields: [user_id], references: [id])
+  user              user               @relation("User_actions", fields: [user_id], references: [id])
   // информация о действии
   ip                String
   date              String
-  actionType        User_actions_types
+  actionType        user_actions_types
   // Суда пишем о том что изменилось, что произошло, что было раньше, причину и тд
   actionDescription String?
   // с каким юзером связано действие
-  actionForUser     User?              @relation("User_actionsFor", fields: [actionForUserId], references: [id])
+  actionForUser     user?              @relation("User_actionsFor", fields: [actionForUserId], references: [id])
   actionForUserId   Int?
   // с каким грантом связано действие
-  Grant             Grant?             @relation(fields: [grantId], references: [id])
+  Grant             grant?             @relation(fields: [grantId], references: [id])
   grantId           Int?
   // с каким конкурсом связано действие
-  Competition       Competition?       @relation(fields: [competitionId], references: [id])
+  Competition       competition?       @relation(fields: [competitionId], references: [id])
   competitionId     Int?
 }
 
-model User_telegram_settings {
+model user_telegram_settings {
   id                      Int                      @id @unique @default(autoincrement())
   workTime                DateTime
   grants_directions       grants_direction[]
   competitions_directions competitions_direction[]
-  User_telegram           User_telegram[]
+  User_telegram           user_telegram[]
 }
 
 model grants_direction {
   id                     Int                      @id @unique @default(autoincrement())
   name                   String
-  User_telegram_settings User_telegram_settings[]
-  Grant                  Grant[]
+  Grant                  grant[]
+  User_telegram_settings user_telegram_settings[]
 }
 
 model acessing_log {
   id     Int    @id @unique @default(autoincrement())
   ip     String
   date   DateTime
-  User   User?  @relation(fields: [userId], references: [id])
+  User   user?  @relation(fields: [userId], references: [id])
   method String
   path   String
   userId Int?
@@ -125,17 +125,17 @@ model acessing_log {
 model competitions_direction {
   id                     Int                      @id @unique @default(autoincrement())
   name                   String
-  User_telegram_settings User_telegram_settings[]
-  Competition            Competition[]
+  User_telegram_settings user_telegram_settings[]
+  Competition            competition[]
 }
 
-model User_role {
+model user_role {
   id   Int    @id @unique @default(autoincrement())
   name String @unique
-  User User[]
+  User user[]
 }
 
-enum User_actions_types {
+enum user_actions_types {
   LOGIN
   LOGOUT
   VISITPAGE
