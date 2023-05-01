@@ -1,4 +1,5 @@
 import {PrismaClient} from "@prisma/client";
+import md5 from "md5";
 
 (async function(){
 
@@ -30,7 +31,7 @@ import {PrismaClient} from "@prisma/client";
         data:{
             name:"admin",
             email:"",
-            password:"",
+            password:md5("rootroot"),
             role:{
                 connect:{
                     name:"admin"
