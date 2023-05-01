@@ -56,7 +56,7 @@ model user {
   name            String         @unique
   email           String
   password        String
-  role            user_role      @relation(fields: [roleId], references: [id])
+  role            user_role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
   roleId          Int
   blocked         Boolean        @default(false)
   User_actions    user_actions[] @relation("User_actions")
@@ -113,10 +113,10 @@ model grants_direction {
 }
 
 model acessing_log {
-  id     Int    @id @unique @default(autoincrement())
+  id     Int      @id @unique @default(autoincrement())
   ip     String
   date   DateTime
-  User   user?  @relation(fields: [userId], references: [id])
+  User   user?    @relation(fields: [userId], references: [id])
   method String
   path   String
   userId Int?
@@ -130,9 +130,10 @@ model competitions_direction {
 }
 
 model user_role {
-  id   Int    @id @unique @default(autoincrement())
-  name String @unique
-  User user[]
+  id               Int                @id @unique @default(autoincrement())
+  name             String             @unique
+  User             user[]
+  resources_access resources_access[]
 }
 
 enum user_actions_types {
@@ -154,4 +155,11 @@ enum user_actions_types {
 model whitelist {
   id     Int    @id @unique @default(autoincrement())
   origin String @unique
+}
+
+model resources_access {
+  id     Int       @id @unique @default(autoincrement())
+  path   String
+  role   user_role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId Int
 }

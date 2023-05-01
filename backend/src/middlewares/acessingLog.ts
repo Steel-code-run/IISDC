@@ -2,7 +2,7 @@ import {CustomRequest} from "../types/Express";
 import {NextFunction, Request} from "express";
 import prisma from "../prisma/connect";
 
-export async function accessingLog(req:CustomRequest, res:Request, next:NextFunction) {
+export default async function accessingLog(req:CustomRequest, res:Request, next:NextFunction) {
 
     const data = {} as any
     data['ip'] = req.ip;

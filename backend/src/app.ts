@@ -5,9 +5,11 @@ import grantsRouter from "./router/v1/grantsRouter";
 import prisma, {connect} from "./prisma/connect";
 import usersRouter from "./router/v1/usersRouter";
 import rolesRouter from "./router/v1/rolesRouter";
-import {getUserFromToken} from "./middlewares/getUserFromToken";
 import express from "express";
-import {accessingLog} from "./middlewares/acessingLog";
+import resourceAccess from "./middlewares/resourceAccess";
+import getUserFromToken from "./middlewares/getUserFromToken";
+import accessingLog from "./middlewares/acessingLog";
+import resourcesRouter from "./router/v1/resourcesRouter";
 
 dotenv.config();
 const app = express();
@@ -45,7 +47,7 @@ connect().then(async _ => {
 	app.use(express.json());
 
 	// мидлвары
-
+	app.use(resourceAccess as any);
 	app.use(getUserFromToken as any);
 	app.use(accessingLog as any);
 
@@ -54,6 +56,7 @@ connect().then(async _ => {
 	app.use(grantsRouter);
 	app.use(usersRouter);
 	app.use(rolesRouter);
+	app.use(resourcesRouter);
 	// routes end
 })
 

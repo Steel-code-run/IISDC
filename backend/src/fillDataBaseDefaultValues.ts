@@ -19,14 +19,14 @@ import {PrismaClient} from "@prisma/client";
     })
     console.log('Created default whitelist')
 
-    await prisma.user_role.create({
+    const role = await prisma.user_role.create({
         data:{
             name:"admin"
         }
     })
     console.log('Created default admin role')
 
-    await prisma.user.create({
+    const user = await prisma.user.create({
         data:{
             name:"admin",
             email:"",
@@ -39,6 +39,37 @@ import {PrismaClient} from "@prisma/client";
         }
     })
     console.log('Created default admin user')
+
+
+    const paths = [
+        "/v1/resources/addRoleAccess",
+        "/v1/users/add",
+        "/v1/users/get",
+        "/v1/users/delete",
+        "/v1/users/update",
+        "/v1/grants/add",
+        "/v1/grants/get",
+        "/v1/grants/delete",
+        "/v1/grants/update",
+        "/v1/roles/add",
+        "/v1/roles/get",
+        "/v1/roles/delete",
+    ]
+
+    paths.forEach(async (path)=>{
+        await prisma.resources_access.create({
+            data:{
+                path:path,
+                role: {
+                    connect:{
+                        id:role.id
+                    }
+                }
+            }
+        })
+    })
+
+    console.log('Created default resources access')
 
 })()
 

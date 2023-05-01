@@ -3,7 +3,7 @@ import {verify} from "jsonwebtoken"
 import {CustomRequest} from "../types/Express";
 import express from "express";
 
-export const getUserFromToken =  async (req: CustomRequest, res: express.Response, next: express.NextFunction) => {
+export default async function (req: CustomRequest, res: express.Response, next: express.NextFunction) {
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token){

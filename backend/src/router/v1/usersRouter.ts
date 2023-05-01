@@ -149,4 +149,5 @@ usersRouter.post('/v1/users/login', async (req:CustomRequest, res:any) => {
 
     return res.status(200).json({token: token});
 });
+
 export default usersRouter;

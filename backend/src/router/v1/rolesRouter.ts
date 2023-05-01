@@ -40,12 +40,11 @@ rolesRouter.post('/v1/roles/add', async (req, res) => {
         return res.status(500).json({errors: [{msg: 'Ошибка при добавлении роли'}]});
     }
 
-
     return res.status(200).json({message: 'Роль успешно добавлена'})
 })
 
 rolesRouter.post('/v1/roles/get', async (req, res) => {
-    let roles: Prisma.User_roleUncheckedCreateInput[] | undefined;
+    let roles: Awaited<ReturnType<typeof prisma.user_role.findMany>> | undefined;
 
     try {
         roles = await prisma.user_role.findMany();
@@ -78,6 +77,7 @@ rolesRouter.post('/v1/roles/delete', async (req, res) => {
     }
 
     return res.status(200).json({message: 'Роль успешно удалена'})
-
 })
+
+
 export default rolesRouter;
