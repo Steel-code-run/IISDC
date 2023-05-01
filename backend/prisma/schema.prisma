@@ -63,6 +63,7 @@ model User {
   User_actionsFor User_actions[] @relation("User_actionsFor")
   User_telegram   User_telegram? @relation(fields: [user_telegramId], references: [id])
   user_telegramId Int?
+  acessing_log    acessing_log[]
 }
 
 model User_telegram {
@@ -105,17 +106,27 @@ model User_telegram_settings {
 }
 
 model grants_direction {
-  id                Int                      @id @unique @default(autoincrement())
-  name              String
+  id                     Int                      @id @unique @default(autoincrement())
+  name                   String
   User_telegram_settings User_telegram_settings[]
-  Grant Grant[]
+  Grant                  Grant[]
+}
+
+model acessing_log {
+  id     Int    @id @unique @default(autoincrement())
+  ip     String
+  date   DateTime
+  User   User?  @relation(fields: [userId], references: [id])
+  method String
+  path   String
+  userId Int?
 }
 
 model competitions_direction {
-  id                      Int                      @id @unique @default(autoincrement())
-  name                    String
+  id                     Int                      @id @unique @default(autoincrement())
+  name                   String
   User_telegram_settings User_telegram_settings[]
-  Competition             Competition[]
+  Competition            Competition[]
 }
 
 model User_role {
@@ -141,7 +152,6 @@ enum User_actions_types {
 }
 
 model whitelist {
-  id   Int    @id @unique @default(autoincrement())
+  id     Int    @id @unique @default(autoincrement())
   origin String @unique
 }
-

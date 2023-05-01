@@ -1,7 +1,7 @@
-import {Router} from "express";
 import prisma from "../../prisma/connect";
 import {check, validationResult} from "express-validator";
 import {Prisma, PrismaClient} from "@prisma/client";
+import {Router} from "express";
 
 const rolesRouter = Router();
 

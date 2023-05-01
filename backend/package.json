@@ -29,6 +29,8 @@
     },
     "dependencies": {
         "@prisma/client": "^4.13.0",
+        "@types/jsonwebtoken": "^9.0.2",
+        "@types/md5": "^2.3.2",
         "@types/rewire": "^2.5.28",
         "better-sqlite3": "^8.0.1",
         "cors": "^2.8.5",
@@ -37,6 +39,7 @@
         "express-validator": "^7.0.1",
         "js-levenshtein": "^1.1.6",
         "jsonwebtoken": "^9.0.0",
+        "md5": "^2.3.0",
         "node-telegram-bot-api": "^0.61.0",
         "prisma": "^4.13.0",
         "rewire": "^6.0.0"

@@ -1,12 +1,13 @@
-import express from 'express';
 import cors from "cors";
 import dotenv from 'dotenv';
-import path from 'path';
 import baseRouter from "./router/baseRouter";
 import grantsRouter from "./router/v1/grantsRouter";
 import prisma, {connect} from "./prisma/connect";
 import usersRouter from "./router/v1/usersRouter";
 import rolesRouter from "./router/v1/rolesRouter";
+import {getUserFromToken} from "./middlewares/getUserFromToken";
+import express from "express";
+import {accessingLog} from "./middlewares/acessingLog";
 
 dotenv.config();
 const app = express();
@@ -42,6 +43,11 @@ connect().then(async _ => {
 	// плагины
 	app.use(cors(corsOptions));
 	app.use(express.json());
+
+	// мидлвары
+
+	app.use(getUserFromToken as any);
+	app.use(accessingLog as any);
 
 	// routes start
 	app.use(baseRouter);
