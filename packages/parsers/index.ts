@@ -1,13 +1,10 @@
-import {
-	isTParserResult,
-	TParserCallParams,
-	TParserResult,
-	TParserType,
-} from '@iisdc/types';
+import {TParserCallParams, TParserResult, TParserType,} from '../types/src/serial/parser';
 
 import path from 'path';
 import util from 'node:util';
-import { exec } from 'child_process';
+import {exec} from 'child_process';
+import {isTParserResult} from "../types/src/typeGuards";
+
 const execPromise = util.promisify(exec);
 const callNodeTsParser = (params:TParserCallParams): Promise<TParserResult> => {
 	// console.log(process.env.NODE_ENV)
