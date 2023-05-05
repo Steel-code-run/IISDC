@@ -12,7 +12,7 @@ import {
 } from "../../types/typeGuards";
 import DropdownTags from "../../components/UI/DropdownTags/DropdownTags";
 import {useMediaQuery} from "react-responsive";
-import {TPostType} from "@iisdc/types";
+import {TPostType} from "../../types/serial/parser";
 import {useUniversalDeleteSwitchHook, useUniversalUpdateSwitchHook,} from "../../store/hooks/universalSwitchHooks";
 import {TTypesUpdateData} from "../../types/types";
 import classNames from "classnames";

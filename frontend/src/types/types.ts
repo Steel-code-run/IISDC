@@ -1,4 +1,4 @@
-import {TCompetition, TGrant, TInternship, TPostType, TVacancy} from "@iisdc/types";
+import {TCompetition, TGrant, TInternship, TPostType, TVacancy} from "./serial/parser";
 
 export type TComponentPage<T extends TPostType> = {
     postType: T;

@@ -7,10 +7,12 @@ import {
     universalCreateTable,
     universalDropTable,
     universalGetPosts,
-    universalIsTableExist, universalUpdatePost
+    universalIsTableExist,
+    universalUpdatePost
 } from "../helpers/tableManipulations";
 import {telegramUser} from "../../../types/serializables";
-import {decoderShieldIt} from "@iisdc/utils";
+import {decoderShieldIt} from "@iisdc/parser/src/utils";
+
 const db = require('better-sqlite3')(path.join(__projectPath, '../../','sqlite','db','telegramUsers.db'));
 
 export const tableName = "telegramUsers";

@@ -1,4 +1,4 @@
-import {TPostType} from "@iisdc/types";
+import {TPostType} from "../../types/serial/parser";
 import {isPropsCompetition, isPropsGrant} from "../../types/typeGuards";
 import {TTypesOfPosts} from "../../types/types";
 import {useDeletePostGrantMutation, useUpdatePostGrantMutation} from "../../api/grants.api";
