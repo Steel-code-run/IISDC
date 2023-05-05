@@ -3,7 +3,7 @@ import styles from './PageGrants.module.scss';
 import {useGetCountGrantsQuery, useGetGrantsQuery} from "../../api/grants.api";
 import CardPost from "../../components/CardPost/CardPost";
 import Header from "../../components/Header/Header";
-import {TGrant, TPostType} from "@iisdc/types";
+import {TGrant, TPostType} from "../../types/serial/parser";
 import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import '../../styles/spinner-loader.scss';

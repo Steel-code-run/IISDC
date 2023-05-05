@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './CardPost.module.scss';
 import {TComponentPage} from "../../types/types";
-import {TPostType} from "@iisdc/types";
+import {TPostType} from "../../types/serial/parser";
 import {isPropsCompetition, isPropsGrant, isPropsInternship, isPropsVacancy} from "../../types/typeGuards";
 import {Link} from "react-router-dom";
 

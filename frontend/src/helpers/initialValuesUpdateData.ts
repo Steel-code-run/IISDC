@@ -1,5 +1,5 @@
 import {TTypesUpdateData} from "../types/types";
-import {TPostType} from "@iisdc/types";
+import {TPostType} from "../types/serial/parser";
 import {isUpdateDataCompetition, isUpdateDataGrant, isUpdateDataInternship} from "../types/typeGuards";
 
 export const initialValuesUpdateData = (postType: TPostType, data: TTypesUpdateData) => {

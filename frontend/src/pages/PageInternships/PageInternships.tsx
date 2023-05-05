@@ -3,7 +3,7 @@ import styles from './PageInternships.module.scss';
 import {useGetCountInternshipsQuery, useGetInternshipsQuery} from "../../api/internships.api";
 import CardPost from "../../components/CardPost/CardPost";
 import Header from "../../components/Header/Header";
-import {TInternship, TPostType} from "@iisdc/types";
+import {TInternship, TPostType} from "../../types/serial/parser";
 import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import '../../styles/spinner-loader.scss';

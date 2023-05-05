@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './PageCompetition.module.scss';
 import Header from "../../components/Header/Header";
-import {TCompetition, TPostType} from "@iisdc/types";
+import {TCompetition, TPostType} from "../../types/serial/parser";
 import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import {Dna} from "react-loader-spinner";
