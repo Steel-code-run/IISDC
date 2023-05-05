@@ -1,68 +1,66 @@
-import express from 'express';
 import cors from "cors";
 import dotenv from 'dotenv';
-import path from 'path';
-import {__projectPath} from "./utils/projectPath";
-import {frequentlyInitTelegramBot} from "./telegram/telegram";
-import {setUser} from "./auth/middleware";
-import {configureAll} from "./API/sqlite/configurateDataBase/configureDataBase";
-import {generateBYPASSToken} from "./auth/jwt";
-import {consoleLog} from "./utils/consoleLog";
-import {enableParserScheduler} from "./model/parser";
-dotenv.config({path:path.join(__projectPath,'../',`.env.${process.env.NODE_ENV}`)});
+import baseRouter from "./router/baseRouter";
+import grantsRouter from "./router/v1/grantsRouter";
+import prisma, {connect} from "./prisma/connect";
+import usersRouter from "./router/v1/usersRouter";
+import rolesRouter from "./router/v1/rolesRouter";
+import express from "express";
+import resourceAccess from "./middlewares/resourceAccess";
+import getUserFromToken from "./middlewares/getUserFromToken";
+import accessingLog from "./middlewares/acessingLog";
+import resourcesRouter from "./router/v1/resourcesRouter";
+
+dotenv.config();
 const app = express();
 const port = process.env.PORT || 3003;
-const corsOptions = {
-	credentials: true, //access-control-allow-credentials:true,
-	exposedHeaders: 'Authorization'
-};
-import stats from "./router/routes/stats";
-import auth from "./router/routes/auth";
-import users from "./router/routes/users";
-import parsers from "./router/routes/parsers";
-import database from "./router/routes/database";
-import v2Grants from "./router/routes/v2/grants"
-import v2Directions from "./router/routes/v2/directions"
-import v2Competitions from "./router/routes/v2/competitions"
-import v2Internships from "./router/routes/v2/internships"
-import v2Vacancies from "./router/routes/v2/vacancies"
-configureAll()
 
+// Пока связи с бд нет, приложение не запускается
+connect().then(async _ => {
+	console.log("connected to db")
 
-app.use(cors(corsOptions));
-app.use(express.json());
+	const corsOptions = {
+		credentials: true, //access-control-allow-credentials:true,
+		exposedHeaders: 'Authorization',
+		origin:async function (origin:any, callback:any) {
+			let whitelist:any = [];
+			try {
+				whitelist = await prisma.whitelist.findMany().then((res) => {
+					return res.map((item) => {
+						return item.origin
+					})
+				});
+			} catch (e) {
+				console.log(e)
+				callback(new Error('Not allowed by CORS'))
+			}
+			if (whitelist.indexOf(origin) !== -1) {
+				callback(null, true)
+			} else {
+				callback(new Error('Not allowed by CORS'))
+			}
+		}
+	};
 
-// JWT
-app.use(setUser);
+	// плагины
+	app.use(cors(corsOptions));
+	app.use(express.json());
 
-// routes
+	// мидлвары
+	app.use(getUserFromToken as any);
+	app.use(accessingLog as any);
+	app.use(resourceAccess as any);
 
-app.use(stats);
-app.use(auth);
-app.use(users);
-app.use(parsers);
-app.use(database);
-app.use(v2Grants);
-app.use(v2Directions);
-app.use(v2Competitions)
-app.use(v2Internships)
-app.use(v2Vacancies)
+	// routes start
+	app.use(baseRouter);
+	app.use(grantsRouter);
+	app.use(usersRouter);
+	app.use(rolesRouter);
+	app.use(resourcesRouter);
+	// routes end
+})
 
-// routes end
 app.listen(port, () => {
-	consoleLog(`⚡️[server]: Server is running at http://localhost:${port}`);
+	console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
 
-setTimeout(()=>{
-	frequentlyInitTelegramBot()
-	enableParserScheduler()
-},3000)
-
-if (process.env.NODE_ENV === "development") {
-	const BYPASSUserIUser = {
-		name: "BYPASS",
-		role: 999,
-		id: -100,
-	}
-	console.log("Bearer " + generateBYPASSToken(BYPASSUserIUser)!)
-}
