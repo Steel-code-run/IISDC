@@ -15,6 +15,14 @@ services:
     depends_on:
       - mysql
 
+  parsers:
+    build:
+      dockerfile: ./docker/parsers/Dockerfile
+    restart: always
+    volumes:
+      - ./parsers:/app
+    command: "npm run start"
+
   mysql:
     image: mysql:5.7
     restart: always

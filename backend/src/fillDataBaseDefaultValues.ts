@@ -20,14 +20,14 @@ import md5 from "md5";
     })
     console.log('Created default whitelist')
 
-    const role = await prisma.user_role.create({
+    const role = await prisma.users_role.create({
         data:{
             name:"admin"
         }
     })
     console.log('Created default admin role')
 
-    const user = await prisma.user.create({
+    const user = await prisma.users.create({
         data:{
             name:"admin",
             email:"",

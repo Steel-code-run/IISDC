@@ -19,7 +19,7 @@ export default async function accessingLog(req:CustomRequest, res:Request, next:
         }
     }
     try {
-        await prisma.acessing_log.create({
+        await prisma.acessing_logs.create({
             data
         })
     } catch (e) {

@@ -11,27 +11,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model grant {
-  id                 Int              @id @unique @default(autoincrement())
-  namePost           String           @db.VarChar(255)
-  dateCreationPost   String
-  direction          grants_direction @relation(fields: [grants_directionId], references: [id])
-  organization       String
-  deadline           DateTime
-  summary            String
-  directionForSpent  String
-  fullText           String           @db.LongText()
-  link               String
-  linkPDF            String
-  sourceLink         String
-  timeOfParse        DateTime
-  blackListed        Int              @default(0)
+model grants {
+  id                Int                @id @unique @default(autoincrement())
+  namePost          String             @db.LongText()
+  dateCreationPost  String?
+  directions        grants_direction[]
+  organization      String?
+  deadline          DateTime?
+  summary           String?
+  directionForSpent String?
+  fullText          String?            @db.LongText()
+  link              String?
+  linkPDF           String?
+  sourceLink        String?
+  timeOfParse       DateTime
+  blackListed       Int                @default(0)
   // События редактирования
-  editActions        user_actions[]
-  grants_directionId Int
+  editActions       users_actions[]
+  parser            parsers?           @relation(fields: [parser_id], references: [id])
+  parser_id         Int?
 }
 
-model competition {
+model competitions {
   id                       Int                    @id @unique @default(autoincrement())
   namePost                 String                 @db.VarChar(255)
   dateCreationPost         String
@@ -47,96 +48,98 @@ model competition {
   timeOfParse              DateTime
   blackListed              Int                    @default(0)
   // События редактирования
-  editActions              user_actions[]
+  editActions              users_actions[]
   competitions_directionId Int
+  parser                   parsers?               @relation(fields: [parser_id], references: [id])
+  parser_id                Int
 }
 
-model user {
-  id              Int            @id @unique @default(autoincrement())
-  name            String         @unique
+model users {
+  id              Int             @id @unique @default(autoincrement())
+  name            String          @unique
   email           String
   password        String
-  role            user_role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  role            users_role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
   roleId          Int
-  blocked         Boolean        @default(false)
-  User_actions    user_actions[] @relation("User_actions")
-  User_actionsFor user_actions[] @relation("User_actionsFor")
-  User_telegram   user_telegram? @relation(fields: [user_telegramId], references: [id])
+  blocked         Boolean         @default(false)
+  User_actions    users_actions[] @relation("User_actions")
+  User_actionsFor users_actions[] @relation("User_actionsFor")
+  User_telegram   users_telegram? @relation(fields: [user_telegramId], references: [id])
   user_telegramId Int?
-  acessing_log    acessing_log[]
+  acessing_log    acessing_logs[]
 }
 
-model user_telegram {
-  id          Int                     @id @unique @default(autoincrement())
+model users_telegram {
+  id          Int                      @id @unique @default(autoincrement())
   telegram_id String
   key         String
-  User        user[]
-  settigns    user_telegram_settings? @relation(fields: [settingsId], references: [id])
+  User        users[]
+  settigns    users_telegram_settings? @relation(fields: [settingsId], references: [id])
   settingsId  Int?
 }
 
-model user_actions {
-  id                Int                @id @unique @default(autoincrement())
+model users_actions {
+  id                Int                 @id @unique @default(autoincrement())
   // от какого пользователя
   user_id           Int
-  user              user               @relation("User_actions", fields: [user_id], references: [id])
+  user              users               @relation("User_actions", fields: [user_id], references: [id])
   // информация о действии
   ip                String
   date              String
-  actionType        user_actions_types
+  actionType        users_actions_types
   // Суда пишем о том что изменилось, что произошло, что было раньше, причину и тд
   actionDescription String?
   // с каким юзером связано действие
-  actionForUser     user?              @relation("User_actionsFor", fields: [actionForUserId], references: [id])
+  actionForUser     users?              @relation("User_actionsFor", fields: [actionForUserId], references: [id])
   actionForUserId   Int?
   // с каким грантом связано действие
-  Grant             grant?             @relation(fields: [grantId], references: [id])
+  Grant             grants?             @relation(fields: [grantId], references: [id])
   grantId           Int?
   // с каким конкурсом связано действие
-  Competition       competition?       @relation(fields: [competitionId], references: [id])
+  Competition       competitions?       @relation(fields: [competitionId], references: [id])
   competitionId     Int?
 }
 
-model user_telegram_settings {
+model users_telegram_settings {
   id                      Int                      @id @unique @default(autoincrement())
   workTime                DateTime
   grants_directions       grants_direction[]
   competitions_directions competitions_direction[]
-  User_telegram           user_telegram[]
+  User_telegram           users_telegram[]
 }
 
 model grants_direction {
-  id                     Int                      @id @unique @default(autoincrement())
+  id                     Int                       @id @unique @default(autoincrement())
   name                   String
-  Grant                  grant[]
-  User_telegram_settings user_telegram_settings[]
+  Grant                  grants[]
+  User_telegram_settings users_telegram_settings[]
 }
 
-model acessing_log {
+model acessing_logs {
   id     Int      @id @unique @default(autoincrement())
   ip     String
   date   DateTime
-  User   user?    @relation(fields: [userId], references: [id])
+  User   users?   @relation(fields: [userId], references: [id])
   method String
   path   String
   userId Int?
 }
 
 model competitions_direction {
-  id                     Int                      @id @unique @default(autoincrement())
+  id                     Int                       @id @unique @default(autoincrement())
   name                   String
-  User_telegram_settings user_telegram_settings[]
-  Competition            competition[]
+  User_telegram_settings users_telegram_settings[]
+  Competition            competitions[]
 }
 
-model user_role {
+model users_role {
   id               Int                @id @unique @default(autoincrement())
   name             String             @unique
-  User             user[]
+  User             users[]
   resources_access resources_access[]
 }
 
-enum user_actions_types {
+enum users_actions_types {
   LOGIN
   LOGOUT
   VISITPAGE
@@ -158,8 +161,26 @@ model whitelist {
 }
 
 model resources_access {
-  id     Int       @id @unique @default(autoincrement())
+  id     Int        @id @unique @default(autoincrement())
   path   String
-  role   user_role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  role   users_role @relation(fields: [roleId], references: [id], onDelete: Cascade)
   roleId Int
+}
+
+model parsers {
+  id            Int             @id @unique @default(autoincrement())
+  name          String
+  description   String
+  isEnabled     Boolean
+  grant         grants[]
+  competition   competitions[]
+  parsing_queue parsing_queue[]
+  pagesToParse  Int
+}
+
+model parsing_queue {
+  id        BigInt   @id @unique @default(autoincrement())
+  parser    parsers? @relation(fields: [parser_id], references: [id], onDelete: Cascade)
+  parser_id Int
+  page      Int
 }

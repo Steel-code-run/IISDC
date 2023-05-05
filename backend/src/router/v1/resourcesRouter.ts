@@ -20,7 +20,7 @@ resourcesRouter.post('/v1/resources/addRoleAccess', async (req:CustomRequest , r
     data["path"]= req.body.path;
 
     try {
-        data["role"] = await prisma.user_role.findUnique({
+        data["role"] = await prisma.users_role.findUnique({
             where: {
                 id: req.body.role_id
             }
