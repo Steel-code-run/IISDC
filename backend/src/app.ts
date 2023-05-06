@@ -11,6 +11,7 @@ import getUserFromToken from "./middlewares/getUserFromToken";
 import accessingLog from "./middlewares/acessingLog";
 import resourcesRouter from "./router/v1/resourcesRouter";
 import {infinityParsingLoop} from "./model/parsers/parsesActivation";
+import settingsRouter from "./router/v1/settingsRouter";
 
 dotenv.config();
 const app = express();
@@ -41,9 +42,8 @@ connect().then(async _ => {
 	app.use(usersRouter);
 	app.use(rolesRouter);
 	app.use(resourcesRouter);
+	app.use(settingsRouter);
 	// routes end
-
-	infinityParsingLoop.forceStart()
 })
 
 app.listen(port, () => {
