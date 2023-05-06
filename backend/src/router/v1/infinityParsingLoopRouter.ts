@@ -28,30 +28,6 @@ infinityParsingLoopRouter.get(baseUrl, async (req, res) => {
 
 })
 
-infinityParsingLoopRouter.patch(baseUrl, async (req, res) => {
-
-    await check('started', 'Не указан статус')
-        .isBoolean()
-        .run(req);
-
-    const validationErrors = validationResult(req);
-    if(!validationErrors.isEmpty()){
-        return res.status(422).json({errors: validationErrors.array()});
-    }
-
-    if (req.body.started === true){
-        infinityParsingLoop.forceStart();
-    }
-    if (req.body.started === false){
-        infinityParsingLoop.forceStop()
-    }
-
-    return res.status(200).json({data: {
-        started: infinityParsingLoop.infinityLoopStarted,
-        currentParsing: infinityParsingLoop.currentParsing,
-    }});
-})
-
 infinityParsingLoopRouter.get(baseUrl + '/queue', async (req, res) => {
 
     let queue = await prisma.parsing_queue.findMany({

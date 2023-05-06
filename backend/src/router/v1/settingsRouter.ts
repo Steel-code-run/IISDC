@@ -76,10 +76,11 @@ settingsRouter.patch(baseUrl, async (req, res) => {
          data:data
     })
 
-    console.log(se);
 
     if (data.parsingEnabled)
         infinityParsingLoop.forceStart()
+    else if (Object.keys(req.body).includes("parsingEnabled"))
+        infinityParsingLoop.forceStop()
 
     res.status(200).send()
 })

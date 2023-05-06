@@ -57,6 +57,7 @@ class InfinityParsingLoop{
                         }
                     }).then(async () => {
                         let settings = await prisma.appSettings.findFirst()
+                        this._currentParsing = null
                         if (settings?.parsingEnabled){
                             setTimeout(this.parsePages, 1000)
                         }

@@ -72,7 +72,7 @@ usersRouter.post('/v1/users/add', async (req:express.Request, res:express.Respon
     return res.status(200).json({message: 'Пользователь успешно добавлен'})
 })
 
-usersRouter.post('/v1/users/get', async (req:express.Request, res:express.Response) => {
+usersRouter.get('/v1/users/get', async (req:express.Request, res:express.Response) => {
 
     await check('skip', 'skip должен быть числом')
         .isNumeric()
