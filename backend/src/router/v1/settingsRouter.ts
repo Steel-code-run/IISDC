@@ -2,6 +2,7 @@ import {Router} from "express";
 import prisma from "../../prisma/connect";
 import {check, validationResult} from "express-validator";
 import {infinityParsingLoop} from "../../model/parsers/parsesActivation";
+import {Optional} from "express-validator/src/context";
 
 const settingsRouter = Router();
 
@@ -37,11 +38,17 @@ settingsRouter.patch(baseUrl, async (req, res) => {
     if (req.body.parsingEnabled)
         await check('parsingEnabled')
             .isBoolean()
+            .run(req);
+    if (req.body.intervalAddingEnabled)
+        await check('intervalAddingEnabled')
+            .isBoolean()
+            .run(req);
 
     if (!req.body.parsersWorkTimeStart &&
         !req.body.parsersWorkTimeEnd &&
         !req.body.parsingInterval &&
-        !req.body.parsingEnabled) {
+        !req.body.parsingEnabled &&
+        !req.body.intervalAddingEnabled) {
         return res.status(422).json({errors: [{msg: 'Нет данных для обновления'}]});
     }
     const validationErrors = validationResult(req);
@@ -50,7 +57,6 @@ settingsRouter.patch(baseUrl, async (req, res) => {
     }
 
     let data: any = {}
-
     if (req.body.parsersWorkTimeStart)
         data.parsersWorkTimeStart = new Date(req.body.parsersWorkTimeStart)
     if (req.body.parsersWorkTimeEnd)
@@ -59,6 +65,9 @@ settingsRouter.patch(baseUrl, async (req, res) => {
         data.parsingInterval = new Date(req.body.parsingInterval)
     if (req.body.parsingEnabled)
         data.parsingEnabled = req.body.parsingEnabled
+    if (req.body.intervalAddingEnabled)
+        data.intervalAddingEnabled = req.body.intervalAddingEnabled
+
 
     await prisma.appSettings.update({
         where: {

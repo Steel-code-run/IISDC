@@ -191,4 +191,5 @@ model appSettings {
   parsersWorkTimeEnd   DateTime
   parsingEnabled       Boolean
   parsingInterval      DateTime
+  intervalAddingEnabled   Boolean @default(false)
 }

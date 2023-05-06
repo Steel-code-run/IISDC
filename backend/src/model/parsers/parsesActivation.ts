@@ -20,7 +20,8 @@ class InfinityParsingLoop{
         let settings = await prisma.appSettings.findFirst()
         if (settings?.parsingEnabled){
             if (settings?.parsingInterval){
-                console.log(settings.parsingInterval.getTime());
+                if (settings?.intervalAddingEnabled)
+                    await this.addParsersFromDBToQueue()
                 this.infinityLoopTimeout = setTimeout(this.getALoop, settings.parsingInterval.getTime())
                 this.parsePages()
             }
