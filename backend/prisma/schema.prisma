@@ -179,7 +179,7 @@ model parsers {
 }
 
 model parsing_queue {
-  id        BigInt   @id @unique @default(autoincrement())
+  id        Int   @id @unique @default(autoincrement())
   parser    parsers? @relation(fields: [parser_id], references: [id], onDelete: Cascade)
   parser_id Int
   page      Int

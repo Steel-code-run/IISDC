@@ -13,6 +13,7 @@ import resourcesRouter from "./router/v1/resourcesRouter";
 import {infinityParsingLoop} from "./model/parsers/parsesActivation";
 import settingsRouter from "./router/v1/settingsRouter";
 import parsersRouter from "./router/v1/parsersRouter";
+import infinityParsingLoopRouter from "./router/v1/infinityParsingLoopRouter";
 
 dotenv.config();
 const app = express();
@@ -45,7 +46,10 @@ connect().then(async _ => {
 	app.use(resourcesRouter);
 	app.use(settingsRouter);
 	app.use(parsersRouter);
+	app.use(infinityParsingLoopRouter);
 	// routes end
+
+	infinityParsingLoop.forceStart();
 })
 
 app.listen(port, () => {
