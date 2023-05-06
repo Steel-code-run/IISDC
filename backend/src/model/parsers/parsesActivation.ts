@@ -55,9 +55,11 @@ class InfinityParsingLoop{
                         where: {
                             id: item.id
                         }
-                    }).then(() => {
-
-                        setTimeout(this.parsePages, 1000)
+                    }).then(async () => {
+                        let settings = await prisma.appSettings.findFirst()
+                        if (settings?.parsingEnabled){
+                            setTimeout(this.parsePages, 1000)
+                        }
                     })
                 })
             }
@@ -87,7 +89,6 @@ class InfinityParsingLoop{
         if (!queue_item){
             return Promise.resolve()
         }
-
         return prisma.parsers.findUnique({
             where:{
                 id: queue_item.parser_id

@@ -47,8 +47,8 @@ settingsRouter.patch(baseUrl, async (req, res) => {
     if (!req.body.parsersWorkTimeStart &&
         !req.body.parsersWorkTimeEnd &&
         !req.body.parsingInterval &&
-        !req.body.parsingEnabled &&
-        !req.body.intervalAddingEnabled) {
+        !Object.keys(req.body).includes("parsingEnabled") &&
+        !Object.keys(req.body).includes("intervalAddingEnabled")) {
         return res.status(422).json({errors: [{msg: 'Нет данных для обновления'}]});
     }
     const validationErrors = validationResult(req);
@@ -63,18 +63,20 @@ settingsRouter.patch(baseUrl, async (req, res) => {
         data.parsersWorkTimeEnd = new Date(req.body.parsersWorkTimeEnd)
     if (req.body.parsingInterval)
         data.parsingInterval = new Date(req.body.parsingInterval)
-    if (req.body.parsingEnabled)
+    if (Object.keys(req.body).includes("parsingEnabled"))
         data.parsingEnabled = req.body.parsingEnabled
-    if (req.body.intervalAddingEnabled)
+    if (Object.keys(req.body).includes("intervalAddingEnabled"))
         data.intervalAddingEnabled = req.body.intervalAddingEnabled
 
 
-    await prisma.appSettings.update({
+    let se = await prisma.appSettings.update({
         where: {
             id: currentSettings?.id || 1
         },
          data:data
     })
+
+    console.log(se);
 
     if (data.parsingEnabled)
         infinityParsingLoop.forceStart()
