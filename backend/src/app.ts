@@ -10,8 +10,7 @@ import resourceAccess from "./middlewares/resourceAccess";
 import getUserFromToken from "./middlewares/getUserFromToken";
 import accessingLog from "./middlewares/acessingLog";
 import resourcesRouter from "./router/v1/resourcesRouter";
-import {getAppSettings, updateAppSettings} from "./helpers/appSettingsManipultaions";
-import {parsingActivation} from "./model/parsers/parsesActivation";
+import {infinityParsingLoop} from "./model/parsers/parsesActivation";
 
 dotenv.config();
 const app = express();
@@ -44,7 +43,7 @@ connect().then(async _ => {
 	app.use(resourcesRouter);
 	// routes end
 
-	parsingActivation()
+	infinityParsingLoop.forceStart()
 })
 
 app.listen(port, () => {

@@ -1,27 +1,43 @@
-import {getAppSettings} from "../../helpers/appSettingsManipultaions";
 import prisma from "../../prisma/connect";
 import axios from "axios";
 import * as process from "process";
 
-let isParsingNow = false
-let parsersInterval:null|NodeJS.Timer = null
-let isParsersIntervalStarted = false
+class InfinityParsingLoop{
+    infinityLoopCounterStarted = false
+    infinityLoopTimeout:null|NodeJS.Timer = null
 
-export const parsingActivation = () => {
-    if (isParsersIntervalStarted){
-        return
+    getALoop = async () => {
+        if (!this.infinityLoopCounterStarted){
+            return
+        }
+        let settings = await prisma.appSettings.findFirst()
+        if (settings?.parsingEnabled){
+            if (settings?.parsingInterval){
+                console.log(settings.parsingInterval.getTime());
+                this.infinityLoopTimeout = setTimeout(this.getALoop, settings.parsingInterval.getTime())
+                parsePages()
+            }
+        }
+    }
+    forceStart = () => {
+        if (this.infinityLoopCounterStarted){
+            return
+        }
+        this.infinityLoopCounterStarted = true
+        this.getALoop()
     }
 
-    if (getAppSettings().parsingEnabled && !isParsingNow) {
-        addParsersFromDBToQueue().then(() => {
-            isParsingNow = true
-            parsePages()
-        })
-
+    forceStop = () => {
+        this.infinityLoopCounterStarted = false
+        if (this.infinityLoopTimeout){
+            clearTimeout(this.infinityLoopTimeout)
+        }
     }
 }
 
-const addParsersFromDBToQueue = async () => {
+export const infinityParsingLoop = new InfinityParsingLoop()
+
+export const addParsersFromDBToQueue = async () => {
     const currentParsers = await prisma.parsing_queue.findMany({take: 400})
     const parsers = await prisma.parsers.findMany({take: 400})
     const currentParsersIds = currentParsers.map(parser => parser.parser_id)
@@ -53,11 +69,10 @@ const parsePages = () => {
                         id: item.id
                     }
                 }).then(() => {
+
                     setTimeout(parsePages, 1000)
                 })
             })
-        } else {
-            isParsingNow = false
         }
     })
 

@@ -170,7 +170,7 @@ model resources_access {
 model parsers {
   id            Int             @id @unique @default(autoincrement())
   name          String
-  description   String
+  description   String?
   isEnabled     Boolean
   grant         grants[]
   competition   competitions[]
@@ -183,4 +183,12 @@ model parsing_queue {
   parser    parsers? @relation(fields: [parser_id], references: [id], onDelete: Cascade)
   parser_id Int
   page      Int
+}
+
+model appSettings {
+  id                   Int    @id @unique @default(autoincrement())
+  parsersWorkTimeStart DateTime
+  parsersWorkTimeEnd   DateTime
+  parsingEnabled       Boolean
+  parsingInterval      DateTime
 }
