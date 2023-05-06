@@ -9,7 +9,7 @@ services:
       - ./backend:/app
     ports:
       - '3000:3000'
-    command: "npm run dev"
+    command: "npm run prisma:generate && npm run dev"
     env_file:
       - backend/.env
     depends_on:
