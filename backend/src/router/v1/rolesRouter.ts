@@ -20,7 +20,7 @@ rolesRouter.post('/v1/roles/add', async (req, res) => {
         name
     } = req.body;
 
-    const roleExist = await prisma.user_role.findFirst({
+    const roleExist = await prisma.users_role.findFirst({
         where: {
             name: name
         }
@@ -31,7 +31,7 @@ rolesRouter.post('/v1/roles/add', async (req, res) => {
     }
 
     try {
-        await prisma.user_role.create({
+        await prisma.users_role.create({
             data: {
                 name: name
             }
@@ -44,10 +44,10 @@ rolesRouter.post('/v1/roles/add', async (req, res) => {
 })
 
 rolesRouter.post('/v1/roles/get', async (req, res) => {
-    let roles: Awaited<ReturnType<typeof prisma.user_role.findMany>> | undefined;
+    let roles: Awaited<ReturnType<typeof prisma.users_role.findMany>> | undefined;
 
     try {
-        roles = await prisma.user_role.findMany();
+        roles = await prisma.users_role.findMany();
     } catch (e) {
         return res.status(500).json({errors: [{msg: 'Ошибка при получении ролей'}]});
     }
@@ -67,7 +67,7 @@ rolesRouter.post('/v1/roles/delete', async (req, res) => {
     }
 
     try {
-        await prisma.user_role.delete({
+        await prisma.users_role.delete({
             where: {
                 id: req.body.id
             }

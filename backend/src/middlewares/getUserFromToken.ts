@@ -30,7 +30,7 @@ export default async function (req: CustomRequest, res: express.Response, next: 
     }
 
     try {
-        req.user = await prisma.user.findFirst({
+        req.user = await prisma.users.findFirst({
             where: {
                 id: decodedToken.id,
                 name: decodedToken.name

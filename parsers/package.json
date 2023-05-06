@@ -1,9 +1,8 @@
 {
-  "name": "@iisdc/parser",
+  "name": "parsers",
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
-    "@iisdc/types": "file: ../types",
     "@types/jsdom": "^20.0.1",
     "@types/needle": "^3.2.0",
     "axios": "^1.2.6",
@@ -20,6 +19,7 @@
   "scripts": {
     "test": "jest",
     "server": "nodemon src/app.ts --watch ../**/**.ts",
+    "start": "node dist/app.js",
     "build": "tsc"
   },
   "devDependencies": {

@@ -10,6 +10,7 @@ import resourceAccess from "./middlewares/resourceAccess";
 import getUserFromToken from "./middlewares/getUserFromToken";
 import accessingLog from "./middlewares/acessingLog";
 import resourcesRouter from "./router/v1/resourcesRouter";
+import {infinityParsingLoop} from "./model/parsers/parsesActivation";
 
 dotenv.config();
 const app = express();
@@ -22,24 +23,7 @@ connect().then(async _ => {
 	const corsOptions = {
 		credentials: true, //access-control-allow-credentials:true,
 		exposedHeaders: 'Authorization',
-		origin:async function (origin:any, callback:any) {
-			let whitelist:any = [];
-			try {
-				whitelist = await prisma.whitelist.findMany().then((res) => {
-					return res.map((item) => {
-						return item.origin
-					})
-				});
-			} catch (e) {
-				console.log(e)
-				callback(new Error('Not allowed by CORS'))
-			}
-			if (whitelist.indexOf(origin) !== -1) {
-				callback(null, true)
-			} else {
-				callback(new Error('Not allowed by CORS'))
-			}
-		}
+
 	};
 
 	// плагины
@@ -58,6 +42,8 @@ connect().then(async _ => {
 	app.use(rolesRouter);
 	app.use(resourcesRouter);
 	// routes end
+
+	infinityParsingLoop.forceStart()
 })
 
 app.listen(port, () => {
