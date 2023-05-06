@@ -4,9 +4,10 @@ docker_clear:
 	docker image rm iisdc-backend -f; \
 	docker image rm mysql:5.7 -f; \
 	docker image rm phpmyadmin/phpmyadmin -f; \
+	docker image rm iisdc-parsers -f; \
 	docker compose rm -f; \
 	docker builder prune -f; \
-	docker volume prune -f; \
+	docker volume prune -f;
 
 # запуск контейнеров
 docker_start:
