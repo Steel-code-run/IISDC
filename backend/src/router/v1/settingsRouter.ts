@@ -82,6 +82,9 @@ settingsRouter.patch(baseUrl, async (req, res) => {
     else if (Object.keys(req.body).includes("parsingEnabled"))
         infinityParsingLoop.forceStop()
 
+    if (data.intervalAddingEnabled)
+        infinityParsingLoop.addParsersFromDBToQueue()
+
     res.status(200).send()
 })
 

@@ -42,29 +42,29 @@ class InfinityParsingLoop{
         }
     }
 
-    parsePages = () => {
-        prisma.parsing_queue.findFirst({
+    parsePages = async () => {
+        let item = await prisma.parsing_queue.findFirst({
             orderBy:{
                 id: "asc"
             }
-        }).then(item => {
-            if (item){
-                this._currentParsing = item
-                this.parsePage(item).then(() => {
-                    prisma.parsing_queue.delete({
-                        where: {
-                            id: item.id
-                        }
-                    }).then(async () => {
-                        let settings = await prisma.appSettings.findFirst()
-                        this._currentParsing = null
-                        if (settings?.parsingEnabled){
-                            setTimeout(this.parsePages, 1000)
-                        }
-                    })
-                })
-            }
         })
+        if (item){
+            this._currentParsing = item
+            await this.parsePage(item)
+            try {
+                await prisma.parsing_queue.delete({
+                    where: {
+                        id: item.id
+                    }
+                })
+            } catch (e) {}
+            this._currentParsing = null
+            let settings = await prisma.appSettings.findFirst()
+            if (settings?.parsingEnabled){
+                setTimeout(this.parsePages, 1000)
+            }
+        }
+
     }
 
     addParsersFromDBToQueue = async () => {
@@ -144,11 +144,17 @@ const grantAdd = (item:any, parser_id:number) => {
             const data = {
                 namePost: item.namePost,
                 dateCreationPost: String(item.dateCreationPost),
+                organization: item.organization,
                 parser_id: parser_id,
                 timeOfParse: new Date(),
+                link: item.link,
+                linkPDF: item.linkPDF,
+                sourceLink: item.sourceLink,
+                deadline: item.deadline ? new Date(item.deadline) : null,
+                summary: item.summary,
+                fullText: item.fullText,
+                directionForSpent: item.directionForSpent,
             }
-
-
             return prisma.grants.create({
                 data: data
             }).then(() => {
