@@ -31,7 +31,7 @@ usersRouter.post('/v1/users/add', async (req:express.Request, res:express.Respon
         role_id
     } = req.body;
 
-    const role = await prisma.user_role.findFirst({
+    const role = await prisma.users_role.findFirst({
         where: {
             id: role_id
         }
@@ -41,7 +41,7 @@ usersRouter.post('/v1/users/add', async (req:express.Request, res:express.Respon
         return res.status(422).json({errors: [{msg: 'Такой роли не существует'}]});
     }
 
-    const userExist = await prisma.user.findFirst({
+    const userExist = await prisma.users.findFirst({
         where: {
             name: name
         }
@@ -52,7 +52,7 @@ usersRouter.post('/v1/users/add', async (req:express.Request, res:express.Respon
     }
 
     try {
-        await prisma.user.create({
+        await prisma.users.create({
             data: {
                 name: name,
                 email: email,
@@ -86,7 +86,7 @@ usersRouter.post('/v1/users/get', async (req:express.Request, res:express.Respon
         return res.status(422).json({errors: errors.array()});
     }
 
-    let users = await prisma.user.findMany({
+    let users = await prisma.users.findMany({
         skip: req.body.skip || 0,
         take: req.body.take || 10,
         select: {
@@ -121,7 +121,7 @@ usersRouter.post('/v1/users/login', async (req:CustomRequest, res:any) => {
     }
     let user = null;
     try {
-       user = await prisma.user.findFirst({
+       user = await prisma.users.findFirst({
             where: {
                 name: req.body.name,
                 password: md5(req.body.password)

@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist",
     "target": "ESNext",
+    "module": "CommonJS",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "strict": true,
@@ -11,9 +12,9 @@
     "isolatedModules": false,
     "downlevelIteration": true,
     "baseUrl": ".",
-
+    "allowJs": true,
   },
   "allowImportingTsExtensions": false,
   "include": ["./src/**/*"],
-  "exclude": ["node_modules", "dist", "src/**/*.js"]
+  "exclude": ["node_modules", "dist"]
 }
