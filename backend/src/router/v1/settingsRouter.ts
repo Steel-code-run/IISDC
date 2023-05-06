@@ -7,7 +7,7 @@ const settingsRouter = Router();
 
 const baseUrl = '/v1/settings'
 
-settingsRouter.post(baseUrl+'/update', async (req, res) => {
+settingsRouter.patch(baseUrl, async (req, res) => {
 
     let currentSettings = await prisma.appSettings.findFirst()
 
@@ -73,7 +73,7 @@ settingsRouter.post(baseUrl+'/update', async (req, res) => {
     res.status(200).send()
 })
 
-settingsRouter.get(baseUrl+'/get', async (req, res) => {
+settingsRouter.get(baseUrl, async (req, res) => {
 
     let currentSettings = await prisma.appSettings.findFirst()
 

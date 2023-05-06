@@ -12,6 +12,7 @@ import accessingLog from "./middlewares/acessingLog";
 import resourcesRouter from "./router/v1/resourcesRouter";
 import {infinityParsingLoop} from "./model/parsers/parsesActivation";
 import settingsRouter from "./router/v1/settingsRouter";
+import parsersRouter from "./router/v1/parsersRouter";
 
 dotenv.config();
 const app = express();
@@ -43,6 +44,7 @@ connect().then(async _ => {
 	app.use(rolesRouter);
 	app.use(resourcesRouter);
 	app.use(settingsRouter);
+	app.use(parsersRouter);
 	// routes end
 })
 
