@@ -97,26 +97,29 @@ class InfinityParsingLoop{
                 return Promise.resolve()
             }
 
-            return axios.get(process.env.PARSERS_URL! + "/parsers/"+parser.name+"/"+queue_item.page).then( async response => {
-                let added = false
+            return axios.get(process.env.PARSERS_URL! + "/parsers/"+parser.name+"/"+queue_item.page)
+                .then( async response => {
+                    let added = false
 
-                for (let item of response.data){
-                    if (item.postType === "grant") {
-                        if (await grantAdd(item.postDescription, parser.id))
-                            added = true
+                    for (let item of response.data){
+                        if (item.postType === "grant") {
+                            if (await grantAdd(item.postDescription, parser.id))
+                                added = true
+                        }
                     }
-                }
-                if (added){
-                    if (parser.pagesToParse > queue_item.page + 1) {
-                        await prisma.parsing_queue.create({
-                            data: {
-                                page: queue_item.page + 1,
-                                parser_id: parser.id
-                            }
-                        })
+                    if (added){
+                        if (parser.pagesToParse > queue_item.page + 1) {
+                            await prisma.parsing_queue.create({
+                                data: {
+                                    page: queue_item.page + 1,
+                                    parser_id: parser.id
+                                }
+                            })
+                        }
                     }
-                }
-            })
+                }).catch(err => {
+                    console.log(err)
+                })
         })
     }
 

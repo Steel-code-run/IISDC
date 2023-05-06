@@ -84,6 +84,10 @@ infinityParsingLoopRouter.post(baseUrl + '/queue', async (req, res) => {
         .isArray()
         .run(req);
 
+    const validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()){
+        return res.status(422).json({errors: validationErrors.array()});
+    }
 
     for (const parser_id of req.body.parser_ids) {
         await prisma.parsing_queue.create({
@@ -93,6 +97,26 @@ infinityParsingLoopRouter.post(baseUrl + '/queue', async (req, res) => {
             }
         })
     }
+
+    return res.status(200).json();
+})
+
+
+infinityParsingLoopRouter.delete(baseUrl + '/queue', async (req, res) => {
+    await check('id', 'Не указан id')
+        .isInt()
+        .run(req);
+
+    const validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()){
+        return res.status(422).json({errors: validationErrors.array()});
+    }
+
+    await prisma.parsing_queue.delete({
+        where: {
+            id: req.body.id
+        }
+    })
 
     return res.status(200).json();
 })
