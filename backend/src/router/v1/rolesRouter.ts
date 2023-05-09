@@ -5,7 +5,7 @@ import {Router} from "express";
 
 const rolesRouter = Router();
 
-rolesRouter.post('/v1/roles/add', async (req, res) => {
+rolesRouter.post('/v1/roles', async (req, res) => {
 
     await check('name', 'Имя должно быть не менее 4 символов')
         .isLength({min:4})
@@ -43,7 +43,7 @@ rolesRouter.post('/v1/roles/add', async (req, res) => {
     return res.status(200).json({message: 'Роль успешно добавлена'})
 })
 
-rolesRouter.post('/v1/roles/get', async (req, res) => {
+rolesRouter.get('/v1/roles', async (req, res) => {
     let roles: Awaited<ReturnType<typeof prisma.users_role.findMany>> | undefined;
 
     try {
@@ -55,7 +55,7 @@ rolesRouter.post('/v1/roles/get', async (req, res) => {
     return res.status(200).json(roles);
 })
 
-rolesRouter.post('/v1/roles/delete', async (req, res) => {
+rolesRouter.delete('/v1/roles', async (req, res) => {
 
     await check('id', 'Не указан id роли')
         .notEmpty()
