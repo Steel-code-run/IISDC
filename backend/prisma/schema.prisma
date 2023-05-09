@@ -4,6 +4,7 @@
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -30,6 +31,7 @@ model grants {
   editActions       users_actions[]
   parser            parsers?           @relation(fields: [parser_id], references: [id])
   parser_id         Int?
+  @@fulltext([namePost, fullText])
 }
 
 model competitions {
@@ -52,6 +54,7 @@ model competitions {
   competitions_directionId Int
   parser                   parsers?               @relation(fields: [parser_id], references: [id])
   parser_id                Int
+  @@fulltext([namePost, fullText])
 }
 
 model users {
@@ -179,7 +182,7 @@ model parsers {
 }
 
 model parsing_queue {
-  id        BigInt   @id @unique @default(autoincrement())
+  id        Int   @id @unique @default(autoincrement())
   parser    parsers? @relation(fields: [parser_id], references: [id], onDelete: Cascade)
   parser_id Int
   page      Int
@@ -191,4 +194,5 @@ model appSettings {
   parsersWorkTimeEnd   DateTime
   parsingEnabled       Boolean
   parsingInterval      DateTime
+  intervalAddingEnabled   Boolean @default(false)
 }

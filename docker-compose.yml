@@ -9,7 +9,9 @@ services:
       - ./backend:/app
     ports:
       - '3000:3000'
-    command: "npm run dev"
+    command: >
+      sh -c " npm install &&  
+              npm run dev"
     env_file:
       - backend/.env
     depends_on:
@@ -20,8 +22,11 @@ services:
       dockerfile: ./docker/parsers/Dockerfile
     restart: always
     volumes:
-      - ./parsers:/app
-    command: "npm run start"
+      - ./parsers/src:/app/src
+      - ./parsers/package.json:/app/package.json
+    command: >
+      sh -c " npm install &&  
+              npm run start"
 
   mysql:
     image: mysql:5.7

@@ -3,119 +3,134 @@ import axios from "axios";
 import * as process from "process";
 
 class InfinityParsingLoop{
-    infinityLoopCounterStarted = false
-    infinityLoopTimeout:null|NodeJS.Timer = null
+    get infinityLoopStarted(): boolean {
+        return this._infinityLoopStarted;
+    }
+    get currentParsing(): Awaited<ReturnType<typeof prisma.parsing_queue.findFirst>> | null {
+        return this._currentParsing;
+    }
+    private _infinityLoopStarted = false
+    private infinityLoopTimeout:null|NodeJS.Timer = null
+    private _currentParsing:Awaited<ReturnType<typeof prisma.parsing_queue.findFirst>>|null = null
 
     getALoop = async () => {
-        if (!this.infinityLoopCounterStarted){
+        if (!this._infinityLoopStarted){
             return
         }
         let settings = await prisma.appSettings.findFirst()
         if (settings?.parsingEnabled){
             if (settings?.parsingInterval){
-                console.log(settings.parsingInterval.getTime());
+                if (settings?.intervalAddingEnabled)
+                    await this.addParsersFromDBToQueue()
                 this.infinityLoopTimeout = setTimeout(this.getALoop, settings.parsingInterval.getTime())
-                parsePages()
+                this.parsePages()
             }
         }
     }
     forceStart = () => {
-        if (this.infinityLoopCounterStarted){
+        if (this._infinityLoopStarted){
             return
         }
-        this.infinityLoopCounterStarted = true
+        this._infinityLoopStarted = true
         this.getALoop()
     }
 
     forceStop = () => {
-        this.infinityLoopCounterStarted = false
+        this._infinityLoopStarted = false
         if (this.infinityLoopTimeout){
             clearTimeout(this.infinityLoopTimeout)
         }
     }
+
+    parsePages = async () => {
+        let item = await prisma.parsing_queue.findFirst({
+            orderBy:{
+                id: "asc"
+            }
+        })
+        if (item){
+            this._currentParsing = item
+            await this.parsePage(item)
+            try {
+                await prisma.parsing_queue.delete({
+                    where: {
+                        id: item.id
+                    }
+                })
+            } catch (e) {}
+            this._currentParsing = null
+            let settings = await prisma.appSettings.findFirst()
+            if (settings?.parsingEnabled){
+                setTimeout(this.parsePages, 1000)
+            }
+        }
+
+    }
+
+    addParsersFromDBToQueue = async () => {
+        const currentParsers = await prisma.parsing_queue.findMany({take: 400})
+        const parsers = await prisma.parsers.findMany({take: 400})
+        const currentParsersIds = currentParsers.map(parser => parser.parser_id)
+
+        const newParsers = parsers.filter(parser => {
+            return !currentParsersIds.includes(parser.id)
+        })
+
+        await prisma.parsing_queue.createMany({
+            data: newParsers.map(parser => {
+                return {
+                    parser_id: parser.id,
+                    page: 1
+                }
+            })
+        })
+    }
+
+    parsePage = (queue_item:Awaited<ReturnType<typeof prisma.parsing_queue.findFirst>>) => {
+        if (!queue_item){
+            return Promise.resolve()
+        }
+        return prisma.parsers.findUnique({
+            where:{
+                id: queue_item.parser_id
+            }
+        }).then((parser) => {
+            console.log(parser?.name)
+            if (!parser){
+                return Promise.resolve()
+            }
+
+            return axios.get(process.env.PARSERS_URL! + "/parsers/"+parser.name+"/"+queue_item.page)
+                .then( async response => {
+                    let added = false
+
+                    for (let item of response.data){
+                        if (item.postType === "grant") {
+                            if (await grantAdd(item.postDescription, parser.id))
+                                added = true
+                        }
+                    }
+                    if (added){
+                        if (parser.pagesToParse > queue_item.page + 1) {
+                            await prisma.parsing_queue.create({
+                                data: {
+                                    page: queue_item.page + 1,
+                                    parser_id: parser.id
+                                }
+                            })
+                        }
+                    }
+                }).catch(err => {
+                    console.log(err)
+                })
+        })
+    }
+
+
 }
 
 export const infinityParsingLoop = new InfinityParsingLoop()
 
-export const addParsersFromDBToQueue = async () => {
-    const currentParsers = await prisma.parsing_queue.findMany({take: 400})
-    const parsers = await prisma.parsers.findMany({take: 400})
-    const currentParsersIds = currentParsers.map(parser => parser.parser_id)
-
-    const newParsers = parsers.filter(parser => {
-        return !currentParsersIds.includes(parser.id)
-    })
-
-    await prisma.parsing_queue.createMany({
-        data: newParsers.map(parser => {
-            return {
-                parser_id: parser.id,
-                page: 1
-            }
-        })
-    })
-}
-
-const parsePages = () => {
-    prisma.parsing_queue.findFirst({
-        orderBy:{
-            id: "asc"
-        }
-    }).then(item => {
-        if (item){
-            parsePage(item).then(() => {
-                prisma.parsing_queue.delete({
-                    where: {
-                        id: item.id
-                    }
-                }).then(() => {
-
-                    setTimeout(parsePages, 1000)
-                })
-            })
-        }
-    })
-
-}
-
-
-const parsePage = (queue_item:Awaited<ReturnType<typeof prisma.parsing_queue.findFirst>>) => {
-    if (!queue_item){
-        return Promise.resolve()
-    }
-
-    return prisma.parsers.findUnique({
-        where:{
-            id: queue_item.parser_id
-        }
-    }).then((parser) => {
-        console.log(parser?.name)
-        if (!parser){
-            return Promise.resolve()
-        }
-
-        return axios.get(process.env.PARSERS_URL! + "/parsers/"+parser.name+"/"+queue_item.page).then( async response => {
-            let added = false
-
-            for (let item of response.data){
-                if (item.postType === "grant") {
-                    if (await grantAdd(item.postDescription, parser.id))
-                        added = true
-                }
-            }
-            if (added){
-                if (parser.pagesToParse > queue_item.page + 1) {
-                    await prisma.parsing_queue.create({
-                        data: {
-                            page: queue_item.page + 1,
-                            parser_id: parser.id
-                        }
-                    })
-                }
-            }
-        })
-    })
-}
 
 // Добавление грантов в базу
 const grantAdd = (item:any, parser_id:number) => {
@@ -129,11 +144,17 @@ const grantAdd = (item:any, parser_id:number) => {
             const data = {
                 namePost: item.namePost,
                 dateCreationPost: String(item.dateCreationPost),
+                organization: item.organization,
                 parser_id: parser_id,
                 timeOfParse: new Date(),
+                link: item.link,
+                linkPDF: item.linkPDF,
+                sourceLink: item.sourceLink,
+                deadline: item.deadline ? new Date(item.deadline) : null,
+                summary: item.summary,
+                fullText: item.fullText,
+                directionForSpent: item.directionForSpent,
             }
-
-
             return prisma.grants.create({
                 data: data
             }).then(() => {
