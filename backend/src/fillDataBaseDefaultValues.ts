@@ -1,8 +1,37 @@
 import {PrismaClient} from "@prisma/client";
 import md5 from "md5";
 
-(async function(){
+const set_resources_access = async (prisma:PrismaClient)=>{
+    const paths = [
+        "/v1/resources/addRoleAccess",
+        "/v1/users/login",
+        "/v1/users",
+        "/v1/grants/add",
+        "/v1/grants/get",
+        "/v1/grants/delete",
+        "/v1/grants/update",
+        "/v1/roles/add",
+        "/v1/roles/get",
+        "/v1/roles/delete",
+    ]
 
+    try{
+        for (const path of paths) {
+            await prisma.resources_access.create({
+                data:{
+                    path:path,
+                }
+            })
+        }
+    }
+    catch (e) {
+        console.log(e);
+    }
+    console.log('Created default resources access')
+}
+
+// TODO: Вынести все в отдельные функции
+(async function(){
     const prisma = new PrismaClient()
 
     try{
@@ -59,41 +88,7 @@ import md5 from "md5";
 
     console.log('Created default admin user')
 
-
-    const paths = [
-        "/v1/resources/addRoleAccess",
-        "/v1/users/add",
-        "/v1/users/get",
-        "/v1/users/delete",
-        "/v1/users/update",
-        "/v1/grants/add",
-        "/v1/grants/get",
-        "/v1/grants/delete",
-        "/v1/grants/update",
-        "/v1/roles/add",
-        "/v1/roles/get",
-        "/v1/roles/delete",
-    ]
-
-    try{
-        for (const path of paths) {
-            await prisma.resources_access.create({
-                data:{
-                    path:path,
-                    role: {
-                        connect:{
-                            id:role?.id
-                        }
-                    }
-                }
-            })
-        }
-    }
-    catch (e) {
-        console.log(e);
-    }
-    console.log('Created default resources access')
-
+    await set_resources_access(prisma)
 
     const parsersParams = [
         {

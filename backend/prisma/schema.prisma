@@ -166,8 +166,9 @@ model whitelist {
 model resources_access {
   id     Int        @id @unique @default(autoincrement())
   path   String
-  role   users_role @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  roleId Int
+  method String     @default("*")
+  role   users_role? @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId Int?
 }
 
 model parsers {
