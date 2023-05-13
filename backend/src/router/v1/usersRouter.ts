@@ -74,7 +74,7 @@ usersRouter.post(base_url, async (req:express.Request, res:express.Response) => 
     return res.status(200).json({message: 'Пользователь успешно добавлен'})
 })
 
-usersRouter.get(base_url, async (req:express.Request, res:express.Response) => {
+usersRouter.post(base_url + "/get", async (req:express.Request, res:express.Response) => {
 
     await check('skip', 'skip должен быть числом')
         .isNumeric()
@@ -87,24 +87,27 @@ usersRouter.get(base_url, async (req:express.Request, res:express.Response) => {
     if(!errors.isEmpty()){
         return res.status(422).json({errors: errors.array()});
     }
-    let users = await prisma.users.findMany({
-        skip: req.body.skip || 0,
-        take: req.body.take || 10,
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            role: {
-                select: {
-                    id: true,
-                    name: true
+    try {
+        let users = await prisma.users.findMany({
+            skip: req.body.skip || 0,
+            take: req.body.take || 10,
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
                 }
-            }
-        },
-        where: req.body.where || {}
-    });
-
-    return res.status(200).json(users);
+            },
+            where: req.body.where || {}
+        });
+        return res.status(200).json(users);
+    } catch (e) {
+        return res.status(500).json({errors: [{msg: 'Ошибка при получении пользователей'}]});
+    }
 });
 
 usersRouter.delete(base_url, async (req:express.Request, res:express.Response) => {

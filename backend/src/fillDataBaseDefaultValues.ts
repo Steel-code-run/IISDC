@@ -6,6 +6,7 @@ const set_resources_access = async (prisma:PrismaClient)=>{
         "/v1/resources/addRoleAccess",
         "/v1/users/login",
         "/v1/users",
+        "/v1/users/get",
         "/v1/grants/add",
         "/v1/grants/get",
         "/v1/grants/delete",
