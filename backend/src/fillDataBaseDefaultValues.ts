@@ -30,7 +30,29 @@ const set_resources_access = async (prisma:PrismaClient)=>{
     console.log('Created default resources access')
 }
 
-// TODO: Вынести все в отдельные функции
+const set_whitelist = async (prisma:PrismaClient)=>{
+    const origins = [
+        "localhost",
+        "0.0.0.0",
+        "127.0.0.1"
+    ]
+
+    for (const origin of origins) {
+        try{
+            await prisma.whitelist.create({
+                data:{
+                    origin:origin
+                }
+            })
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+    console.log('Created default whitelist')
+}
+
+// Надо потом вынести все в отдельные функции
 (async function(){
     const prisma = new PrismaClient()
 
@@ -42,18 +64,8 @@ const set_resources_access = async (prisma:PrismaClient)=>{
         return
     }
 
+    await set_whitelist(prisma)
 
-    try{
-        await prisma.whitelist.create({
-            data:{
-                origin:"localhost"
-            }
-        })
-    }
-    catch (e) {
-        console.log(e);
-    }
-    console.log('Created default whitelist')
     let role = null
     try{
         role = await prisma.users_role.create({
