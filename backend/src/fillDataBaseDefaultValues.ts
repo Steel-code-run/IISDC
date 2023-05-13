@@ -28,7 +28,6 @@ const set_resources_access = async (prisma:PrismaClient)=>{
     catch (e) {
         console.log(e);
     }
-    console.log('Created default resources access')
 }
 
 const set_whitelist = async (prisma:PrismaClient)=>{
@@ -50,59 +49,65 @@ const set_whitelist = async (prisma:PrismaClient)=>{
             console.log(e);
         }
     }
-    console.log('Created default whitelist')
 }
 
-// Надо потом вынести все в отдельные функции
-(async function(){
-    const prisma = new PrismaClient()
+const set_roles = async (prisma:PrismaClient)=>{
+    const roles = [
+        'admin',
+        'user'
+    ]
 
-    try{
-        await prisma.$connect()
-        console.log('Connected to database')
-    } catch (e) {
-        console.log(e);
-        return
+    for (const role of roles) {
+        try{
+            await prisma.users_role.create({
+                data:{
+                    name:role
+                }
+            })
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
+}
 
-    await set_whitelist(prisma)
-
-    let role = null
-    try{
-        role = await prisma.users_role.create({
-            data:{
-                name:"admin"
-            }
-        })
-    }
-    catch (e) {
-        console.log(e);
-    }
-
-    console.log('Created default admin role')
-
-    try{
-        const user = await prisma.users.create({
-            data:{
-                name:"admin",
-                email:"",
-                password:md5("rootroot"),
-                role:{
-                    connect:{
-                        name:"admin"
-                    }
+const set_users = async (prisma:PrismaClient)=>{
+    const users = [
+        {
+            name:"admin",
+            email:"VeryCoolAdminEmail@cool.ru",
+            password:md5("rootroot"),
+            role:{
+                connect:{
+                    name:"admin"
                 }
             }
-        })
+        },
+        {
+            name:"user",
+            email:"VeryCoolUserEmail@cool.ru",
+            password:md5("rootroot"),
+            role:{
+                connect:{
+                    name:"user"
+                }
+            }
+        }
+    ]
+
+    for (const user of users) {
+        try{
+            await prisma.users.create({
+                data:user
+            })
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
-    catch (e) {
-        console.log(e);
-    }
+}
 
-    console.log('Created default admin user')
-
-    await set_resources_access(prisma)
-
+const set_parsers = async (prisma:PrismaClient)=>{
     const parsersParams = [
         {
             name:"fasie",
@@ -364,7 +369,9 @@ const set_whitelist = async (prisma:PrismaClient)=>{
         console.log(e);
     }
 
-    console.log("created parsers");
+}
+
+const set_settings = async (prisma:PrismaClient) => {
     try {
         await prisma.appSettings.create({
             data: {
@@ -379,6 +386,41 @@ const set_whitelist = async (prisma:PrismaClient)=>{
     } catch (e) {
         console.log(e);
     }
-    console.log("created appSettings");
+}
+
+(async function(){
+    const prisma = new PrismaClient()
+
+    try{
+        await prisma.$connect()
+        console.log('Connected to database')
+    } catch (e) {
+        console.log(e);
+        return
+    }
+
+    console.log("установка whitelist...")
+    await prisma.whitelist.deleteMany();
+    await set_whitelist(prisma)
+
+    console.log("установка resources_access...")
+    await prisma.resources_access.deleteMany();
+    await set_resources_access(prisma)
+
+    console.log("установка roles...")
+    await prisma.users_role.deleteMany();
+    await set_roles(prisma)
+
+    console.log("установка users...")
+    await prisma.users.deleteMany();
+    await set_users(prisma)
+
+    console.log("установка parsers...")
+    await prisma.parsers.deleteMany();
+    await set_parsers(prisma)
+
+    console.log("установка appSettings...")
+    await prisma.appSettings.deleteMany();
+    await set_settings(prisma)
 })()
 
