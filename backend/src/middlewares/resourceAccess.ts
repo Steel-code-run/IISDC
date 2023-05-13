@@ -24,6 +24,8 @@ export default async function(req: CustomRequest, res: express.Response, next: e
         } else {
             return res.status(403).json({errors: [{msg: 'Доступ запрещен'}]});
         }
+    } else {
+        return res.status(404).json({errors: [{msg: 'Ресурс не найден'}]});
     }
 
     next();
