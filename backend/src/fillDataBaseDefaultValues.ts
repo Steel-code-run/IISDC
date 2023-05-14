@@ -1,71 +1,12 @@
 import {PrismaClient} from "@prisma/client";
 import md5 from "md5";
 
-(async function(){
-
-    const prisma = new PrismaClient()
-
-    try{
-        await prisma.$connect()
-        console.log('Connected to database')
-    } catch (e) {
-        console.log(e);
-        return
-    }
-
-
-    try{
-        await prisma.whitelist.create({
-            data:{
-                origin:"localhost"
-            }
-        })
-    }
-    catch (e) {
-        console.log(e);
-    }
-    console.log('Created default whitelist')
-    let role = null
-    try{
-        role = await prisma.users_role.create({
-            data:{
-                name:"admin"
-            }
-        })
-    }
-    catch (e) {
-        console.log(e);
-    }
-
-    console.log('Created default admin role')
-
-    try{
-        const user = await prisma.users.create({
-            data:{
-                name:"admin",
-                email:"",
-                password:md5("rootroot"),
-                role:{
-                    connect:{
-                        name:"admin"
-                    }
-                }
-            }
-        })
-    }
-    catch (e) {
-        console.log(e);
-    }
-
-    console.log('Created default admin user')
-
-
+const set_resources_access = async (prisma:PrismaClient)=>{
     const paths = [
         "/v1/resources/addRoleAccess",
-        "/v1/users/add",
+        "/v1/users/login",
+        "/v1/users",
         "/v1/users/get",
-        "/v1/users/delete",
-        "/v1/users/update",
         "/v1/grants/add",
         "/v1/grants/get",
         "/v1/grants/delete",
@@ -80,11 +21,6 @@ import md5 from "md5";
             await prisma.resources_access.create({
                 data:{
                     path:path,
-                    role: {
-                        connect:{
-                            id:role?.id
-                        }
-                    }
                 }
             })
         }
@@ -92,9 +28,86 @@ import md5 from "md5";
     catch (e) {
         console.log(e);
     }
-    console.log('Created default resources access')
+}
 
+const set_whitelist = async (prisma:PrismaClient)=>{
+    const origins = [
+        "localhost",
+        "0.0.0.0",
+        "127.0.0.1"
+    ]
 
+    for (const origin of origins) {
+        try{
+            await prisma.whitelist.create({
+                data:{
+                    origin:origin
+                }
+            })
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+}
+
+const set_roles = async (prisma:PrismaClient)=>{
+    const roles = [
+        'admin',
+        'user'
+    ]
+
+    for (const role of roles) {
+        try{
+            await prisma.users_role.create({
+                data:{
+                    name:role
+                }
+            })
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+}
+
+const set_users = async (prisma:PrismaClient)=>{
+    const users = [
+        {
+            name:"admin",
+            email:"VeryCoolAdminEmail@cool.ru",
+            password:md5("rootroot"),
+            role:{
+                connect:{
+                    name:"admin"
+                }
+            }
+        },
+        {
+            name:"user",
+            email:"VeryCoolUserEmail@cool.ru",
+            password:md5("rootroot"),
+            role:{
+                connect:{
+                    name:"user"
+                }
+            }
+        }
+    ]
+
+    for (const user of users) {
+        try{
+            await prisma.users.create({
+                data:user
+            })
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+}
+
+const set_parsers = async (prisma:PrismaClient)=>{
     const parsersParams = [
         {
             name:"fasie",
@@ -356,7 +369,9 @@ import md5 from "md5";
         console.log(e);
     }
 
-    console.log("created parsers");
+}
+
+const set_settings = async (prisma:PrismaClient) => {
     try {
         await prisma.appSettings.create({
             data: {
@@ -371,6 +386,41 @@ import md5 from "md5";
     } catch (e) {
         console.log(e);
     }
-    console.log("created appSettings");
+}
+
+(async function(){
+    const prisma = new PrismaClient()
+
+    try{
+        await prisma.$connect()
+        console.log('Connected to database')
+    } catch (e) {
+        console.log(e);
+        return
+    }
+
+    console.log("установка whitelist...")
+    await prisma.whitelist.deleteMany();
+    await set_whitelist(prisma)
+
+    console.log("установка resources_access...")
+    await prisma.resources_access.deleteMany();
+    await set_resources_access(prisma)
+
+    console.log("установка roles...")
+    await prisma.users_role.deleteMany();
+    await set_roles(prisma)
+
+    console.log("установка users...")
+    await prisma.users.deleteMany();
+    await set_users(prisma)
+
+    console.log("установка parsers...")
+    await prisma.parsers.deleteMany();
+    await set_parsers(prisma)
+
+    console.log("установка appSettings...")
+    await prisma.appSettings.deleteMany();
+    await set_settings(prisma)
 })()
 
