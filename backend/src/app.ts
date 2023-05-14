@@ -21,7 +21,6 @@ const port = process.env.PORT || 3003;
 
 // Пока связи с бд нет, приложение не запускается
 connect().then(async _ => {
-	console.log("connected to db")
 
 	const corsOptions = {
 		credentials: true, //access-control-allow-credentials:true,
