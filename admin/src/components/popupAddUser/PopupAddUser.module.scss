@@ -1,0 +1,40 @@
+.popupAddUser {
+	position: relative;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 10px;
+	background-color: #fff;
+	max-width: 500px;
+	height: auto;
+
+
+	&__form {
+		min-height: 300px;
+		padding: 30px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 50px 0;
+
+
+		&__select {
+			color: #000;
+		}
+		& input {
+
+			width: 100%;
+		}
+
+		&__btn {
+			width: fit-content;
+			align-self: center;
+		}
+	}
+
+	&__fields {
+		display: flex;
+		flex-direction: column;
+		gap: 30px 0;
+	}
+}
