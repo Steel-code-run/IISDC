@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import styles from './PopupAddUser.module.scss'
 import {useForm} from "react-hook-form";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import axios from "axios";
 
 const PopupAddUser = ({isOpen, setIsOpen}) => {
 
@@ -11,7 +12,20 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
             errors
         }, handleSubmit
     } = useForm();
-    const onSubmit = data => console.log(data);
+    const onSubmit = async data => {
+        console.log(data)
+        if (!errors?.message) {
+            setIsOpen(!isOpen);
+            const res = await axios.post('http://localhost:3000/v1/users', {
+                ...data
+            }, {
+                headers: {
+                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJpZCI6MiwiaWF0IjoxNjg0MzYyMzQ3LCJleHAiOjE2ODQ0NDg3NDd9.7bRwiVgwDrGwyq9B-eW9m9XMCCBuIv--1zvzW_i0nu0'
+                }
+            });
+            console.log(res)
+        }
+    };
 
     return (
         <div className={styles.popupAddUser}>
@@ -21,25 +35,39 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
                     <label>
                         <TextField
                             id="standard-basic"
-                            label="Standard"
+                            label="Ф.И.О"
                             error={errors}
-                            fullWidth={'100%'}
-                            placeholder={'Ф.И.О'}
+                            fullWidth={true}
+                            type={'text'}
                             variant="standard" {...register("name", {required: true})}/>
+                        {errors.name && errors.name.type === "required" && <span>Это поле обязательно</span>}
+                    </label>
+                    <label>
+
+                        <TextField
+                            id="standard-basic"
+                            label="Email"
+                            error={errors}
+                            fullWidth={true}
+                            type={'email'}
+                            variant="standard" {...register("email", {required: true})} />
+                        {errors.name && errors.name.type === "required" && <span>Это поле обязательно</span>}
                     </label>
                     <label>
                         <TextField
                             id="standard-basic"
-                            label="Standard"
+                            label="Пароль"
                             error={errors}
-                            fullWidth={'100%'}
-                            type={'email'}
-                            variant="standard" {...register("email", {required: true})} />
+                            fullWidth={true}
+                            type={'password'}
+                            variant="standard" {...register("password", {required: true})} />
+                        {errors.name && errors.name.type === "required" && <span>Это поле обязательно</span>}
                     </label>
 
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Выбрать роль</InputLabel>
                         <Select
+                            {...register("role")}
                             size={'small'}
                             variant={'standard'}
                             placeholder={'Выберите роль'}
@@ -50,16 +78,15 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
                             className={styles.popupAddUser__form__select}
                             onChange={(e) => setSelectedRole(e.target.value)}
                         >
-                            <MenuItem value={'Админ'}>Админ</MenuItem>
-                            <MenuItem value={'Пользователь'}>Пользователь</MenuItem>
+                            <MenuItem value={2}>Админ</MenuItem>
+                            <MenuItem value={3}>Пользователь</MenuItem>
                         </Select>
                     </FormControl>
                 </div>
 
                 <Button variant={'outlined'}
                         className={styles.popupAddUser__form__btn}
-                        type={"submit"}
-                        onClick={() => setIsOpen(!isOpen)}>Создать пользователя</Button>
+                        type={"submit"}>Создать пользователя</Button>
             </form>
         </div>
     );

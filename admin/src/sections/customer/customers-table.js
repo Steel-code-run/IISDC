@@ -67,7 +67,6 @@ export const CustomersTable = (props) => {
               {items.length > 0 && items?.map((customer) => {
                 const isSelected = selected.includes(customer.id);
 
-                console.log(customer)
                 return (
                   <TableRow
                     hover

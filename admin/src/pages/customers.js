@@ -75,7 +75,6 @@ const Page = () => {
 
             setUsers(response.data);
             setStatus(response.status);
-            console.log(response)
         }
 
         fetchData()
