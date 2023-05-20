@@ -9,8 +9,8 @@ import {applyPagination} from 'src/utils/apply-pagination';
 import {createPortal} from "react-dom";
 import PopupAddUser from "../components/popupAddUser/PopupAddUser";
 import Overlay from "../hocs/Overlay/Overlay";
-import {useQuery} from "@tanstack/react-query";
-import {responseUser} from "../api/userResponses";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {deleteUser, responseUser} from "../api/userResponses";
 import {useSelection} from "../hooks/use-selection";
 
 // const data = [
@@ -60,6 +60,12 @@ const Page = () => {
         () => responseUser(page*rowsPerPage, rowsPerPage),
 
     )
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation(
+        (delUser) => deleteUser(delUser), {
+            onSuccess: () => queryClient.invalidateQueries(["users"])
+        });
 
     const {data} = useQuery(
         ['usersLength'],
@@ -167,6 +173,7 @@ const Page = () => {
                                 page={page}
                                 rowsPerPage={rowsPerPage}
                                 selected={customersSelection.selected}
+                                deleteRowHandle={mutation.mutate}
                             />
                         }
                     </Stack>

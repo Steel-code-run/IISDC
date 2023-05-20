@@ -13,6 +13,7 @@ import {
     Typography
 } from '@mui/material';
 import {Scrollbar} from 'src/components/scrollbar';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export const CustomersTable = (props) => {
   const {
@@ -26,7 +27,8 @@ export const CustomersTable = (props) => {
     onSelectOne,
     page = 0,
     rowsPerPage = 0,
-    selected = []
+    selected = [],
+      deleteRowHandle
   } = props;
 
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
@@ -61,6 +63,9 @@ export const CustomersTable = (props) => {
                 <TableCell>
                   Role
                 </TableCell>
+                  <TableCell>
+
+                  </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -107,6 +112,10 @@ export const CustomersTable = (props) => {
                     <TableCell>
                       {customer.role.name}
                     </TableCell>
+
+                      <TableCell>
+                          <DeleteIcon onClick={() => deleteRowHandle({id: customer.id})} style={{cursor:' pointer'}}/>
+                      </TableCell>
 
                   </TableRow>
                 );

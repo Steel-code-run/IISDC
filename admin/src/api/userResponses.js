@@ -1,5 +1,7 @@
 import axios from "axios";
 
+
+export const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJpZCI6MiwiaWF0IjoxNjg0MDczMzIwLCJleHAiOjE2ODQxNTk3MjB9.jceAzQVla2WAfPMB1mctsqGSETYwzlIspBfqEQMqUpo'
 export const responseUser = async (page, rowsPerPage) => {
      const {data} = await axios.post('http://localhost:3000/v1/users/get', {
             skip: page,
@@ -10,8 +12,8 @@ export const responseUser = async (page, rowsPerPage) => {
         },
         {
             headers: {
-                'Authorization': 'Bearer ' +
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJpZCI6MiwiaWF0IjoxNjg0MDczMzIwLCJleHAiOjE2ODQxNTk3MjB9.jceAzQVla2WAfPMB1mctsqGSETYwzlIspBfqEQMqUpo'
+                'Authorization': 'Bearer ' + token
+
             }
 
         });
@@ -24,7 +26,18 @@ export const addUser = async (data) => {
         ...data
     }, {
         headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJpZCI6MiwiaWF0IjoxNjg0MzYyMzQ3LCJleHAiOjE2ODQ0NDg3NDd9.7bRwiVgwDrGwyq9B-eW9m9XMCCBuIv--1zvzW_i0nu0'
+            Authorization: 'Bearer ' + token
         }
     });
+}
+
+export const deleteUser = async ({id}) => {
+    return await axios.delete('http://localhost:3000/v1/users', {
+        data: {
+            id
+        },
+        headers: {
+            Authorization: 'Bearer ' + token
+        }
+    })
 }
