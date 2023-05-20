@@ -1,16 +1,17 @@
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import {Box, Button, Container, Stack, SvgIcon, Typography} from '@mui/material';
-import {useSelection} from 'src/hooks/use-selection';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {CustomersTable} from 'src/sections/customer/customers-table';
 import {CustomersSearch} from 'src/sections/customer/customers-search';
 import {applyPagination} from 'src/utils/apply-pagination';
-import axios from "axios";
 import {createPortal} from "react-dom";
 import PopupAddUser from "../components/popupAddUser/PopupAddUser";
 import Overlay from "../hocs/Overlay/Overlay";
+import {useQuery} from "@tanstack/react-query";
+import {responseUser} from "../api/userResponses";
+import {useSelection} from "../hooks/use-selection";
 
 // const data = [
 //     {
@@ -42,7 +43,7 @@ const useCustomers = (data, page, rowsPerPage) => {
 const useCustomerIds = (customers) => {
     return useMemo(
         () => {
-            return customers.map((customer) => customer.id);
+            return customers?.map((customer) => customer.id);
         },
         [customers]
     );
@@ -51,44 +52,33 @@ const useCustomerIds = (customers) => {
 
 const Page = () => {
     const portalPopup = document?.getElementById('portal');
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(3);
 
-    const [users, setUsers] = useState([]);
-    const [status, setStatus] = useState(0);
+    const {data: users, status, isLoading, isError} = useQuery(
+        ['users', page, rowsPerPage],
+        () => responseUser(page*rowsPerPage, rowsPerPage),
+
+    )
+
+    const {data} = useQuery(
+        ['usersLength'],
+        () => responseUser(0, 0)
+    )
+
+
     const [isOpen, setIsOpen] = useState(false);
 
-    useEffect(() => {
-        async function fetchData() {
-            const response = await axios.post('http://localhost:3000/v1/users/get', {
-                    skip: 0,
-                    take: 0,
-                    where: {
-                        // name: "admin"
-                    }
-                },
-                {
-                    headers: {
-                        'Authorization': 'Bearer ' +
-                            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJpZCI6MiwiaWF0IjoxNjg0MDczMzIwLCJleHAiOjE2ODQxNTk3MjB9.jceAzQVla2WAfPMB1mctsqGSETYwzlIspBfqEQMqUpo'
-                    }
-
-                });
-
-            setUsers(response.data);
-            setStatus(response.status);
-        }
-
-        fetchData()
-    }, [])
-
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
     const customers = useCustomers(users, page, rowsPerPage);
     const customersIds = useCustomerIds(customers);
-    const customersSelection = useSelection(customersIds);
+    const customersSelection
+        = useSelection(customersIds);
+
 
     const handlePageChange = useCallback(
         (event, value) => {
             setPage(value);
+
         },
         []
     );
@@ -96,9 +86,18 @@ const Page = () => {
     const handleRowsPerPageChange = useCallback(
         (event) => {
             setRowsPerPage(event.target.value);
+
         },
         []
     );
+
+    if (isLoading) {
+        return <h1>Загрузка...</h1>
+    }
+    if (isError) {
+        return <h1>Ошибка...</h1>
+    }
+
 
     return (
         <>
@@ -110,7 +109,7 @@ const Page = () => {
             }
             <Head>
                 <title>
-                    Customers | Devias Kit
+                    Customers
                 </title>
             </Head>
             <Box
@@ -155,10 +154,10 @@ const Page = () => {
                         </Stack>
                         <CustomersSearch/>
                         {
-                            (status === 200 && customers.length > 0) &&
+                            (status === "success" && users.length > 0) &&
                             <CustomersTable
-                                count={customers.length}
-                                items={customers}
+                                count={data?.length}
+                                items={[...users].reverse()}
                                 onDeselectAll={customersSelection.handleDeselectAll}
                                 onDeselectOne={customersSelection.handleDeselectOne}
                                 onPageChange={handlePageChange}

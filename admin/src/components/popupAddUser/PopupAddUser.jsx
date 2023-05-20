@@ -2,28 +2,29 @@ import React, {useState} from 'react';
 import styles from './PopupAddUser.module.scss'
 import {useForm} from "react-hook-form";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
-import axios from "axios";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {addUser} from "../../api/userResponses";
 
 const PopupAddUser = ({isOpen, setIsOpen}) => {
-
     const [selectedRole, setSelectedRole] = useState('');
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation(
+        (newUser) => addUser(newUser), {
+            onSuccess: () => queryClient.invalidateQueries(["users"])
+        });
+
     const {
         register, formState: {
             errors
         }, handleSubmit
     } = useForm();
     const onSubmit = async data => {
-        console.log(data)
+
         if (!errors?.message) {
             setIsOpen(!isOpen);
-            const res = await axios.post('http://localhost:3000/v1/users', {
-                ...data
-            }, {
-                headers: {
-                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJpZCI6MiwiaWF0IjoxNjg0MzYyMzQ3LCJleHAiOjE2ODQ0NDg3NDd9.7bRwiVgwDrGwyq9B-eW9m9XMCCBuIv--1zvzW_i0nu0'
-                }
-            });
-            console.log(res)
+            mutation.mutate(data)
+
         }
     };
 

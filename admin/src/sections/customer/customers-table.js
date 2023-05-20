@@ -20,7 +20,7 @@ export const CustomersTable = (props) => {
     items = [],
     onDeselectAll,
     onDeselectOne,
-    onPageChange = () => {},
+    onPageChange,
     onRowsPerPageChange,
     onSelectAll,
     onSelectOne,
@@ -65,6 +65,7 @@ export const CustomersTable = (props) => {
             </TableHead>
             <TableBody>
               {items.length > 0 && items?.map((customer) => {
+
                 const isSelected = selected.includes(customer.id);
 
                 return (
@@ -121,7 +122,7 @@ export const CustomersTable = (props) => {
         onRowsPerPageChange={onRowsPerPageChange}
         page={page}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[2, 3, 5, 10, 25]}
       />
     </Card>
   );

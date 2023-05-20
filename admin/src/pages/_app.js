@@ -9,8 +9,10 @@ import {useNProgress} from 'src/hooks/use-nprogress';
 import {createTheme} from 'src/theme';
 import {createEmotionCache} from 'src/utils/create-emotion-cache';
 import 'simplebar-react/dist/simplebar.min.css';
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
 const clientSideEmotionCache = createEmotionCache();
+const queryClient = new QueryClient()
 
 const SplashScreen = () => null;
 
@@ -34,6 +36,7 @@ const App = (props) => {
           content="initial-scale=1, width=device-width"
         />
       </Head>
+      <QueryClientProvider client={queryClient}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <AuthProvider>
           <ThemeProvider theme={theme}>
@@ -48,6 +51,7 @@ const App = (props) => {
           </ThemeProvider>
         </AuthProvider>
       </LocalizationProvider>
+      </QueryClientProvider>
     </CacheProvider>
   );
 };
