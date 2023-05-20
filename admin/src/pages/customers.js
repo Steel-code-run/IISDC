@@ -53,7 +53,7 @@ const useCustomerIds = (customers) => {
 const Page = () => {
     const portalPopup = document?.getElementById('portal');
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(3);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const {data: users, status, isLoading, isError} = useQuery(
         ['users', page, rowsPerPage],
@@ -115,7 +115,7 @@ const Page = () => {
             }
             <Head>
                 <title>
-                    Customers
+                    Пользователи
                 </title>
             </Head>
             <Box
@@ -134,7 +134,7 @@ const Page = () => {
                         >
                             <Stack spacing={1}>
                                 <Typography variant="h4">
-                                    Customers
+                                    Пользователи
                                 </Typography>
                                 <Stack
                                     alignItems="center"
@@ -154,7 +154,7 @@ const Page = () => {
                                     )}
                                     variant="contained"
                                 >
-                                    Add
+                                    Добавить пользователя
                                 </Button>
                             </div>
                         </Stack>

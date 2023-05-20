@@ -37,7 +37,7 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
                         <TextField
                             id="standard-basic"
                             label="Ф.И.О"
-                            error={errors}
+                            error={!!errors}
                             fullWidth={true}
                             type={'text'}
                             variant="standard" {...register("name", {required: true})}/>
@@ -48,7 +48,7 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
                         <TextField
                             id="standard-basic"
                             label="Email"
-                            error={errors}
+                            error={!!errors}
                             fullWidth={true}
                             type={'email'}
                             variant="standard" {...register("email", {required: true})} />
@@ -58,7 +58,7 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
                         <TextField
                             id="standard-basic"
                             label="Пароль"
-                            error={errors}
+                            error={!!errors}
                             fullWidth={true}
                             type={'password'}
                             variant="standard" {...register("password", {required: true})} />
@@ -68,7 +68,9 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Выбрать роль</InputLabel>
                         <Select
-                            {...register("role")}
+                            {...register("role", {
+                                required: true
+                            })}
                             size={'small'}
                             variant={'standard'}
                             placeholder={'Выберите роль'}
@@ -83,6 +85,7 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
                             <MenuItem value={3}>Пользователь</MenuItem>
                         </Select>
                     </FormControl>
+                        {errors.name && errors.name.type === "required" && <span>Это поле обязательно</span>}
                 </div>
 
                 <Button variant={'outlined'}

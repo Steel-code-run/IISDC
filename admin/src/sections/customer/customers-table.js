@@ -55,13 +55,13 @@ export const CustomersTable = (props) => {
                   />
                 </TableCell>
                 <TableCell>
-                  Name
+                  Имя
                 </TableCell>
                 <TableCell>
                   Email
                 </TableCell>
                 <TableCell>
-                  Role
+                  Роль
                 </TableCell>
                   <TableCell>
 

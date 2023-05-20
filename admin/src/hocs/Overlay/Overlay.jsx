@@ -9,15 +9,15 @@ const Overlay = ({children, isOpen, setIsOpen}) => {
 		}
 	}
 
-	const childrenWithProps = React.Children.map(children, child => {
-
-			return React.cloneElement(child, { isOpen, setIsOpen });
-
-	});
+	// const childrenWithProps = React.Children.map(children, child => {
+	//
+	// 		return React.cloneElement(child, { isOpen, setIsOpen });
+	//
+	// });
 	if(!isOpen) return null
 
 	return <div className={styles.overlay} onClick={checkClick}>
-		{childrenWithProps}</div>;
+		{React.cloneElement(children, { isOpen, setIsOpen })}</div>;
 };
 
 export default Overlay;
