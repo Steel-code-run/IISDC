@@ -11,6 +11,7 @@ export default async function(req: CustomRequest, res: express.Response, next: e
             },
         }
     })
+
     if (resourceAccess.length > 0) {
         for (let i = 0; i < resourceAccess.length; i++) {
             const access = resourceAccess[i];

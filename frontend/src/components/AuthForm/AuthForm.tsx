@@ -26,14 +26,14 @@ const AuthForm: FC<AuthFormProps> = () => {
     const onSubmit = async ({login, password}: IFormReceivedData) => {
 
         try {
-            const answer = await axios.post(process.env.REACT_APP_SERVER_URL+'auth/login', {
+            const answer = await axios.post(process.env.REACT_APP_SERVER_URL+'v1/users/login', {
                 name: login,
                 password: password,
-                role: 1
             })
-            const token = answer.headers.authorization.replace('Bearer ', '')
+            console.log(answer)
+            const token = answer.data.token.replace('Bearer ', '')
             window.localStorage.setItem("token", token)
-            if(answer.data.message === 'success') navigate('/grants')
+            if(answer.status === 200) navigate('/grants')
 
         } catch (err: any) {
             if(err) {
