@@ -9,9 +9,10 @@ import {applyPagination} from 'src/utils/apply-pagination';
 import {createPortal} from "react-dom";
 import PopupAddUser from "../components/popupAddUser/PopupAddUser";
 import Overlay from "../hocs/Overlay/Overlay";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {deleteUser, responseUser} from "../api/userResponses";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {deleteUser} from "../api/userResponses";
 import {useSelection} from "../hooks/use-selection";
+import {useUserQuery} from "../hooks/useUserQuery";
 
 // const data = [
 //     {
@@ -53,12 +54,11 @@ const useCustomerIds = (customers) => {
 const Page = () => {
     const portalPopup = document?.getElementById('portal');
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const {data: users, status, isLoading, isError} = useQuery(
-        ['users', page, rowsPerPage],
-        () => responseUser(page*rowsPerPage, rowsPerPage),
-
+    const {data: users, status, isLoading, isError} =
+        useUserQuery('users',
+        page*rowsPerPage, rowsPerPage
     )
     const queryClient = useQueryClient();
 
@@ -67,10 +67,9 @@ const Page = () => {
             onSuccess: () => queryClient.invalidateQueries(["users"])
         });
 
-    const {data} = useQuery(
-        ['usersLength'],
-        () => responseUser(0, 0)
-    )
+    const {data} = useUserQuery(
+        'usersLength',
+        0, 0)
 
 
     const [isOpen, setIsOpen] = useState(false);
