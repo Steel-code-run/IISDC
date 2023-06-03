@@ -22,7 +22,6 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
     const onSubmit = async data => {
         try {
             const ans = await mutation.mutateAsync(data);
-            console.log(ans)
             if(ans.errors) {
                 setErrorOnServer(ans.errors)
             }
@@ -37,6 +36,7 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
 
     };
 
+    const isFormValid = Object.keys(errors).length === 0;
 
     return (
         <div className={styles.popupAddUser}>
@@ -117,7 +117,9 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
 
                 <Button variant={'outlined'}
                         className={styles.popupAddUser__form__btn}
-                        type={"submit"}>Создать пользователя</Button>
+                        type={"submit"}
+                        disabled={!isFormValid}
+                >Создать пользователя</Button>
             </form>
         </div>
     );

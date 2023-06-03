@@ -56,3 +56,15 @@ export const deleteUser = async ({id}) => {
         }
     })
 }
+
+export const updateUser = async (data) => {
+    return await axios.patch(`${serverUrl}v1/users`, {
+        ...data
+    }, {
+        headers: {
+            ...defaultHeaders
+
+        }
+    })
+
+}
