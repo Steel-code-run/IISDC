@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import styles from './PopupAddUser.module.scss'
-import {useForm} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {addUser} from "../../api/userResponses";
 
 const PopupAddUser = ({isOpen, setIsOpen}) => {
-    const [selectedRole, setSelectedRole] = useState('');
+    const [errorOnServer, setErrorOnServer] = useState(null);
     const queryClient = useQueryClient();
 
     const mutation = useMutation(
@@ -17,16 +17,26 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
     const {
         register, formState: {
             errors
-        }, handleSubmit
+        }, handleSubmit, control,
     } = useForm();
     const onSubmit = async data => {
+        try {
+            const ans = await mutation.mutateAsync(data);
+            console.log(ans)
+            if(ans.errors) {
+                setErrorOnServer(ans.errors)
+            }
+            if (!errors?.message && !ans.errors) {
+                setIsOpen(!isOpen);
 
-        if (!errors?.message) {
-            setIsOpen(!isOpen);
-            mutation.mutate(data)
-
+            }
+        } catch (error) {
+            console.log('Ошибка:', error.message);
         }
+
+
     };
+
 
     return (
         <div className={styles.popupAddUser}>
@@ -37,55 +47,72 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
                         <TextField
                             id="standard-basic"
                             label="Ф.И.О"
-                            error={!!errors}
+                            error={!!errors?.name}
                             fullWidth={true}
                             type={'text'}
                             variant="standard" {...register("name", {required: true})}/>
-                        {errors.name && errors.name.type === "required" && <span>Это поле обязательно</span>}
+                        {errors.name && errors.name.type === "required" &&
+                            <span style={{color: 'red'}}>Это поле обязательно</span>}
+                        {errorOnServer && errorOnServer.find(err => err.path === 'name')
+                            && <span style={{color: 'red'}}>{errorOnServer.find(err => err.path === 'name')?.msg}</span>}
                     </label>
                     <label>
 
                         <TextField
                             id="standard-basic"
                             label="Email"
-                            error={!!errors}
+                            error={!!errors?.email}
                             fullWidth={true}
                             type={'email'}
                             variant="standard" {...register("email", {required: true})} />
-                        {errors.name && errors.name.type === "required" && <span>Это поле обязательно</span>}
+                        {errors.email && errors.email.type === "required" &&
+                            <span style={{color: 'red'}}>Это поле обязательно</span>}
+                        {errorOnServer && errorOnServer.find(err => err.path === 'email')
+                            && <span style={{color: 'red'}}>{errorOnServer.find(err => err.path === 'email')?.msg}</span>}
                     </label>
                     <label>
                         <TextField
                             id="standard-basic"
                             label="Пароль"
-                            error={!!errors}
+                            error={!!errors.password}
                             fullWidth={true}
                             type={'password'}
                             variant="standard" {...register("password", {required: true})} />
-                        {errors.name && errors.name.type === "required" && <span>Это поле обязательно</span>}
+                        {errors.password && errors.password.type === "required" &&
+                            <span style={{color: 'red'}}>Это поле обязательно</span>}
+                        {errorOnServer && errorOnServer.find(err => err.path === 'password')
+                            && <span style={{color: 'red'}}>{errorOnServer.find(err => err.path === 'password')?.msg}</span>}
                     </label>
 
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Выбрать роль</InputLabel>
-                        <Select
-                            {...register("role", {
-                                required: true
-                            })}
-                            size={'small'}
-                            variant={'standard'}
-                            placeholder={'Выберите роль'}
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            label="Выбор роли"
-                            value={selectedRole}
-                            className={styles.popupAddUser__form__select}
-                            onChange={(e) => setSelectedRole(e.target.value)}
-                        >
-                            <MenuItem value={2}>Админ</MenuItem>
-                            <MenuItem value={3}>Пользователь</MenuItem>
-                        </Select>
+                        <Controller
+                            name="role"
+                            control={control}
+                            rules={{ required: 'Выберите роль' }}
+                            render={({ field }) => (
+                                <Select
+                                    {...field}
+                                    size={'small'}
+                                    variant={'standard'}
+                                    className={styles.popupAddUser__form__select}
+                                    labelId="demo-simple-select-label"
+                                    id="role"
+                                    name={'role'}
+                                    value={field.value || ''}
+                                    label={"Выбрать роль"}
+                                    error={!!errors?.role}
+                                    onChange={(e) => {
+                                        field.onChange(e.target.value);
+                                    }}
+                                >
+                                    <MenuItem value={2}>Админ</MenuItem>
+                                    <MenuItem value={3}>Пользователь</MenuItem>
+                                </Select>
+                            )}
+                        />
+                        {errors.role && <span style={{color: 'red'}}>{errors.role.message}</span>}
                     </FormControl>
-                        {errors.name && errors.name.type === "required" && <span>Это поле обязательно</span>}
                 </div>
 
                 <Button variant={'outlined'}

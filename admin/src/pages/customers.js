@@ -72,6 +72,7 @@ const Page = () => {
         0, 0)
 
 
+
     const [isOpen, setIsOpen] = useState(false);
 
     const customers = useCustomers(users, page, rowsPerPage);
@@ -102,6 +103,7 @@ const Page = () => {
     if (isError) {
         return <h1>Ошибка...</h1>
     }
+
 
 
     return (
