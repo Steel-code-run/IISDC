@@ -6,7 +6,7 @@ export const useUserQuery = (key, ...args) => {
 
 
     return useQuery(
-        [key],
+        [key, ...args],
         () => responseUser(...args)
     )
 }

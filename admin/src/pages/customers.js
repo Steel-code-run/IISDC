@@ -56,7 +56,7 @@ const Page = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const {data: users, status, isLoading, isError} =
+    const {data: users, status, isLoading, isError } =
         useUserQuery('users',
         page*rowsPerPage, rowsPerPage
     )
