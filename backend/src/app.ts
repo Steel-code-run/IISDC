@@ -14,6 +14,7 @@ import {infinityParsingLoop} from "./model/parsers/parsesActivation";
 import settingsRouter from "./router/v1/settingsRouter";
 import parsersRouter from "./router/v1/parsersRouter";
 import infinityParsingLoopRouter from "./router/v1/infinityParsingLoopRouter";
+import {telegramBotInit} from "./telegram/init";
 
 dotenv.config();
 const app = express();
@@ -48,6 +49,10 @@ connect().then(async _ => {
 	app.use(infinityParsingLoopRouter);
 	// routes end
 
+	// init telegram
+	telegramBotInit();
+
+	// infinity parsing loop
 	infinityParsingLoop.forceStart();
 })
 
