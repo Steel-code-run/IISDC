@@ -11,7 +11,7 @@ services:
 
   backend:
     build:
-      dockerfile: ./docker/backend/Dockerfile
+      dockerfile: ./docker/prod/backend/Dockerfile
       context: ./
     restart: always
     volumes:
@@ -20,7 +20,7 @@ services:
       - '3000:3000'
     command: >
       sh -c " npm install &&  
-              npm run dev"
+              node dist/app.js"
     env_file:
       - backend/.env
     depends_on:

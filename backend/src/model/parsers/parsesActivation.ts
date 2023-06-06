@@ -125,8 +125,6 @@ class InfinityParsingLoop{
                 })
         })
     }
-
-
 }
 
 export const infinityParsingLoop = new InfinityParsingLoop()

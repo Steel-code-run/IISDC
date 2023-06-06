@@ -16,7 +16,7 @@ model grants {
   id                Int                @id @unique @default(autoincrement())
   namePost          String             @db.LongText()
   dateCreationPost  String?
-  directions        grants_direction[]
+  directions        Json?
   organization      String?
   deadline          DateTime?
   summary           String?
@@ -38,7 +38,7 @@ model competitions {
   id                       Int                    @id @unique @default(autoincrement())
   namePost                 String                 @db.VarChar(255)
   dateCreationPost         String
-  direction                competitions_direction @relation(fields: [competitions_directionId], references: [id])
+  directions               Json?
   organization             String
   deadline                 DateTime
   summary                  String
@@ -106,17 +106,9 @@ model users_actions {
 model users_telegram_settings {
   id                      Int                      @id @unique @default(autoincrement())
   workTime                DateTime
-  grants_directions       grants_direction[]
-  competitions_directions competitions_direction[]
   User_telegram           users_telegram[]
 }
 
-model grants_direction {
-  id                     Int                       @id @unique @default(autoincrement())
-  name                   String
-  Grant                  grants[]
-  User_telegram_settings users_telegram_settings[]
-}
 
 model acessing_logs {
   id     Int      @id @unique @default(autoincrement())
@@ -126,13 +118,6 @@ model acessing_logs {
   method String
   path   String
   userId Int?
-}
-
-model competitions_direction {
-  id                     Int                       @id @unique @default(autoincrement())
-  name                   String
-  User_telegram_settings users_telegram_settings[]
-  Competition            competitions[]
 }
 
 model users_role {
