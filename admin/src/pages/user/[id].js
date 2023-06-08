@@ -11,9 +11,10 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 const Page = () => {
     const router = useRouter();
     const {data, isError, isLoading} = useUserQuery('user', 0, 0, router.query.id);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-    const [successMsg, setSuccessMsg] = useState(null);
+    const [openSnackbarError, setOpenSnackbarError] = useState(false);
+    const [openSnackbarSuccess, setOpenSnackbarSuccess] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
+    const [successMsg, setSuccessMsg] = useState('');
 
     const queryClient = useQueryClient();
 
@@ -29,15 +30,15 @@ const Page = () => {
         {
             onSuccess: (res) => {
                 queryClient.invalidateQueries(["users"]);
-                setOpenSnackbar(true);
+                setOpenSnackbarSuccess(true);
                 setSuccessMsg(res.data.message);
                 console.log(res.data.message)
 
             },
             onError: (err) => {
-                setOpenSnackbar(true);
+                setOpenSnackbarError(true);
                 console.log(err)
-                setSnackbarMessage(err.response.data.errors[0].msg)
+                setErrorMsg(err.response.data.errors[0].msg)
 
             },
 
@@ -51,7 +52,8 @@ const Page = () => {
         setIsEditing(!isEditing)
     }
     const handleCloseSnackbar = () => {
-        setOpenSnackbar(false)
+        setOpenSnackbarSuccess(false);
+        setOpenSnackbarError(false)
     }
 
     const handleChangeDataUser = (e) => {
@@ -67,6 +69,7 @@ const Page = () => {
     }
 
 
+   // console.log(snackbarMessage, successMsg)
 
     return (
         <>
@@ -156,9 +159,9 @@ const Page = () => {
                 </Container>
             </Box>
             {
-                snackbarMessage &&
-                <Snackbar open={openSnackbar}
-                          autoHideDuration={5000}
+                errorMsg &&
+                <Snackbar open={openSnackbarError}
+                          autoHideDuration={2000}
                           anchorOrigin={{
                               vertical: 'bottom',
                               horizontal: 'right',
@@ -173,14 +176,14 @@ const Page = () => {
                             color: '#fff'
                         }
                     }}>
-                        {snackbarMessage}
+                        {errorMsg}
                     </Alert>
                 </Snackbar>
             }
             {
-                successMsg &&
-                <Snackbar open={openSnackbar}
-                          autoHideDuration={5000}
+                openSnackbarSuccess &&
+                <Snackbar open={openSnackbarSuccess}
+                          autoHideDuration={2000}
                           anchorOrigin={{
                               vertical: 'bottom',
                               horizontal: 'right',
