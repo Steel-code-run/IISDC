@@ -56,7 +56,7 @@ const Page = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const {data: users, status, isLoading, isError} =
+    const {data: users, status, isLoading, isError } =
         useUserQuery('users',
         page*rowsPerPage, rowsPerPage
     )
@@ -70,6 +70,7 @@ const Page = () => {
     const {data} = useUserQuery(
         'usersLength',
         0, 0)
+
 
 
     const [isOpen, setIsOpen] = useState(false);
@@ -102,6 +103,7 @@ const Page = () => {
     if (isError) {
         return <h1>Ошибка...</h1>
     }
+
 
 
     return (

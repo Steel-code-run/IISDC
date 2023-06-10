@@ -36,7 +36,7 @@
     "react-apexcharts": "1.4.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
-    "sass": "^1.62.1",
+    "sass": "^1.63.2",
     "simplebar-react": "^3.2.1",
     "yup": "1.0.0"
   },

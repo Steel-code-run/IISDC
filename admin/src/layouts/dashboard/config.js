@@ -1,5 +1,6 @@
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import {SvgIcon} from '@mui/material';
+import {CogIcon} from "@heroicons/react/20/solid";
 
 export const items = [
   // {
@@ -12,12 +13,30 @@ export const items = [
   //   )
   // },
   {
-    title: 'Customers',
+    title: 'Пользователи',
     path: '/customers',
     icon: (
       <SvgIcon fontSize="small">
         <UsersIcon />
       </SvgIcon>
+    )
+  },
+  {
+    title: 'Роли',
+    path: '/customers/roles',
+    icon: (
+        <SvgIcon fontSize="small">
+          {/*<UsersIcon />*/}
+        </SvgIcon>
+    )
+  },
+  {
+    title: 'Скрыте статьи',
+    path: '/blackList',
+    icon: (
+        <SvgIcon fontSize="small">
+          <UsersIcon />
+        </SvgIcon>
     )
   },
   // {
@@ -38,15 +57,15 @@ export const items = [
   //     </SvgIcon>
   //   )
   // },
-  // {
-  //   title: 'Settings',
-  //   path: '/settings',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <CogIcon />
-  //     </SvgIcon>
-  //   )
-  // },
+  {
+    title: 'Settings',
+    path: '/settings',
+    icon: (
+      <SvgIcon fontSize="small">
+        <CogIcon />
+      </SvgIcon>
+    )
+  },
   // {
   //   title: 'Login',
   //   path: '/auth/login',
