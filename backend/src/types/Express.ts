@@ -7,6 +7,6 @@ export interface CustomRequest extends express.Request {
     },
     // роли которым доступнен ресурс
     resourceAccess: Awaited<ReturnType<typeof prisma.resources_access.findMany>>
-    user: Awaited<ReturnType<typeof prisma.user.findFirst>>
+    user: Awaited<ReturnType<typeof prisma.users.findFirst>>
 }
 

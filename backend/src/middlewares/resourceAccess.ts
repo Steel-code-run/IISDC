@@ -19,7 +19,7 @@ export default async function(req: CustomRequest, res: express.Response, next: e
                 next();
                 return
             }
-            if (req.user?.role_id === access.roleId) {
+            if (req.user?.roleId === access.roleId) {
                 next();
                 return
             }

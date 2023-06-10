@@ -2,7 +2,7 @@ FROM node:16.19-alpine
 
 WORKDIR /app
 
-COPY ../../parsers/ /app
+COPY ./parsers/ /app
 
 RUN npm install
 
