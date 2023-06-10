@@ -13,7 +13,6 @@ import resourcesRouter from "./router/v1/resourcesRouter";
 import settingsRouter from "./router/v1/settingsRouter";
 import parsersRouter from "./router/v1/parsersRouter";
 import {telegramBotInit} from "./telegram/init";
-import {CronJob} from "cron";
 import {addJob} from "./cron/parsing";
 
 dotenv.config();
@@ -26,7 +25,6 @@ connect().then(async _ => {
 	const corsOptions = {
 		credentials: true, //access-control-allow-credentials:true,
 		exposedHeaders: 'Authorization',
-
 	};
 
 	// плагины
