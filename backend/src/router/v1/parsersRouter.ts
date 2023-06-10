@@ -1,7 +1,7 @@
 import {Router} from "express";
 import prisma from "../../prisma/connect";
 import {check, validationResult} from "express-validator";
-import {infinityParsingLoop} from "../../model/parsers/parsesActivation";
+import {addJob, updateJob} from "../../cron/parsing";
 
 const parsersRouter = Router();
 
@@ -20,6 +20,12 @@ parsersRouter.get(baseUrl, async (req, res) => {
 parsersRouter.patch(baseUrl, async (req, res) => {
     await check('id', 'Не указан id парсера')
         .isInt()
+        .run(req);
+
+    const reg_exp = new RegExp(/^(((\*\/\d{1,2})|(\d{1,2})|(\*))\s?){1,6}$/);
+    await check('cronTime', 'Неверный формат cronTime')
+        .isString()
+        .matches(reg_exp)
         .run(req);
 
     const validationErrors = validationResult(req);
@@ -46,6 +52,8 @@ parsersRouter.patch(baseUrl, async (req, res) => {
         data["isEnabled"] = req.body.isEnabled;
     if (req.body.pagesToParse)
         data["pagesToParse"] = req.body.pagesToParse;
+    if (req.body.cronTime)
+        data["cronTime"] = req.body.cronTime;
 
     await prisma.parsers.update({
         where: {
@@ -54,6 +62,13 @@ parsersRouter.patch(baseUrl, async (req, res) => {
         data: data
     });
 
+    if (req.body.isEnabled) {
+        addJob(parser.id).then();
+    }
+
+    if (req.body.cronTime){
+        updateJob(parser.id)
+    }
     return res.status(200).json({message: 'Парсер успешно обновлен'});
 
 })

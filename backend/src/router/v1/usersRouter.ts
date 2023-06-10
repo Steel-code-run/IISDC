@@ -110,6 +110,17 @@ usersRouter.post(base_url + "/get", async (req:express.Request, res:express.Resp
     }
 });
 
+usersRouter.post(base_url + "/count", async (req:express.Request, res:express.Response) => {
+    try{
+        const count = await prisma.users.count({
+            where: req.body.where || {}
+        });
+        return res.status(200).json({count: count});
+    } catch (e) {
+        return res.status(500).json({errors: [{msg: 'Ошибка при получении количества пользователей'}]});
+    }
+});
+
 usersRouter.delete(base_url, async (req:express.Request, res:express.Response) => {
 
     await check('id', 'id должен быть числом')

@@ -7,6 +7,7 @@ const set_resources_access = async (prisma:PrismaClient)=>{
         "/v1/users/login",
         "/v1/users",
         "/v1/users/get",
+        "/v1/users/count",
         "/v1/grants/add",
         "/v1/grants/get",
         "/v1/grants/delete",
@@ -14,6 +15,7 @@ const set_resources_access = async (prisma:PrismaClient)=>{
         "/v1/roles/add",
         "/v1/roles/get",
         "/v1/roles/delete",
+        "/v1/parsers"
     ]
 
     try{
@@ -159,11 +161,11 @@ const set_parsers = async (prisma:PrismaClient)=>{
         //      pagesToParse: 1,
         // isEnabled: true
         // },
-        {
-            name: "fadm.gov",
-            pagesToParse: 1,
-            isEnabled: true
-        },
+        // {
+        //     name: "fadm.gov",
+        //     pagesToParse: 1,
+        //     isEnabled: true
+        // },
         {
             name: "oreluniver",
             pagesToParse: 1,
@@ -184,21 +186,21 @@ const set_parsers = async (prisma:PrismaClient)=>{
             pagesToParse: 1,
             isEnabled: true
         },
-        {
-            name: 'фонд_культ._иниц',
-            pagesToParse: 1,
-            isEnabled: true
-        },
+        // {
+        //     name: 'фонд_культ._иниц',
+        //     pagesToParse: 1,
+        //     isEnabled: true
+        // },
         {
             name: 'президентские_гранты',
             pagesToParse: 1,
             isEnabled: true
         },
-        {
-            name: 'docs.edu.gov',
-            pagesToParse: 1,
-            isEnabled: true
-        },
+        // {
+        //     name: 'docs.edu.gov',
+        //     pagesToParse: 1,
+        //     isEnabled: true
+        // },
         {
             name: 'skyconf',
             pagesToParse: 1,
@@ -214,11 +216,11 @@ const set_parsers = async (prisma:PrismaClient)=>{
             pagesToParse: 1,
             isEnabled: true
         },
-        {
-            name: 'konkurs.rcfoundation',
-            pagesToParse: 1,
-            isEnabled: true
-        },
+        // {
+        //     name: 'konkurs.rcfoundation',
+        //     pagesToParse: 1,
+        //     isEnabled: true
+        // },
         {
             name: 'премия.мывместе',
             pagesToParse: 1,
@@ -289,11 +291,11 @@ const set_parsers = async (prisma:PrismaClient)=>{
             pagesToParse: 1,
             isEnabled: true
         },
-        {
-            name: 'project.lanbook',
-            pagesToParse: 1,
-            isEnabled: true
-        },
+        // {
+        //     name: 'project.lanbook',
+        //     pagesToParse: 1,
+        //     isEnabled: true
+        // },
         {
             name: 'rscf',
             pagesToParse: 1,
@@ -309,11 +311,11 @@ const set_parsers = async (prisma:PrismaClient)=>{
             pagesToParse: 1,
             isEnabled: true
         },
-        {
-            name: 'start.kontur',
-            pagesToParse: 1,
-            isEnabled: true
-        },
+        // {
+        //     name: 'start.kontur',
+        //     pagesToParse: 1,
+        //     isEnabled: true
+        // },
         {
             name: 'smallhomeland',
             pagesToParse: 1,
@@ -375,12 +377,8 @@ const set_settings = async (prisma:PrismaClient) => {
     try {
         await prisma.appSettings.create({
             data: {
-                id: 1,
-                parsingEnabled: false,
-                parsingInterval: new Date(1 * 3600 * 1000),
                 parsersWorkTimeStart : new Date(10 * 3600 * 1000),
                 parsersWorkTimeEnd : new Date(20 * 3600 * 1000),
-
             }
         })
     } catch (e) {
@@ -390,6 +388,7 @@ const set_settings = async (prisma:PrismaClient) => {
 
 (async function(){
     const prisma = new PrismaClient()
+
 
     try{
         await prisma.$connect()

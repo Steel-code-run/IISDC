@@ -2,22 +2,16 @@ version: '3'
 
 services:
   admin:
-    image: node:16.19.1-alpine
-    volumes:
-      - ./admin:/app
+    build:
+      dockerfile: ./docker/admin/Dockerfile
+      context: ./
+    restart: always
     ports:
-      - "8081:5000"
-    working_dir: /app
-    command:
-      - sh
-      - -c
-      - |
-        npm install
-        npm run dev
+      - "8081:3000"
 
   backend:
     build:
-      dockerfile: ./docker/backend/Dockerfile
+      dockerfile: ./docker/prod/backend/Dockerfile
       context: ./
     restart: always
     volumes:
@@ -26,7 +20,7 @@ services:
       - '3000:3000'
     command: >
       sh -c " npm install &&  
-              npm run dev"
+              node dist/app.js"
     env_file:
       - backend/.env
     depends_on:
