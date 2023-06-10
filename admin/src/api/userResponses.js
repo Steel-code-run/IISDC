@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-export const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJpZCI6MiwiaWF0IjoxNjg0MDczMzIwLCJleHAiOjE2ODQxNTk3MjB9.jceAzQVla2WAfPMB1mctsqGSETYwzlIspBfqEQMqUpo'
+export const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJpZCI6MSwiaWF0IjoxNjg2MjIxNjU5LCJleHAiOjE2ODYzMDgwNTl9.Tgr93GXpcDyreuqKHcPqpXoAL4vUp54B7C_jgAc1IJY'
 
 const defaultHeaders = {
     Authorization: 'Bearer ' + token

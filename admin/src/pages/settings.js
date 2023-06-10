@@ -3,6 +3,7 @@ import {Box, Container, Stack, Typography} from '@mui/material';
 import {SettingsNotifications} from 'src/sections/settings/settings-notifications';
 import {SettingsPassword} from 'src/sections/settings/settings-password';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
+import SettingsParsers from "../sections/settings/settings-parsers";
 
 const Page = () => (
   <>
@@ -23,6 +24,7 @@ const Page = () => (
           <Typography variant="h4">
             Settings
           </Typography>
+            <SettingsParsers/>
           <SettingsNotifications />
           <SettingsPassword />
         </Stack>
