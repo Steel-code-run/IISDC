@@ -15,6 +15,7 @@ const set_resources_access = async (prisma:PrismaClient)=>{
         "/v1/roles/add",
         "/v1/roles/get",
         "/v1/roles/delete",
+        "/v1/parsers"
     ]
 
     try{
@@ -376,12 +377,8 @@ const set_settings = async (prisma:PrismaClient) => {
     try {
         await prisma.appSettings.create({
             data: {
-                id: 1,
-                parsingEnabled: false,
-                parsingInterval: new Date(1 * 3600 * 1000),
                 parsersWorkTimeStart : new Date(10 * 3600 * 1000),
                 parsersWorkTimeEnd : new Date(20 * 3600 * 1000),
-
             }
         })
     } catch (e) {
@@ -391,6 +388,7 @@ const set_settings = async (prisma:PrismaClient) => {
 
 (async function(){
     const prisma = new PrismaClient()
+
 
     try{
         await prisma.$connect()

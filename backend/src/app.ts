@@ -10,10 +10,8 @@ import resourceAccess from "./middlewares/resourceAccess";
 import getUserFromToken from "./middlewares/getUserFromToken";
 import accessingLog from "./middlewares/acessingLog";
 import resourcesRouter from "./router/v1/resourcesRouter";
-import {infinityParsingLoop} from "./model/parsers/parsesActivation";
 import settingsRouter from "./router/v1/settingsRouter";
 import parsersRouter from "./router/v1/parsersRouter";
-import infinityParsingLoopRouter from "./router/v1/infinityParsingLoopRouter";
 import {telegramBotInit} from "./telegram/init";
 import {CronJob} from "cron";
 import {addJob} from "./cron/parsing";
@@ -48,12 +46,21 @@ connect().then(async _ => {
 	app.use(resourcesRouter);
 	app.use(settingsRouter);
 	app.use(parsersRouter);
-	app.use(infinityParsingLoopRouter);
 	// routes end
+
+	// Добавление парсеров в крон
+	const parsers = await prisma.parsers.findMany();
+	parsers.forEach(parser => {
+		if (!parser.cronTime){
+			return;
+		}
+		if (parser.isEnabled){
+			addJob(parser.id);
+		}
+	})
 
 	// init telegram
 	telegramBotInit();
-
 })
 
 app.listen(port, () => {

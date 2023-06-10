@@ -12,7 +12,7 @@ type JobData = {
 
 const jobsList:JobData[] = [];
 
-export async function addJob(parserId: number, cronTime: string = '* */5 * * *') {
+export async function addJob(parserId: number) {
 
     // Если парсер уже запущен, то не запускать его
     const isRunning = jobsList.find(job => job.parserId === parserId)?.isRunning;
@@ -30,7 +30,15 @@ export async function addJob(parserId: number, cronTime: string = '* */5 * * *')
         return
     }
 
-    const job = new CronJob(cronTime, () => {
+    if (!parser.isEnabled){
+        return
+    }
+
+    if (!parser.cronTime){
+        return
+    }
+
+    const job = new CronJob(parser.cronTime, () => {
         parse(parserId);
     });
 
@@ -53,13 +61,32 @@ export async function addJob(parserId: number, cronTime: string = '* */5 * * *')
     job.start();
 }
 
-export function updateJob(parserId: number, cronTime: string = '* */5 * * *') {
+export async function updateJob(parserId: number) {
     const job = jobsList.find(job => job.parserId === parserId);
+
+    const parser = await prisma.parsers.findFirst({
+        where:{
+            id:parserId
+        }
+    })
+
+    if (!parser){
+        return
+    }
+
+    if (!parser.isEnabled){
+        return
+    }
+
+    if (!parser.cronTime){
+        return
+    }
+
     if (job) {
-        job.Job.setTime(new CronTime(cronTime));
+        job.Job.setTime(new CronTime(parser.cronTime));
     }
     else {
-        addJob(parserId, cronTime);
+        addJob(parserId);
     }
 }
 
@@ -116,8 +143,20 @@ export function startJob(parserId: number) {
 
 const parse = async (parserId:number) => {
 
-    // 1. Получить данные из БД
-    // 2. Парсить и добавлять в БД
+    // Сверяем рабочее ли время
+    const appSettings = await prisma.appSettings.findFirst()
+    if (!appSettings){
+        return
+    }
+
+    const now = new Date()
+
+    const start = new Date(appSettings.parsersWorkTimeStart)
+    const end = new Date(appSettings.parsersWorkTimeEnd)
+    if (now < start || now > end){
+        return
+    }
+
 
     // 1. Получить данные из БД
     const parser_data = await prisma.parsers.findFirst({
@@ -131,7 +170,7 @@ const parse = async (parserId:number) => {
         console.log("Parser not found")
         return
     }
-
+    console.log("Start parsing" + parser_data.name)
     // 2. Парсить и добавлять в БД
     for (let page = 1; page <= parser_data.pagesToParse; page++) {
         try {

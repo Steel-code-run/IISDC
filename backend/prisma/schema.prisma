@@ -29,7 +29,7 @@ model grants {
   blackListed       Boolean            @default(false)
   // События редактирования
   editActions       users_actions[]
-  parser            parsers?           @relation(fields: [parser_id], references: [id])
+  parser            parsers?           @relation(fields: [parser_id], references: [id], onDelete: Cascade)
   parser_id         Int?
 }
 
@@ -48,7 +48,7 @@ model competitions {
   blackListed       Boolean            @default(false)
   // События редактирования
   editActions              users_actions[]
-  parser                   parsers?               @relation(fields: [parser_id], references: [id])
+  parser                   parsers?               @relation(fields: [parser_id], references: [id], onDelete: Cascade)
   parser_id                Int
 }
 
@@ -62,7 +62,7 @@ model users {
   blocked         Boolean         @default(false)
   User_actions    users_actions[] @relation("User_actions")
   User_actionsFor users_actions[] @relation("User_actionsFor")
-  User_telegram   users_telegram? @relation(fields: [user_telegramId], references: [id])
+  User_telegram   users_telegram? @relation(fields: [user_telegramId], references: [id], onDelete: Cascade)
   user_telegramId Int?
   acessing_log    acessing_logs[]
 }
@@ -72,7 +72,7 @@ model users_telegram {
   telegram_id String
   key         String
   User        users[]
-  settigns    users_telegram_settings? @relation(fields: [settingsId], references: [id])
+  settigns    users_telegram_settings? @relation(fields: [settingsId], references: [id], onDelete: Cascade)
   settingsId  Int?
 }
 
@@ -80,7 +80,7 @@ model users_actions {
   id                Int                 @id @unique @default(autoincrement())
   // от какого пользователя
   user_id           Int
-  user              users               @relation("User_actions", fields: [user_id], references: [id])
+  user              users               @relation("User_actions", fields: [user_id], references: [id], onDelete: Cascade)
   // информация о действии
   ip                String
   date              String
@@ -88,13 +88,13 @@ model users_actions {
   // Суда пишем о том что изменилось, что произошло, что было раньше, причину и тд
   actionDescription String?
   // с каким юзером связано действие
-  actionForUser     users?              @relation("User_actionsFor", fields: [actionForUserId], references: [id])
+  actionForUser     users?              @relation("User_actionsFor", fields: [actionForUserId], references: [id], onDelete: Cascade)
   actionForUserId   Int?
   // с каким грантом связано действие
-  Grant             grants?             @relation(fields: [grantId], references: [id])
+  Grant             grants?             @relation(fields: [grantId], references: [id], onDelete: Cascade)
   grantId           Int?
   // с каким конкурсом связано действие
-  Competition       competitions?       @relation(fields: [competitionId], references: [id])
+  Competition       competitions?       @relation(fields: [competitionId], references: [id], onDelete: Cascade)
   competitionId     Int?
 }
 
@@ -109,7 +109,7 @@ model acessing_logs {
   id     Int      @id @unique @default(autoincrement())
   ip     String
   date   DateTime
-  User   users?   @relation(fields: [userId], references: [id])
+  User   users?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   method String
   path   String
   userId Int?
@@ -160,6 +160,7 @@ model parsers {
   competition   competitions[]
   parsing_queue parsing_queue[]
   pagesToParse  Int
+  cronTime      String?
 }
 
 model parsing_queue {
@@ -173,7 +174,4 @@ model appSettings {
   id                   Int    @id @unique @default(autoincrement())
   parsersWorkTimeStart DateTime
   parsersWorkTimeEnd   DateTime
-  parsingEnabled       Boolean
-  parsingInterval      DateTime
-  intervalAddingEnabled   Boolean @default(false)
 }
