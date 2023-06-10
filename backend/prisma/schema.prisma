@@ -16,45 +16,40 @@ model grants {
   id                Int                @id @unique @default(autoincrement())
   namePost          String             @db.LongText()
   dateCreationPost  String?
-  directions        Json?
-  organization      String?
+  directions        String?
+  organization      String?           @db.LongText()
   deadline          DateTime?
   summary           String?
-  directionForSpent String?
+  directionForSpent String?       @db.LongText()
   fullText          String?            @db.LongText()
   link              String?
   linkPDF           String?
   sourceLink        String?
-  timeOfParse       DateTime
-  blackListed       Int                @default(0)
+  timeOfParse       DateTime?
+  blackListed       Boolean            @default(false)
   // События редактирования
   editActions       users_actions[]
   parser            parsers?           @relation(fields: [parser_id], references: [id])
   parser_id         Int?
-  @@fulltext([namePost, fullText])
 }
 
 model competitions {
   id                       Int                    @id @unique @default(autoincrement())
   namePost                 String                 @db.VarChar(255)
-  dateCreationPost         String
-  directions               Json?
-  organization             String
-  deadline                 DateTime
-  summary                  String
-  directionForSpent        String
-  fullText                 String                 @db.LongText()
-  link                     String
-  linkPDF                  String
-  sourceLink               String
-  timeOfParse              DateTime
-  blackListed              Int                    @default(0)
+  dateCreationPost         String?
+  directions               String?
+  organization             String? @db.LongText()
+  deadline                 DateTime?
+  fullText                 String?                 @db.LongText()
+  link                     String?
+  linkPDF                  String?
+  sourceLink               String?
+  timeOfParse              DateTime?
+  blackListed       Boolean            @default(false)
   // События редактирования
   editActions              users_actions[]
-  competitions_directionId Int
   parser                   parsers?               @relation(fields: [parser_id], references: [id])
   parser_id                Int
-  @@fulltext([namePost, fullText])
 }
 
 model users {

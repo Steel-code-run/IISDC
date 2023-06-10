@@ -15,6 +15,8 @@ import settingsRouter from "./router/v1/settingsRouter";
 import parsersRouter from "./router/v1/parsersRouter";
 import infinityParsingLoopRouter from "./router/v1/infinityParsingLoopRouter";
 import {telegramBotInit} from "./telegram/init";
+import {CronJob} from "cron";
+import {addJob} from "./cron/parsing";
 
 dotenv.config();
 const app = express();
@@ -52,8 +54,6 @@ connect().then(async _ => {
 	// init telegram
 	telegramBotInit();
 
-	// infinity parsing loop
-	infinityParsingLoop.forceStart();
 })
 
 app.listen(port, () => {
