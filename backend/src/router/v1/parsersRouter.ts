@@ -1,12 +1,13 @@
-import {Router} from "express";
+import express, {Router} from "express";
 import prisma from "../../prisma/connect";
 import {check, validationResult} from "express-validator";
 import {addJob, updateJob} from "../../cron/parsing";
+import usersRouter from "./usersRouter";
 
 const parsersRouter = Router();
 
 const baseUrl = '/v1/parsers'
-parsersRouter.get(baseUrl, async (req, res) => {
+parsersRouter.post(baseUrl, async (req, res) => {
 
 
     await check('skip', 'skip должен быть числом')
@@ -37,6 +38,17 @@ parsersRouter.get(baseUrl, async (req, res) => {
     }
 
 })
+
+usersRouter.post(baseUrl + "/count", async (req:express.Request, res:express.Response) => {
+    try{
+        const count = await prisma.parsers.count({
+            where: req.body.where || {}
+        });
+        return res.status(200).json({count: count});
+    } catch (e) {
+        return res.status(500).json({errors: [{msg: 'Ошибка при получении количества парсеров'}]});
+    }
+});
 
 parsersRouter.patch(baseUrl, async (req, res) => {
     await check('id', 'Не указан id парсера')
