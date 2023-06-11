@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
@@ -13,43 +13,43 @@ datasource db {
 }
 
 model grants {
-  id                Int                @id @unique @default(autoincrement())
-  namePost          String             @db.LongText()
+  id                Int             @id @unique @default(autoincrement())
+  namePost          String          @db.LongText()
   dateCreationPost  String?
   directions        String?
-  organization      String?           @db.LongText()
+  organization      String?         @db.LongText()
   deadline          DateTime?
   summary           String?
-  directionForSpent String?       @db.LongText()
-  fullText          String?            @db.LongText()
+  directionForSpent String?         @db.LongText()
+  fullText          String?         @db.LongText()
   link              String?
   linkPDF           String?
   sourceLink        String?
   timeOfParse       DateTime?
-  blackListed       Boolean            @default(false)
+  blackListed       Boolean         @default(false)
   // События редактирования
   editActions       users_actions[]
-  parser            parsers?           @relation(fields: [parser_id], references: [id], onDelete: Cascade)
+  parser            parsers?        @relation(fields: [parser_id], references: [id], onDelete: Cascade)
   parser_id         Int?
 }
 
 model competitions {
-  id                       Int                    @id @unique @default(autoincrement())
-  namePost                 String                 @db.VarChar(255)
-  dateCreationPost         String?
-  directions               String?
-  organization             String? @db.LongText()
-  deadline                 DateTime?
-  fullText                 String?                 @db.LongText()
-  link                     String?
-  linkPDF                  String?
-  sourceLink               String?
-  timeOfParse              DateTime?
-  blackListed       Boolean            @default(false)
+  id               Int             @id @unique @default(autoincrement())
+  namePost         String          @db.VarChar(255)
+  dateCreationPost String?
+  directions       String?
+  organization     String?         @db.LongText()
+  deadline         DateTime?
+  fullText         String?         @db.LongText()
+  link             String?
+  linkPDF          String?
+  sourceLink       String?
+  timeOfParse      DateTime?
+  blackListed      Boolean         @default(false)
   // События редактирования
-  editActions              users_actions[]
-  parser                   parsers?               @relation(fields: [parser_id], references: [id], onDelete: Cascade)
-  parser_id                Int
+  editActions      users_actions[]
+  parser           parsers?        @relation(fields: [parser_id], references: [id], onDelete: Cascade)
+  parser_id        Int
 }
 
 model users {
@@ -62,18 +62,14 @@ model users {
   blocked         Boolean         @default(false)
   User_actions    users_actions[] @relation("User_actions")
   User_actionsFor users_actions[] @relation("User_actionsFor")
-  User_telegram   users_telegram? @relation(fields: [user_telegramId], references: [id], onDelete: Cascade)
-  user_telegramId Int?
   acessing_log    acessing_logs[]
-}
 
-model users_telegram {
-  id          Int                      @id @unique @default(autoincrement())
-  telegram_id String
-  key         String
-  User        users[]
-  settigns    users_telegram_settings? @relation(fields: [settingsId], references: [id], onDelete: Cascade)
-  settingsId  Int?
+  User_telegram_settings   users_telegram_settings? @relation(fields: [user_telegram_settingsId], references: [id], onDelete: Cascade)
+  user_telegram_settingsId Int?
+
+  users_telegramsId String?
+
+  users_telegram_key String?
 }
 
 model users_actions {
@@ -99,11 +95,10 @@ model users_actions {
 }
 
 model users_telegram_settings {
-  id                      Int                      @id @unique @default(autoincrement())
-  workTime                DateTime
-  User_telegram           users_telegram[]
+  id       Int      @id @unique @default(autoincrement())
+  workTime DateTime
+  users    users[]
 }
-
 
 model acessing_logs {
   id     Int      @id @unique @default(autoincrement())
@@ -144,9 +139,9 @@ model whitelist {
 }
 
 model resources_access {
-  id     Int        @id @unique @default(autoincrement())
+  id     Int         @id @unique @default(autoincrement())
   path   String
-  method String     @default("*")
+  method String      @default("*")
   role   users_role? @relation(fields: [roleId], references: [id], onDelete: Cascade)
   roleId Int?
 }
@@ -164,14 +159,14 @@ model parsers {
 }
 
 model parsing_queue {
-  id        Int   @id @unique @default(autoincrement())
+  id        Int      @id @unique @default(autoincrement())
   parser    parsers? @relation(fields: [parser_id], references: [id], onDelete: Cascade)
   parser_id Int
   page      Int
 }
 
 model appSettings {
-  id                   Int    @id @unique @default(autoincrement())
+  id                   Int      @id @unique @default(autoincrement())
   parsersWorkTimeStart DateTime
   parsersWorkTimeEnd   DateTime
 }

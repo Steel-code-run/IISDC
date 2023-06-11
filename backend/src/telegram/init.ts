@@ -1,6 +1,6 @@
 import TelegramBot from "node-telegram-bot-api";
-import {onDefault} from "./on/onDefault";
 import {onCallbackQuery} from "./on/onCallbackQuery";
+import {onMessage} from "./on/onMessage";
 
 export const telegramBotInit = () => {
     const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -11,7 +11,7 @@ export const telegramBotInit = () => {
     try {
         const bot = new TelegramBot(token, { polling: true });
         console.log("Телеграм бот инициализирован");
-        onDefault(bot)
+        onMessage(bot)
         onCallbackQuery(bot)
     } catch (e) {
         console.log("Ошибка при инициализации телеграм бота", e);

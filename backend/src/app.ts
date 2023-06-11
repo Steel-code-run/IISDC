@@ -14,6 +14,8 @@ import settingsRouter from "./router/v1/settingsRouter";
 import parsersRouter from "./router/v1/parsersRouter";
 import {telegramBotInit} from "./telegram/init";
 import {addJob} from "./cron/parsing";
+import telegramRouter from "./router/v1/telegram";
+import * as path from "path";
 
 dotenv.config();
 const app = express();
@@ -27,9 +29,14 @@ connect().then(async _ => {
 		exposedHeaders: 'Authorization',
 	};
 
+	app.set('views', path.join(__dirname, 'views'))
+	app.set('view engine', 'ejs');
+	app.use(express.static(path.join(__dirname, 'public')));
+
 	// плагины
 	app.use(cors(corsOptions));
 	app.use(express.json());
+	app.use(express.urlencoded({extended:true})); //Parse URL-encoded bodies
 
 	// мидлвары
 	app.use(getUserFromToken as any);
@@ -44,6 +51,7 @@ connect().then(async _ => {
 	app.use(resourcesRouter);
 	app.use(settingsRouter);
 	app.use(parsersRouter);
+	app.use(telegramRouter)
 	// routes end
 
 	// Добавление парсеров в крон
