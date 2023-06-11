@@ -1,12 +1,12 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useState} from 'react';
 
 export const useSelection = (items = []) => {
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(items);
 
-  useEffect(() => {
-    setSelected([]);
-
-  }, [items]);
+  // useEffect(() => {
+  //   setSelected([]);
+  //
+  // }, [items]);
 
 
   const handleSelectAll = useCallback(() => {

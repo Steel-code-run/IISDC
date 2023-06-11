@@ -23,17 +23,17 @@ export const responseUser = async (page, rowsPerPage, id) => {
 
 export const addUser = async (data) => {
     try {
-        const res = await axios.post(`${serverUrl}v1/users`, {
-            ...data
-        }, {
-            headers: {
-                ...defaultHeaders
-            }
-        });
+        const res = await axios.post(`${serverUrl}v1/users`,
+            {
+                ...data
+            }, {
+                headers: {
+                    ...defaultHeaders
+                }
+            });
 
         return res.data
-    }
-    catch(err) {
+    } catch (err) {
         return err.response.data
     }
 

@@ -1,10 +1,21 @@
 import React, {useState} from 'react';
 import {Button, Card, CardActions, CardContent, CardHeader, Divider, Stack, TextField, Typography} from "@mui/material";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {getParsingSettings} from "../../api/parsersResponse";
 
 function SettingsParsers(props) {
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [selectedTime, setSelectedTime] = useState(null);
+    const [selectedTimeStart, setSelectedTimeStart] = useState(null);
+    const [selectedTimeEnd, setSelectedTimeEnd] = useState(null);
 
+    const queryClient = useQueryClient();
+
+    const {data: settings} = useQuery(['parsingSettings'], getParsingSettings);
+    console.log(settings)
+
+    const date = new Date(settings?.parsersWorkTimeStart);
+    // date.setMilliseconds(0, 0);
+    //
+    // console.log(date.toISOString())
 
     return (
         <form>
@@ -26,7 +37,7 @@ function SettingsParsers(props) {
                                     id="datetime-local"
                                     label="Начало парсинга"
                                     type="datetime-local"
-                                    defaultValue="2017-05-24T10:30"
+                                    defaultValue="yyyy-MM-ddThh:mm"
                                     onChange={(e) => console.log(e.target.value)}
                                     InputLabelProps={{
                                         shrink: true,
@@ -36,7 +47,7 @@ function SettingsParsers(props) {
                                     id="datetime-local"
                                     label="Конец парсинга"
                                     type="datetime-local"
-                                    defaultValue="2017-05-24T10:30"
+                                    defaultValue="yyyy-MM-ddThh:mm"
                                     onChange={(e) => console.log(e.target.value)}
                                     InputLabelProps={{
                                         shrink: true,

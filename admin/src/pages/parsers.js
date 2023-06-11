@@ -3,9 +3,9 @@ import Head from 'next/head';
 import {Box, Container, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {useSelection} from "../hooks/use-selection";
-import {getParsers} from "../api/parsersResponse";
+import {getCountParsers, getParsers, updateParsers} from "../api/parsersResponse";
 import {ParsersTable} from "../sections/parsers/parsers-table";
 import {ParsersSearch} from "../sections/parsers/parsers-search";
 
@@ -38,17 +38,13 @@ const Page = options => {
     const {data: parsers, status, isLoading, isError } =
         useQuery(['parsers', page*rowsPerPage, rowsPerPage],
             () => getParsers(page*rowsPerPage, rowsPerPage)
-    )
-    console.log(parsers)
+    );
 
-    // const mutation = useMutation(
-    //     (delUser) => deleteUser(delUser), {
-    //         onSuccess: () => queryClient.invalidateQueries(["users"])
-    //     });
-
-   // const {data: countUsers} = useQuery(['usersLength'], getCountUser);
-    //console.log(countUsers)
-
+    const {data: countParsers} = useQuery(['parsersCount'], getCountParsers );
+    const mutationUpdateParsers = useMutation(
+        (updateData) => updateParsers(updateData), {
+            onSuccess: () => queryClient.invalidateQueries(['parsers'])
+        })
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -69,7 +65,6 @@ const Page = options => {
     const handleRowsPerPageChange = useCallback(
         (event) => {
             setRowsPerPage(event.target.value);
-
         },
         []
     );
@@ -140,7 +135,7 @@ const Page = options => {
                         {
                             (status === "success" && parsers?.length > 0) &&
                             <ParsersTable
-                                count={parsers?.length || 0}
+                                count={countParsers || 0}
                                 items={[...parsers].reverse()}
                                 onDeselectAll={customersSelection.handleDeselectAll}
                                 onDeselectOne={customersSelection.handleDeselectOne}
@@ -151,6 +146,7 @@ const Page = options => {
                                 page={page}
                                 rowsPerPage={rowsPerPage}
                                 selected={customersSelection.selected}
+                                updateParsers={mutationUpdateParsers.mutate}
                                 //deleteRowHandle={mutation.mutate}
                             />
                         }
