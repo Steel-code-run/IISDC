@@ -2,6 +2,7 @@ import {Router} from "express";
 import prisma from "../../prisma/connect";
 import {check, validationResult} from "express-validator";
 import md5 from "md5";
+import {bot} from "../../telegram/init";
 
 const telegramRouter = Router();
 
@@ -60,6 +61,10 @@ telegramRouter.post(baseUrl+"/login", async (req, res) => {
             users_telegramsId:telegram_id
         }
     })
+
+    if (bot){
+        await bot.sendMessage(telegram_id, `Успешная привязка аккаунта ${user.email} к телеграмму`)
+    }
 
     return res.render('telegram/success', {id:124})
 })
