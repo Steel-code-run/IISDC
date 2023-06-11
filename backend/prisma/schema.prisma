@@ -96,8 +96,10 @@ model users_actions {
 
 model users_telegram_settings {
   id       Int      @id @unique @default(autoincrement())
-  workTime DateTime
+  workTimeStart DateTime
+  workTimeEnd   DateTime
   users    users[]
+  directions String?
 }
 
 model acessing_logs {

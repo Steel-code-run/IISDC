@@ -10,8 +10,15 @@ export const onSettings = (props:OnSomethingProps) => {
                     {
                         text: "Выйти из аккаунта",
                         callback_data: "logout"
-                    }
-                ]
+                    },
+
+                ],
+                [
+                    {
+                        text: "Настроить получаемые направления по грантам",
+                        callback_data: "settings_directions"
+                    },
+                ],
             ]
         }
     })
