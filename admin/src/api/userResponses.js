@@ -1,13 +1,6 @@
 import axios from "axios";
+import {defaultHeaders, serverUrl} from "../config/apiConfig";
 
-
-export const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJpZCI6MSwiaWF0IjoxNjg2MjIxNjU5LCJleHAiOjE2ODYzMDgwNTl9.Tgr93GXpcDyreuqKHcPqpXoAL4vUp54B7C_jgAc1IJY'
-
-const defaultHeaders = {
-    Authorization: 'Bearer ' + token
-}
-
-const serverUrl = 'http://localhost:3000/'
 
 export const responseUser = async (page, rowsPerPage, id) => {
     const {data} = await axios.post(`${serverUrl}v1/users/get`, {
@@ -63,8 +56,15 @@ export const updateUser = async (data) => {
     }, {
         headers: {
             ...defaultHeaders
-
         }
     })
 
+}
+
+export const getCountUser = async () => {
+    return await axios.get(`${serverUrl}v1/grants/count`, {
+        headers: {
+            ...defaultHeaders
+        }
+    })
 }

@@ -1,36 +1,14 @@
 import {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
-import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import {Box, Button, Container, Stack, SvgIcon, Typography} from '@mui/material';
+import {Box, Container, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
-import {CustomersTable} from 'src/sections/customer/customers-table';
-import {CustomersSearch} from 'src/sections/customer/customers-search';
 import {applyPagination} from 'src/utils/apply-pagination';
-import {createPortal} from "react-dom";
-import PopupAddUser from "../components/popupAddUser/PopupAddUser";
-import Overlay from "../hocs/Overlay/Overlay";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {deleteUser, getCountUser} from "../api/userResponses";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useSelection} from "../hooks/use-selection";
-import {useUserQuery} from "../hooks/useUserQuery";
+import {getParsers} from "../api/parsersResponse";
+import {ParsersTable} from "../sections/parsers/parsers-table";
+import {ParsersSearch} from "../sections/parsers/parsers-search";
 
-// const data = [
-//     {
-//         id: '5e887ac47eed253091be10cb',
-//         createdAt: subDays(subHours(now, 7), 1).getTime(),
-//         email: 'carson.darrin@devias.io',
-//         name: 'Carson Darrin',
-//         phone: '304-428-3097'
-//     },
-//     {
-//         id: '5e887b209c28ac3dd97f6db5',
-//         createdAt: subDays(subHours(now, 1), 2).getTime(),
-//         email: 'fran.perez@devias.io',
-//         name: 'Fran Perez',
-//         phone: '712-351-5711'
-//     },
-//
-// ];
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -56,24 +34,25 @@ const Page = options => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const {data: users, status, isLoading, isError } =
-        useUserQuery('users',
-        page*rowsPerPage, rowsPerPage
-    )
     const queryClient = useQueryClient();
+    const {data: parsers, status, isLoading, isError } =
+        useQuery(['parsers', page*rowsPerPage, rowsPerPage],
+            () => getParsers(page*rowsPerPage, rowsPerPage)
+    )
+    console.log(parsers)
 
-    const mutation = useMutation(
-        (delUser) => deleteUser(delUser), {
-            onSuccess: () => queryClient.invalidateQueries(["users"])
-        });
+    // const mutation = useMutation(
+    //     (delUser) => deleteUser(delUser), {
+    //         onSuccess: () => queryClient.invalidateQueries(["users"])
+    //     });
 
-    const {data: countUsers} = useQuery(['usersLength'], getCountUser);
+   // const {data: countUsers} = useQuery(['usersLength'], getCountUser);
     //console.log(countUsers)
 
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const customers = useCustomers(users, page, rowsPerPage);
+    const customers = useCustomers(parsers, page, rowsPerPage);
     const customersIds = useCustomerIds(customers);
     const customersSelection
         = useSelection(customersIds);
@@ -106,15 +85,15 @@ const Page = options => {
 
     return (
         <>
-            {
-                createPortal(
-                    <Overlay isOpen={isOpen} setIsOpen={setIsOpen}>
-                        <PopupAddUser/>
-                    </Overlay>, portalPopup)
-            }
+            {/*{*/}
+            {/*    createPortal(*/}
+            {/*        <Overlay isOpen={isOpen} setIsOpen={setIsOpen}>*/}
+            {/*            <PopupAddUser/>*/}
+            {/*        </Overlay>, portalPopup)*/}
+            {/*}*/}
             <Head>
                 <title>
-                    Пользователи
+                    Парсеры
                 </title>
             </Head>
             <Box
@@ -133,7 +112,7 @@ const Page = options => {
                         >
                             <Stack spacing={1}>
                                 <Typography variant="h4">
-                                    Пользователи
+                                    Парсеры
                                 </Typography>
                                 <Stack
                                     alignItems="center"
@@ -143,26 +122,26 @@ const Page = options => {
 
                                 </Stack>
                             </Stack>
-                            <div>
-                                <Button
-                                    onClick={() => setIsOpen(true)}
-                                    startIcon={(
-                                        <SvgIcon fontSize="small">
-                                            <PlusIcon/>
-                                        </SvgIcon>
-                                    )}
-                                    variant="contained"
-                                >
-                                    Добавить пользователя
-                                </Button>
-                            </div>
+                            {/*<div>*/}
+                            {/*    <Button*/}
+                            {/*        onClick={() => setIsOpen(true)}*/}
+                            {/*        startIcon={(*/}
+                            {/*            <SvgIcon fontSize="small">*/}
+                            {/*                <PlusIcon/>*/}
+                            {/*            </SvgIcon>*/}
+                            {/*        )}*/}
+                            {/*        variant="contained"*/}
+                            {/*    >*/}
+                            {/*        Добавить пользователя*/}
+                            {/*    </Button>*/}
+                            {/*</div>*/}
                         </Stack>
-                        <CustomersSearch/>
+                        <ParsersSearch/>
                         {
-                            (status === "success" && users.length > 0) &&
-                            <CustomersTable
-                                count={countUsers || 0}
-                                items={[...users].reverse()}
+                            (status === "success" && parsers?.length > 0) &&
+                            <ParsersTable
+                                count={parsers?.length || 0}
+                                items={[...parsers].reverse()}
                                 onDeselectAll={customersSelection.handleDeselectAll}
                                 onDeselectOne={customersSelection.handleDeselectOne}
                                 onPageChange={handlePageChange}
@@ -172,7 +151,7 @@ const Page = options => {
                                 page={page}
                                 rowsPerPage={rowsPerPage}
                                 selected={customersSelection.selected}
-                                deleteRowHandle={mutation.mutate}
+                                //deleteRowHandle={mutation.mutate}
                             />
                         }
                     </Stack>

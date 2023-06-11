@@ -3,8 +3,7 @@ import {responseUser} from "../api/userResponses";
 
 
 export const useUserQuery = (key, ...args) => {
-
-
+    
     return useQuery(
         [key, ...args],
         () => responseUser(...args)

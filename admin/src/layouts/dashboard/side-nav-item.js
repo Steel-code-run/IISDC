@@ -1,9 +1,12 @@
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
 import {Box, ButtonBase} from '@mui/material';
+import {usePathname} from "next/navigation";
 
 export const SideNavItem = (props) => {
-  const { active = false, disabled, external, icon, path, title } = props;
+  const { active = false, disabled, external, icon, path, title, childrenNav } = props;
+
+    const pathname = usePathname();
 
   const linkProps = path
     ? external
@@ -17,6 +20,7 @@ export const SideNavItem = (props) => {
         href: path
       }
     : {};
+  console.log(props)
 
   return (
     <li>
@@ -57,26 +61,27 @@ export const SideNavItem = (props) => {
             {icon}
           </Box>
         )}
-        <Box
-          component="span"
-          sx={{
-            color: 'neutral.400',
-            flexGrow: 1,
-            fontFamily: (theme) => theme.typography.fontFamily,
-            fontSize: 14,
-            fontWeight: 600,
-            lineHeight: '24px',
-            whiteSpace: 'nowrap',
-            ...(active && {
-              color: 'common.white'
-            }),
-            ...(disabled && {
-              color: 'neutral.500'
-            })
-          }}
-        >
-          {title}
-        </Box>
+                <Box
+                  component="span"
+                  sx={{
+                    color: 'neutral.400',
+                    flexGrow: 1,
+                    fontFamily: (theme) => theme.typography.fontFamily,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    lineHeight: '24px',
+                    whiteSpace: 'nowrap',
+                    ...(active && {
+                      color: 'common.white'
+                    }),
+                    ...(disabled && {
+                      color: 'neutral.500'
+                    })
+                  }}
+                >
+                  {title}
+                </Box>
+
       </ButtonBase>
     </li>
   );
