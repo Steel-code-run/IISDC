@@ -43,7 +43,7 @@ rolesRouter.post('/v1/roles', async (req, res) => {
     return res.status(200).json({message: 'Роль успешно добавлена'})
 })
 
-rolesRouter.get('/v1/roles', async (req, res) => {
+rolesRouter.post('/v1/roles', async (req, res) => {
     let roles: Awaited<ReturnType<typeof prisma.users_role.findMany>> | undefined;
 
     try {

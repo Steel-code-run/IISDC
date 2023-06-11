@@ -75,7 +75,7 @@ async function getQueryDate(data:any) {
     return where;
 }
 
-grantsRouter.get('/v1/grants/', async (req, res) => {
+grantsRouter.post('/v1/grants/', async (req, res) => {
 
 
     let extended = req.body.extended || false;
@@ -112,7 +112,7 @@ grantsRouter.get('/v1/grants/', async (req, res) => {
     }
 })
 
-grantsRouter.get('/v1/grants/count', async (req, res) => {
+grantsRouter.post('/v1/grants/count', async (req, res) => {
 
         let where = await getQueryDate(req.body.where);
 
@@ -126,7 +126,7 @@ grantsRouter.get('/v1/grants/count', async (req, res) => {
         }
 });
 
-grantsRouter.get('/v1/grants/:id', async (req, res) => {
+grantsRouter.post('/v1/grants/:id', async (req, res) => {
     let id = Number(req.params.id);
 
     try {

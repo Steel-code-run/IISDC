@@ -5,8 +5,7 @@ import {check} from "express-validator";
 
 let resourcesRouter = Router();
 
-// @ts-ignore-next-line
-resourcesRouter.post('/v1/resources/addRoleAccess', async (req:CustomRequest , res:express.Response) => {
+resourcesRouter.post('/v1/resources/addRoleAccess', async (req , res) => {
 
     await check('path', 'Путь не может быть пустым')
         .notEmpty()
@@ -71,8 +70,7 @@ resourcesRouter.post('/v1/resources/addRoleAccess', async (req:CustomRequest , r
     res.json({msg: 'Роль добавлена'})
 });
 
-// @ts-ignore-next-line
-resourcesRouter.post('/v1/resources/removeRoleAccess', async (req:CustomRequest , res:express.Response) => {
+resourcesRouter.post('/v1/resources/removeRoleAccess', async (req , res) => {
 
 });
 export default resourcesRouter;

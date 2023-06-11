@@ -1,21 +1,54 @@
-import {Router} from "express";
+import express, {Router} from "express";
 import prisma from "../../prisma/connect";
 import {check, validationResult} from "express-validator";
 import {addJob, updateJob} from "../../cron/parsing";
+import usersRouter from "./usersRouter";
 
 const parsersRouter = Router();
 
 const baseUrl = '/v1/parsers'
-parsersRouter.get(baseUrl, async (req, res) => {
-    let parsers = await prisma.parsers.findMany({
-        take: 200,
-        orderBy: {
-            id: 'desc'
-        }
-    });
+parsersRouter.post(baseUrl, async (req, res) => {
 
-    return res.status(200).json(parsers);
+
+    await check('skip', 'skip должен быть числом')
+        .isNumeric()
+        .run(req);
+    await check('take', 'take должен быть числом')
+        .isNumeric()
+        .run(req);
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(422).json({errors: errors.array()});
+    }
+    try {
+        let parsers = await prisma.parsers.findMany({
+            skip: req.body.skip || 0,
+            take: req.body.take || 10,
+            orderBy: {
+                id: 'desc'
+            },
+            where: req.body.where || {}
+
+        });
+        return res.status(200).json(parsers);
+    }
+    catch (e) {
+        return res.status(500).json({errors: [{msg: 'Ошибка при получении парсеров'}]});
+    }
+
 })
+
+usersRouter.post(baseUrl + "/count", async (req:express.Request, res:express.Response) => {
+    try{
+        const count = await prisma.parsers.count({
+            where: req.body.where || {}
+        });
+        return res.status(200).json({count: count});
+    } catch (e) {
+        return res.status(500).json({errors: [{msg: 'Ошибка при получении количества парсеров'}]});
+    }
+});
 
 parsersRouter.patch(baseUrl, async (req, res) => {
     await check('id', 'Не указан id парсера')

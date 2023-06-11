@@ -15,7 +15,11 @@ const set_resources_access = async (prisma:PrismaClient)=>{
         "/v1/roles/add",
         "/v1/roles/get",
         "/v1/roles/delete",
-        "/v1/parsers"
+        "/v1/parsers",
+        "/v1/parsers/count",
+        "/v1/settings",
+        "/v1/settings/update",
+        "/v1/telegram/login",
     ]
 
     try{

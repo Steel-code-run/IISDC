@@ -102,7 +102,10 @@ usersRouter.post(base_url + "/get", async (req:express.Request, res:express.Resp
                     }
                 }
             },
-            where: req.body.where || {}
+            where: req.body.where || {},
+            orderBy: {
+                id: 'desc'
+            }
         });
         return res.status(200).json(users);
     } catch (e) {
