@@ -329,6 +329,13 @@ const parsePage = async (
                 if (competition.organization)
                     data.organization = competition.organization
 
+                let directions;
+                if (competition.fullText)
+                    directions = get3DirectionsByText(competition.fullText)
+
+                if (directions)
+                    data.directions = JSON.stringify(directions)
+
                 data.parser_id = parser.id
 
                 await prisma.competitions.create({data})
