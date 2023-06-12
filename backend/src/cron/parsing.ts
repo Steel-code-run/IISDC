@@ -2,6 +2,7 @@ import {CronJob, CronTime} from "cron";
 import prisma from "../prisma/connect";
 import axios from "axios";
 import {Competition, Grant} from "../types/Posts";
+import {get3DirectionsByText} from "../helpers/getDirectionByText/getDirectionByText";
 
 type JobData = {
     parserId: number;
@@ -10,7 +11,7 @@ type JobData = {
     Job: CronJob;
 }
 
-const jobsList:JobData[] = [];
+export const jobsList:JobData[] = [];
 
 export async function addJob(parserId: number) {
 
@@ -39,6 +40,7 @@ export async function addJob(parserId: number) {
     }
 
     const job = new CronJob(parser.cronTime, () => {
+        console.log("Отработка cron"+ new Date())
         parse(parserId);
     });
 
@@ -86,7 +88,7 @@ export async function updateJob(parserId: number) {
         job.Job.setTime(new CronTime(parser.cronTime));
     }
     else {
-        addJob(parserId);
+        await addJob(parserId);
     }
 }
 
@@ -143,6 +145,15 @@ export function startJob(parserId: number) {
 
 const parse = async (parserId:number) => {
 
+    // if job is running, then return
+    const job = jobsList.find(job => job.parserId === parserId);
+    if (!job){
+        return
+    }
+    if (job && job.isRunning) {
+        return
+    }
+
     // Сверяем рабочее ли время
     const appSettings = await prisma.appSettings.findFirst()
     if (!appSettings){
@@ -151,8 +162,11 @@ const parse = async (parserId:number) => {
 
     const now = new Date()
 
-    const start = new Date(appSettings.parsersWorkTimeStart)
-    const end = new Date(appSettings.parsersWorkTimeEnd)
+    let start = new Date(appSettings.parsersWorkTimeStart)
+    let end = new Date(appSettings.parsersWorkTimeEnd)
+    // use only hours and minutes
+    start.setFullYear(now.getFullYear(), now.getMonth(), now.getDate())
+    end.setFullYear(now.getFullYear(), now.getMonth(), now.getDate())
     if (now < start || now > end){
         return
     }
@@ -182,8 +196,8 @@ const parse = async (parserId:number) => {
             page=parser_data.pagesToParse+1;
             break;
         }
+        job.isRunning = false;
     }
-
 
     console.log(parser_data)
 }
@@ -228,8 +242,6 @@ const parsePage = async (
                     timeOfParse: new Date(),
                 }
 
-                if (grant.dateCreationPost)
-                    data.dateCreationPost = grant.dateCreationPost
                 if (grant.summary)
                     data.summary = grant.summary
                 if (grant.fullText)
@@ -258,6 +270,13 @@ const parsePage = async (
                 if (grant.directionForSpent)
                     data.directionForSpent = grant.directionForSpent
 
+                let directions:any = []
+                if (grant.fullText)
+                    directions = get3DirectionsByText(grant.fullText)
+
+                if (directions)
+                    data.directions = JSON.stringify(directions)
+
                 data.parser_id = parser.id
 
                 await prisma.grants.create({
@@ -285,8 +304,6 @@ const parsePage = async (
                     timeOfParse: new Date(),
                 }
 
-                if (competition.dateCreationPost)
-                    data.dateCreationPost = competition.dateCreationPost
                 if (competition.summary)
                     data.summary = competition.summary
                 if (competition.fullText)

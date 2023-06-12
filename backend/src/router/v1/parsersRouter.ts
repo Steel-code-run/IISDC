@@ -1,7 +1,7 @@
 import express, {Router} from "express";
 import prisma from "../../prisma/connect";
 import {check, validationResult} from "express-validator";
-import {addJob, updateJob} from "../../cron/parsing";
+import {addJob, deleteJob, updateJob} from "../../cron/parsing";
 import usersRouter from "./usersRouter";
 
 const parsersRouter = Router();
@@ -56,7 +56,7 @@ parsersRouter.patch(baseUrl, async (req, res) => {
         .run(req);
 
     if (req.body.cronTime) {
-        const reg_exp = new RegExp(/^(((\*\/\d{1,2})|(\d{1,2})|(\*))\s?){1,6}$/);
+        const reg_exp = new RegExp(/^(((\*\/\d{1,2})|(\d{1,2})|(\*))\s?){5,6}$/);
         await check('cronTime', 'Неверный формат cronTime')
             .matches(reg_exp)
             .run(req);
@@ -83,7 +83,7 @@ parsersRouter.patch(baseUrl, async (req, res) => {
         data["name"] = req.body.name;
     if (req.body.description)
         data["description"] = req.body.description;
-    if (req.body.isEnabled)
+    if ('isEnabled' in req.body)
         data["isEnabled"] = req.body.isEnabled;
     if (req.body.pagesToParse)
         data["pagesToParse"] = req.body.pagesToParse;
@@ -99,6 +99,9 @@ parsersRouter.patch(baseUrl, async (req, res) => {
 
     if (req.body.isEnabled) {
         addJob(parser.id).then();
+    }
+    else {
+        deleteJob(parser.id)
     }
 
     if (req.body.cronTime){
