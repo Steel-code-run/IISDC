@@ -55,11 +55,13 @@ parsersRouter.patch(baseUrl, async (req, res) => {
         .isInt()
         .run(req);
 
-    const reg_exp = new RegExp(/^(((\*\/\d{1,2})|(\d{1,2})|(\*))\s?){1,6}$/);
-    await check('cronTime', 'Неверный формат cronTime')
-        .isString()
-        .matches(reg_exp)
-        .run(req);
+    if (req.body.cronTime) {
+        const reg_exp = new RegExp(/^(((\*\/\d{1,2})|(\d{1,2})|(\*))\s?){1,6}$/);
+        await check('cronTime', 'Неверный формат cronTime')
+            .matches(reg_exp)
+            .run(req);
+    }
+
 
     const validationErrors = validationResult(req);
     if(!validationErrors.isEmpty()){

@@ -56,6 +56,7 @@ ${link}
         }
         if (query_data.includes('settings_directions_')) {
             await onSettings_directions_$direction({bot, chatId, user, query: query_data})
+            await onSettings_directions({bot, chatId, user})
             return
         }
 
