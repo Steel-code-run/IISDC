@@ -7,3 +7,6 @@ docker_migrate:
 # заполнить бд тестовыми данными, запускать только если БД пустая
 docker_fill:
 	docker compose exec -it backend npm run prisma:seed
+
+docker_restart:
+	docker compose restart backend

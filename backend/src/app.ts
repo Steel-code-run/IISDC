@@ -16,6 +16,7 @@ import {telegramBotInit} from "./telegram/init";
 import {addJob} from "./cron/parsing";
 import telegramRouter from "./router/v1/telegram";
 import * as path from "path";
+import cronRouter from "./router/v1/cronRouter";
 
 dotenv.config();
 const app = express();
@@ -41,7 +42,7 @@ connect().then(async _ => {
 	// мидлвары
 	app.use(getUserFromToken as any);
 	app.use(accessingLog as any);
-	app.use(resourceAccess as any);
+	// app.use(resourceAccess as any);
 
 	// routes start
 	app.use(baseRouter);
@@ -51,7 +52,8 @@ connect().then(async _ => {
 	app.use(resourcesRouter);
 	app.use(settingsRouter);
 	app.use(parsersRouter);
-	app.use(telegramRouter)
+	app.use(telegramRouter);
+	app.use(cronRouter);
 	// routes end
 
 	// Добавление парсеров в крон

@@ -48,6 +48,5 @@ export const onSettings_directions_$direction = async (props:OnSomethingProps) =
     })
 
     await bot.sendMessage(chatId, `Направление ${direction} ${settings.includes(direction) ? "включено" : "выключено"}`)
-    await onSettings_directions({bot, chatId, user})
 
 }
