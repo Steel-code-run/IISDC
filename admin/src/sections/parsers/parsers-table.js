@@ -43,19 +43,19 @@ export const ParsersTable = (props) => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell padding="checkbox">
-                                    <Checkbox
-                                        checked={selectedAll}
-                                        indeterminate={selectedSome}
-                                        onChange={(event) => {
-                                            if (event.target.checked) {
-                                                onSelectAll?.();
-                                            } else {
-                                                onDeselectAll?.();
-                                            }
-                                        }}
-                                    />
-                                </TableCell>
+                                {/*<TableCell padding="checkbox">*/}
+                                {/*    <Checkbox*/}
+                                {/*        checked={selectedAll}*/}
+                                {/*        indeterminate={selectedSome}*/}
+                                {/*        onChange={(event) => {*/}
+                                {/*            if (event.target.checked) {*/}
+                                {/*                onSelectAll?.();*/}
+                                {/*            } else {*/}
+                                {/*                onDeselectAll?.();*/}
+                                {/*            }*/}
+                                {/*        }}*/}
+                                {/*    />*/}
+                                {/*</TableCell>*/}
                                 <TableCell>
                                     Имя
                                 </TableCell>
@@ -89,18 +89,18 @@ export const ParsersTable = (props) => {
                                         selected={isSelected}
                                     >
 
-                                        <TableCell padding="checkbox">
-                                            {/*<Checkbox*/}
-                                            {/*    checked={isSelected}*/}
-                                            {/*    onChange={(event) => {*/}
-                                            {/*        if (event.target.checked) {*/}
-                                            {/*            onSelectOne?.(parser.id);*/}
-                                            {/*        } else {*/}
-                                            {/*            onDeselectOne?.(parser.id);*/}
-                                            {/*        }*/}
-                                            {/*    }}*/}
-                                            {/*/>*/}
-                                        </TableCell>
+                                        {/*<TableCell padding="checkbox">*/}
+                                        {/*    <Checkbox*/}
+                                        {/*        checked={isSelected}*/}
+                                        {/*        onChange={(event) => {*/}
+                                        {/*            if (event.target.checked) {*/}
+                                        {/*                onSelectOne?.(parser.id);*/}
+                                        {/*            } else {*/}
+                                        {/*                onDeselectOne?.(parser.id);*/}
+                                        {/*            }*/}
+                                        {/*        }}*/}
+                                        {/*    />*/}
+                                        {/*</TableCell>*/}
 
                                         <TableCell>
                                             <Stack
@@ -125,20 +125,16 @@ export const ParsersTable = (props) => {
                                             <Checkbox
                                                 checked={isSelected}
                                                 onChange={(event) => {
-                                                    if (event.target.checked) {
-                                                        onSelectOne?.(parser.id);
+                                                    // if (event.target.checked) {
+                                                    //     onSelectOne?.(parser.id);
+                                                    //
+                                                    // } else {
+                                                    //     onDeselectOne?.(parser.id);
+                                                    // }
 
-                                                    } else {
-                                                        onDeselectOne?.(parser.id);
-                                                    }
-                                                    console.log({
-                                                        id: parser.id,
-                                                        isEnabled: isSelected,
-
-                                                    })
                                                     updateParsers({
                                                         id: parser.id,
-                                                        isEnabled: isSelected,
+                                                        isEnabled: !isSelected,
 
                                                     })
                                                 }}

@@ -22,7 +22,7 @@ const useCustomers = (data, page, rowsPerPage) => {
 const useCustomerIds = (customers) => {
     return useMemo(
         () => {
-            return customers?.map((customer) => customer.id);
+            return customers?.filter((parser) => parser.isEnabled).map((parsers) => parsers.id);
         },
         [customers]
     );
@@ -53,7 +53,7 @@ const Page = options => {
     const customersSelection
         = useSelection(customersIds);
 
-
+    console.log(customersIds)
     const handlePageChange = useCallback(
         (event, value) => {
             setPage(value);
@@ -145,7 +145,7 @@ const Page = options => {
                                 onSelectOne={customersSelection.handleSelectOne}
                                 page={page}
                                 rowsPerPage={rowsPerPage}
-                                selected={customersSelection.selected}
+                                selected={parsers?.filter((parser) => parser.isEnabled).map((parsers) => parsers.id)}
                                 updateParsers={mutationUpdateParsers.mutate}
                                 //deleteRowHandle={mutation.mutate}
                             />

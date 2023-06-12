@@ -20,7 +20,6 @@ export const SideNavItem = (props) => {
         href: path
       }
     : {};
-  console.log(props)
 
   return (
     <li>
