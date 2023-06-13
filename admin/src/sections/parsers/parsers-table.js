@@ -10,11 +10,15 @@ import {
     TableHead,
     TablePagination,
     TableRow,
+    TextField,
     Typography
 } from '@mui/material';
 import {Scrollbar} from 'src/components/scrollbar';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Link from 'next/link'
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from '@mui/icons-material/Save';
+
+import {useState} from "react";
 
 export const ParsersTable = (props) => {
     const {
@@ -35,6 +39,13 @@ export const ParsersTable = (props) => {
 
     const selectedSome = (selected.length > 0) && (selected.length < items.length);
     const selectedAll = (items.length > 0) && (selected.length === items.length);
+
+    const [updateField, setUpdateField] = useState();
+
+    const [isEdit, setIsEdit] = useState({
+        isEditStatus: false,
+        id: null
+    });
 
     return (
         <Card>
@@ -86,7 +97,7 @@ export const ParsersTable = (props) => {
                                     <TableRow
                                         hover
                                         key={parser.id}
-                                        selected={isSelected}
+                                        //selected={isSelected}
                                     >
 
                                         {/*<TableCell padding="checkbox">*/}
@@ -118,7 +129,17 @@ export const ParsersTable = (props) => {
                                         </TableCell>
 
                                         <TableCell>
-                                            {parser.description || 'Нет описания'}
+                                            <TextField disabled={!isEdit.isEditStatus && isEdit.id !== parser.id}
+                                                       value={parser?.description || 'Нет описания'}
+                                                       onChange={(e) => {
+                                                           setUpdateField({
+                                                               id: parser.id,
+                                                               description: e.target.value
+                                                           })
+
+                                                       }}/>
+
+
                                         </TableCell>
 
                                         <TableCell>
@@ -151,9 +172,22 @@ export const ParsersTable = (props) => {
                                         </TableCell>
 
                                         <TableCell>
-                                            <DeleteIcon onClick={() => deleteRowHandle({id: parser.id})}
-                                                        style={{cursor: ' pointer'}}/>
+                                            {
+                                                isEdit.isEditStatus && isEdit.id === parser.id && <SaveIcon onClick={() => {
+                                                    setIsEdit({
+                                                    isEditStatus: false,
+                                                    id: parser.id
+                                                });
+                                                    updateParsers(updateField)
+                                                }} />
+                                            }
+                                            <EditIcon onClick={() => setIsEdit({
+                                                isEditStatus: true,
+                                                id: parser.id
+                                            })}
+                                                      style={{cursor: ' pointer'}}/>
                                         </TableCell>
+
 
                                     </TableRow>
                                 )

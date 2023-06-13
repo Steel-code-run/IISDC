@@ -53,7 +53,6 @@ const Page = options => {
     const customersSelection
         = useSelection(customersIds);
 
-    console.log(customersIds)
     const handlePageChange = useCallback(
         (event, value) => {
             setPage(value);
