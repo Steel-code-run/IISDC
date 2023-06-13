@@ -32,12 +32,9 @@ const Page = () => {
                 queryClient.invalidateQueries(["users"]);
                 setOpenSnackbarSuccess(true);
                 setSuccessMsg(res.data.message);
-                console.log(res.data.message)
-
             },
             onError: (err) => {
                 setOpenSnackbarError(true);
-                console.log(err)
                 setErrorMsg(err.response.data.errors[0].msg)
 
             },

@@ -37,3 +37,13 @@ export const getParsingSettings = async () => {
     })
     return res.data
 }
+
+export const updateParsingSettings = async (updateData) => {
+    //console.log(updateData)
+    const res = await axios.post(`${serverUrl}v1/settings/update`, {
+        ...updateData
+    }, {
+        ...defaultHeaders
+    })
+    return res.data
+}
