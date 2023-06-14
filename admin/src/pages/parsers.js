@@ -43,7 +43,7 @@ const Page = options => {
     const {data: countParsers} = useQuery(['parsersCount'], getCountParsers );
     const mutationUpdateParsers = useMutation(
         (updateData) => updateParsers(updateData), {
-            onSuccess: () => queryClient.invalidateQueries(['parsers'])
+            //onSuccess: () => queryClient.invalidateQueries(['parsers'])
         })
 
     const [isOpen, setIsOpen] = useState(false);

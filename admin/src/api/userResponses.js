@@ -62,9 +62,11 @@ export const updateUser = async (data) => {
 }
 
 export const getCountUser = async () => {
-    return await axios.get(`${serverUrl}v1/grants/count`, {
+    const res =  await axios.post(`${serverUrl}v1/users/count`,{}, {
         headers: {
             ...defaultHeaders
         }
     })
+    console.log(res)
+    return res.data.count
 }

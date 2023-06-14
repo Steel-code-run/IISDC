@@ -47,7 +47,8 @@ export const ParsersTable = (props) => {
         id: null
     });
 
-    const isEditFieldDisabled = (id) => isEdit.id !== id;
+    const isEditFieldDisabled = (id, isEdit) => (isEdit.isEditStatus && !isEdit.id)
+        ? true : (isEdit.id !== id)
 
     return (
         <Card>
@@ -131,11 +132,11 @@ export const ParsersTable = (props) => {
                                         </TableCell>
 
                                         <TableCell>
-                                            <TextField disabled={isEditFieldDisabled(parser.id)}
+                                            <TextField disabled={isEditFieldDisabled(parser.id, isEdit)}
                                                        value={parser?.description}
                                                        onChange={(e) => {
                                                            setFields(prevState => prevState.map((parser) => {
-                                                               if(!isEditFieldDisabled(parser.id)) {
+                                                               if(!isEditFieldDisabled(parser.id, isEdit)) {
                                                                    return {
                                                                        ...parser,
                                                                        description: e.target.value
@@ -149,7 +150,7 @@ export const ParsersTable = (props) => {
 
                                         <TableCell>
                                             <Checkbox
-                                                //disabled={isEdit.isEditStatus && isEdit.id === parser.id}
+                                                disabled={isEditFieldDisabled(parser.id, isEdit)}
                                                 checked={parser.isEnabled}
                                                 onChange={(e) => {
                                                     // if (event.target.checked) {
@@ -158,12 +159,21 @@ export const ParsersTable = (props) => {
                                                     // } else {
                                                     //     onDeselectOne?.(parser.id);
                                                     // }
+                                                    setFields(prevState => prevState.map((parser) => {
+                                                        if(!isEditFieldDisabled(parser.id, isEdit)) {
+                                                            return {
+                                                                ...parser,
+                                                                isEnabled: e.target.checked
+                                                            }
+                                                        }
+                                                        else return parser
+                                                    }))
 
-                                                    updateParsers({
-                                                        id: parser.id,
-                                                        isEnabled: e.target.checked,
-
-                                                    })
+                                                    // updateParsers({
+                                                    //     id: parser.id,
+                                                    //     isEnabled: e.target.checked,
+                                                    //
+                                                    // })
                                                 }}
                                             />
                                             {/*{parser.isEnabled ? 'Вкл' : 'Выкл'}*/}
@@ -179,20 +189,21 @@ export const ParsersTable = (props) => {
 
                                         <TableCell>
                                             {
-                                                !isEdit.isEditStatus && isEdit.id === parser.id &&
+                                                !isEditFieldDisabled(parser.id, isEdit) &&
                                                 <SaveIcon onClick={() => {
                                                     setIsEdit({
-                                                        isEditStatus: true,
-                                                        id: parser.id
+                                                        isEditStatus: !isEdit.isEditStatus,
+                                                        id: null
                                                     });
                                                     const updateParser = fields.find(parser => parser.id === isEdit.id);
+                                                   // delete updateParser['isEnabled'];
                                                    // updateParser.isEnabled = !updateParser.isEnabled
 
                                                     updateParsers(updateParser)
                                                 }}/>
                                             }
                                             <EditIcon onClick={() => setIsEdit({
-                                                isEditStatus: false,
+                                                isEditStatus: !isEdit.isEditStatus,
                                                 id: parser.id
                                             })} style={{cursor: ' pointer'}}/>
                                         </TableCell>
