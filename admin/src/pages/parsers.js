@@ -8,6 +8,8 @@ import {useSelection} from "../hooks/use-selection";
 import {getCountParsers, getParsers, updateParsers} from "../api/parsersResponse";
 import {ParsersTable} from "../sections/parsers/parsers-table";
 import {ParsersSearch} from "../sections/parsers/parsers-search";
+import {useUserQuery} from "../hooks/useUserQuery";
+import {responseUser} from "../api/userResponses";
 
 
 const useCustomers = (data, page, rowsPerPage) => {
@@ -34,16 +36,22 @@ const Page = options => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const queryClient = useQueryClient();
+    // const {data: parsers, status, isLoading, isError } =
+    //     useQuery(['parsers', page*rowsPerPage, rowsPerPage],
+    //         () => getParsers(page*rowsPerPage, rowsPerPage)
+    // );
     const {data: parsers, status, isLoading, isError } =
-        useQuery(['parsers', page*rowsPerPage, rowsPerPage],
-            () => getParsers(page*rowsPerPage, rowsPerPage)
-    );
+        useUserQuery('parsers',
+            getParsers,
+            page*rowsPerPage, rowsPerPage
+        )
 
     const {data: countParsers} = useQuery(['parsersCount'], getCountParsers );
+
+    const queryClient = useQueryClient();
     const mutationUpdateParsers = useMutation(
         (updateData) => updateParsers(updateData), {
-            //onSuccess: () => queryClient.invalidateQueries(['parsers'])
+            onSuccess: () => queryClient.invalidateQueries(['parsers'])
         })
 
     const [isOpen, setIsOpen] = useState(false);
@@ -135,7 +143,7 @@ const Page = options => {
                             (status === "success" && parsers?.length > 0) &&
                             <ParsersTable
                                 count={countParsers || 0}
-                                items={[...parsers].reverse()}
+                                items={parsers}
                                 onDeselectAll={customersSelection.handleDeselectAll}
                                 onDeselectOne={customersSelection.handleDeselectOne}
                                 onPageChange={handlePageChange}

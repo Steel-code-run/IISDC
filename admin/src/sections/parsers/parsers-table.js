@@ -18,7 +18,7 @@ import Link from 'next/link'
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from '@mui/icons-material/Save';
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export const ParsersTable = (props) => {
     const {
@@ -40,7 +40,10 @@ export const ParsersTable = (props) => {
     const selectedSome = (selected.length > 0) && (selected.length < items.length);
     const selectedAll = (items.length > 0) && (selected.length === items.length);
 
-    const [fields, setFields] = useState(items);
+    const [fields, setFields] = useState([]);
+    useEffect(() => {
+        setFields(items)
+    }, [items])
 
     const [isEdit, setIsEdit] = useState({
         isEditStatus: false,
@@ -176,7 +179,7 @@ export const ParsersTable = (props) => {
                                                     // })
                                                 }}
                                             />
-                                            {/*{parser.isEnabled ? 'Вкл' : 'Выкл'}*/}
+
                                         </TableCell>
 
                                         <TableCell>
@@ -190,14 +193,12 @@ export const ParsersTable = (props) => {
                                         <TableCell>
                                             {
                                                 !isEditFieldDisabled(parser.id, isEdit) &&
-                                                <SaveIcon onClick={() => {
+                                                <SaveIcon style={{cursor: 'pointer'}} onClick={() => {
                                                     setIsEdit({
                                                         isEditStatus: !isEdit.isEditStatus,
                                                         id: null
                                                     });
                                                     const updateParser = fields.find(parser => parser.id === isEdit.id);
-                                                   // delete updateParser['isEnabled'];
-                                                   // updateParser.isEnabled = !updateParser.isEnabled
 
                                                     updateParsers(updateParser)
                                                 }}/>
@@ -205,7 +206,7 @@ export const ParsersTable = (props) => {
                                             <EditIcon onClick={() => setIsEdit({
                                                 isEditStatus: !isEdit.isEditStatus,
                                                 id: parser.id
-                                            })} style={{cursor: ' pointer'}}/>
+                                            })} style={{cursor: 'pointer'}}/>
                                         </TableCell>
 
 

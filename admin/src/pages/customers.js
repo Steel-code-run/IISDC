@@ -10,7 +10,7 @@ import {createPortal} from "react-dom";
 import PopupAddUser from "../components/popupAddUser/PopupAddUser";
 import Overlay from "../hocs/Overlay/Overlay";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {deleteUser, getCountUser} from "../api/userResponses";
+import {deleteUser, getCountUser, responseUser} from "../api/userResponses";
 import {useSelection} from "../hooks/use-selection";
 import {useUserQuery} from "../hooks/useUserQuery";
 
@@ -58,6 +58,7 @@ const Page = options => {
 
     const {data: users, status, isLoading, isError } =
         useUserQuery('users',
+            responseUser,
         page*rowsPerPage, rowsPerPage
     )
     const queryClient = useQueryClient();
