@@ -68,8 +68,6 @@ model users {
   user_telegram_settingsId Int?
 
   users_telegramsId String?
-
-  users_telegram_key String?
 }
 
 model users_actions {
