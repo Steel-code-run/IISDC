@@ -84,6 +84,7 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
 
     const highLightField = (turn: boolean) => (turn) ? ' ' + styles.dropdownTags__highlightField : '';
 
+
     return (
         <div className={classNames(
             styles.dropdownTags, {
@@ -100,6 +101,7 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
                                          nameDirection={dir}
                                          isDelete={false}
                                          cbDeleteTag={deleteTag}/>
+
                                 )
                             })
                             : <Tag nameDirection={tags}
@@ -131,10 +133,13 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
                         {
                             (Array.isArray(tags))
                                 ? tags.map((tag, ix) =>
-                                    (<Tag key={tag + ix}
+                                    (
+                                        <Tag key={tag + ix}
                                           nameDirection={tag}
                                           isDelete={true}
-                                          cbDeleteTag={deleteTag}/>))
+                                          cbDeleteTag={deleteTag}/>
+
+                                    ))
                                 : <Tag nameDirection={tags} isDelete={true} cbDeleteTag={deleteTag}/>
                         }
                     </div>

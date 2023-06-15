@@ -41,9 +41,11 @@ const PageGrants: FC<PageGrantsProps> = () => {
         token: token
     });
 
+
     const {data = [], error, isLoading} = useGetGrantsQuery({
         take: amountPostsPerPage,
         skip: (page - 1) * amountPostsPerPage,
+        extended: true,
         namePost: debounceValue,
         directions: choicedDirection,
         token: token

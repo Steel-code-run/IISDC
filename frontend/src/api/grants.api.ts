@@ -5,12 +5,13 @@ import {TTypesUpdateData} from "../types/types";
 export interface IGetGrants {
     skip: number,
     take: number,
+    extended: boolean
     namePost: string,
     directions?: string | string[],
     token: string | null
 }
 
-type IGetCountGrants = Omit<any, 'skip' | 'take'>;
+type IGetCountGrants = Omit<any, 'skip' | 'take' | 'extended'>;
 
 interface IUpdateInput {
     id: number
@@ -28,14 +29,17 @@ export const grantsApi = createApi({
     tagTypes: ['Grants'],
     endpoints: (builder) => ({
         getGrants: builder.query<any, IGetGrants>({
-            query: ({skip, take, namePost, directions, token}) => {
+            query: ({skip, take, extended,  namePost, directions, token}) => {
                 return {
                     url: `v1/grants/`,
                     body: {
                         skip,
                         take,
-                        namePost,
-                        directions: JSON.stringify(directions)
+                        extended,
+                        where: (namePost) ?{
+                            namePost,
+                            directions: JSON.stringify(directions)
+                        } : {}
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,

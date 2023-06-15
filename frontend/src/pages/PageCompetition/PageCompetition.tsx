@@ -16,7 +16,7 @@ export interface PageCompetitionsProps {
 }
 
 const PageCompetitions: FC<PageCompetitionsProps> = () => {
-    const [amountPostsPerPage, setAmountPostsPerPage] = useState(12);
+    const [amountPostsPerPage, setAmountPostsPerPage] = useState(10);
     const [page, setPage] = useState<number>(1)
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
@@ -42,10 +42,13 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
         directions: choicedDirection,
         token
     });
+    //console.log(totalCountPosts)
+
 
     const {data = [], error, isLoading} = useGetCompetitionsQuery( {
         take: amountPostsPerPage,
         skip: (page - 1) * amountPostsPerPage,
+        extended: true,
         namePost: debounceValue,
         directions: choicedDirection,
         token
@@ -53,7 +56,6 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
 
     //const {data: directions} = useGetDirectionsQuery({token});
     const directions = directionsList;
-
 
     useEffect(() => {
         window.addEventListener('resize', () => checkSizeWindow())
@@ -67,7 +69,8 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
 
 
     useEffect(() => {
-        setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
+        console.log(totalCountPosts, amountPostsPerPage)
+        setAmountPages(Math.ceil(totalCountPosts / amountPostsPerPage))
     }, [totalCountPosts, setAmountPages, amountPostsPerPage])
 
 
@@ -89,6 +92,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                                                     ariaLabel="dna-loading"
                                                     wrapperStyle={{}}
                                                     wrapperClass="dna-wrapper"/>
+    //console.log(totalCountPosts, amountPages, page)
     return (
         <>
             <Header/>

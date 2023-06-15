@@ -7,12 +7,13 @@ import {TTypesUpdateData} from "../types/types";
 export interface IGetCompetitions {
     take: number,
     skip: number,
+    extended: boolean,
     namePost: string,
     directions?: string[] | string,
     token: string | null
 }
 
-type IGetCountCompetitions  = Omit<IGetCompetitions, 'take' | 'skip'> ;
+type IGetCountCompetitions  = Omit<IGetCompetitions, 'take' | 'skip' | 'extended'> ;
 
 interface IUpdateInput {
     updateData: TTypesUpdateData,
@@ -29,12 +30,13 @@ export const competitionsApi = createApi({
     endpoints: (builder) => ({
 
         getCompetitions: builder.query<any, IGetCompetitions>({
-            query: ({take, skip, namePost, directions, token}) => {
+            query: ({take, skip, extended, namePost, directions, token}) => {
                 return {
                     url: 'v1/competitions/',
                     body: {
                         take,
                         skip,
+                        extended,
                     },
                     method: 'POST',
                     headers: {
@@ -55,8 +57,10 @@ export const competitionsApi = createApi({
                 return {
                     url: 'v1/competitions/count',
                     body: {
-                        namePost,
-                        directions: JSON.stringify(directions)
+                        skip: 0,
+                        take: 0,
+                        // namePost,
+                        // directions: JSON.stringify(directions)
                     },
                     method: 'POST',
                     headers: {
