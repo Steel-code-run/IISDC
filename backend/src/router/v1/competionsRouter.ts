@@ -1,13 +1,13 @@
 import {Router} from "express";
 import prisma from "../../prisma/connect";
 import {check, validationResult} from "express-validator";
-const grantsRouter = Router();
+const competitionsRouter = Router();
 
-// model grants {
+// model competitions {
 //   id                Int                @id @unique @default(autoincrement())
 //   namePost          String             @db.LongText()
 //   dateCreationPost  String?
-//   directions        grants_direction[]
+//   directions        competitions_direction[]
 //   organization      String?
 //   deadline          DateTime?
 //   summary           String?
@@ -75,7 +75,7 @@ async function getQueryDate(data:any) {
     return where;
 }
 
-grantsRouter.post('/v1/grants/', async (req, res) => {
+competitionsRouter.post('/v1/competitions/', async (req, res) => {
 
 
     let extended = req.body.extended || false;
@@ -83,14 +83,14 @@ grantsRouter.post('/v1/grants/', async (req, res) => {
     let where = await getQueryDate(req.body.where);
 
     try {
-        let grants:any = await prisma.grants.findMany({
+        let competitions:any = await prisma.competitions.findMany({
             take: Number(req.body.take) || 10,
             skip: Number(req.body.skip) || 0,
             where: where
         })
         if (!extended) {
-            grants = grants.map((grant:any) => {
-                let obj = Object.assign({}, grant);
+            competitions = competitions.map((competition:any) => {
+                let obj = Object.assign({}, competition);
 
                 delete obj.fullText;
                 delete obj.linkPDF;
@@ -105,19 +105,19 @@ grantsRouter.post('/v1/grants/', async (req, res) => {
             })
         }
 
-        return res.status(200).json(grants);
+        return res.status(200).json(competitions);
     } catch (e){
         console.log(e);
         return res.status(500).json(e);
     }
 })
 
-grantsRouter.post('/v1/grants/count', async (req, res) => {
+competitionsRouter.post('/v1/competitions/count', async (req, res) => {
 
         let where = await getQueryDate(req.body.where);
 
         try {
-            let count = await prisma.grants.count({
+            let count = await prisma.competitions.count({
                 where: where
             })
             return res.status(200).json(count);
@@ -126,56 +126,56 @@ grantsRouter.post('/v1/grants/count', async (req, res) => {
         }
 });
 
-grantsRouter.post('/v1/grants/:id', async (req, res) => {
+competitionsRouter.post('/v1/competitions/:id', async (req, res) => {
     let id = Number(req.params.id);
 
     try {
-        let grant = await prisma.grants.findUnique({
+        let competition = await prisma.competitions.findUnique({
             where: {
                 id: id
             }
         })
 
-        return res.status(200).json(grant);
+        return res.status(200).json(competition);
     } catch (e) {
         return res.status(500).json(e);
     }
 
 });
 
-grantsRouter.delete('/v1/grants', async (req, res) => {
+competitionsRouter.delete('/v1/competitions', async (req, res) => {
     let id = Number(req.query.id) || req.body.id;
 
     try {
-        let grant = await prisma.grants.delete({
+        let competition = await prisma.competitions.delete({
             where: {
                 id: id
             }
         })
-        return res.status(200).json(grant);
+        return res.status(200).json(competition);
     } catch (e) {
         return res.status(500).json(e);
     }
 })
 
-grantsRouter.patch('/v1/grants', async (req, res) => {
+competitionsRouter.patch('/v1/competitions', async (req, res) => {
     let id = Number(req.query.id) || req.body.id;
 
 
     let data = await getQueryDate(req.body.data);
 
     try {
-        let grant = await prisma.grants.update({
+        let competition = await prisma.competitions.update({
             where: {
                 id: id,
             },
             data: data
         })
-        return res.status(200).json(grant);
+        return res.status(200).json(competition);
     } catch (e){
         return res.status(500).json(e);
     }
 
 })
 
-export default grantsRouter;
+export default competitionsRouter;
