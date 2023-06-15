@@ -132,7 +132,7 @@ const PagePost = () => {
                                 >{data.summary}</div>
                             }
 
-                            <DropdownTags direction={data.direction}
+                            <DropdownTags direction={data.directions}
                                           isActiveDropdown={isEdit && isVisionBtns}
                                           setUpdateData={setUpdateData}
                                           updateData={updateData}
@@ -323,7 +323,9 @@ const PagePost = () => {
                                                 </button>
                                                 <button onClick={async () => {
                                                     setIsEdit(false);
+                                                    delete updateData['id'];
                                                     await updatePost({
+                                                        id: data.id,
                                                         updateData,
                                                         token: window.localStorage.getItem('token')
                                                     });

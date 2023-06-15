@@ -11,7 +11,7 @@ import classNames from "classnames";
 import {directionsList} from "../../../config/directions";
 
 export interface IDropdownTagsProps {
-    direction: string[] | string,
+    direction: string,
     isActiveDropdown: boolean,
     isHighlight: boolean,
     setUpdateData: React.Dispatch<React.SetStateAction<IUpdateDataGrant | IUpdateDataVacancy | IUpdateDataInternship | IUpdateDataCompetition>>,
@@ -37,16 +37,18 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
 
     const deleteTag = (deletedTag: string) => {
         if (Array.isArray(tags)) {
-            setTags(tags.filter(tag => tag !== deletedTag));
+            const updateTags = tags.filter(tag => tag !== deletedTag);
+            setTags(updateTags);
+
             setUpdateData({
                 ...updateData,
-                direction: tags.filter(tag => tag !== deletedTag)
+                directions: JSON.stringify(updateTags)
             })
         } else {
             setTags('')
             setUpdateData({
                 ...updateData,
-                direction: ''
+                directions: ''
             })
         }
 
@@ -55,17 +57,18 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
     const addTag = (addedTag: string) => {
         if (addedTag === 'Не определено') return
         if (Array.isArray(tags)) {
-            setTags([...tags, addedTag])
+            const updateTags = [...tags, addedTag];
+            setTags(updateTags)
             setUpdateData({
                 ...updateData,
-                direction: [...tags, addedTag]
+                directions: JSON.stringify(updateTags)
             })
 
         } else {
             setTags(addedTag)
             setUpdateData({
                 ...updateData,
-                direction: addedTag
+                directions: addedTag
             })
         }
 
@@ -73,6 +76,7 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
     const token = window.localStorage.getItem('token')
    // const {data: dataDirections} = useGetDirectionsQuery({token});
     const dataDirections = directionsList;
+
 
     useEffect(() => {
         setDirections(dataDirections?.filter((direction: string) => !tags?.includes(direction)))
@@ -92,10 +96,15 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
                         (Array.isArray(tags))
                             ? tags.map((dir, ix) => {
                                 return (
-                                    <Tag key={dir + ix} nameDirection={dir} isDelete={false} cbDeleteTag={deleteTag}/>
+                                    <Tag key={dir + ix}
+                                         nameDirection={dir}
+                                         isDelete={false}
+                                         cbDeleteTag={deleteTag}/>
                                 )
                             })
-                            : <Tag nameDirection={tags} isDelete={false} cbDeleteTag={deleteTag}/>
+                            : <Tag nameDirection={tags}
+                                   isDelete={false}
+                                   cbDeleteTag={deleteTag}/>
                         : <input onChange={(e) => {
                             setSearch(e.target.value)
                         }}

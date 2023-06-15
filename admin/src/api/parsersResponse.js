@@ -22,12 +22,18 @@ export const getCountParsers = async () => {
 
 export const updateParsers = async (updateData) => {
 
-    return await axios.patch(`${serverUrl}v1/parsers`, {
-        ...updateData
+    try {
 
-    }, {
-        ...defaultHeaders
-    })
+        const res =  await axios.patch(`${serverUrl}v1/parsers`, {
+            ...updateData
+
+        }, {
+            ...defaultHeaders
+        })
+        return res.data
+    } catch(err) {
+        return err.data
+    }
 
 }
 

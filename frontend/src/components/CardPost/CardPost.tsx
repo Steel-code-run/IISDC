@@ -11,7 +11,8 @@ interface ICardPost {
 
 
 const CardPost = <T extends TPostType>({postType, props}: TComponentPage<T>) => {
-    const date = new Date(Number(props.timeOfParse))
+    const timeParse = props.timeOfParse as string;
+    const date = new Date(Date.parse(timeParse))
     const formatDate = {
         day: date.getDate(),
         month: ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1),

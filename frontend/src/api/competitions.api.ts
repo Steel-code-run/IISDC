@@ -5,18 +5,15 @@ import {TTypesUpdateData} from "../types/types";
 // import {IUpdateData} from "../components/UI/PopupPost/PopupPost";
 
 export interface IGetCompetitions {
-    limit: number,
-    from: number,
+    take: number,
+    skip: number,
     namePost: string,
-    direction?: string[] | string,
+    directions?: string[] | string,
     token: string | null
 }
 
-interface IGetCountCompetitions {
-    namePost?: string,
-    direction?: string[] | string,
-    token: string | null
-}
+type IGetCountCompetitions  = Omit<IGetCompetitions, 'take' | 'skip'> ;
+
 interface IUpdateInput {
     updateData: TTypesUpdateData,
     token: string | null
@@ -32,14 +29,12 @@ export const competitionsApi = createApi({
     endpoints: (builder) => ({
 
         getCompetitions: builder.query<any, IGetCompetitions>({
-            query: ({limit, from, namePost, direction, token}) => {
+            query: ({take, skip, namePost, directions, token}) => {
                 return {
-                    url: 'v1/competitions/get',
+                    url: 'v1/competitions/',
                     body: {
-                        limit: limit,
-                        from,
-                        namePost,
-                        direction
+                        take,
+                        skip,
                     },
                     method: 'POST',
                     headers: {
@@ -56,12 +51,12 @@ export const competitionsApi = createApi({
                     : ['Competitions'],
         }),
         getCountСompetitions: builder.query<any, IGetCountCompetitions>({
-            query: ({namePost, direction, token}) => {
+            query: ({namePost, directions, token}) => {
                 return {
-                    url: 'v2/competitions/count',
+                    url: 'v1/competitions/count',
                     body: {
                         namePost,
-                        direction
+                        directions: JSON.stringify(directions)
                     },
                     method: 'POST',
                     headers: {
@@ -74,7 +69,7 @@ export const competitionsApi = createApi({
         deletePostCompetition: builder.mutation<any, any>({
             query: ({token, id}, ) => (
                 {
-                    url: 'v2/competitions/addToBlackList',
+                    url: 'v1/competitions/addToBlackList',
                     body: {
                         id
                     },
@@ -89,7 +84,7 @@ export const competitionsApi = createApi({
 
         updateCompetitions: builder.mutation<any, IUpdateInput>({
             query: ({updateData, token}) => ({
-                url: 'v2/competitions/update',
+                url: 'v1/competitions/update',
                 body: updateData,
                 headers: {
                     'Authorization': `Bearer ${token}`,

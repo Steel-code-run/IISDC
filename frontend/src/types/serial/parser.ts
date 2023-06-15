@@ -39,7 +39,7 @@ export type TGrant = {
 	// дата создания гранта
 	dateCreationPost: string;
 	// Направление гранта
-	direction: string | string[];
+	directions: string;
 	// организация-грантодатель
 	organization: string;
 	// дедлайн
@@ -54,9 +54,10 @@ export type TGrant = {
 	link: string;
 	// ссылка на PDF
 	linkPDF: string | string[];
+
 	sourceLink?:string;
 	// время парсинга
-	timeOfParse?: number;
+	timeOfParse?: string;
 	// В черном ли списке
 	blackListed?:0|1;
 }
@@ -84,7 +85,8 @@ export type TVacancy = {
 	// ссылка
 	link: string;
 	// время парсинга
-	timeOfParse?: number;
+	timeOfParse?: string;
+
 	sourceLink?:string;
 	blackListed?:0|1;
 }
@@ -122,7 +124,7 @@ export type TCompetition = {
 	// дедлайн
 	deadline: string;
 	// Направление
-	direction: string | string[];
+	directions: string;
 	// полный текст
 	fullText: string;
 	// название поста

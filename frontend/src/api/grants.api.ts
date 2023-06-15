@@ -6,17 +6,14 @@ export interface IGetGrants {
     skip: number,
     take: number,
     namePost: string,
-    direction?: string | string[],
+    directions?: string | string[],
     token: string | null
 }
 
-interface IGetCountGrants {
-    namePost?: string,
-    direction?: string | string[],
-    token: string | null
-}
+type IGetCountGrants = Omit<any, 'skip' | 'take'>;
 
 interface IUpdateInput {
+    id: number
     updateData: TTypesUpdateData,
     token: string | null
 }
@@ -31,14 +28,14 @@ export const grantsApi = createApi({
     tagTypes: ['Grants'],
     endpoints: (builder) => ({
         getGrants: builder.query<any, IGetGrants>({
-            query: ({skip, take, namePost, direction, token}) => {
+            query: ({skip, take, namePost, directions, token}) => {
                 return {
-                    url: `v1/grants`,
+                    url: `v1/grants/`,
                     body: {
                         skip,
                         take,
                         namePost,
-                        direction
+                        directions: JSON.stringify(directions)
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -56,13 +53,13 @@ export const grantsApi = createApi({
         }),
         getCountGrants: builder.query<any, IGetCountGrants>({
             query: ({namePost,
-                        direction,
+                        directions,
                         token}) => {
                 return {
                     url: `v1/grants/count`,
                     body: {
                         namePost,
-                        direction
+                        directions: JSON.stringify(directions)
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -88,9 +85,14 @@ export const grantsApi = createApi({
         }),
 
         updatePostGrant: builder.mutation<any, IUpdateInput>({
-            query: ({updateData, token}) => ({
-                url: 'v1/grants/update',
-                body: updateData,
+            query: ({id, updateData, token}) => ({
+                url: 'v1/grants',
+                body: {
+                    id,
+                    data: {
+                        ...updateData
+                    }
+                },
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },

@@ -9,7 +9,7 @@ import {getCountParsers, getParsers, updateParsers} from "../api/parsersResponse
 import {ParsersTable} from "../sections/parsers/parsers-table";
 import {ParsersSearch} from "../sections/parsers/parsers-search";
 import {useUserQuery} from "../hooks/useUserQuery";
-import {responseUser} from "../api/userResponses";
+import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 
 
 const useCustomers = (data, page, rowsPerPage) => {
@@ -32,14 +32,14 @@ const useCustomerIds = (customers) => {
 
 
 const Page = options => {
-    const portalPopup = document?.getElementById('portal');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    // const {data: parsers, status, isLoading, isError } =
-    //     useQuery(['parsers', page*rowsPerPage, rowsPerPage],
-    //         () => getParsers(page*rowsPerPage, rowsPerPage)
-    // );
+    const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
+    const [snackbarData, setSnackbarData] = useState({
+        type: '',
+        msg: ''
+    })
     const {data: parsers, status, isLoading, isError } =
         useUserQuery('parsers',
             getParsers,
@@ -51,10 +51,24 @@ const Page = options => {
     const queryClient = useQueryClient();
     const mutationUpdateParsers = useMutation(
         (updateData) => updateParsers(updateData), {
-            onSuccess: () => queryClient.invalidateQueries(['parsers'])
+            onSuccess: (res) => {
+                queryClient.invalidateQueries(['parsers']);
+                setIsOpenSnackbar(true)
+                setSnackbarData({
+                    msg: res.message,
+                    type: 'success'
+                })
+
+            },
+            onError: (err) => {
+                setIsOpenSnackbar(false)
+                setSnackbarData({
+                    msg: err.message,
+                    type: 'error'
+                })
+            }
         })
 
-    const [isOpen, setIsOpen] = useState(false);
 
     const customers = useCustomers(parsers, page, rowsPerPage);
     const customersIds = useCustomerIds(customers);
@@ -87,12 +101,6 @@ const Page = options => {
 
     return (
         <>
-            {/*{*/}
-            {/*    createPortal(*/}
-            {/*        <Overlay isOpen={isOpen} setIsOpen={setIsOpen}>*/}
-            {/*            <PopupAddUser/>*/}
-            {/*        </Overlay>, portalPopup)*/}
-            {/*}*/}
             <Head>
                 <title>
                     Парсеры
@@ -160,6 +168,10 @@ const Page = options => {
                     </Stack>
                 </Container>
             </Box>
+            <SnackbarMessage type={snackbarData.type}
+                             msg={snackbarData.msg}
+                             openSnackbar={isOpenSnackbar}
+                             setOpenSnackbar={setIsOpenSnackbar}/>
         </>
     );
 };

@@ -10,7 +10,6 @@ import '../../styles/spinner-loader.scss';
 import {useNavigate} from "react-router-dom";
 import {Dna} from "react-loader-spinner";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
-import {useGetDirectionsQuery} from "../../api/auxiliaryRequests.api";
 import {directionsList} from "../../config/directions";
 
 export interface PageGrantsProps {
@@ -38,18 +37,18 @@ const PageGrants: FC<PageGrantsProps> = () => {
 
     const {data: totalCountPosts} = useGetCountGrantsQuery({
         namePost: debounceValue,
-        direction: choicedDirection,
+        directions: choicedDirection,
         token: token
     });
 
     const {data = [], error, isLoading} = useGetGrantsQuery({
-        skip: amountPostsPerPage,
-        take: (page - 1) * amountPostsPerPage,
+        take: amountPostsPerPage,
+        skip: (page - 1) * amountPostsPerPage,
         namePost: debounceValue,
-        direction: choicedDirection,
+        directions: choicedDirection,
         token: token
     });
-    console.log(data)
+
 
     // const {data: directions} = useGetDirectionsQuery({
     //     token: token
@@ -109,7 +108,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
                                                 directionForSpent: post.directionForSpent,
                                                 fullText: post.fullText,
                                                 id: post.id,
-                                                direction: post.direction,
+                                                directions: JSON.parse(post.directions),
                                                 namePost: post.namePost,
                                                 organization: post.organization,
                                                 timeOfParse: post.timeOfParse,

@@ -139,13 +139,12 @@ export const ParsersTable = (props) => {
                                                        value={parser?.description}
                                                        onChange={(e) => {
                                                            setFields(prevState => prevState.map((parser) => {
-                                                               if(!isEditFieldDisabled(parser.id, isEdit)) {
+                                                               if (!isEditFieldDisabled(parser.id, isEdit)) {
                                                                    return {
                                                                        ...parser,
                                                                        description: e.target.value
                                                                    }
-                                                               }
-                                                               else return parser
+                                                               } else return parser
                                                            }))
 
                                                        }}/>
@@ -163,13 +162,12 @@ export const ParsersTable = (props) => {
                                                     //     onDeselectOne?.(parser.id);
                                                     // }
                                                     setFields(prevState => prevState.map((parser) => {
-                                                        if(!isEditFieldDisabled(parser.id, isEdit)) {
+                                                        if (!isEditFieldDisabled(parser.id, isEdit)) {
                                                             return {
                                                                 ...parser,
                                                                 isEnabled: e.target.checked
                                                             }
-                                                        }
-                                                        else return parser
+                                                        } else return parser
                                                     }))
 
                                                     // updateParsers({
@@ -183,11 +181,37 @@ export const ParsersTable = (props) => {
                                         </TableCell>
 
                                         <TableCell>
-                                            {parser.pagesToParse}
+                                            <TextField disabled={isEditFieldDisabled(parser.id, isEdit)}
+                                                       value={parser?.pagesToParse}
+                                                       onChange={(e) => {
+                                                           setFields(prevState => prevState.map((parser) => {
+                                                               if (!isEditFieldDisabled(parser.id, isEdit)) {
+                                                                   return {
+                                                                       ...parser,
+                                                                       pagesToParse: +e.target.value
+                                                                   }
+                                                               } else return parser
+                                                           }))
+
+                                                       }}/>
+
                                         </TableCell>
 
                                         <TableCell>
-                                            {parser.cronTime}
+                                            <TextField disabled={isEditFieldDisabled(parser.id, isEdit)}
+                                                       value={parser?.cronTime}
+                                                       onChange={(e) => {
+                                                           setFields(prevState => prevState.map((parser) => {
+                                                               if (!isEditFieldDisabled(parser.id, isEdit)) {
+                                                                   return {
+                                                                       ...parser,
+                                                                       cronTime: e.target.value
+                                                                   }
+                                                               } else return parser
+                                                           }))
+
+                                                       }}/>
+
                                         </TableCell>
 
                                         <TableCell>
