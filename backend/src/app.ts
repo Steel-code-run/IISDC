@@ -17,6 +17,7 @@ import {addJob} from "./cron/parsing";
 import telegramRouter from "./router/v1/telegram";
 import * as path from "path";
 import cronRouter from "./router/v1/cronRouter";
+import competionsRouter from "./router/v1/competionsRouter";
 
 dotenv.config();
 const app = express();
@@ -53,6 +54,7 @@ connect().then(async _ => {
 	app.use(settingsRouter);
 	app.use(parsersRouter);
 	app.use(telegramRouter);
+	app.use(competionsRouter)
 	app.use(cronRouter);
 	// routes end
 
