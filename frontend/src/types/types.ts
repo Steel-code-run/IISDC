@@ -19,7 +19,7 @@ export type TTypesUpdateData = IUpdateDataGrant | IUpdateDataCompetition | IUpda
 export interface IUpdateDataGrant {
     id: number | undefined,
     organization?: string | null,
-    direction?: string | string[] | null,
+    directions?: string | string[] | null,
     directionForSpent?: string | null,
     dateCreationPost: string | null,
     deadline: string | null,
@@ -32,7 +32,7 @@ export interface IUpdateDataGrant {
 export interface IUpdateDataCompetition {
     id: number | undefined,
     organization: string  | null,
-    direction: string | string[] | null,
+    directions: string | string[] | null,
     dateCreationPost: string | null,
     deadline: string | null,
     fullText: string | null,

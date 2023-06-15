@@ -33,7 +33,7 @@ const PagePost = () => {
     const [updateData, setUpdateData] = useState<TTypesUpdateData>({
         id: data.id,
         organization: data.organization,
-        direction: data.direction,
+        directions: data.directions,
         directionForSpent: data.directionForSpent,
         dateCreationPost: data.dateCreationPost,
         deadline: data.deadline,

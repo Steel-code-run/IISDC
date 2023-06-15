@@ -7,7 +7,7 @@ export const initialValuesUpdateData = (postType: TPostType, data: TTypesUpdateD
         return {
             id: data.id,
             organization: data.organization,
-            direction: data.direction,
+            directions: data.directions,
             directionForSpent: data.directionForSpent,
             dateCreationPost: data.dateCreationPost,
             deadline: data.deadline,
@@ -18,7 +18,7 @@ export const initialValuesUpdateData = (postType: TPostType, data: TTypesUpdateD
         return {
             id: data.id,
             organization: data.organization,
-            direction: data.direction,
+            directions: data.directions,
             dateCreationPost: data.dateCreationPost,
             deadline: data.deadline,
             fullText: data.fullText,

@@ -75,7 +75,7 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
     const dataDirections = directionsList;
 
     useEffect(() => {
-        setDirections(dataDirections?.filter((direction: string) => !tags.includes(direction)))
+        setDirections(dataDirections?.filter((direction: string) => !tags?.includes(direction)))
     }, [dataDirections, tags]);
 
     const highLightField = (turn: boolean) => (turn) ? ' ' + styles.dropdownTags__highlightField : '';
