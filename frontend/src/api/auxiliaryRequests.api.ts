@@ -11,7 +11,7 @@ export const auxiliaryApi = createApi({
         getDirections: builder.query<any, any>({
             query: ({token}) => (
                 {
-                    url:'v2/directions/get',
+                    url:'v1/directions/get',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },

@@ -11,6 +11,7 @@ import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import CardPost from "../../components/CardPost/CardPost";
 import {useNavigate} from "react-router-dom";
 import {useGetDirectionsQuery} from "../../api/auxiliaryRequests.api";
+import {directionsList} from "../../config/directions";
 
 export interface PageCompetitionsProps {
 }
@@ -51,7 +52,8 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
         token
     });
 
-    const {data: directions} = useGetDirectionsQuery({token});
+    //const {data: directions} = useGetDirectionsQuery({token});
+    const directions = directionsList;
 
 
     useEffect(() => {
@@ -82,7 +84,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
             : navigate('/competitions')
     }, [isLoading])
 
-    if (!directions?.data || isLoading) return <Dna visible={true}
+    if (!directions || isLoading) return <Dna visible={true}
                                                     height="250"
                                                     width="250"
                                                     ariaLabel="dna-loading"
@@ -96,7 +98,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                     <Search cbDebounce={setDebounceValue}/>
                     <div className={styles.pageCompetition__directionBlock}>
                         <p className={styles.pageCompetition__directionBlock__titleBlock}>{'Направление: '}</p>
-                        <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
+                        <Dropdown listDirections={directions} cbChoicedDirection={setChoicedDirection}/>
                     </div>
 
                     <div className={styles.pageCompetition__wrapper}>

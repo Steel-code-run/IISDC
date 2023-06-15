@@ -37,12 +37,12 @@ const Header: FC<HeaderProps> = () => {
                                     {/*<li className={styles.header__nav__navItem}>*/}
                                     {/*    <Link to={'/vacancies'}>Вакансии</Link>*/}
                                     {/*</li>*/}
-                                    <li className={styles.header__nav__navItem}>
-                                        <Link to={'/competitions'}>Конкурсы</Link>
-                                    </li>
-                                    <li className={styles.header__nav__navItem}>
-                                        <Link to={'/internships'}>Стажировки</Link>
-                                    </li>
+                                    {/*<li className={styles.header__nav__navItem}>*/}
+                                    {/*    <Link to={'/competitions'}>Конкурсы</Link>*/}
+                                    {/*</li>*/}
+                                    {/*<li className={styles.header__nav__navItem}>*/}
+                                    {/*    <Link to={'/internships'}>Стажировки</Link>*/}
+                                    {/*</li>*/}
                                 </ul>
                                 <div className={styles.header__blockUser}>
                                     {/*<img className={styles.header__avatar} src={Avatar} alt="icon"/>*/}

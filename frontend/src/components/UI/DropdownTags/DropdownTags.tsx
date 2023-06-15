@@ -7,8 +7,8 @@ import {
     IUpdateDataInternship,
     IUpdateDataVacancy
 } from "../../../types/types";
-import {useGetDirectionsQuery} from "../../../api/auxiliaryRequests.api";
 import classNames from "classnames";
+import {directionsList} from "../../../config/directions";
 
 export interface IDropdownTagsProps {
     direction: string[] | string,
@@ -32,7 +32,7 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
                                               }) => {
     const [isActive, setIsActive] = useState(false);
     const [tags, setTags] = useState<string[] | string>(direction);
-    const [directions, setDirections] = useState<IDirectionsResponse[]>([])
+    const [directions, setDirections] = useState<string[]>([])
     const [search, setSearch] = useState('')
 
     const deleteTag = (deletedTag: string) => {
@@ -71,10 +71,11 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
 
     }
     const token = window.localStorage.getItem('token')
-    const {data: dataDirections} = useGetDirectionsQuery({token});
+   // const {data: dataDirections} = useGetDirectionsQuery({token});
+    const dataDirections = directionsList;
 
     useEffect(() => {
-        setDirections(dataDirections?.data?.filter((direction: IDirectionsResponse) => !tags.includes(direction.directionName)))
+        setDirections(dataDirections?.filter((direction: string) => !tags.includes(direction)))
     }, [dataDirections, tags]);
 
     const highLightField = (turn: boolean) => (turn) ? ' ' + styles.dropdownTags__highlightField : '';
@@ -131,10 +132,10 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
                     <ul className={styles.dropdownTags__listDirections}>
                         {
                             directions
-                                .filter(direction => direction.directionName.toLowerCase().startsWith(search.toLowerCase()))
-                                .map((direction: IDirectionsResponse) =>
-                                    <li key={direction.id} onClick={() => addTag(direction.directionName)}
-                                        className={styles.dropdownTags__listDirections__direction}>{direction.directionName}</li>)
+                                .filter(direction => direction.toLowerCase().startsWith(search.toLowerCase()))
+                                .map((direction: string, ix: number) =>
+                                    <li key={direction + ix} onClick={() => addTag(direction)}
+                                        className={styles.dropdownTags__listDirections__direction}>{direction}</li>)
                         }
                     </ul>
 

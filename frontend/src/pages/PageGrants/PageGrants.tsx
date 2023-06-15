@@ -11,6 +11,7 @@ import {useNavigate} from "react-router-dom";
 import {Dna} from "react-loader-spinner";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import {useGetDirectionsQuery} from "../../api/auxiliaryRequests.api";
+import {directionsList} from "../../config/directions";
 
 export interface PageGrantsProps {
 }
@@ -42,16 +43,18 @@ const PageGrants: FC<PageGrantsProps> = () => {
     });
 
     const {data = [], error, isLoading} = useGetGrantsQuery({
-        limit: amountPostsPerPage,
-        from: (page - 1) * amountPostsPerPage,
+        skip: amountPostsPerPage,
+        take: (page - 1) * amountPostsPerPage,
         namePost: debounceValue,
         direction: choicedDirection,
         token: token
     });
+    console.log(data)
 
-    const {data: directions} = useGetDirectionsQuery({
-        token: token
-    });
+    // const {data: directions} = useGetDirectionsQuery({
+    //     token: token
+    // });
+    const directions = directionsList;
 
     useEffect(() => {
         setPage(1)
@@ -74,7 +77,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
             : navigate('/grants')
     }, [isLoading])
 
-    if (!directions?.data || isLoading) return <Dna visible={true}
+    if (!directions || isLoading) return <Dna visible={true}
                                                               height="250"
                                                               width="250"
                                                               ariaLabel="dna-loading"
@@ -88,13 +91,13 @@ const PageGrants: FC<PageGrantsProps> = () => {
                     <Search cbDebounce={setDebounceValue}/>
                     <div className={styles.pageGrants__directionBlock}>
                         <p className={styles.pageGrants__directionBlock__titleBlock}>{'Направление: '}</p>
-                        <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
+                        <Dropdown listDirections={directions} cbChoicedDirection={setChoicedDirection}/>
                     </div>
 
                     <div className={styles.pageGrants__wrapper}>
                         <div className={styles.pageGrants__posts}>
                             {
-                                data?.data?.map((post: TGrant) => {
+                                data?.map((post: TGrant) => {
                                     return (
                                         <CardPost<TPostType.grant>
                                             props={{
@@ -120,7 +123,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
                             }
                         </div>
                         {
-                            (data?.data?.length > 0) &&
+                            (data?.length > 0) &&
                             <Pagination count={(amountPages) ? amountPages : 1}
                                         page={page}
                                         defaultPage={page}

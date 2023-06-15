@@ -24,10 +24,10 @@ function App() {
                 <Route path={'/'} element={<PageAuth/>}/>
                 <Route path={'/home'} element={<PageHome/>}/>
                 <Route path={'/grants'} element={<PageGrants/>}/>
-                <Route path={'/vacancies'} element={<PageVacancies/>}/>
-                <Route path={'/internships'} element={<PageInternships/>}/>
                 <Route path={'/competitions'} element={<PageCompetition/>}/>
                 <Route path={'/post'} element={<PagePost/>}/>
+                {/*<Route path={'/vacancies'} element={<PageVacancies/>}/>*/}
+                {/*<Route path={'/internships'} element={<PageInternships/>}/>*/}
 
             </Routes>
 

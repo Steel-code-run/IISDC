@@ -34,7 +34,7 @@ export const competitionsApi = createApi({
         getCompetitions: builder.query<any, IGetCompetitions>({
             query: ({limit, from, namePost, direction, token}) => {
                 return {
-                    url: 'v2/competitions/get',
+                    url: 'v1/competitions/get',
                     body: {
                         limit: limit,
                         from,

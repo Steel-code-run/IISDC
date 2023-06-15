@@ -3,8 +3,8 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {TTypesUpdateData} from "../types/types";
 
 export interface IGetGrants {
-    limit: number,
-    from: number,
+    skip: number,
+    take: number,
     namePost: string,
     direction?: string | string[],
     token: string | null
@@ -31,12 +31,12 @@ export const grantsApi = createApi({
     tagTypes: ['Grants'],
     endpoints: (builder) => ({
         getGrants: builder.query<any, IGetGrants>({
-            query: ({limit, from, namePost, direction, token}) => {
+            query: ({skip, take, namePost, direction, token}) => {
                 return {
-                    url: `v2/grants/get`,
+                    url: `v1/grants`,
                     body: {
-                        limit: limit,
-                        from,
+                        skip,
+                        take,
                         namePost,
                         direction
                     },
@@ -49,15 +49,17 @@ export const grantsApi = createApi({
             providesTags: (result) =>
                 result?.data
                     ? [
-                        ...result?.data.map(({ id } : any) => ({ type: 'Grants' as const, id })),
-                        { type: 'Grants', id: 'LIST' },
+                        ...result?.data.map(({id}: any) => ({type: 'Grants' as const, id})),
+                        {type: 'Grants', id: 'LIST'},
                     ]
-                    : [{ type: 'Grants', id: 'LIST' }],
+                    : [{type: 'Grants', id: 'LIST'}],
         }),
         getCountGrants: builder.query<any, IGetCountGrants>({
-            query: ({namePost, direction, token}) => {
+            query: ({namePost,
+                        direction,
+                        token}) => {
                 return {
-                    url: `v2/grants/count`,
+                    url: `v1/grants/count`,
                     body: {
                         namePost,
                         direction
@@ -70,9 +72,9 @@ export const grantsApi = createApi({
             }
         }),
         deletePostGrant: builder.mutation<any, any>({
-            query: ({token, id}, ) => (
+            query: ({token, id},) => (
                 {
-                    url: 'v2/grants/addToBlackList',
+                    url: 'v1/grants/addToBlackList',
                     body: {
                         id
                     },
@@ -87,7 +89,7 @@ export const grantsApi = createApi({
 
         updatePostGrant: builder.mutation<any, IUpdateInput>({
             query: ({updateData, token}) => ({
-                url: 'v2/grants/update',
+                url: 'v1/grants/update',
                 body: updateData,
                 headers: {
                     'Authorization': `Bearer ${token}`,
