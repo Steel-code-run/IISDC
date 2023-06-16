@@ -95,8 +95,12 @@ export const competitionsApi = createApi({
         deletePostCompetition: builder.mutation<any, any>({
             query: ({token, id}, ) => (
                 {
-                    url: 'v1/competitions/addToBlackList',
+                    url: 'v1/competitions',
                     body: {
+                        skip: 0,
+                        take: 1
+                    },
+                    params: {
                         id
                     },
                     headers: {

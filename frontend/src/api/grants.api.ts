@@ -94,14 +94,18 @@ export const grantsApi = createApi({
         deletePostGrant: builder.mutation<any, any>({
             query: ({token, id},) => (
                 {
-                    url: 'v1/grants/addToBlackList',
+                    url: 'v1/grants',
                     body: {
+                        skip: 0,
+                        take: 1
+                    },
+                    params: {
                         id
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
-                    method: 'PATCH'
+                    method: 'DELETE'
                 }
             ),
             invalidatesTags: [{type: 'Grants', id: 'LIST'}]
