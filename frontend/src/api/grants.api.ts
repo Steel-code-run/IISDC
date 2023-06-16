@@ -3,21 +3,19 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {TTypesUpdateData} from "../types/types";
 
 export interface IGetGrants {
-    limit: number,
-    from: number,
+    skip: number,
+    take: number,
+    extended: boolean
     namePost: string,
-    direction?: string | string[],
+    directions?: string | string[],
     token: string | null
 }
 
-interface IGetCountGrants {
-    namePost?: string,
-    direction?: string | string[],
-    token: string | null
-}
+type IGetCountGrants = Omit<any, 'skip' | 'take' | 'extended'>;
 
 interface IUpdateInput {
-    updateData: TTypesUpdateData,
+    id: number
+    updateData: Partial<TTypesUpdateData>,
     token: string | null
 }
 
@@ -31,14 +29,34 @@ export const grantsApi = createApi({
     tagTypes: ['Grants'],
     endpoints: (builder) => ({
         getGrants: builder.query<any, IGetGrants>({
-            query: ({limit, from, namePost, direction, token}) => {
+            query: ({skip, take, extended, namePost, directions, token}) => {
                 return {
-                    url: `v2/grants/get`,
+                    url: `v1/grants/`,
                     body: {
-                        limit: limit,
-                        from,
-                        namePost,
-                        direction
+                        skip,
+                        take,
+                        extended,
+                        where: (directions?.length) ? {
+                            "namePost": {
+                                contains: namePost
+                            },
+
+                            "OR": (typeof directions === 'string') ? {
+                                "directions": {
+                                    contains: directions
+                                }
+                            } : directions?.map((dir) => {
+                                return {
+                                    "directions": {
+                                        contains: dir
+                                    }
+                                }
+                            })
+                        } : {
+                            "namePost": {
+                                contains: namePost
+                            },
+                        }
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -49,18 +67,22 @@ export const grantsApi = createApi({
             providesTags: (result) =>
                 result?.data
                     ? [
-                        ...result?.data.map(({ id } : any) => ({ type: 'Grants' as const, id })),
-                        { type: 'Grants', id: 'LIST' },
+                        ...result?.data.map(({id}: any) => ({type: 'Grants' as const, id})),
+                        {type: 'Grants', id: 'LIST'},
                     ]
-                    : [{ type: 'Grants', id: 'LIST' }],
+                    : [{type: 'Grants', id: 'LIST'}],
         }),
         getCountGrants: builder.query<any, IGetCountGrants>({
-            query: ({namePost, direction, token}) => {
+            query: ({
+                        namePost,
+                        directions,
+                        token
+                    }) => {
                 return {
-                    url: `v2/grants/count`,
+                    url: `v1/grants/count`,
                     body: {
                         namePost,
-                        direction
+                        directions: JSON.stringify(directions)
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -70,25 +92,34 @@ export const grantsApi = createApi({
             }
         }),
         deletePostGrant: builder.mutation<any, any>({
-            query: ({token, id}, ) => (
+            query: ({token, id},) => (
                 {
-                    url: 'v2/grants/addToBlackList',
+                    url: 'v1/grants',
                     body: {
+                        skip: 0,
+                        take: 1
+                    },
+                    params: {
                         id
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
-                    method: 'PATCH'
+                    method: 'DELETE'
                 }
             ),
             invalidatesTags: [{type: 'Grants', id: 'LIST'}]
         }),
 
         updatePostGrant: builder.mutation<any, IUpdateInput>({
-            query: ({updateData, token}) => ({
-                url: 'v2/grants/update',
-                body: updateData,
+            query: ({id, updateData, token}) => ({
+                url: 'v1/grants',
+                body: {
+                    id,
+                    data: {
+                        ...updateData
+                    }
+                },
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },

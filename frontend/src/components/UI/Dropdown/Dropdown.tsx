@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 export interface DropdownProps {
 
-    listDirections: IDirectionsResponse[],
+    listDirections: string[],
     cbChoicedDirection: React.Dispatch<React.SetStateAction<string[] | string>>
 }
 
@@ -16,7 +16,7 @@ export interface IDirectionsResponse {
 
 const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
     const [isActive, setIsActive] = useState(false);
-    const [directions, setDirections] = useState<IDirectionsResponse[]>([])
+    const [directions, setDirections] = useState<string[]>([])
     const [tags, setTags] = useState<IDirectionsResponse[]>([]);
     const [search, setSearch] = useState('')
 
@@ -39,13 +39,12 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
             id,
             directionName: addedTag
         }])
-
     }
 
     useEffect(() => {
-        setDirections(listDirections?.filter((direction: IDirectionsResponse) => {
+        setDirections(listDirections?.filter((direction: string) => {
             const tagNames = tags.map(tag => tag.directionName);
-            return !tagNames.includes(direction.directionName);
+            return !tagNames.includes(direction);
         }))
     }, [tags, listDirections]);
 
@@ -56,9 +55,11 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
                 {
                     (!isActive) ?
                         (tags.length > 0)
-                            ? tags.map((dir) => {
+                            ? tags.map((dir, ix) => {
                                 return (
-                                    <Tag key={dir.id} nameDirection={dir.directionName} isDelete={true}
+                                    <Tag key={ix + Math.random() * Date.now()}
+                                         nameDirection={dir.directionName}
+                                         isDelete={true}
                                          cbDeleteTag={deleteTag}/>
                                 )
                             })
@@ -84,8 +85,8 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
                     <div className={styles.dropdown__dropdown__listTags}>
                         {
                             (tags.length > 0) ?
-                                tags.map((tag) =>
-                                    (<Tag key={tag.id}
+                                tags.map((tag, ix) =>
+                                    (<Tag key={ix + Math.random() * Date.now()}
                                           nameDirection={tag.directionName}
                                           isDelete={true}
                                           cbDeleteTag={deleteTag}/>))
@@ -96,10 +97,10 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
                     <ul className={styles.dropdown__listDirections}>
                         {
                             directions
-                                .filter(direction => direction.directionName.toLowerCase().startsWith(search.toLowerCase()))
-                                .map((direction: IDirectionsResponse) =>
-                                    <li key={direction.id} onClick={() => addTag(direction.directionName, direction.id)}
-                                        className={styles.dropdown__listDirections__direction}>{direction.directionName}</li>)
+                                .filter(direction => direction.toLowerCase().startsWith(search.toLowerCase()))
+                                .map((direction: string, ix: number) =>
+                                    <li key={direction + ix} onClick={() => addTag(direction, ix)}
+                                        className={styles.dropdown__listDirections__direction}>{direction}</li>)
                         }
                     </ul>
 

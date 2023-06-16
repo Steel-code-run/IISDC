@@ -1,18 +1,15 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
-import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import {Box, Button, Container, Stack, SvgIcon, Typography} from '@mui/material';
+import {Box, Container, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
-import {CustomersTable} from 'src/sections/customer/customers-table';
 import {applyPagination} from 'src/utils/apply-pagination';
-import {createPortal} from "react-dom";
-import PopupAddUser from "../components/popupAddUser/PopupAddUser";
-import Overlay from "../hocs/Overlay/Overlay";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {deleteUser, getCountUser, responseUser} from "../api/userResponses";
 import {useSelection} from "../hooks/use-selection";
+import {getCountParsers, getParsers, updateParsers} from "../api/parsersResponse";
+import {ParsersTable} from "../sections/parsers/parsers-table";
 import {useUserQuery} from "../hooks/useUserQuery";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
+
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -26,7 +23,7 @@ const useCustomers = (data, page, rowsPerPage) => {
 const useCustomerIds = (customers) => {
     return useMemo(
         () => {
-            return customers?.map((customer) => customer.id);
+            return customers?.filter((parser) => parser.isEnabled).map((parsers) => parsers.id);
         },
         [customers]
     );
@@ -34,44 +31,48 @@ const useCustomerIds = (customers) => {
 
 
 const Page = options => {
-    const portalPopup = document?.getElementById('portal');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
     const [snackbarData, setSnackbarData] = useState({
         type: '',
         msg: ''
-    });
+    })
+    const {data: parsers, status, isLoading, isError } =
+        useUserQuery('parsers',
+            getParsers,
+            page*rowsPerPage, rowsPerPage
+        )
 
-    const {data: users, status, isLoading, isError } =
-        useUserQuery('users',
-            responseUser,
-        page*rowsPerPage, rowsPerPage
-    )
+    const {data: countParsers} = useQuery(['parsersCount'], getCountParsers );
+
     const queryClient = useQueryClient();
-
-    const mutation = useMutation(
-        (delUser) => deleteUser(delUser), {
+    const mutationUpdateParsers = useMutation(
+        (updateData) => updateParsers(updateData), {
             onSuccess: (res) => {
-                queryClient.invalidateQueries(["users"]);
-                setOpenSnackbar(true)
+                queryClient.invalidateQueries(['parsers']);
+                setIsOpenSnackbar(true)
                 setSnackbarData({
                     msg: res.message,
                     type: 'success'
                 })
+
+            },
+            onError: (err) => {
+                setIsOpenSnackbar(false)
+                setSnackbarData({
+                    msg: err.message,
+                    type: 'error'
+                })
             }
-        });
+        })
 
-    const {data: countUsers} = useQuery(['usersLength'], getCountUser);
 
-    const [isOpen, setIsOpen] = useState(false);
-
-    const customers = useCustomers(users, page, rowsPerPage);
+    const customers = useCustomers(parsers, page, rowsPerPage);
     const customersIds = useCustomerIds(customers);
     const customersSelection
         = useSelection(customersIds);
-
 
     const handlePageChange = useCallback(
         (event, value) => {
@@ -84,7 +85,6 @@ const Page = options => {
     const handleRowsPerPageChange = useCallback(
         (event) => {
             setRowsPerPage(event.target.value);
-
         },
         []
     );
@@ -100,15 +100,9 @@ const Page = options => {
 
     return (
         <>
-            {
-                createPortal(
-                    <Overlay isOpen={isOpen} setIsOpen={setIsOpen}>
-                        <PopupAddUser/>
-                    </Overlay>, portalPopup)
-            }
             <Head>
                 <title>
-                    Пользователи
+                    Парсеры
                 </title>
             </Head>
             <Box
@@ -127,7 +121,7 @@ const Page = options => {
                         >
                             <Stack spacing={1}>
                                 <Typography variant="h4">
-                                    Пользователи
+                                    Парсеры
                                 </Typography>
                                 <Stack
                                     alignItems="center"
@@ -137,26 +131,26 @@ const Page = options => {
 
                                 </Stack>
                             </Stack>
-                            <div>
-                                <Button
-                                    onClick={() => setIsOpen(true)}
-                                    startIcon={(
-                                        <SvgIcon fontSize="small">
-                                            <PlusIcon/>
-                                        </SvgIcon>
-                                    )}
-                                    variant="contained"
-                                >
-                                    Добавить пользователя
-                                </Button>
-                            </div>
+                            {/*<div>*/}
+                            {/*    <Button*/}
+                            {/*        onClick={() => setIsOpen(true)}*/}
+                            {/*        startIcon={(*/}
+                            {/*            <SvgIcon fontSize="small">*/}
+                            {/*                <PlusIcon/>*/}
+                            {/*            </SvgIcon>*/}
+                            {/*        )}*/}
+                            {/*        variant="contained"*/}
+                            {/*    >*/}
+                            {/*        Добавить пользователя*/}
+                            {/*    </Button>*/}
+                            {/*</div>*/}
                         </Stack>
-                        {/*<CustomersSearch/>*/}
+                        {/*<ParsersSearch/>*/}
                         {
-                            (status === "success" && users.length > 0) &&
-                            <CustomersTable
-                                count={countUsers || 0}
-                                items={[...users].reverse()}
+                            (status === "success" && parsers?.length > 0) &&
+                            <ParsersTable
+                                count={countParsers || 0}
+                                items={parsers}
                                 onDeselectAll={customersSelection.handleDeselectAll}
                                 onDeselectOne={customersSelection.handleDeselectOne}
                                 onPageChange={handlePageChange}
@@ -165,17 +159,18 @@ const Page = options => {
                                 onSelectOne={customersSelection.handleSelectOne}
                                 page={page}
                                 rowsPerPage={rowsPerPage}
-                                selected={customersSelection.selected}
-                                deleteRowHandle={mutation.mutate}
+                                selected={parsers?.filter((parser) => parser.isEnabled).map((parsers) => parsers.id)}
+                                updateParsers={mutationUpdateParsers.mutate}
+                                //deleteRowHandle={mutation.mutate}
                             />
                         }
                     </Stack>
                 </Container>
             </Box>
-            <SnackbarMessage msg={snackbarData.msg}
-                             type={snackbarData.type}
-                             openSnackbar={openSnackbar}
-                             setOpenSnackbar={setOpenSnackbar}/>
+            <SnackbarMessage type={snackbarData.type}
+                             msg={snackbarData.msg}
+                             openSnackbar={isOpenSnackbar}
+                             setOpenSnackbar={setIsOpenSnackbar}/>
         </>
     );
 };

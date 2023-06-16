@@ -1,6 +1,9 @@
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import {SvgIcon} from '@mui/material';
 import {CogIcon} from "@heroicons/react/20/solid";
+import {PestControl} from "@mui/icons-material";
+import SyncAltIcon from '@mui/icons-material/SyncAlt';
+import PostAddIcon from '@mui/icons-material/PostAdd';
 
 export const items = [
   // {
@@ -19,26 +22,60 @@ export const items = [
       <SvgIcon fontSize="small">
         <UsersIcon />
       </SvgIcon>
-    )
+    ),
+    childrenNav: [
+      {
+        title: 'Роли',
+        path: '/customers/roles',
+        icon: (
+            <SvgIcon fontSize="small">
+              <UsersIcon />
+            </SvgIcon>
+        )
+      },
+    ]
   },
+
   {
-    title: 'Роли',
-    path: '/customers/roles',
+    title: 'Парсеры',
+    path: '/parsers',
     icon: (
         <SvgIcon fontSize="small">
-          {/*<UsersIcon />*/}
+          <PestControl />
         </SvgIcon>
-    )
+    ),
+    childrenNav: []
   },
   {
-    title: 'Скрыте статьи',
-    path: '/blackList',
+    title: 'Гранты',
+    path: '/grants',
     icon: (
         <SvgIcon fontSize="small">
-          <UsersIcon />
+          <PostAddIcon />
         </SvgIcon>
-    )
+    ),
+    childrenNav: []
   },
+  {
+    title: 'Конкурсы',
+    path: '/competitions',
+    icon: (
+        <SvgIcon fontSize="small">
+          <PostAddIcon />
+        </SvgIcon>
+    ),
+    childrenNav: []
+  },
+  // {
+  //   title: 'Скрыте статьи',
+  //   path: '/blackList',
+  //   icon: (
+  //       <SvgIcon fontSize="small">
+  //         <UsersIcon />
+  //       </SvgIcon>
+  //   ),
+  //   childrenNav: []
+  // },
   // {
   //   title: 'Companies',
   //   path: '/companies',
@@ -58,13 +95,24 @@ export const items = [
   //   )
   // },
   {
-    title: 'Settings',
+    title: 'Настройки',
     path: '/settings',
     icon: (
       <SvgIcon fontSize="small">
         <CogIcon />
       </SvgIcon>
-    )
+    ),
+    childrenNav: []
+  },
+  {
+    title: 'Логи',
+    path: '/logs',
+    icon: (
+        <SvgIcon fontSize="small">
+          <SyncAltIcon />
+        </SvgIcon>
+    ),
+    childrenNav: []
   },
   // {
   //   title: 'Login',

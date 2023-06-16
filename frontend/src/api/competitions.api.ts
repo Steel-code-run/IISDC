@@ -5,19 +5,18 @@ import {TTypesUpdateData} from "../types/types";
 // import {IUpdateData} from "../components/UI/PopupPost/PopupPost";
 
 export interface IGetCompetitions {
-    limit: number,
-    from: number,
+    take: number,
+    skip: number,
+    extended: boolean,
     namePost: string,
-    direction?: string[] | string,
+    directions?: string[] | string,
     token: string | null
 }
 
-interface IGetCountCompetitions {
-    namePost?: string,
-    direction?: string[] | string,
-    token: string | null
-}
+type IGetCountCompetitions  = Omit<IGetCompetitions, 'take' | 'skip' | 'extended'> ;
+
 interface IUpdateInput {
+    id: number
     updateData: TTypesUpdateData,
     token: string | null
 }
@@ -32,14 +31,34 @@ export const competitionsApi = createApi({
     endpoints: (builder) => ({
 
         getCompetitions: builder.query<any, IGetCompetitions>({
-            query: ({limit, from, namePost, direction, token}) => {
+            query: ({take, skip, extended, namePost, directions, token}) => {
                 return {
-                    url: 'v2/competitions/get',
+                    url: 'v1/competitions/',
                     body: {
-                        limit: limit,
-                        from,
-                        namePost,
-                        direction
+                        skip,
+                        take,
+                        extended,
+                        where: (directions?.length) ? {
+                            "namePost": {
+                                contains: namePost
+                            },
+
+                            "OR": (typeof directions === 'string') ? {
+                                "directions": {
+                                    contains: directions
+                                }
+                            } : directions?.map((dir) => {
+                                return {
+                                    "directions": {
+                                        contains: dir
+                                    }
+                                }
+                            })
+                        } : {
+                            "namePost": {
+                                contains: namePost
+                            },
+                        }
                     },
                     method: 'POST',
                     headers: {
@@ -56,12 +75,14 @@ export const competitionsApi = createApi({
                     : ['Competitions'],
         }),
         getCountСompetitions: builder.query<any, IGetCountCompetitions>({
-            query: ({namePost, direction, token}) => {
+            query: ({namePost, directions, token}) => {
                 return {
-                    url: 'v2/competitions/count',
+                    url: 'v1/competitions/count',
                     body: {
-                        namePost,
-                        direction
+                        skip: 0,
+                        take: 0,
+                        // namePost,
+                        // directions: JSON.stringify(directions)
                     },
                     method: 'POST',
                     headers: {
@@ -74,8 +95,12 @@ export const competitionsApi = createApi({
         deletePostCompetition: builder.mutation<any, any>({
             query: ({token, id}, ) => (
                 {
-                    url: 'v2/competitions/addToBlackList',
+                    url: 'v1/competitions',
                     body: {
+                        skip: 0,
+                        take: 1
+                    },
+                    params: {
                         id
                     },
                     headers: {
@@ -88,9 +113,14 @@ export const competitionsApi = createApi({
         }),
 
         updateCompetitions: builder.mutation<any, IUpdateInput>({
-            query: ({updateData, token}) => ({
-                url: 'v2/competitions/update',
-                body: updateData,
+            query: ({id, updateData, token}) => ({
+                url: 'v1/competitions',
+                body: {
+                    id,
+                    data: {
+                        ...updateData
+                    }
+                },
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },

@@ -30,10 +30,11 @@ const PagePost = () => {
 
     const [isEdit, setIsEdit] = useState(false);
 
-    const [updateData, setUpdateData] = useState<TTypesUpdateData>({
+    const [updateData, setUpdateData] =
+        useState<TTypesUpdateData>({
         id: data.id,
         organization: data.organization,
-        direction: data.direction,
+        directions: JSON.stringify(data.directions),
         directionForSpent: data.directionForSpent,
         dateCreationPost: data.dateCreationPost,
         deadline: data.deadline,
@@ -132,7 +133,7 @@ const PagePost = () => {
                                 >{data.summary}</div>
                             }
 
-                            <DropdownTags direction={data.direction}
+                            <DropdownTags direction={data.directions}
                                           isActiveDropdown={isEdit && isVisionBtns}
                                           setUpdateData={setUpdateData}
                                           updateData={updateData}
@@ -196,7 +197,13 @@ const PagePost = () => {
                                         })
                                     }}
                                 >{data.organization}</div>
+
                             }
+                            <DropdownTags direction={data.directions}
+                                          isActiveDropdown={isEdit && isVisionBtns}
+                                          setUpdateData={setUpdateData}
+                                          updateData={updateData}
+                                          isHighlight={true}/>
                         </>
                     }
                     {
@@ -323,7 +330,11 @@ const PagePost = () => {
                                                 </button>
                                                 <button onClick={async () => {
                                                     setIsEdit(false);
+                                                    if(updateData['id'])
+                                                        delete updateData['id'];
+
                                                     await updatePost({
+                                                        id: data.id,
                                                         updateData,
                                                         token: window.localStorage.getItem('token')
                                                     });

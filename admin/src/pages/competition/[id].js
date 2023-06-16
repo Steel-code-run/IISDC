@@ -1,17 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {useRouter} from "next/router";
-import {useUserQuery} from "../../hooks/useUserQuery";
-import {Alert, Box, Button, Container, Snackbar, Stack, SvgIcon, TextField, Typography} from "@mui/material";
-import styles from './userPage.module.scss'
+import {Box, Button, Container, Stack, SvgIcon, TextField, Typography} from "@mui/material";
+import styles from './competitionPage.module.scss'
 import EditIcon from '@mui/icons-material/Edit';
-import {responseUser, updateUser} from "../../api/userResponses";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
+import {getCompetitions, updateCompetiotion} from "../../api/posts/competitionsResponses";
 
 const Page = () => {
     const router = useRouter();
-    const {data, isError, isLoading} = useUserQuery('user', responseUser, 0, 0, router.query.id);
+    const configResponseGrant = {
+        extended: true
+    }
+    const whereGrant = {
+        id: Number(router.query.id)
+    }
+    const {data, isError, isLoading} = useQuery(['competition', 0, 0, configResponseGrant, whereGrant],
+        () => getCompetitions(0, 0, configResponseGrant, whereGrant));
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarData, setSnackbarData] = useState({
@@ -23,28 +29,28 @@ const Page = () => {
     const queryClient = useQueryClient();
 
     const [isEditing, setIsEditing] = useState(false);
-    const [userData, setUserData] = useState(null);
+    const [competitionData, setCompetitionData] = useState(null);
 
 
     useEffect(() => {
-        setUserData(data?.[0])
+        setCompetitionData(data?.[0])
     }, [data])
 
-    const mutation = useMutation((data) => updateUser(data),
+    const mutation = useMutation((data) => updateCompetiotion(data),
         {
             onSuccess: (res) => {
-                queryClient.invalidateQueries(["users"]);
+                queryClient.invalidateQueries(["competition"]);
                 setOpenSnackbar(true);
                 setSnackbarData({
                     type: 'success',
-                    msg: res.data.message
+                    msg: 'Конкурс успешно обновлен'
                 });
             },
             onError: (err) => {
                 setOpenSnackbar(true);
                 setSnackbarData({
                     type: 'error',
-                    msg: err.response.data.errors[0].msg
+                    msg: JSON.stringify(err)
                 })
 
             },
@@ -58,20 +64,16 @@ const Page = () => {
     const handleEdit = () => {
         setIsEditing(!isEditing)
     }
-    const handleCloseSnackbar = () => {
-        setOpenSnackbarSuccess(false);
-        setOpenSnackbarError(false)
-    }
 
     const handleChangeDataUser = (e) => {
-        setUserData((prevFormData) => ({
+        setCompetitionData((prevFormData) => ({
             ...prevFormData,
             [e.target.name]: e.target.value,
         }));
     };
 
     const handleUpdatedDataUser = () => {
-        mutation.mutate({...userData, id: data[0].id});
+        mutation.mutate({data: competitionData, id: data[0].id});
         setIsEditing(false);
     }
 
@@ -85,7 +87,7 @@ const Page = () => {
             }}>
                 <Container>
                     <Typography
-                        variant={'h4'}>Данные пользователя</Typography>
+                        variant={'h4'}>Данные гранта: {competitionData?.namePost}</Typography>
                     <Stack component={'user'}>
                         {data && <Box style={{
                             marginTop: '50px',
@@ -95,35 +97,72 @@ const Page = () => {
                         }}>
 
                             <TextField className={styles.userPage__textField}
-                                       label="Имя"
+                                       label="Имя поста"
                                        variant="outlined"
                                        size="small"
-                                       name="name"
-                                       value={(userData) ? userData?.name : data[0].name}
+                                       name="namePost"
+                                       value={competitionData?.namePost}
+                                       disabled={!isEditing}
+                                       onChange={handleChangeDataUser}
+                            />
+                            <TextField className={styles.userPage__textField}
+                                       label="Дата создания поста"
+                                       variant="outlined"
+                                       size="small"
+                                       name="dateCreationPost"
+                                       value={competitionData?.dateCreationPost}
+                                       disabled={!isEditing}
+                                       onChange={handleChangeDataUser}
+                            />
+                            <TextField className={styles.userPage__textField}
+                                       label="Дедлайн"
+                                       variant="outlined"
+                                       size="small"
+                                       name="deadline"
+                                       value={competitionData?.deadline}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
 
                             <TextField className={styles.userPage__textField}
-
-                                       label="Email"
+                                       label="Организация"
                                        variant="outlined"
                                        size="small"
-                                       name="email"
-                                       value={(userData) ? userData?.email : data[0].email}
+                                       name="organization"
+                                       value={competitionData?.organization}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
 
                             <TextField className={styles.userPage__textField}
-                                       label="Роль"
+                                       label="Ссылка на пост"
                                        variant="outlined"
                                        size="small"
-                                       name={"role"}
-                                       value={(userData) ? userData?.role.name : data[0].role.name}
-                                       disabled={true}
+                                       name="link"
+                                       value={competitionData?.link}
+                                       disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
+
+                            <TextField className={styles.userPage__textField}
+                                       label="Ссылка на файл"
+                                       variant="outlined"
+                                       size="small"
+                                       name="linkPDF"
+                                       value={competitionData?.linkPDF }
+                                       disabled={!isEditing}
+                                       onChange={handleChangeDataUser}
+                            />
+
+                            {/*<TextField className={styles.userPage__textField}*/}
+                            {/*           label="Роль"*/}
+                            {/*           variant="outlined"*/}
+                            {/*           size="small"*/}
+                            {/*           name={"role"}*/}
+                            {/*           value={(competitionData) ? competitionData?.role.name : data[0].role.name}*/}
+                            {/*           disabled={true}*/}
+                            {/*           onChange={handleChangeDataUser}*/}
+                            {/*/>*/}
 
                             <Stack
                                 direction="row"

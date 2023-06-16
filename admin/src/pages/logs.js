@@ -1,9 +1,7 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
-import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import {Box, Button, Container, Stack, SvgIcon, Typography} from '@mui/material';
+import {Box, Container, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
-import {CustomersTable} from 'src/sections/customer/customers-table';
 import {applyPagination} from 'src/utils/apply-pagination';
 import {createPortal} from "react-dom";
 import PopupAddUser from "../components/popupAddUser/PopupAddUser";
@@ -12,7 +10,6 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {deleteUser, getCountUser, responseUser} from "../api/userResponses";
 import {useSelection} from "../hooks/use-selection";
 import {useUserQuery} from "../hooks/useUserQuery";
-import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -108,7 +105,7 @@ const Page = options => {
             }
             <Head>
                 <title>
-                    Пользователи
+                    Логи
                 </title>
             </Head>
             <Box
@@ -127,7 +124,7 @@ const Page = options => {
                         >
                             <Stack spacing={1}>
                                 <Typography variant="h4">
-                                    Пользователи
+                                    Логи
                                 </Typography>
                                 <Stack
                                     alignItems="center"
@@ -137,45 +134,33 @@ const Page = options => {
 
                                 </Stack>
                             </Stack>
-                            <div>
-                                <Button
-                                    onClick={() => setIsOpen(true)}
-                                    startIcon={(
-                                        <SvgIcon fontSize="small">
-                                            <PlusIcon/>
-                                        </SvgIcon>
-                                    )}
-                                    variant="contained"
-                                >
-                                    Добавить пользователя
-                                </Button>
-                            </div>
+
                         </Stack>
-                        {/*<CustomersSearch/>*/}
-                        {
-                            (status === "success" && users.length > 0) &&
-                            <CustomersTable
-                                count={countUsers || 0}
-                                items={[...users].reverse()}
-                                onDeselectAll={customersSelection.handleDeselectAll}
-                                onDeselectOne={customersSelection.handleDeselectOne}
-                                onPageChange={handlePageChange}
-                                onRowsPerPageChange={handleRowsPerPageChange}
-                                onSelectAll={customersSelection.handleSelectAll}
-                                onSelectOne={customersSelection.handleSelectOne}
-                                page={page}
-                                rowsPerPage={rowsPerPage}
-                                selected={customersSelection.selected}
-                                deleteRowHandle={mutation.mutate}
-                            />
-                        }
+                        {/*<PostsSearch/>*/}
+                        {/*{*/}
+                        {/*    (status === "success" && users.length > 0) &&*/}
+                        {/*    <PostsTable*/}
+                        {/*        count={countUsers || 0}*/}
+                        {/*        items={[...users].reverse()}*/}
+                        {/*        onDeselectAll={customersSelection.handleDeselectAll}*/}
+                        {/*        onDeselectOne={customersSelection.handleDeselectOne}*/}
+                        {/*        onPageChange={handlePageChange}*/}
+                        {/*        onRowsPerPageChange={handleRowsPerPageChange}*/}
+                        {/*        onSelectAll={customersSelection.handleSelectAll}*/}
+                        {/*        onSelectOne={customersSelection.handleSelectOne}*/}
+                        {/*        page={page}*/}
+                        {/*        rowsPerPage={rowsPerPage}*/}
+                        {/*        selected={customersSelection.selected}*/}
+                        {/*        deleteRowHandle={mutation.mutate}*/}
+                        {/*    />*/}
+                        {/*}*/}
                     </Stack>
                 </Container>
             </Box>
-            <SnackbarMessage msg={snackbarData.msg}
-                             type={snackbarData.type}
-                             openSnackbar={openSnackbar}
-                             setOpenSnackbar={setOpenSnackbar}/>
+            {/*<SnackbarMessage msg={snackbarData.msg}*/}
+            {/*                 type={snackbarData.type}*/}
+            {/*                 openSnackbar={openSnackbar}*/}
+            {/*                 setOpenSnackbar={setOpenSnackbar}/>*/}
         </>
     );
 };

@@ -10,13 +10,13 @@ import {useGetCompetitionsQuery, useGetCountСompetitionsQuery,} from "../../api
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import CardPost from "../../components/CardPost/CardPost";
 import {useNavigate} from "react-router-dom";
-import {useGetDirectionsQuery} from "../../api/auxiliaryRequests.api";
+import {directionsList} from "../../config/directions";
 
 export interface PageCompetitionsProps {
 }
 
 const PageCompetitions: FC<PageCompetitionsProps> = () => {
-    const [amountPostsPerPage, setAmountPostsPerPage] = useState(12);
+    const [amountPostsPerPage, setAmountPostsPerPage] = useState(10);
     const [page, setPage] = useState<number>(1)
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
@@ -39,20 +39,23 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
 
     const {data: totalCountPosts} = useGetCountСompetitionsQuery({
         namePost: debounceValue,
-        direction: choicedDirection,
+        directions: choicedDirection,
         token
     });
+    //console.log(totalCountPosts)
+
 
     const {data = [], error, isLoading} = useGetCompetitionsQuery( {
-        limit: amountPostsPerPage,
-        from: (page - 1) * amountPostsPerPage,
+        take: amountPostsPerPage,
+        skip: (page - 1) * amountPostsPerPage,
+        extended: true,
         namePost: debounceValue,
-        direction: choicedDirection,
+        directions: choicedDirection,
         token
     });
 
-    const {data: directions} = useGetDirectionsQuery({token});
-
+    //const {data: directions} = useGetDirectionsQuery({token});
+    const directions = directionsList;
 
     useEffect(() => {
         window.addEventListener('resize', () => checkSizeWindow())
@@ -66,7 +69,8 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
 
 
     useEffect(() => {
-        setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
+        console.log(totalCountPosts, amountPostsPerPage)
+        setAmountPages(Math.ceil(totalCountPosts / amountPostsPerPage))
     }, [totalCountPosts, setAmountPages, amountPostsPerPage])
 
 
@@ -82,12 +86,13 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
             : navigate('/competitions')
     }, [isLoading])
 
-    if (!directions?.data || isLoading) return <Dna visible={true}
+    if (!directions || isLoading) return <Dna visible={true}
                                                     height="250"
                                                     width="250"
                                                     ariaLabel="dna-loading"
                                                     wrapperStyle={{}}
                                                     wrapperClass="dna-wrapper"/>
+    //console.log(totalCountPosts, amountPages, page)
     return (
         <>
             <Header/>
@@ -96,13 +101,14 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                     <Search cbDebounce={setDebounceValue}/>
                     <div className={styles.pageCompetition__directionBlock}>
                         <p className={styles.pageCompetition__directionBlock__titleBlock}>{'Направление: '}</p>
-                        <Dropdown listDirections={directions?.data} cbChoicedDirection={setChoicedDirection}/>
+                        <Dropdown listDirections={directions}
+                                  cbChoicedDirection={setChoicedDirection}/>
                     </div>
 
                     <div className={styles.pageCompetition__wrapper}>
                         <div className={styles.pageCompetition__posts}>
                             {
-                                data?.data?.map((post: TCompetition) => {
+                                data?.map((post: TCompetition) => {
                                     return (
                                         <CardPost<TPostType.competition>
                                             props={{
@@ -112,7 +118,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                                                 deadline: post.deadline,
                                                 fullText: post.fullText,
                                                 id: post.id,
-                                                direction: post.direction,
+                                                directions: JSON.parse(post.directions),
                                                 namePost: post.namePost,
                                                 organization: post.organization,
                                                 timeOfParse: post.timeOfParse,
@@ -126,7 +132,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                             }
                         </div>
                         {
-                            (data?.data?.length > 0) &&
+                            (data?.length > 0) &&
                             <Pagination count={(amountPages) ? amountPages : 1}
                                         page={page}
                                         defaultPage={page}
