@@ -1,25 +1,20 @@
 import TelegramBot from "node-telegram-bot-api";
 import {OnSomethingProps} from "../types";
+import {createButton} from "../../functions/Button";
+import {main_keyboard} from "../../keyboards";
 
-const default_reply_markup = {
-    inline_keyboard: [
-        [
-            {
-                text: 'К настройкам',
-                callback_data: 'settings'
-            }
-        ]
-    ]
-}
 
-export const onDefault = (props:OnSomethingProps) => {
+
+export const onDefault = async (props:OnSomethingProps) => {
     const {bot, chatId} = props
 
     bot.sendMessage(
         chatId,
-        'Привет, я немного тебя не понял, возьми новую клавиатуру',
+        'Основная клавиатура',
         {
-            reply_markup: default_reply_markup
+            reply_markup: {
+                inline_keyboard: await main_keyboard()
+            }
         }
     );
 };

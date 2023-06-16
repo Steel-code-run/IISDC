@@ -63,7 +63,8 @@ telegramRouter.post(baseUrl+"/login", async (req, res) => {
     })
 
     if (bot){
-        await bot.sendMessage(telegram_id, `Успешная привязка аккаунта ${user.email} к телеграмму`)
+        await bot.sendMessage(telegram_id, `Успешная привязка аккаунта ${user.email} к телеграмму, 
+        напишите любое сообщение, чтобы начать`)
     }
 
     return res.render('telegram/success', {id:124})

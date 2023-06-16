@@ -170,3 +170,9 @@ model appSettings {
   parsersWorkTimeStart DateTime
   parsersWorkTimeEnd   DateTime
 }
+
+model telegram_commands {
+  id     Int    @id @unique @default(autoincrement())
+  query String @db.VarChar(255)
+  TTL  DateTime
+}
