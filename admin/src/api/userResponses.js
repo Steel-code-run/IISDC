@@ -40,7 +40,7 @@ export const addUser = async (data) => {
 }
 
 export const deleteUser = async ({id}) => {
-    return await axios.delete(`${serverUrl}v1/users`, {
+    const res =  await axios.delete(`${serverUrl}v1/users`, {
         data: {
             id
         },
@@ -48,6 +48,7 @@ export const deleteUser = async ({id}) => {
             ...defaultHeaders
         }
     })
+    return res.data
 }
 
 export const updateUser = async (data) => {
@@ -67,6 +68,5 @@ export const getCountUser = async () => {
             ...defaultHeaders
         }
     })
-    console.log(res)
     return res.data.count
 }

@@ -30,10 +30,11 @@ const PagePost = () => {
 
     const [isEdit, setIsEdit] = useState(false);
 
-    const [updateData, setUpdateData] = useState<TTypesUpdateData>({
+    const [updateData, setUpdateData] =
+        useState<TTypesUpdateData>({
         id: data.id,
         organization: data.organization,
-        directions: data.directions,
+        directions: JSON.stringify(data.directions),
         directionForSpent: data.directionForSpent,
         dateCreationPost: data.dateCreationPost,
         deadline: data.deadline,
@@ -329,7 +330,9 @@ const PagePost = () => {
                                                 </button>
                                                 <button onClick={async () => {
                                                     setIsEdit(false);
-                                                    delete updateData['id'];
+                                                    if(updateData['id'])
+                                                        delete updateData['id'];
+
                                                     await updatePost({
                                                         id: data.id,
                                                         updateData,

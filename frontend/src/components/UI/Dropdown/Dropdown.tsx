@@ -55,9 +55,9 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
                 {
                     (!isActive) ?
                         (tags.length > 0)
-                            ? tags.map((dir) => {
+                            ? tags.map((dir, ix) => {
                                 return (
-                                    <Tag key={dir.id + dir.directionName}
+                                    <Tag key={ix + Math.random() * Date.now()}
                                          nameDirection={dir.directionName}
                                          isDelete={true}
                                          cbDeleteTag={deleteTag}/>
@@ -85,8 +85,8 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
                     <div className={styles.dropdown__dropdown__listTags}>
                         {
                             (tags.length > 0) ?
-                                tags.map((tag) =>
-                                    (<Tag key={tag.id}
+                                tags.map((tag, ix) =>
+                                    (<Tag key={ix + Math.random() * Date.now()}
                                           nameDirection={tag.directionName}
                                           isDelete={true}
                                           cbDeleteTag={deleteTag}/>))

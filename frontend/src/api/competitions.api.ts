@@ -16,6 +16,7 @@ export interface IGetCompetitions {
 type IGetCountCompetitions  = Omit<IGetCompetitions, 'take' | 'skip' | 'extended'> ;
 
 interface IUpdateInput {
+    id: number
     updateData: TTypesUpdateData,
     token: string | null
 }
@@ -108,9 +109,14 @@ export const competitionsApi = createApi({
         }),
 
         updateCompetitions: builder.mutation<any, IUpdateInput>({
-            query: ({updateData, token}) => ({
-                url: 'v1/competitions/update',
-                body: updateData,
+            query: ({id, updateData, token}) => ({
+                url: 'v1/competitions',
+                body: {
+                    id,
+                    data: {
+                        ...updateData
+                    }
+                },
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },

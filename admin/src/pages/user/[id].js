@@ -5,16 +5,20 @@ import {useUserQuery} from "../../hooks/useUserQuery";
 import {Alert, Box, Button, Container, Snackbar, Stack, SvgIcon, TextField, Typography} from "@mui/material";
 import styles from './userPage.module.scss'
 import EditIcon from '@mui/icons-material/Edit';
-import {updateUser} from "../../api/userResponses";
+import {responseUser, updateUser} from "../../api/userResponses";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
+import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
 
 const Page = () => {
     const router = useRouter();
-    const {data, isError, isLoading} = useUserQuery('user', 0, 0, router.query.id);
-    const [openSnackbarError, setOpenSnackbarError] = useState(false);
-    const [openSnackbarSuccess, setOpenSnackbarSuccess] = useState(false);
-    const [errorMsg, setErrorMsg] = useState('');
-    const [successMsg, setSuccessMsg] = useState('');
+    const {data, isError, isLoading} = useUserQuery('user', responseUser, 0, 0, router.query.id);
+
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarData, setSnackbarData] = useState({
+        type: 'success',
+        msg: 'Пользователь удален'
+    });
+
 
     const queryClient = useQueryClient();
 
@@ -30,12 +34,18 @@ const Page = () => {
         {
             onSuccess: (res) => {
                 queryClient.invalidateQueries(["users"]);
-                setOpenSnackbarSuccess(true);
-                setSuccessMsg(res.data.message);
+                setOpenSnackbar(true);
+                setSnackbarData({
+                    type: 'success',
+                    msg: res.data.message
+                });
             },
             onError: (err) => {
-                setOpenSnackbarError(true);
-                setErrorMsg(err.response.data.errors[0].msg)
+                setOpenSnackbar(true);
+                setSnackbarData({
+                    type: 'error',
+                    msg: err.response.data.errors[0].msg
+                })
 
             },
 
@@ -64,9 +74,6 @@ const Page = () => {
         mutation.mutate({...userData, id: data[0].id});
         setIsEditing(false);
     }
-
-
-   // console.log(snackbarMessage, successMsg)
 
     return (
         <>
@@ -155,50 +162,10 @@ const Page = () => {
 
                 </Container>
             </Box>
-            {
-                errorMsg &&
-                <Snackbar open={openSnackbarError}
-                          autoHideDuration={2000}
-                          anchorOrigin={{
-                              vertical: 'bottom',
-                              horizontal: 'right',
-                          }}
-                          onClose={handleCloseSnackbar}
-                >
-                    <Alert severity="error" sx={{
-                        width: '500px',
-                        backgroundColor: 'red',
-                        color: '#fff',
-                        '& .MuiAlert-icon': {
-                            color: '#fff'
-                        }
-                    }}>
-                        {errorMsg}
-                    </Alert>
-                </Snackbar>
-            }
-            {
-                openSnackbarSuccess &&
-                <Snackbar open={openSnackbarSuccess}
-                          autoHideDuration={2000}
-                          anchorOrigin={{
-                              vertical: 'bottom',
-                              horizontal: 'right',
-                          }}
-                          onClose={handleCloseSnackbar}
-                >
-                    <Alert severity="success" sx={{
-                        width: '500px',
-                        color: '#fff',
-                        backgroundColor: 'green',
-                        '& .MuiAlert-icon': {
-                            color: '#fff'
-                        }
-                    }}>
-                        {successMsg}
-                    </Alert>
-                </Snackbar>
-            }
+            <SnackbarMessage msg={snackbarData.msg}
+                             type={snackbarData.type}
+                             openSnackbar={openSnackbar}
+                             setOpenSnackbar={setOpenSnackbar}/>
         </>
     )
 }

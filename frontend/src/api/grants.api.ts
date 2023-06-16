@@ -15,7 +15,7 @@ type IGetCountGrants = Omit<any, 'skip' | 'take' | 'extended'>;
 
 interface IUpdateInput {
     id: number
-    updateData: TTypesUpdateData,
+    updateData: Partial<TTypesUpdateData>,
     token: string | null
 }
 

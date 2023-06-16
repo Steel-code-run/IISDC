@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import {Box, Button, Container, Stack, SvgIcon, Typography} from '@mui/material';
@@ -13,24 +13,7 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {deleteUser, getCountUser, responseUser} from "../api/userResponses";
 import {useSelection} from "../hooks/use-selection";
 import {useUserQuery} from "../hooks/useUserQuery";
-
-// const data = [
-//     {
-//         id: '5e887ac47eed253091be10cb',
-//         createdAt: subDays(subHours(now, 7), 1).getTime(),
-//         email: 'carson.darrin@devias.io',
-//         name: 'Carson Darrin',
-//         phone: '304-428-3097'
-//     },
-//     {
-//         id: '5e887b209c28ac3dd97f6db5',
-//         createdAt: subDays(subHours(now, 1), 2).getTime(),
-//         email: 'fran.perez@devias.io',
-//         name: 'Fran Perez',
-//         phone: '712-351-5711'
-//     },
-//
-// ];
+import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -56,6 +39,12 @@ const Page = options => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarData, setSnackbarData] = useState({
+        type: '',
+        msg: ''
+    });
+
     const {data: users, status, isLoading, isError } =
         useUserQuery('users',
             responseUser,
@@ -65,12 +54,17 @@ const Page = options => {
 
     const mutation = useMutation(
         (delUser) => deleteUser(delUser), {
-            onSuccess: () => queryClient.invalidateQueries(["users"])
+            onSuccess: (res) => {
+                queryClient.invalidateQueries(["users"]);
+                setOpenSnackbar(true)
+                setSnackbarData({
+                    msg: res.message,
+                    type: 'success'
+                })
+            }
         });
 
     const {data: countUsers} = useQuery(['usersLength'], getCountUser);
-    //console.log(countUsers)
-
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -179,6 +173,10 @@ const Page = options => {
                     </Stack>
                 </Container>
             </Box>
+            <SnackbarMessage msg={snackbarData.msg}
+                             type={snackbarData.type}
+                             openSnackbar={openSnackbar}
+                             setOpenSnackbar={setOpenSnackbar}/>
         </>
     );
 };

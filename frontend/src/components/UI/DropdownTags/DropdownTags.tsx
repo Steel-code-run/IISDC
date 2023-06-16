@@ -5,7 +5,7 @@ import {
     IUpdateDataCompetition,
     IUpdateDataGrant,
     IUpdateDataInternship,
-    IUpdateDataVacancy
+    IUpdateDataVacancy, TTypesUpdateData
 } from "../../../types/types";
 import classNames from "classnames";
 import {directionsList} from "../../../config/directions";
@@ -14,7 +14,7 @@ export interface IDropdownTagsProps {
     direction: string,
     isActiveDropdown: boolean,
     isHighlight: boolean,
-    setUpdateData: React.Dispatch<React.SetStateAction<IUpdateDataGrant | IUpdateDataVacancy | IUpdateDataInternship | IUpdateDataCompetition>>,
+    setUpdateData: React.Dispatch<React.SetStateAction<TTypesUpdateData>>,
     updateData: IUpdateDataGrant | IUpdateDataCompetition
 }
 
@@ -97,7 +97,7 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
                         (Array.isArray(tags))
                             ? tags.map((dir, ix) => {
                                 return (
-                                    <Tag key={dir + ix}
+                                    <Tag key={dir + ix + Math.random() *  Date.now()}
                                          nameDirection={dir}
                                          isDelete={false}
                                          cbDeleteTag={deleteTag}/>
@@ -134,7 +134,7 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
                             (Array.isArray(tags))
                                 ? tags.map((tag, ix) =>
                                     (
-                                        <Tag key={tag + ix}
+                                        <Tag key={tag + ix + Math.random() *  Date.now()}
                                           nameDirection={tag}
                                           isDelete={true}
                                           cbDeleteTag={deleteTag}/>
