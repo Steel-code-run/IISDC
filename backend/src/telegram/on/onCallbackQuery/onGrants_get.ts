@@ -46,7 +46,5 @@ export const onGrants_get = async (props:OnSomethingProps) => {
         return `${Number(from) + index}. ${grant.directions} ${grant.namePost} ${grant.link}`
     })
 
-    console.log(grant_text);
-    console.log(JSON.stringify(where, null, 2));
     bot.sendMessage(chatId, "Найденные гранты:\n"+grant_text.join('\n\n'), {})
 }
