@@ -34,9 +34,30 @@ export const competitionsApi = createApi({
                 return {
                     url: 'v1/competitions/',
                     body: {
-                        take,
                         skip,
+                        take,
                         extended,
+                        where: (directions?.length) ? {
+                            "namePost": {
+                                contains: namePost
+                            },
+
+                            "OR": (typeof directions === 'string') ? {
+                                "directions": {
+                                    contains: directions
+                                }
+                            } : directions?.map((dir) => {
+                                return {
+                                    "directions": {
+                                        contains: dir
+                                    }
+                                }
+                            })
+                        } : {
+                            "namePost": {
+                                contains: namePost
+                            },
+                        }
                     },
                     method: 'POST',
                     headers: {

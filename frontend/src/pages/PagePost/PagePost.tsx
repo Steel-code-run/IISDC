@@ -196,7 +196,13 @@ const PagePost = () => {
                                         })
                                     }}
                                 >{data.organization}</div>
+
                             }
+                            <DropdownTags direction={data.directions}
+                                          isActiveDropdown={isEdit && isVisionBtns}
+                                          setUpdateData={setUpdateData}
+                                          updateData={updateData}
+                                          isHighlight={true}/>
                         </>
                     }
                     {

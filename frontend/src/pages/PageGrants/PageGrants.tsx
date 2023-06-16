@@ -59,6 +59,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
 
     useEffect(() => {
         setPage(1)
+        console.log(choicedDirection)
     }, [debounceValue, setDebounceValue, choicedDirection, setChoicedDirection])
 
 
@@ -92,7 +93,8 @@ const PageGrants: FC<PageGrantsProps> = () => {
                     <Search cbDebounce={setDebounceValue}/>
                     <div className={styles.pageGrants__directionBlock}>
                         <p className={styles.pageGrants__directionBlock__titleBlock}>{'Направление: '}</p>
-                        <Dropdown listDirections={directions} cbChoicedDirection={setChoicedDirection}/>
+                        <Dropdown listDirections={directions}
+                                  cbChoicedDirection={setChoicedDirection}/>
                     </div>
 
                     <div className={styles.pageGrants__wrapper}>

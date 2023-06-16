@@ -29,17 +29,34 @@ export const grantsApi = createApi({
     tagTypes: ['Grants'],
     endpoints: (builder) => ({
         getGrants: builder.query<any, IGetGrants>({
-            query: ({skip, take, extended,  namePost, directions, token}) => {
+            query: ({skip, take, extended, namePost, directions, token}) => {
                 return {
                     url: `v1/grants/`,
                     body: {
                         skip,
                         take,
                         extended,
-                        where: (namePost) ?{
-                            namePost,
-                            directions: JSON.stringify(directions)
-                        } : {}
+                        where: (directions?.length) ? {
+                            "namePost": {
+                                contains: namePost
+                            },
+
+                            "OR": (typeof directions === 'string') ? {
+                                "directions": {
+                                    contains: directions
+                                }
+                            } : directions?.map((dir) => {
+                                return {
+                                    "directions": {
+                                        contains: dir
+                                    }
+                                }
+                            })
+                        } : {
+                            "namePost": {
+                                contains: namePost
+                            },
+                        }
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -56,9 +73,11 @@ export const grantsApi = createApi({
                     : [{type: 'Grants', id: 'LIST'}],
         }),
         getCountGrants: builder.query<any, IGetCountGrants>({
-            query: ({namePost,
+            query: ({
+                        namePost,
                         directions,
-                        token}) => {
+                        token
+                    }) => {
                 return {
                     url: `v1/grants/count`,
                     body: {

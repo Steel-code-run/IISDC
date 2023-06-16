@@ -39,7 +39,6 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
             id,
             directionName: addedTag
         }])
-
     }
 
     useEffect(() => {
@@ -58,7 +57,9 @@ const Dropdown: FC<DropdownProps> = ({listDirections, cbChoicedDirection}) => {
                         (tags.length > 0)
                             ? tags.map((dir) => {
                                 return (
-                                    <Tag key={dir.id} nameDirection={dir.directionName} isDelete={true}
+                                    <Tag key={dir.id + dir.directionName}
+                                         nameDirection={dir.directionName}
+                                         isDelete={true}
                                          cbDeleteTag={deleteTag}/>
                                 )
                             })

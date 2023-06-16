@@ -15,7 +15,7 @@ export interface IDropdownTagsProps {
     isActiveDropdown: boolean,
     isHighlight: boolean,
     setUpdateData: React.Dispatch<React.SetStateAction<IUpdateDataGrant | IUpdateDataVacancy | IUpdateDataInternship | IUpdateDataCompetition>>,
-    updateData: IUpdateDataGrant
+    updateData: IUpdateDataGrant | IUpdateDataCompetition
 }
 
 interface IDirectionsResponse {
