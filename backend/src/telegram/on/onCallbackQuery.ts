@@ -4,7 +4,11 @@ import process from "process";
 import {getUser} from "../functions/checkUser";
 import {onLogout} from "./onCallbackQuery/onLogout";
 import {onSettings_directions} from "./onCallbackQuery/onSettings_directions";
-import {onSettings_directions_$direction} from "./onCallbackQuery/onSettings_directions_$direction";
+import {CallbackQueryManager} from "../CallbackQueryManager";
+import {onSettings_directions_toggle} from "./onCallbackQuery/onSettings_directions_toggle";
+import {onGrants} from "./onCallbackQuery/onGrants";
+import {onDefault} from "./onMessage/onDefault";
+import {onGrants_get} from "./onCallbackQuery/onGrants_get";
 
 export const onCallbackQuery = (bot: TelegramBot) => {
     bot.on('callback_query', async (query) => {
@@ -42,25 +46,39 @@ ${link}
             return
         }
 
-        if (query_data === 'settings') {
-            onSettings({bot, chatId, user})
-            return
-        }
-        if (query_data === 'logout') {
-            await onLogout({bot, chatId, user})
-            return
-        }
-        if (query_data === 'settings_directions') {
-            await onSettings_directions({bot, chatId, user})
-            return
-        }
-        if (query_data.includes('settings_directions_')) {
-            await onSettings_directions_$direction({bot, chatId, user, query: query_data})
-            await onSettings_directions({bot, chatId, user})
-            return
+        const callbackQuery = new CallbackQueryManager()
+        await callbackQuery.getQueryFromDb(query_data)
+        await callbackQuery.deleteQueryInDb()
+        await callbackQuery.deleteExpiredQueries()
+
+        console.log(callbackQuery.path);
+        console.log(callbackQuery.params);
+
+        switch (callbackQuery.path) {
+            case 'settings':
+                await onSettings({bot, chatId, user})
+                return
+            case 'logout':
+                await onLogout({bot, chatId, user})
+                return
+            case 'settings_directions':
+                await onSettings_directions({bot, chatId, user})
+                return
+            case 'settings_directions_toggle':
+                await onSettings_directions_toggle({bot, chatId, user, callbackQuery: callbackQuery})
+                await onSettings_directions({bot, chatId, user})
+                return
+            case 'grants':
+                await onGrants({bot, chatId, user})
+                return
+            case 'grants_get':
+                await onGrants_get({bot, chatId, user, callbackQuery})
+                await onGrants({bot, chatId, user})
+                return
         }
 
-        await bot.sendMessage(chatId, "Я не знаю такой команды")
+        await bot.sendMessage(chatId, "Скорее всего время жизни кнопки истекло")
+        await onDefault({bot, chatId, user})
 
     });
 }

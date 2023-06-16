@@ -1,6 +1,7 @@
 import {OnSomethingProps} from "../types";
 import prisma from "../../../prisma/connect";
 import {directions} from "../../../directions";
+import {createButton} from "../../functions/Button";
 
 export const onSettings_directions = async (props:OnSomethingProps) => {
     const {bot, chatId, user} = props
@@ -66,34 +67,27 @@ export const onSettings_directions = async (props:OnSomethingProps) => {
 
     const settingsDirections = JSON.parse(settings.directions)
 
-    const keyboard = directions.map((direction:string) => {
+    const keyboard_promises = directions.map(async (direction: string) => {
         // if direction in settingsDirections
         if (settingsDirections.includes(direction)) {
             return [
-                {
-                    text: `${direction} ✅`,
-                    callback_data: `settings_directions_${direction}`
-                }
+
+                await createButton(`${direction} ✅`, `settings_directions_toggle?direction=${direction}`)
             ]
-        }
-        else {
+        } else {
             return [
-                {
-                    text: `${direction} ❌`,
-                    callback_data: `settings_directions_${direction}`
-                }
+                await createButton(`${direction} ❌`, `settings_directions_toggle?direction=${direction}`)
             ]
         }
     })
+
+    const keyboard = await Promise.all(keyboard_promises)
 
     bot.sendMessage(chatId, 'Настройки направлений',{
         reply_markup: {
             inline_keyboard: [
                 [
-                    {
-                        text: "Назад в настройки",
-                        callback_data: "settings"
-                    }
+                    await createButton('Назад в настройки', 'settings')
                 ],
                 ...keyboard,
             ]

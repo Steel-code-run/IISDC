@@ -2,13 +2,13 @@ import {OnSomethingProps} from "../types";
 import prisma from "../../../prisma/connect";
 import {onSettings_directions} from "./onSettings_directions";
 
-export const onSettings_directions_$direction = async (props:OnSomethingProps) => {
-    const {bot, chatId, user, query} = props
+export const onSettings_directions_toggle = async (props:OnSomethingProps) => {
+    const {bot, chatId, user, callbackQuery} = props
 
 
-    if (!query) throw new Error("No query")
+    if (!callbackQuery) throw new Error("No query")
 
-    const direction = query.split("_")[2]
+    const direction = callbackQuery.params['direction']
 
     if (!direction) throw new Error("No direction")
 
