@@ -2,6 +2,7 @@ import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import {SvgIcon} from '@mui/material';
 import {CogIcon} from "@heroicons/react/20/solid";
 import {PestControl} from "@mui/icons-material";
+import SyncAltIcon from '@mui/icons-material/SyncAlt';
 
 export const items = [
   // {
@@ -79,6 +80,16 @@ export const items = [
       <SvgIcon fontSize="small">
         <CogIcon />
       </SvgIcon>
+    ),
+    childrenNav: []
+  },
+  {
+    title: 'Логи',
+    path: '/logs',
+    icon: (
+        <SvgIcon fontSize="small">
+          <SyncAltIcon />
+        </SvgIcon>
     ),
     childrenNav: []
   },
