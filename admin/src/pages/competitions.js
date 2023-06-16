@@ -1,18 +1,13 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
-import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import {Box, Button, Container, Stack, SvgIcon, Typography} from '@mui/material';
+import {Box, Container, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
-import {CustomersTable} from 'src/sections/customer/customers-table';
 import {applyPagination} from 'src/utils/apply-pagination';
-import {createPortal} from "react-dom";
-import PopupAddUser from "../components/popupAddUser/PopupAddUser";
-import Overlay from "../hocs/Overlay/Overlay";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {deleteUser, getCountUser, responseUser} from "../api/userResponses";
 import {useSelection} from "../hooks/use-selection";
-import {useUserQuery} from "../hooks/useUserQuery";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
+import {PostsTable} from "../sections/posts/posts-table";
+import {deleteCompetition, getCompetitions, getCountCompetitions} from "../api/posts/competitionsResponses";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -44,33 +39,35 @@ const Page = options => {
         msg: ''
     });
 
-    const {data: users, status, isLoading, isError } =
-        useUserQuery('users',
-            responseUser,
-        page*rowsPerPage, rowsPerPage
-    )
     const queryClient = useQueryClient();
 
+    const {data: competitionsList, status, isLoading, isError} = useQuery(
+        ['competitions', page * rowsPerPage, rowsPerPage, {
+            extended: true
+        }], () => getCompetitions(page * rowsPerPage, rowsPerPage, {
+            extended: true
+        }))
+    const {data: countCompetitions  } = useQuery(['countCompetitions'], getCountCompetitions);
+
     const mutation = useMutation(
-        (delUser) => deleteUser(delUser), {
+        (delCompetitionsId) => deleteCompetition(delCompetitionsId), {
             onSuccess: (res) => {
-                queryClient.invalidateQueries(["users"]);
+                queryClient.invalidateQueries(["competitions"]);
                 setOpenSnackbar(true)
                 setSnackbarData({
-                    msg: res.message,
+                    msg: 'Конкурс успешно удален',
                     type: 'success'
                 })
             }
         });
 
-    const {data: countUsers} = useQuery(['usersLength'], getCountUser);
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const customers = useCustomers(users, page, rowsPerPage);
-    const customersIds = useCustomerIds(customers);
-    const customersSelection
-        = useSelection(customersIds);
+    const competitions = useCustomers(competitionsList, page, rowsPerPage);
+    const competitionsIds = useCustomerIds(competitions);
+    const competitionsSelection
+        = useSelection(competitionsIds);
 
 
     const handlePageChange = useCallback(
@@ -97,18 +94,12 @@ const Page = options => {
     }
 
 
-
     return (
         <>
-            {
-                createPortal(
-                    <Overlay isOpen={isOpen} setIsOpen={setIsOpen}>
-                        <PopupAddUser/>
-                    </Overlay>, portalPopup)
-            }
+
             <Head>
                 <title>
-                    Пользователи
+                    Посты
                 </title>
             </Head>
             <Box
@@ -119,7 +110,8 @@ const Page = options => {
                 }}
             >
                 <Container maxWidth="xl">
-                    <Stack spacing={3}>
+
+                    <Stack spacing={3} marginTop={10}>
                         <Stack
                             direction="row"
                             justifyContent="space-between"
@@ -127,45 +119,28 @@ const Page = options => {
                         >
                             <Stack spacing={1}>
                                 <Typography variant="h4">
-                                    Пользователи
+                                    Конкурсы
                                 </Typography>
-                                <Stack
-                                    alignItems="center"
-                                    direction="row"
-                                    spacing={1}
-                                >
 
-                                </Stack>
                             </Stack>
-                            <div>
-                                <Button
-                                    onClick={() => setIsOpen(true)}
-                                    startIcon={(
-                                        <SvgIcon fontSize="small">
-                                            <PlusIcon/>
-                                        </SvgIcon>
-                                    )}
-                                    variant="contained"
-                                >
-                                    Добавить пользователя
-                                </Button>
-                            </div>
+
                         </Stack>
                         {/*<CustomersSearch/>*/}
                         {
-                            (status === "success" && users.length > 0) &&
-                            <CustomersTable
-                                count={countUsers || 0}
-                                items={[...users].reverse()}
-                                onDeselectAll={customersSelection.handleDeselectAll}
-                                onDeselectOne={customersSelection.handleDeselectOne}
+                            (status === "success" && competitionsList.length > 0) &&
+                            <PostsTable
+                                type={'competition'}
+                                count={countCompetitions || 0}
+                                items={competitionsList}
+                                onDeselectAll={competitionsSelection.handleDeselectAll}
+                                onDeselectOne={competitionsSelection.handleDeselectOne}
                                 onPageChange={handlePageChange}
                                 onRowsPerPageChange={handleRowsPerPageChange}
-                                onSelectAll={customersSelection.handleSelectAll}
-                                onSelectOne={customersSelection.handleSelectOne}
+                                onSelectAll={competitionsSelection.handleSelectAll}
+                                onSelectOne={competitionsSelection.handleSelectOne}
                                 page={page}
                                 rowsPerPage={rowsPerPage}
-                                selected={customersSelection.selected}
+                                selected={competitionsSelection.selected}
                                 deleteRowHandle={mutation.mutate}
                             />
                         }

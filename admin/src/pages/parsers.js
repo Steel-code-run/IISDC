@@ -7,7 +7,6 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {useSelection} from "../hooks/use-selection";
 import {getCountParsers, getParsers, updateParsers} from "../api/parsersResponse";
 import {ParsersTable} from "../sections/parsers/parsers-table";
-import {ParsersSearch} from "../sections/parsers/parsers-search";
 import {useUserQuery} from "../hooks/useUserQuery";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 
@@ -146,7 +145,7 @@ const Page = options => {
                             {/*    </Button>*/}
                             {/*</div>*/}
                         </Stack>
-                        <ParsersSearch/>
+                        {/*<ParsersSearch/>*/}
                         {
                             (status === "success" && parsers?.length > 0) &&
                             <ParsersTable

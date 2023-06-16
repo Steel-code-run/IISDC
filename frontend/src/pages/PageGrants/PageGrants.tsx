@@ -51,10 +51,6 @@ const PageGrants: FC<PageGrantsProps> = () => {
         token: token
     });
 
-
-    // const {data: directions} = useGetDirectionsQuery({
-    //     token: token
-    // });
     const directions = directionsList;
 
     useEffect(() => {

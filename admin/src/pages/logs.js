@@ -1,10 +1,7 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
-import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import {Box, Button, Container, Stack, SvgIcon, Typography} from '@mui/material';
+import {Box, Container, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
-import {CustomersTable} from 'src/sections/customer/customers-table';
-import {CustomersSearch} from 'src/sections/customer/customers-search';
 import {applyPagination} from 'src/utils/apply-pagination';
 import {createPortal} from "react-dom";
 import PopupAddUser from "../components/popupAddUser/PopupAddUser";
@@ -13,7 +10,6 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {deleteUser, getCountUser, responseUser} from "../api/userResponses";
 import {useSelection} from "../hooks/use-selection";
 import {useUserQuery} from "../hooks/useUserQuery";
-import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -140,10 +136,10 @@ const Page = options => {
                             </Stack>
 
                         </Stack>
-                        {/*<CustomersSearch/>*/}
+                        {/*<PostsSearch/>*/}
                         {/*{*/}
                         {/*    (status === "success" && users.length > 0) &&*/}
-                        {/*    <CustomersTable*/}
+                        {/*    <PostsTable*/}
                         {/*        count={countUsers || 0}*/}
                         {/*        items={[...users].reverse()}*/}
                         {/*        onDeselectAll={customersSelection.handleDeselectAll}*/}

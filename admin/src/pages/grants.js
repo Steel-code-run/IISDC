@@ -1,18 +1,13 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
-import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import {Box, Button, Container, Stack, SvgIcon, Typography} from '@mui/material';
+import {Box, Container, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
-import {CustomersTable} from 'src/sections/customer/customers-table';
 import {applyPagination} from 'src/utils/apply-pagination';
-import {createPortal} from "react-dom";
-import PopupAddUser from "../components/popupAddUser/PopupAddUser";
-import Overlay from "../hocs/Overlay/Overlay";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {deleteUser, getCountUser, responseUser} from "../api/userResponses";
 import {useSelection} from "../hooks/use-selection";
-import {useUserQuery} from "../hooks/useUserQuery";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
+import {PostsTable} from "../sections/posts/posts-table";
+import {deleteGrant, getCountGrants, getGrants} from "../api/posts/grantsResponses";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -44,33 +39,36 @@ const Page = options => {
         msg: ''
     });
 
-    const {data: users, status, isLoading, isError } =
-        useUserQuery('users',
-            responseUser,
-        page*rowsPerPage, rowsPerPage
-    )
     const queryClient = useQueryClient();
 
+    const {data: grantsList, status, isLoadingGrant, isErrorGrant} = useQuery(
+        ['grants', page * rowsPerPage, rowsPerPage, {
+            extended: true
+        }], () => getGrants(page * rowsPerPage, rowsPerPage, {
+            extended: true
+        }))
+    const {data: countGrants } = useQuery(['countGrants'], getCountGrants);
+
+
     const mutation = useMutation(
-        (delUser) => deleteUser(delUser), {
+        (delGrantId) => deleteGrant(delGrantId), {
             onSuccess: (res) => {
-                queryClient.invalidateQueries(["users"]);
+                queryClient.invalidateQueries(["grants"]);
                 setOpenSnackbar(true)
                 setSnackbarData({
-                    msg: res.message,
+                    msg: 'Грант успешно удален',
                     type: 'success'
                 })
             }
         });
 
-    const {data: countUsers} = useQuery(['usersLength'], getCountUser);
-
     const [isOpen, setIsOpen] = useState(false);
 
-    const customers = useCustomers(users, page, rowsPerPage);
-    const customersIds = useCustomerIds(customers);
-    const customersSelection
-        = useSelection(customersIds);
+    const grants = useCustomers(grantsList, page, rowsPerPage);
+    const grantsIds = useCustomerIds(grants);
+    const grantsSelection
+        = useSelection(grantsIds);
+
 
 
     const handlePageChange = useCallback(
@@ -89,26 +87,20 @@ const Page = options => {
         []
     );
 
-    if (isLoading) {
+    if (isLoadingGrant) {
         return <h1>Загрузка...</h1>
     }
-    if (isError) {
+    if (isErrorGrant) {
         return <h1>Ошибка...</h1>
     }
 
 
-
     return (
         <>
-            {
-                createPortal(
-                    <Overlay isOpen={isOpen} setIsOpen={setIsOpen}>
-                        <PopupAddUser/>
-                    </Overlay>, portalPopup)
-            }
+
             <Head>
                 <title>
-                    Пользователи
+                    Посты
                 </title>
             </Head>
             <Box
@@ -127,49 +119,33 @@ const Page = options => {
                         >
                             <Stack spacing={1}>
                                 <Typography variant="h4">
-                                    Пользователи
+                                    Гранты
                                 </Typography>
-                                <Stack
-                                    alignItems="center"
-                                    direction="row"
-                                    spacing={1}
-                                >
 
-                                </Stack>
                             </Stack>
-                            <div>
-                                <Button
-                                    onClick={() => setIsOpen(true)}
-                                    startIcon={(
-                                        <SvgIcon fontSize="small">
-                                            <PlusIcon/>
-                                        </SvgIcon>
-                                    )}
-                                    variant="contained"
-                                >
-                                    Добавить пользователя
-                                </Button>
-                            </div>
+
                         </Stack>
                         {/*<CustomersSearch/>*/}
                         {
-                            (status === "success" && users.length > 0) &&
-                            <CustomersTable
-                                count={countUsers || 0}
-                                items={[...users].reverse()}
-                                onDeselectAll={customersSelection.handleDeselectAll}
-                                onDeselectOne={customersSelection.handleDeselectOne}
+                            (status === "success" && grantsList.length > 0) &&
+                            <PostsTable
+                                type={'grant'}
+                                count={countGrants || 0}
+                                items={grantsList}
+                                onDeselectAll={grantsSelection.handleDeselectAll}
+                                onDeselectOne={grantsSelection.handleDeselectOne}
                                 onPageChange={handlePageChange}
                                 onRowsPerPageChange={handleRowsPerPageChange}
-                                onSelectAll={customersSelection.handleSelectAll}
-                                onSelectOne={customersSelection.handleSelectOne}
+                                onSelectAll={grantsSelection.handleSelectAll}
+                                onSelectOne={grantsSelection.handleSelectOne}
                                 page={page}
                                 rowsPerPage={rowsPerPage}
-                                selected={customersSelection.selected}
+                                selected={grantsSelection.selected}
                                 deleteRowHandle={mutation.mutate}
                             />
                         }
                     </Stack>
+
                 </Container>
             </Box>
             <SnackbarMessage msg={snackbarData.msg}

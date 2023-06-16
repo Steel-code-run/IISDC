@@ -61,13 +61,13 @@ export const SideNav = (props) => {
                 color="inherit"
                 variant="subtitle1"
               >
-                Devias
+                Интеллктуальная система агрегации грантов и конкурсов
               </Typography>
               <Typography
                 color="neutral.400"
                 variant="body2"
               >
-                Production
+                Админ-панель
               </Typography>
             </div>
             <SvgIcon
