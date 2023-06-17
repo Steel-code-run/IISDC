@@ -2,10 +2,11 @@ FROM node:16.19-alpine
 
 WORKDIR /app
 
-COPY ./backend/ /app
+COPY ./parsers/ /app
 
 RUN npm install
 
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 3333
+

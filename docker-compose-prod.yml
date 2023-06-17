@@ -1,9 +1,22 @@
 version: '3'
 
 services:
+  frontend:
+    build:
+      dockerfile: ./docker/prod/frontend/Dockerfile
+      context: ./
+    restart: always
+    volumes:
+      - ./frontend/node_modules:/app/node_modules
+    ports:
+      - "80:3000"
+    command: >
+      sh -c " npm install &&  
+              serve -s build"
+
   admin:
     build:
-      dockerfile: ./docker/admin/Dockerfile
+      dockerfile: ./docker/prod/admin/Dockerfile
       context: ./
     restart: always
     ports:
@@ -15,7 +28,7 @@ services:
       context: ./
     restart: always
     volumes:
-      - ./backend:/app
+      - ./backend/node_modules:/app/node_modules
     ports:
       - '3000:3000'
     command: >
@@ -28,7 +41,7 @@ services:
 
   parsers:
     build:
-      dockerfile: ./docker/parsers/Dockerfile
+      dockerfile: ./docker/prod/parsers/Dockerfile
       context: ./
     restart: always
     volumes:
@@ -37,6 +50,7 @@ services:
     command: >
       sh -c " npm install &&  
               npm run start"
+
 
   mysql:
     image: mysql:5.7
