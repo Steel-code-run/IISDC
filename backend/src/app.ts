@@ -28,6 +28,9 @@ connect().then(async _ => {
 
 	const corsOptions = {
 		credentials: true, //access-control-allow-credentials:true,
+		origins:[
+			"http://localhost:3000",
+		],
 		exposedHeaders: 'Authorization',
 	};
 
