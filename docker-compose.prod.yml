@@ -37,7 +37,7 @@ services:
       - '3000:3000'
     command: >
       sh -c " npm install &&  
-              node dist/app.js"
+              npm run start"
     env_file:
       - backend/.env
     depends_on:

@@ -9,7 +9,8 @@
         "prisma:migrate": "prisma migrate dev --name fromNpm",
         "prisma:generate": "prisma generate",
         "prisma:seed": "ts-node ./src/fillDataBaseDefaultValues.ts",
-        "build": "tsc"
+        "build": "tsc",
+        "start": "pm2 dist/app.js"
     },
     "author": "",
     "license": "ISC",
@@ -49,6 +50,7 @@
         "md5": "^2.3.0",
         "natural": "^6.5.0",
         "node-telegram-bot-api": "^0.61.0",
+        "pm2": "^5.3.0",
         "prisma": "^4.13.0",
         "rewire": "^6.0.0"
     }
