@@ -1,9 +1,9 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
-import {Box, Container, Stack, Typography} from '@mui/material';
+import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import {useSelection} from "../hooks/use-selection";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 import {PostsTable} from "../sections/posts/posts-table";
@@ -28,8 +28,7 @@ const useCustomerIds = (customers) => {
 };
 
 
-const Page = options => {
-    const portalPopup = document?.getElementById('portal');
+const Page = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -39,15 +38,13 @@ const Page = options => {
         msg: ''
     });
 
-    const queryClient = useQueryClient();
-
     const {data: grantsList, status, isLoadingGrant, isErrorGrant} = useQuery(
         ['grants', page * rowsPerPage, rowsPerPage, {
             extended: true
         }], () => getGrants(page * rowsPerPage, rowsPerPage, {
             extended: true
         }))
-    const {data: countGrants } = useQuery(['countGrants'], getCountGrants);
+    const {data: countGrants} = useQuery(['countGrants'], getCountGrants);
 
 
     const mutation = useMutation(
@@ -62,13 +59,10 @@ const Page = options => {
             }
         });
 
-    const [isOpen, setIsOpen] = useState(false);
-
     const grants = useCustomers(grantsList, page, rowsPerPage);
     const grantsIds = useCustomerIds(grants);
     const grantsSelection
         = useSelection(grantsIds);
-
 
 
     const handlePageChange = useCallback(
@@ -127,22 +121,24 @@ const Page = options => {
                         </Stack>
                         {/*<CustomersSearch/>*/}
                         {
-                            (status === "success" && grantsList.length > 0) &&
-                            <PostsTable
-                                type={'grant'}
-                                count={countGrants || 0}
-                                items={grantsList}
-                                onDeselectAll={grantsSelection.handleDeselectAll}
-                                onDeselectOne={grantsSelection.handleDeselectOne}
-                                onPageChange={handlePageChange}
-                                onRowsPerPageChange={handleRowsPerPageChange}
-                                onSelectAll={grantsSelection.handleSelectAll}
-                                onSelectOne={grantsSelection.handleSelectOne}
-                                page={page}
-                                rowsPerPage={rowsPerPage}
-                                selected={grantsSelection.selected}
-                                deleteRowHandle={mutation.mutate}
-                            />
+                            (status === "success" && grantsList.length > 0) ?
+                                <PostsTable
+                                    type={'grant'}
+                                    count={countGrants || 0}
+                                    items={grantsList}
+                                    onDeselectAll={grantsSelection.handleDeselectAll}
+                                    onDeselectOne={grantsSelection.handleDeselectOne}
+                                    onPageChange={handlePageChange}
+                                    onRowsPerPageChange={handleRowsPerPageChange}
+                                    onSelectAll={grantsSelection.handleSelectAll}
+                                    onSelectOne={grantsSelection.handleSelectOne}
+                                    page={page}
+                                    rowsPerPage={rowsPerPage}
+                                    selected={grantsSelection.selected}
+                                    deleteRowHandle={mutation.mutate}
+                                /> : <Skeleton variant="rounded"
+                                               animation="wave"
+                                               width={'100%'} height={400}/>
                         }
                     </Stack>
 
