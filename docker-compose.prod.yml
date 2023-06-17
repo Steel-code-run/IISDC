@@ -1,13 +1,32 @@
 version: '3'
 
 services:
+  frontend:
+    build:
+      dockerfile: ./docker/prod/frontend/Dockerfile
+      context: ./
+    restart: always
+    volumes:
+      - ./frontend/node_modules:/app/node_modules
+    ports:
+      - "80:3000"
+    command: >
+      sh -c " npm install &&  
+              npm i serve -g &&
+              serve -s build"
+
   admin:
     build:
-      dockerfile: ./docker/admin/Dockerfile
+      dockerfile: ./docker/prod/admin/Dockerfile
       context: ./
     restart: always
     ports:
-      - "8081:3000"
+      - "8081:5000"
+    command: >
+      sh -c "npm install &&  
+                npm run start"
+    env_file:
+      - admin/.env
 
   backend:
     build:
@@ -15,12 +34,12 @@ services:
       context: ./
     restart: always
     volumes:
-      - ./backend:/app
+      - ./backend/node_modules:/app/node_modules
     ports:
       - '3000:3000'
     command: >
       sh -c " npm install &&  
-              node dist/app.js"
+              npm run start"
     env_file:
       - backend/.env
     depends_on:
@@ -28,7 +47,7 @@ services:
 
   parsers:
     build:
-      dockerfile: ./docker/parsers/Dockerfile
+      dockerfile: ./docker/prod/parsers/Dockerfile
       context: ./
     restart: always
     volumes:
@@ -37,6 +56,7 @@ services:
     command: >
       sh -c " npm install &&  
               npm run start"
+
 
   mysql:
     image: mysql:5.7

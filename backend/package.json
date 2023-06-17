@@ -9,7 +9,8 @@
         "prisma:migrate": "prisma migrate dev --name fromNpm",
         "prisma:generate": "prisma generate",
         "prisma:seed": "ts-node ./src/fillDataBaseDefaultValues.ts",
-        "build": "tsc"
+        "build": "tsc",
+        "start": "node dist/app.js"
     },
     "author": "",
     "license": "ISC",

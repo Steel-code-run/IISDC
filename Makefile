@@ -32,3 +32,18 @@ docker_fill:
 # сделать дамп базы данных
 docker_dump:
 	docker compose exec -it mysql mysqldump -uroot -proot --all-databases > ./docker/mysql/dump.sql
+
+docker_prod_build:
+	docker compose -f docker-compose.prod.yml up -d --build --force-recreate
+
+docker_prod_build_frontend:
+	docker compose -f docker-compose.prod.yml up -d --build --force-recreate frontend
+
+docker_prod_build_backend:
+	docker compose -f docker-compose.prod.yml up -d --build --force-recreate backend
+
+docker_prod_build_parsers:
+	docker compose -f docker-compose.prod.yml up -d --build --force-recreate parsers
+
+docker_prod_build_admin:
+	docker compose -f docker-compose.prod.yml up -d --build --force-recreate admin
