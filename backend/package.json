@@ -10,7 +10,7 @@
         "prisma:generate": "prisma generate",
         "prisma:seed": "ts-node ./src/fillDataBaseDefaultValues.ts",
         "build": "tsc",
-        "start": "pm2 dist/app.js"
+        "start": "pm2 start dist/app.js"
     },
     "author": "",
     "license": "ISC",
