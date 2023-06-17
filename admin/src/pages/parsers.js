@@ -1,9 +1,9 @@
 import {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
-import {Box, Container, Stack, Typography} from '@mui/material';
+import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import {useSelection} from "../hooks/use-selection";
 import {getCountParsers, getParsers, updateParsers} from "../api/parsersResponse";
 import {ParsersTable} from "../sections/parsers/parsers-table";
@@ -47,11 +47,10 @@ const Page = options => {
 
     const {data: countParsers} = useQuery(['parsersCount'], getCountParsers );
 
-    const queryClient = useQueryClient();
     const mutationUpdateParsers = useMutation(
         (updateData) => updateParsers(updateData), {
             onSuccess: (res) => {
-                queryClient.invalidateQueries(['parsers']);
+                queryClient?.invalidateQueries(['parsers']);
                 setIsOpenSnackbar(true)
                 setSnackbarData({
                     msg: res.message,
@@ -89,9 +88,7 @@ const Page = options => {
         []
     );
 
-    if (isLoading) {
-        return <h1>Загрузка...</h1>
-    }
+
     if (isError) {
         return <h1>Ошибка...</h1>
     }
@@ -131,23 +128,11 @@ const Page = options => {
 
                                 </Stack>
                             </Stack>
-                            {/*<div>*/}
-                            {/*    <Button*/}
-                            {/*        onClick={() => setIsOpen(true)}*/}
-                            {/*        startIcon={(*/}
-                            {/*            <SvgIcon fontSize="small">*/}
-                            {/*                <PlusIcon/>*/}
-                            {/*            </SvgIcon>*/}
-                            {/*        )}*/}
-                            {/*        variant="contained"*/}
-                            {/*    >*/}
-                            {/*        Добавить пользователя*/}
-                            {/*    </Button>*/}
-                            {/*</div>*/}
+
                         </Stack>
                         {/*<ParsersSearch/>*/}
                         {
-                            (status === "success" && parsers?.length > 0) &&
+                            (status === "success" && parsers?.length > 0) ?
                             <ParsersTable
                                 count={countParsers || 0}
                                 items={parsers}
@@ -163,6 +148,9 @@ const Page = options => {
                                 updateParsers={mutationUpdateParsers.mutate}
                                 //deleteRowHandle={mutation.mutate}
                             />
+                                : <Skeleton variant="rounded"
+                                            animation="wave"
+                                            width={'100%'} height={800} />
                         }
                     </Stack>
                 </Container>
@@ -182,3 +170,4 @@ Page.getLayout = (page) => (
 );
 
 export default Page;
+

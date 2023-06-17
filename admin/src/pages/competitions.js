@@ -1,9 +1,9 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
-import {Box, Container, Stack, Typography} from '@mui/material';
+import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import {useSelection} from "../hooks/use-selection";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 import {PostsTable} from "../sections/posts/posts-table";
@@ -28,8 +28,7 @@ const useCustomerIds = (customers) => {
 };
 
 
-const Page = options => {
-    const portalPopup = document?.getElementById('portal');
+const Page = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -38,8 +37,6 @@ const Page = options => {
         type: '',
         msg: ''
     });
-
-    const queryClient = useQueryClient();
 
     const {data: competitionsList, status, isLoading, isError} = useQuery(
         ['competitions', page * rowsPerPage, rowsPerPage, {
@@ -60,9 +57,6 @@ const Page = options => {
                 })
             }
         });
-
-
-    const [isOpen, setIsOpen] = useState(false);
 
     const competitions = useCustomers(competitionsList, page, rowsPerPage);
     const competitionsIds = useCustomerIds(competitions);
@@ -127,7 +121,7 @@ const Page = options => {
                         </Stack>
                         {/*<CustomersSearch/>*/}
                         {
-                            (status === "success" && competitionsList.length > 0) &&
+                            (status === "success" && competitionsList.length > 0) ?
                             <PostsTable
                                 type={'competition'}
                                 count={countCompetitions || 0}
@@ -142,7 +136,9 @@ const Page = options => {
                                 rowsPerPage={rowsPerPage}
                                 selected={competitionsSelection.selected}
                                 deleteRowHandle={mutation.mutate}
-                            />
+                            /> : <Skeleton variant="rounded"
+                                           animation="wave"
+                                           width={'100%'} height={600}/>
                         }
                     </Stack>
                 </Container>

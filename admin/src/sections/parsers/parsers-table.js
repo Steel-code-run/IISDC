@@ -136,7 +136,7 @@ export const ParsersTable = (props) => {
 
                                         <TableCell>
                                             <TextField disabled={isEditFieldDisabled(parser.id, isEdit)}
-                                                       value={parser?.description}
+                                                       value={parser?.description || ''}
                                                        onChange={(e) => {
                                                            setFields(prevState => prevState.map((parser) => {
                                                                if (!isEditFieldDisabled(parser.id, isEdit)) {
@@ -153,7 +153,7 @@ export const ParsersTable = (props) => {
                                         <TableCell>
                                             <Checkbox
                                                 disabled={isEditFieldDisabled(parser.id, isEdit)}
-                                                checked={parser.isEnabled}
+                                                checked={parser?.isEnabled}
                                                 onChange={(e) => {
                                                     // if (event.target.checked) {
                                                     //     onSelectOne?.(parser.id);
@@ -182,7 +182,7 @@ export const ParsersTable = (props) => {
 
                                         <TableCell>
                                             <TextField disabled={isEditFieldDisabled(parser.id, isEdit)}
-                                                       value={parser?.pagesToParse}
+                                                       value={parser?.pagesToParse || ''}
                                                        onChange={(e) => {
                                                            setFields(prevState => prevState.map((parser) => {
                                                                if (!isEditFieldDisabled(parser.id, isEdit)) {
@@ -199,7 +199,7 @@ export const ParsersTable = (props) => {
 
                                         <TableCell>
                                             <TextField disabled={isEditFieldDisabled(parser.id, isEdit)}
-                                                       value={parser?.cronTime}
+                                                       value={parser?.cronTime || ''}
                                                        onChange={(e) => {
                                                            setFields(prevState => prevState.map((parser) => {
                                                                if (!isEditFieldDisabled(parser.id, isEdit)) {
