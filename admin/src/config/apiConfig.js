@@ -4,4 +4,4 @@ export const defaultHeaders = {
     Authorization: 'Bearer ' + token
 }
 
-export const serverUrl = 'http://localhost:3000/';
+export const serverUrl = process.env.REACT_APP_API_URL
