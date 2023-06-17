@@ -21,7 +21,10 @@ services:
       context: ./
     restart: always
     ports:
-      - "8081:3000"
+      - "8081:5000"
+    command: >
+      sh -c "npm install &&  
+                npm run start"
 
   backend:
     build:
