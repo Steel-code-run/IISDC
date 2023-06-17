@@ -4,4 +4,4 @@ export const defaultHeaders = {
     Authorization: 'Bearer ' + token
 }
 
-export const serverUrl = 'http://localhost:3000/';
+export const serverUrl = process.env.NEXT_PUBLIC_API_URL;
