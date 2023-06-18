@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import React from 'react'
 import {
     Box,
     Card,
@@ -58,21 +59,20 @@ export const PostsTable = (props) => {
                                 <TableCell>
                                     Ссылка
                                 </TableCell>
-                                <TableCell>
-
+                                <TableCell align={'center'}>
+                                    Убрать в архив
                                 </TableCell>
                                 <TableCell>
-
+                                    Удалить
                                 </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {items.length > 0 && items?.map((post) => {
 
-
                                 return (
                                     <TableRow
-                                        hover
+                                        //hover
                                         key={post.id}
                                     >
 
@@ -111,18 +111,20 @@ export const PostsTable = (props) => {
                                         <TableCell>
                                             {post.link}
                                         </TableCell>
-                                        <TableCell>
-                                            <ArchiveIcon onClick={() => archiveHandle(
-                                                {
-                                                id: post.id,
-                                                data: {
-                                                    blackListed: true
-                                                }
-                                            }
-                                            )} style={{cursor: ' pointer'}}/>
+                                        <TableCell align={'center'}>
+                                            <ArchiveIcon
+                                                onClick={() => archiveHandle(
+                                                    {
+                                                        id: post.id,
+                                                        data: {
+                                                            blackListed: true
+                                                        }
+                                                    }
+                                                )} style={{cursor: ' pointer'}}/>
                                         </TableCell>
 
-                                        <TableCell>
+
+                                        <TableCell align={'center'}>
                                             <DeleteIcon onClick={() => deleteRowHandle(post.id)}
                                                         style={{cursor: ' pointer'}}/>
                                         </TableCell>

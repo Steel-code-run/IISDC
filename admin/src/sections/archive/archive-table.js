@@ -59,11 +59,11 @@ export const ArchiveTable = (props) => {
                                 <TableCell>
                                     Ссылка
                                 </TableCell>
-                                <TableCell>
-
+                                <TableCell align={'center'}>
+                                    Убрать из архив
                                 </TableCell>
-                                <TableCell>
-
+                                <TableCell align={'center'}>
+                                    Удалить
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -112,7 +112,7 @@ export const ArchiveTable = (props) => {
                                         <TableCell>
                                             {post.link}
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align={'center'}>
                                             <UnarchiveIcon onClick={() => unarchiveHandle(
                                                 {
                                                 id: post.id,
@@ -123,7 +123,7 @@ export const ArchiveTable = (props) => {
                                             )} style={{cursor: ' pointer'}}/>
                                         </TableCell>
 
-                                        <TableCell>
+                                        <TableCell align={'center'}>
                                             <DeleteIcon onClick={() => deleteRowHandle(post.id)}
                                                         style={{cursor: ' pointer'}}/>
                                         </TableCell>

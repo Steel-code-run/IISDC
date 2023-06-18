@@ -63,8 +63,8 @@ export const CustomersTable = (props) => {
                                 <TableCell>
                                     Роль
                                 </TableCell>
-                                <TableCell>
-
+                                <TableCell align={'center'}>
+                                    Удалить
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -115,7 +115,7 @@ export const CustomersTable = (props) => {
                                             {customer.role.name}
                                         </TableCell>
 
-                                        <TableCell>
+                                        <TableCell align={'center'}>
                                             <DeleteIcon onClick={() => deleteRowHandle({id: customer.id})}
                                                         style={{cursor: ' pointer'}}/>
                                         </TableCell>
