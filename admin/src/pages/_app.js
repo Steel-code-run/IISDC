@@ -10,7 +10,7 @@ import {useNProgress} from 'src/hooks/use-nprogress';
 import {createTheme} from 'src/theme';
 import {createEmotionCache} from 'src/utils/create-emotion-cache';
 import 'simplebar-react/dist/simplebar.min.css';
-import {Hydrate, QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -38,7 +38,6 @@ const App = (props) => {
                 />
             </Head>
             <QueryClientProvider client={queryClient.current}>
-                <Hydrate state={pageProps.dehydratedState}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <AuthProvider>
                             <ThemeProvider theme={theme}>
@@ -53,7 +52,6 @@ const App = (props) => {
                             </ThemeProvider>
                         </AuthProvider>
                     </LocalizationProvider>
-                </Hydrate>
             </QueryClientProvider>
         </CacheProvider>
     );

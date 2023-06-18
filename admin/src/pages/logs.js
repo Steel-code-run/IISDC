@@ -10,6 +10,7 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {deleteUser, getCountUser, responseUser} from "../api/userResponses";
 import {useSelection} from "../hooks/use-selection";
 import {useUserQuery} from "../hooks/useUserQuery";
+import {useSnackbar} from "../hooks/use-snackbar";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -30,23 +31,19 @@ const useCustomerIds = (customers) => {
 };
 
 
-const Page = options => {
+const Page = () => {
     const portalPopup = document?.getElementById('portal');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const queryClient = useQueryClient()
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarData, setSnackbarData] = useState({
-        type: '',
-        msg: ''
-    });
+    const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
     const {data: users, status, isLoading, isError } =
         useUserQuery('users',
             responseUser,
         page*rowsPerPage, rowsPerPage
     )
-    const queryClient = useQueryClient();
 
     const mutation = useMutation(
         (delUser) => deleteUser(delUser), {
@@ -86,14 +83,9 @@ const Page = options => {
         []
     );
 
-    if (isLoading) {
-        return <h1>Загрузка...</h1>
-    }
     if (isError) {
         return <h1>Ошибка...</h1>
     }
-
-
 
     return (
         <>
@@ -139,7 +131,7 @@ const Page = options => {
                         {/*<PostsSearch/>*/}
                         {/*{*/}
                         {/*    (status === "success" && users.length > 0) &&*/}
-                        {/*    <PostsTable*/}
+                        {/*    <ArchiveTable*/}
                         {/*        count={countUsers || 0}*/}
                         {/*        items={[...users].reverse()}*/}
                         {/*        onDeselectAll={customersSelection.handleDeselectAll}*/}

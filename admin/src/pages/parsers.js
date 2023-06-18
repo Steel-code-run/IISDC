@@ -3,12 +3,13 @@ import Head from 'next/head';
 import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {useSelection} from "../hooks/use-selection";
 import {getCountParsers, getParsers, updateParsers} from "../api/parsersResponse";
 import {ParsersTable} from "../sections/parsers/parsers-table";
 import {useUserQuery} from "../hooks/useUserQuery";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
+import {useSnackbar} from "../hooks/use-snackbar";
 
 
 const useCustomers = (data, page, rowsPerPage) => {
@@ -34,11 +35,9 @@ const Page = options => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
-    const [snackbarData, setSnackbarData] = useState({
-        type: '',
-        msg: ''
-    })
+    const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
+    const queryClient = useQueryClient()
+
     const {data: parsers, status, isLoading, isError } =
         useUserQuery('parsers',
             getParsers,
@@ -51,7 +50,7 @@ const Page = options => {
         (updateData) => updateParsers(updateData), {
             onSuccess: (res) => {
                 queryClient?.invalidateQueries(['parsers']);
-                setIsOpenSnackbar(true)
+                setOpenSnackbar(true)
                 setSnackbarData({
                     msg: res.message,
                     type: 'success'
@@ -59,7 +58,7 @@ const Page = options => {
 
             },
             onError: (err) => {
-                setIsOpenSnackbar(false)
+                setOpenSnackbar(false)
                 setSnackbarData({
                     msg: err.message,
                     type: 'error'
@@ -92,8 +91,6 @@ const Page = options => {
     if (isError) {
         return <h1>Ошибка...</h1>
     }
-
-
 
     return (
         <>
@@ -157,8 +154,8 @@ const Page = options => {
             </Box>
             <SnackbarMessage type={snackbarData.type}
                              msg={snackbarData.msg}
-                             openSnackbar={isOpenSnackbar}
-                             setOpenSnackbar={setIsOpenSnackbar}/>
+                             openSnackbar={openSnackbar}
+                             setOpenSnackbar={setOpenSnackbar}/>
         </>
     );
 };

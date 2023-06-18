@@ -3,11 +3,11 @@ import Head from 'next/head';
 import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
-import {useMutation, useQuery} from "@tanstack/react-query";
-import {useSelection} from "../hooks/use-selection";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 import {PostsTable} from "../sections/posts/posts-table";
-import {deleteGrant, getCountGrants, getGrants} from "../api/posts/grantsResponses";
+import {deleteGrant, getCountGrants, getGrants, updateGrant} from "../api/posts/grantsResponses";
+import {useSnackbar} from "../hooks/use-snackbar";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -31,23 +31,35 @@ const useCustomerIds = (customers) => {
 const Page = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarData, setSnackbarData] = useState({
-        type: '',
-        msg: ''
-    });
+    const queryClient = useQueryClient();
+    const configGrantsRes = {
+        extended: true
+    }
+    const whereGrants = {
+        blackListed: false
+    }
 
     const {data: grantsList, status, isLoadingGrant, isErrorGrant} = useQuery(
-        ['grants', page * rowsPerPage, rowsPerPage, {
-            extended: true
-        }], () => getGrants(page * rowsPerPage, rowsPerPage, {
-            extended: true
-        }))
+        ['grants', page * rowsPerPage, rowsPerPage, configGrantsRes, whereGrants],
+        () => getGrants(page * rowsPerPage, rowsPerPage, configGrantsRes, whereGrants))
     const {data: countGrants} = useQuery(['countGrants'], getCountGrants);
 
 
-    const mutation = useMutation(
+    const mutationArchiveGrant = useMutation(
+        (archiveData) => updateGrant(archiveData), {
+            onSuccess: () => {
+                queryClient.invalidateQueries(["grants"]);
+                setOpenSnackbar(true)
+                setSnackbarData({
+                    msg: 'Грант убран в архив',
+                    type: 'success'
+                })
+            }
+        })
+
+    const mutationDeleteGrant = useMutation(
         (delGrantId) => deleteGrant(delGrantId), {
             onSuccess: (res) => {
                 queryClient.invalidateQueries(["grants"]);
@@ -58,11 +70,6 @@ const Page = () => {
                 })
             }
         });
-
-    const grants = useCustomers(grantsList, page, rowsPerPage);
-    const grantsIds = useCustomerIds(grants);
-    const grantsSelection
-        = useSelection(grantsIds);
 
 
     const handlePageChange = useCallback(
@@ -81,9 +88,6 @@ const Page = () => {
         []
     );
 
-    if (isLoadingGrant) {
-        return <h1>Загрузка...</h1>
-    }
     if (isErrorGrant) {
         return <h1>Ошибка...</h1>
     }
@@ -126,16 +130,12 @@ const Page = () => {
                                     type={'grant'}
                                     count={countGrants || 0}
                                     items={grantsList}
-                                    onDeselectAll={grantsSelection.handleDeselectAll}
-                                    onDeselectOne={grantsSelection.handleDeselectOne}
                                     onPageChange={handlePageChange}
                                     onRowsPerPageChange={handleRowsPerPageChange}
-                                    onSelectAll={grantsSelection.handleSelectAll}
-                                    onSelectOne={grantsSelection.handleSelectOne}
                                     page={page}
                                     rowsPerPage={rowsPerPage}
-                                    selected={grantsSelection.selected}
-                                    deleteRowHandle={mutation.mutate}
+                                    deleteRowHandle={mutationDeleteGrant.mutate}
+                                    archiveHandle={mutationArchiveGrant.mutate}
                                 /> : <Skeleton variant="rounded"
                                                animation="wave"
                                                width={'100%'} height={400}/>

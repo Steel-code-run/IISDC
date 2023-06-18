@@ -7,6 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
 import {getGrants, updateGrant} from "../../api/posts/grantsResponses";
+import {useSnackbar} from "../../hooks/use-snackbar";
 
 const Page = () => {
     const router = useRouter();
@@ -19,11 +20,7 @@ const Page = () => {
     const {data, isError, isLoading} = useQuery(['grant', 0, 0, configResponseGrant, whereGrant],
         () => getGrants(0, 0, configResponseGrant, whereGrant));
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarData, setSnackbarData] = useState({
-        type: '',
-        msg: ''
-    });
+    const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
     const queryClient = useQueryClient();
 

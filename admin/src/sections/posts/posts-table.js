@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import {
     Box,
     Card,
-    Checkbox,
     Stack,
     Table,
     TableBody,
@@ -15,26 +14,20 @@ import {
 import {Scrollbar} from 'src/components/scrollbar';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Link from 'next/link'
+import ArchiveIcon from "@mui/icons-material/Archive";
 
 export const PostsTable = (props) => {
     const {
         type,
         count = 0,
         items = [],
-        onDeselectAll,
-        onDeselectOne,
         onPageChange,
         onRowsPerPageChange,
-        onSelectAll,
-        onSelectOne,
         page = 0,
         rowsPerPage = 0,
-        selected = [],
-        deleteRowHandle
+        deleteRowHandle,
+        archiveHandle
     } = props;
-
-    const selectedSome = (selected.length > 0) && (selected.length < items.length);
-    const selectedAll = (items.length > 0) && (selected.length === items.length);
 
     return (
         <Card>
@@ -43,19 +36,19 @@ export const PostsTable = (props) => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell padding="checkbox">
-                                    <Checkbox
-                                        checked={selectedAll}
-                                        indeterminate={selectedSome}
-                                        onChange={(event) => {
-                                            if (event.target.checked) {
-                                                onSelectAll?.();
-                                            } else {
-                                                onDeselectAll?.();
-                                            }
-                                        }}
-                                    />
-                                </TableCell>
+                                {/*<TableCell padding="checkbox">*/}
+                                {/*    <Checkbox*/}
+                                {/*        checked={selectedAll}*/}
+                                {/*        indeterminate={selectedSome}*/}
+                                {/*        onChange={(event) => {*/}
+                                {/*            if (event.target.checked) {*/}
+                                {/*                onSelectAll?.();*/}
+                                {/*            } else {*/}
+                                {/*                onDeselectAll?.();*/}
+                                {/*            }*/}
+                                {/*        }}*/}
+                                {/*    />*/}
+                                {/*</TableCell>*/}
                                 <TableCell>
                                     Id
                                 </TableCell>
@@ -68,32 +61,33 @@ export const PostsTable = (props) => {
                                 <TableCell>
 
                                 </TableCell>
+                                <TableCell>
+
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {items.length > 0 && items?.map((post) => {
 
-                                const isSelected = selected.includes(post.id);
 
                                 return (
                                     <TableRow
                                         hover
                                         key={post.id}
-                                        selected={isSelected}
                                     >
 
-                                        <TableCell padding="checkbox">
-                                            <Checkbox
-                                                checked={isSelected}
-                                                onChange={(event) => {
-                                                    if (event.target.checked) {
-                                                        onSelectOne?.(post.id);
-                                                    } else {
-                                                        onDeselectOne?.(post.id);
-                                                    }
-                                                }}
-                                            />
-                                        </TableCell>
+                                        {/*<TableCell padding="checkbox">*/}
+                                        {/*    <Checkbox*/}
+                                        {/*        checked={isSelected}*/}
+                                        {/*        onChange={(event) => {*/}
+                                        {/*            if (event.target.checked) {*/}
+                                        {/*                onSelectOne?.(post.id);*/}
+                                        {/*            } else {*/}
+                                        {/*                onDeselectOne?.(post.id);*/}
+                                        {/*            }*/}
+                                        {/*        }}*/}
+                                        {/*    />*/}
+                                        {/*</TableCell>*/}
                                         <TableCell>
                                             {post.id}
                                         </TableCell>
@@ -105,7 +99,7 @@ export const PostsTable = (props) => {
                                                 spacing={2}
                                             >
                                                 <Link style={{textDecoration: "none", color: "black"}}
-                                                      href={(type === 'grant') ? `/grant/${post.id}` : `/competition/${post.id}` }>
+                                                      href={(type === 'grant') ? `/grant/${post.id}` : `/competition/${post.id}`}>
                                                     <Typography variant="subtitle2">
                                                         {post.namePost}
                                                     </Typography>
@@ -116,6 +110,16 @@ export const PostsTable = (props) => {
 
                                         <TableCell>
                                             {post.link}
+                                        </TableCell>
+                                        <TableCell>
+                                            <ArchiveIcon onClick={() => archiveHandle(
+                                                {
+                                                id: post.id,
+                                                data: {
+                                                    blackListed: true
+                                                }
+                                            }
+                                            )} style={{cursor: ' pointer'}}/>
                                         </TableCell>
 
                                         <TableCell>

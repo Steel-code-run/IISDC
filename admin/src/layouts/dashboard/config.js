@@ -4,6 +4,7 @@ import {CogIcon} from "@heroicons/react/20/solid";
 import {PestControl} from "@mui/icons-material";
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import PostAddIcon from '@mui/icons-material/PostAdd';
+import ArchiveIcon from '@mui/icons-material/Archive';
 
 export const items = [
   // {
@@ -62,6 +63,16 @@ export const items = [
     icon: (
         <SvgIcon fontSize="small">
           <PostAddIcon />
+        </SvgIcon>
+    ),
+    childrenNav: []
+  },
+  {
+    title: 'Архив',
+    path: '/archive',
+    icon: (
+        <SvgIcon fontSize="small">
+          <ArchiveIcon />
         </SvgIcon>
     ),
     childrenNav: []

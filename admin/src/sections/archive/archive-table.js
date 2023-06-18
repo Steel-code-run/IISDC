@@ -14,25 +14,21 @@ import {
 import {Scrollbar} from 'src/components/scrollbar';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Link from 'next/link'
+import UnarchiveIcon from '@mui/icons-material/Unarchive';
 
-export const CustomersTable = (props) => {
+export const ArchiveTable = (props) => {
     const {
+        type,
         count = 0,
         items = [],
-        onDeselectAll,
-        onDeselectOne,
         onPageChange,
         onRowsPerPageChange,
-        onSelectAll,
-        onSelectOne,
         page = 0,
         rowsPerPage = 0,
-        selected = [],
-        deleteRowHandle
+        deleteRowHandle,
+        unarchiveHandle
     } = props;
 
-    const selectedSome = (selected.length > 0) && (selected.length < items.length);
-    const selectedAll = (items.length > 0) && (selected.length === items.length);
 
     return (
         <Card>
@@ -55,13 +51,16 @@ export const CustomersTable = (props) => {
                                 {/*    />*/}
                                 {/*</TableCell>*/}
                                 <TableCell>
-                                    Имя
+                                    Id
                                 </TableCell>
                                 <TableCell>
-                                    Email
+                                    Название поста
                                 </TableCell>
                                 <TableCell>
-                                    Роль
+                                    Ссылка
+                                </TableCell>
+                                <TableCell>
+
                                 </TableCell>
                                 <TableCell>
 
@@ -69,14 +68,13 @@ export const CustomersTable = (props) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {items.length > 0 && items?.map((customer) => {
+                            {items.length > 0 && items?.map((post) => {
 
-                                const isSelected = selected.includes(customer.id);
 
                                 return (
                                     <TableRow
                                         hover
-                                        key={customer.id}
+                                        key={post.id}
                                     >
 
                                         {/*<TableCell padding="checkbox">*/}
@@ -84,13 +82,16 @@ export const CustomersTable = (props) => {
                                         {/*        checked={isSelected}*/}
                                         {/*        onChange={(event) => {*/}
                                         {/*            if (event.target.checked) {*/}
-                                        {/*                onSelectOne?.(customer.id);*/}
+                                        {/*                onSelectOne?.(post.id);*/}
                                         {/*            } else {*/}
-                                        {/*                onDeselectOne?.(customer.id);*/}
+                                        {/*                onDeselectOne?.(post.id);*/}
                                         {/*            }*/}
                                         {/*        }}*/}
                                         {/*    />*/}
                                         {/*</TableCell>*/}
+                                        <TableCell>
+                                            {post.id}
+                                        </TableCell>
 
                                         <TableCell>
                                             <Stack
@@ -99,24 +100,31 @@ export const CustomersTable = (props) => {
                                                 spacing={2}
                                             >
                                                 <Link style={{textDecoration: "none", color: "black"}}
-                                                      href={`/user/${customer.id}`}>
+                                                      href={(type === 'grant') ? `/grant/${post.id}` : `/competition/${post.id}`}>
                                                     <Typography variant="subtitle2">
-                                                        {customer.name}
+                                                        {post.namePost}
                                                     </Typography>
                                                 </Link>
                                             </Stack>
                                         </TableCell>
 
+
                                         <TableCell>
-                                            {customer.email}
+                                            {post.link}
+                                        </TableCell>
+                                        <TableCell>
+                                            <UnarchiveIcon onClick={() => unarchiveHandle(
+                                                {
+                                                id: post.id,
+                                                data: {
+                                                    blackListed: false
+                                                }
+                                            }
+                                            )} style={{cursor: ' pointer'}}/>
                                         </TableCell>
 
                                         <TableCell>
-                                            {customer.role.name}
-                                        </TableCell>
-
-                                        <TableCell>
-                                            <DeleteIcon onClick={() => deleteRowHandle({id: customer.id})}
+                                            <DeleteIcon onClick={() => deleteRowHandle(post.id)}
                                                         style={{cursor: ' pointer'}}/>
                                         </TableCell>
 
@@ -141,7 +149,7 @@ export const CustomersTable = (props) => {
     );
 };
 
-CustomersTable.propTypes = {
+ArchiveTable.propTypes = {
     count: PropTypes.number,
     items: PropTypes.array,
     onDeselectAll: PropTypes.func,
