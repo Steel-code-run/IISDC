@@ -6,6 +6,13 @@ export const buttons = {
     settings: ()=>createButton('К настройкам', 'settings'),
     grants: ()=>createButton('К грантам', 'grants'),
     settings_directions: ()=>createButton('Настроить получаемые направления по грантам', 'settings_directions'),
+    settings_work_time: ()=>createButton('Настроить время работы', 'settings_work_time'),
+    settings_work_time_start_add_1_hour: ()=>createButton('+', 'settings_work_time_start_add_hour',{hour: 1}),
+    settings_work_time_start_decrease_1_hour: ()=>createButton('-', 'settings_work_time_start_add_hour',{hour: -1}),
+    settings_work_time_end_add_1_hour: ()=>createButton('+', 'settings_work_time_end_add_hour', {hour: 1}),
+    settings_work_time_end_decrease_1_hour: ()=>createButton('-', 'settings_work_time_end_add_hour', {hour: -1}),
+    settings_work_time__holder: (time:string)=>createButton(time, 'settings_work_time'),
+
 }
 
 export const main_keyboard = async () => [
@@ -17,6 +24,7 @@ export const main_keyboard = async () => [
     ]
 ]
 
+
 export const settings_keyboard = async () => [
     [
         await buttons.logout(),
@@ -27,6 +35,9 @@ export const settings_keyboard = async () => [
     [
         await buttons.settings_directions(),
     ],
+    [
+        await buttons.settings_work_time(),
+    ]
 ]
 
 export const grants_keyboard = async () => [
@@ -51,4 +62,20 @@ export const grants_keyboard = async () => [
             to: 15
         })
     ]
+]
+
+export const settings_work_time_keyboard = async (time1:string,time2:string) => [
+    [
+        await buttons.main(),
+    ],
+    [
+        await buttons.settings_work_time_start_decrease_1_hour(),
+        await buttons.settings_work_time__holder(time1),
+        await buttons.settings_work_time_start_add_1_hour(),
+    ],
+    [
+        await buttons.settings_work_time_end_decrease_1_hour(),
+        await buttons.settings_work_time__holder(time2),
+        await buttons.settings_work_time_end_add_1_hour(),
+    ],
 ]

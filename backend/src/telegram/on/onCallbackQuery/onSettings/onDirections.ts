@@ -1,9 +1,9 @@
-import {OnSomethingProps} from "../types";
-import prisma from "../../../prisma/connect";
-import {directions} from "../../../directions";
-import {createButton} from "../../functions/Button";
+import {OnSomethingProps} from "../../types";
+import prisma from "../../../../prisma/connect";
+import {directions} from "../../../../directions";
+import {createButton} from "../../../functions/Button";
 
-export const onSettings_directions = async (props:OnSomethingProps) => {
+export const onDirections = async (props:OnSomethingProps) => {
     const {bot, chatId, user} = props
 
 
@@ -49,7 +49,7 @@ export const onSettings_directions = async (props:OnSomethingProps) => {
         return
     }
 
-    const settings = await prisma.users_telegram_settings.findFirst({
+    let settings = await prisma.users_telegram_settings.findFirst({
         where:{
             id: user.user_telegram_settingsId
         }
@@ -61,8 +61,17 @@ export const onSettings_directions = async (props:OnSomethingProps) => {
     }
 
     if (settings.directions === null) {
-        bot.sendMessage(chatId, 'Произошла ошибка')
-        return
+        settings = await prisma.users_telegram_settings.update({
+            where:{
+                id: settings.id
+            },
+            data:{
+                directions: JSON.stringify(directions)
+            }
+        })
+    }
+    if (settings.directions === null) {
+        throw new Error('Settings directions is null')
     }
 
     const settingsDirections = JSON.parse(settings.directions)
