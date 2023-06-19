@@ -3,27 +3,6 @@ import prisma from "../../prisma/connect";
 import {check, validationResult} from "express-validator";
 const competitionsRouter = Router();
 
-// model competitions {
-//   id                Int                @id @unique @default(autoincrement())
-//   namePost          String             @db.LongText()
-//   dateCreationPost  String?
-//   directions        competitions_direction[]
-//   organization      String?
-//   deadline          DateTime?
-//   summary           String?
-//   directionForSpent String?
-//   fullText          String?            @db.LongText()
-//   link              String?
-//   linkPDF           String?
-//   sourceLink        String?
-//   timeOfParse       DateTime
-//   blackListed       Int                @default(0)
-//   // События редактирования
-//   editActions       users_actions[]
-//   parser            parsers?           @relation(fields: [parser_id], references: [id])
-//   parser_id         Int?
-// }
-
 
 // Отдает правильное время в формате ISO
 async function getQueryDate(data:any) {
