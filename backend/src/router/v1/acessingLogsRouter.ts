@@ -19,7 +19,7 @@ accessingLogsRouter.post('/v1/accessing-logs', async (req, res) => {
             logs
         })
     } catch (e) {
-        res.json(e)
+        res.status(500).json({errors: [{msg: 'Ошибка при получении логов'}]});
     }
 
 })

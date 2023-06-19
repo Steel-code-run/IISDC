@@ -47,7 +47,7 @@ connect().then(async _ => {
 	// мидлвары
 	app.use(getUserFromToken as any);
 	app.use(accessingLog as any);
-	// app.use(resourceAccess as any);
+	app.use(resourceAccess as any);
 
 	// routes start
 	app.use(baseRouter);
