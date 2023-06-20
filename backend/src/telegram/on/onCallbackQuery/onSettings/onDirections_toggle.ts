@@ -1,8 +1,8 @@
-import {OnSomethingProps} from "../types";
-import prisma from "../../../prisma/connect";
-import {onSettings_directions} from "./onSettings_directions";
+import {OnSomethingProps} from "../../types";
+import prisma from "../../../../prisma/connect";
+import {onDirections} from "./onDirections";
 
-export const onSettings_directions_toggle = async (props:OnSomethingProps) => {
+export const onDirections_toggle = async (props:OnSomethingProps) => {
     const {bot, chatId, user, callbackQuery} = props
 
 

@@ -4,6 +4,7 @@ import md5 from "md5";
 const set_resources_access = async (prisma:PrismaClient)=>{
     const paths = [
         "/v1/resources/addRoleAccess",
+        "/v1/resources/removeRoleAccess",
         "/v1/users/login",
         "/v1/users",
         "/v1/users/get",
@@ -12,6 +13,12 @@ const set_resources_access = async (prisma:PrismaClient)=>{
         "/v1/grants/get",
         "/v1/grants/delete",
         "/v1/grants/update",
+        "/v1/grants/count",
+        "/v1/competitions/add",
+        "/v1/competitions/get",
+        "/v1/competitions/delete",
+        "/v1/competitions/update",
+        "/v1/competitions/count",
         "/v1/roles/add",
         "/v1/roles/get",
         "/v1/roles/delete",
@@ -20,6 +27,7 @@ const set_resources_access = async (prisma:PrismaClient)=>{
         "/v1/settings",
         "/v1/settings/update",
         "/v1/telegram/login",
+        "/v1/accessing-logs",
     ]
 
     try{

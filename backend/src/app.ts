@@ -8,7 +8,7 @@ import rolesRouter from "./router/v1/rolesRouter";
 import express from "express";
 import resourceAccess from "./middlewares/resourceAccess";
 import getUserFromToken from "./middlewares/getUserFromToken";
-import accessingLog from "./middlewares/acessingLog";
+import accessingLog from "./middlewares/accessingLog";
 import resourcesRouter from "./router/v1/resourcesRouter";
 import settingsRouter from "./router/v1/settingsRouter";
 import parsersRouter from "./router/v1/parsersRouter";
@@ -18,6 +18,7 @@ import telegramRouter from "./router/v1/telegram";
 import * as path from "path";
 import cronRouter from "./router/v1/cronRouter";
 import competionsRouter from "./router/v1/competionsRouter";
+import accessingLogsRouter from "./router/v1/acessingLogsRouter";
 
 dotenv.config();
 const app = express();
@@ -46,7 +47,7 @@ connect().then(async _ => {
 	// мидлвары
 	app.use(getUserFromToken as any);
 	app.use(accessingLog as any);
-	// app.use(resourceAccess as any);
+	app.use(resourceAccess as any);
 
 	// routes start
 	app.use(baseRouter);
@@ -59,6 +60,7 @@ connect().then(async _ => {
 	app.use(telegramRouter);
 	app.use(competionsRouter)
 	app.use(cronRouter);
+	app.use(accessingLogsRouter);
 	// routes end
 
 	// Добавление парсеров в крон

@@ -1,14 +1,17 @@
 import TelegramBot from "node-telegram-bot-api";
-import {onSettings} from "./onCallbackQuery/onSettings";
+import {onSettings} from "./onCallbackQuery/onSettings/onSettings";
 import process from "process";
 import {getUser} from "../functions/checkUser";
 import {onLogout} from "./onCallbackQuery/onLogout";
-import {onSettings_directions} from "./onCallbackQuery/onSettings_directions";
+import {onDirections} from "./onCallbackQuery/onSettings/onDirections";
 import {CallbackQueryManager} from "../CallbackQueryManager";
-import {onSettings_directions_toggle} from "./onCallbackQuery/onSettings_directions_toggle";
+import {onDirections_toggle} from "./onCallbackQuery/onSettings/onDirections_toggle";
 import {onGrants} from "./onCallbackQuery/onGrants";
 import {onDefault} from "./onMessage/onDefault";
 import {onGrants_get} from "./onCallbackQuery/onGrants_get";
+import {onWork_time} from "./onCallbackQuery/onSettings/onWork_time";
+import {onWork_time_end_add_hour} from "./onCallbackQuery/onSettings/onWork_time_end_add_hour";
+import {onWork_time_start_add_hour} from "./onCallbackQuery/onSettings/onWork_time_start_add_hour";
 
 export const onCallbackQuery = (bot: TelegramBot) => {
     bot.on('callback_query', async (query) => {
@@ -51,9 +54,6 @@ ${link}
         await callbackQuery.deleteQueryInDb()
         await callbackQuery.deleteExpiredQueries()
 
-        console.log(callbackQuery.path);
-        console.log(callbackQuery.params);
-
         switch (callbackQuery.path) {
             case 'settings':
                 await onSettings({bot, chatId, user})
@@ -62,11 +62,11 @@ ${link}
                 await onLogout({bot, chatId, user})
                 return
             case 'settings_directions':
-                await onSettings_directions({bot, chatId, user})
+                await onDirections({bot, chatId, user})
                 return
             case 'settings_directions_toggle':
-                await onSettings_directions_toggle({bot, chatId, user, callbackQuery: callbackQuery})
-                await onSettings_directions({bot, chatId, user})
+                await onDirections_toggle({bot, chatId, user, callbackQuery: callbackQuery})
+                await onDirections({bot, chatId, user})
                 return
             case 'grants':
                 await onGrants({bot, chatId, user})
@@ -74,6 +74,17 @@ ${link}
             case 'grants_get':
                 await onGrants_get({bot, chatId, user, callbackQuery})
                 await onGrants({bot, chatId, user})
+                return
+            case 'settings_work_time':
+                await onWork_time({bot, chatId, user})
+                return
+            case "settings_work_time_end_add_hour":
+                await onWork_time_end_add_hour({bot, chatId, user, callbackQuery})
+                await onWork_time({bot, chatId, user})
+                return
+            case "settings_work_time_start_add_hour":
+                await onWork_time_start_add_hour({bot, chatId, user, callbackQuery})
+                await onWork_time({bot, chatId, user})
                 return
         }
 

@@ -156,6 +156,7 @@ model parsers {
   parsing_queue parsing_queue[]
   pagesToParse  Int
   cronTime      String?
+  lastSuccessAdd DateTime?
 }
 
 model parsing_queue {

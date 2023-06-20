@@ -4,6 +4,24 @@ import prisma from "../../prisma/connect";
 import {check} from "express-validator";
 
 let resourcesRouter = Router();
+resourcesRouter.post('/v1/resources/get', async (req , res) => {
+    try {
+        let resources_access = await prisma.resources_access.findMany({
+            where: req.body.where,
+            skip: req.body.skip,
+            take: req.body.take,
+        })
+        let resources_access_count = await prisma.resources_access.count({
+            where: req.body.where,
+        })
+        res.json({
+            resources_access_count: resources_access_count,
+            resources_access: resources_access,
+        })
+    } catch (e) {
+        res.status(500).json({errors: [{msg: 'Ошибка при получении ресурсов'}]});
+    }
+});
 
 resourcesRouter.post('/v1/resources/addRoleAccess', async (req , res) => {
 
