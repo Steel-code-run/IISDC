@@ -164,7 +164,6 @@ model parsers {
   lastSuccessAdd DateTime?
   internships    internships[]
   vacancies        vacancies[]
-  lastSuccessUpdate DateTime?
 }
 
 model parsing_queue {
