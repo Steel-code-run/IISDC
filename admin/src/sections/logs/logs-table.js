@@ -24,21 +24,12 @@ export const LogsTable = (props) => {
     const {
         count = 0,
         items = [],
-        onDeselectAll,
-        onDeselectOne,
         onPageChange,
         onRowsPerPageChange,
-        onSelectAll,
-        onSelectOne,
         page = 0,
         rowsPerPage = 0,
-        selected = [],
-        deleteRowHandle,
         updateParsers
     } = props;
-
-    const selectedSome = (selected.length > 0) && (selected.length < items.length);
-    const selectedAll = (items.length > 0) && (selected.length === items.length);
 
     const [fields, setFields] = useState([]);
     useEffect(() => {
@@ -74,165 +65,46 @@ export const LogsTable = (props) => {
                                 {/*    />*/}
                                 {/*</TableCell>*/}
                                 <TableCell>
-                                    Имя
+                                    IP
                                 </TableCell>
                                 <TableCell>
-                                    Описание
+                                    Дата
                                 </TableCell>
                                 <TableCell>
-                                    Вкл/выкл
+                                    Метод
                                 </TableCell>
                                 <TableCell>
-                                    Страницы для парсинга
-                                </TableCell>
-                                <TableCell>
-                                    Cron time
+                                    Путь
                                 </TableCell>
 
-                                <TableCell>
-
-                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {fields.length > 0 && fields?.map((parser) => {
-
-                                const isSelected = selected.includes(parser.id);
+                            {fields.length > 0 && fields?.map((log) => {
 
                                 return (
                                     <TableRow
                                         hover
-                                        key={parser.id}
+                                        key={log.id}
                                         //selected={isSelected}
                                     >
 
-                                        {/*<TableCell padding="checkbox">*/}
-                                        {/*    <Checkbox*/}
-                                        {/*        checked={isSelected}*/}
-                                        {/*        onChange={(event) => {*/}
-                                        {/*            if (event.target.checked) {*/}
-                                        {/*                onSelectOne?.(parser.id);*/}
-                                        {/*            } else {*/}
-                                        {/*                onDeselectOne?.(parser.id);*/}
-                                        {/*            }*/}
-                                        {/*        }}*/}
-                                        {/*    />*/}
-                                        {/*</TableCell>*/}
-
                                         <TableCell>
-                                            <Stack
-                                                alignItems="center"
-                                                direction="row"
-                                                spacing={2}
-                                            >
-                                                <Link style={{textDecoration: "none", color: "black"}}
-                                                      href={`/user/${parser.id}`}>
-                                                    <Typography variant="subtitle2">
-                                                        {parser.name}
-                                                    </Typography>
-                                                </Link>
-                                            </Stack>
+                                            {log.ip}
                                         </TableCell>
 
                                         <TableCell>
-                                            <TextField disabled={isEditFieldDisabled(parser.id, isEdit)}
-                                                       value={parser?.description || ''}
-                                                       onChange={(e) => {
-                                                           setFields(prevState => prevState.map((parser) => {
-                                                               if (!isEditFieldDisabled(parser.id, isEdit)) {
-                                                                   return {
-                                                                       ...parser,
-                                                                       description: e.target.value
-                                                                   }
-                                                               } else return parser
-                                                           }))
-
-                                                       }}/>
+                                            {log.date}
                                         </TableCell>
 
                                         <TableCell>
-                                            <Checkbox
-                                                disabled={isEditFieldDisabled(parser.id, isEdit)}
-                                                checked={parser?.isEnabled}
-                                                onChange={(e) => {
-                                                    // if (event.target.checked) {
-                                                    //     onSelectOne?.(parser.id);
-                                                    //
-                                                    // } else {
-                                                    //     onDeselectOne?.(parser.id);
-                                                    // }
-                                                    setFields(prevState => prevState.map((parser) => {
-                                                        if (!isEditFieldDisabled(parser.id, isEdit)) {
-                                                            return {
-                                                                ...parser,
-                                                                isEnabled: e.target.checked
-                                                            }
-                                                        } else return parser
-                                                    }))
-
-                                                    // updateParsers({
-                                                    //     id: parser.id,
-                                                    //     isEnabled: e.target.checked,
-                                                    //
-                                                    // })
-                                                }}
-                                            />
-
+                                            {log.method}
                                         </TableCell>
 
                                         <TableCell>
-                                            <TextField disabled={isEditFieldDisabled(parser.id, isEdit)}
-                                                       value={parser?.pagesToParse || ''}
-                                                       onChange={(e) => {
-                                                           setFields(prevState => prevState.map((parser) => {
-                                                               if (!isEditFieldDisabled(parser.id, isEdit)) {
-                                                                   return {
-                                                                       ...parser,
-                                                                       pagesToParse: +e.target.value
-                                                                   }
-                                                               } else return parser
-                                                           }))
-
-                                                       }}/>
+                                            {log.path}
 
                                         </TableCell>
-
-                                        <TableCell>
-                                            <TextField disabled={isEditFieldDisabled(parser.id, isEdit)}
-                                                       value={parser?.cronTime || ''}
-                                                       onChange={(e) => {
-                                                           setFields(prevState => prevState.map((parser) => {
-                                                               if (!isEditFieldDisabled(parser.id, isEdit)) {
-                                                                   return {
-                                                                       ...parser,
-                                                                       cronTime: e.target.value
-                                                                   }
-                                                               } else return parser
-                                                           }))
-
-                                                       }}/>
-
-                                        </TableCell>
-
-                                        <TableCell>
-                                            {
-                                                !isEditFieldDisabled(parser.id, isEdit) &&
-                                                <SaveIcon style={{cursor: 'pointer'}} onClick={() => {
-                                                    setIsEdit({
-                                                        isEditStatus: !isEdit.isEditStatus,
-                                                        id: null
-                                                    });
-                                                    const updateParser = fields.find(parser => parser.id === isEdit.id);
-
-                                                    updateParsers(updateParser)
-                                                }}/>
-                                            }
-                                            <EditIcon onClick={() => setIsEdit({
-                                                isEditStatus: !isEdit.isEditStatus,
-                                                id: parser.id
-                                            })} style={{cursor: 'pointer'}}/>
-                                        </TableCell>
-
 
                                     </TableRow>
                                 )

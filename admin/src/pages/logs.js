@@ -3,15 +3,10 @@ import Head from 'next/head';
 import {Box, Container, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
-import {createPortal} from "react-dom";
-import PopupAddUser from "../components/popupAddUser/PopupAddUser";
-import Overlay from "../hocs/Overlay/Overlay";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {deleteUser, getCountUser, responseUser} from "../api/userResponses";
-import {useSelection} from "../hooks/use-selection";
-import {useUserQuery} from "../hooks/useUserQuery";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useSnackbar} from "../hooks/use-snackbar";
 import {LogsTable} from "../sections/logs/logs-table";
+import {getLogs} from "../api/logsResponses";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -40,32 +35,37 @@ const Page = () => {
 
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
-    const {data: users, status, isLoading, isError } =
-        useUserQuery('users',
-            responseUser,
-        page*rowsPerPage, rowsPerPage
-    )
+    const orderBy = {
+        date: 'desc'
+    };
+    const where = {
+        NOT: {
+            path: '/v1/accessing-logs'
+        }
+    }
+    const {data: logs, status, isLoading, isError } =
+        useQuery(['logs', page*rowsPerPage, rowsPerPage, orderBy, where],
+            () => getLogs(page*rowsPerPage, rowsPerPage, orderBy, where));
 
-    const mutation = useMutation(
-        (delUser) => deleteUser(delUser), {
-            onSuccess: (res) => {
-                queryClient.invalidateQueries(["users"]);
-                setOpenSnackbar(true)
-                setSnackbarData({
-                    msg: res.message,
-                    type: 'success'
-                })
-            }
-        });
+    // const mutation = useMutation(
+    //     (delUser) => deleteUser(delUser), {
+    //         onSuccess: (res) => {
+    //             queryClient.invalidateQueries(["users"]);
+    //             setOpenSnackbar(true)
+    //             setSnackbarData({
+    //                 msg: res.message,
+    //                 type: 'success'
+    //             })
+    //         }
+    //     });
 
-    const {data: countUsers} = useQuery(['usersLength'], getCountUser);
 
-    const [isOpen, setIsOpen] = useState(false);
-
-    const customers = useCustomers(users, page, rowsPerPage);
-    const customersIds = useCustomerIds(customers);
-    const customersSelection
-        = useSelection(customersIds);
+    // const [isOpen, setIsOpen] = useState(false);
+    //
+    // const customers = useCustomers(users, page, rowsPerPage);
+    // const customersIds = useCustomerIds(customers);
+    // const customersSelection
+    //     = useSelection(customersIds);
 
 
     const handlePageChange = useCallback(
@@ -90,12 +90,7 @@ const Page = () => {
 
     return (
         <>
-            {
-                createPortal(
-                    <Overlay isOpen={isOpen} setIsOpen={setIsOpen}>
-                        <PopupAddUser/>
-                    </Overlay>, portalPopup)
-            }
+
             <Head>
                 <title>
                     Логи
@@ -129,22 +124,15 @@ const Page = () => {
                             </Stack>
 
                         </Stack>
-                        <PostsSearch/>
                         {
-                            (status === "success" && users.length > 0) &&
+                            (status === "success" && logs.logs.length > 0) &&
                             <LogsTable
-                                count={countUsers || 0}
-                                items={[...users].reverse()}
-                                onDeselectAll={customersSelection.handleDeselectAll}
-                                onDeselectOne={customersSelection.handleDeselectOne}
+                                count={logs.count || 0}
+                                items={logs.logs}
                                 onPageChange={handlePageChange}
                                 onRowsPerPageChange={handleRowsPerPageChange}
-                                onSelectAll={customersSelection.handleSelectAll}
-                                onSelectOne={customersSelection.handleSelectOne}
                                 page={page}
                                 rowsPerPage={rowsPerPage}
-                                selected={customersSelection.selected}
-                                deleteRowHandle={mutation.mutate}
                             />
                         }
                     </Stack>
