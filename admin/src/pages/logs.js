@@ -11,6 +11,7 @@ import {deleteUser, getCountUser, responseUser} from "../api/userResponses";
 import {useSelection} from "../hooks/use-selection";
 import {useUserQuery} from "../hooks/useUserQuery";
 import {useSnackbar} from "../hooks/use-snackbar";
+import {LogsTable} from "../sections/logs/logs-table";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -128,24 +129,24 @@ const Page = () => {
                             </Stack>
 
                         </Stack>
-                        {/*<PostsSearch/>*/}
-                        {/*{*/}
-                        {/*    (status === "success" && users.length > 0) &&*/}
-                        {/*    <ArchiveTable*/}
-                        {/*        count={countUsers || 0}*/}
-                        {/*        items={[...users].reverse()}*/}
-                        {/*        onDeselectAll={customersSelection.handleDeselectAll}*/}
-                        {/*        onDeselectOne={customersSelection.handleDeselectOne}*/}
-                        {/*        onPageChange={handlePageChange}*/}
-                        {/*        onRowsPerPageChange={handleRowsPerPageChange}*/}
-                        {/*        onSelectAll={customersSelection.handleSelectAll}*/}
-                        {/*        onSelectOne={customersSelection.handleSelectOne}*/}
-                        {/*        page={page}*/}
-                        {/*        rowsPerPage={rowsPerPage}*/}
-                        {/*        selected={customersSelection.selected}*/}
-                        {/*        deleteRowHandle={mutation.mutate}*/}
-                        {/*    />*/}
-                        {/*}*/}
+                        <PostsSearch/>
+                        {
+                            (status === "success" && users.length > 0) &&
+                            <LogsTable
+                                count={countUsers || 0}
+                                items={[...users].reverse()}
+                                onDeselectAll={customersSelection.handleDeselectAll}
+                                onDeselectOne={customersSelection.handleDeselectOne}
+                                onPageChange={handlePageChange}
+                                onRowsPerPageChange={handleRowsPerPageChange}
+                                onSelectAll={customersSelection.handleSelectAll}
+                                onSelectOne={customersSelection.handleSelectOne}
+                                page={page}
+                                rowsPerPage={rowsPerPage}
+                                selected={customersSelection.selected}
+                                deleteRowHandle={mutation.mutate}
+                            />
+                        }
                     </Stack>
                 </Container>
             </Box>
