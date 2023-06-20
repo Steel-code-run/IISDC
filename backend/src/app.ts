@@ -61,6 +61,7 @@ connect().then(async _ => {
 	app.use(competionsRouter)
 	app.use(cronRouter);
 	app.use(accessingLogsRouter);
+
 	// routes end
 
 	// Добавление парсеров в крон

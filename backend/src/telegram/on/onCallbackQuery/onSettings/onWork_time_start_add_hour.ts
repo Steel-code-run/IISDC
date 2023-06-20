@@ -31,5 +31,5 @@ export const onWork_time_start_add_hour = async (props:OnSomethingProps) => {
         }
     })
 
-    return bot.sendMessage(chatId, `Успешно добавлен 1 час`,)
+    return bot.sendMessage(chatId, `Время начала рабочего дня установлено на ${telegram_settings.workTimeStart.getHours()}:${telegram_settings.workTimeStart.getMinutes()}`)
 }
