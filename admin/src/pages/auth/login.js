@@ -21,13 +21,13 @@ const Page = () => {
     validationSchema: Yup.object({
       email: Yup
         .string()
-        .email('Must be a valid email')
+        .email('Email должен быть валиден')
         .max(255)
-        .required('Email is required'),
+        .required('Email обязателен для заполнения'),
       password: Yup
         .string()
         .max(255)
-        .required('Password is required')
+        .required('Пароль обязателен для заполнения')
     }),
     onSubmit: async (values, helpers) => {
       try {
@@ -60,7 +60,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Login | Devias Kit
+          Авторизация
         </title>
       </Head>
       <Box
@@ -86,13 +86,13 @@ const Page = () => {
               sx={{ mb: 3 }}
             >
               <Typography variant="h4">
-                Login
+                Авторизация
               </Typography>
               <Typography
                 color="text.secondary"
                 variant="body2"
               >
-                Don&apos;t have an account?
+                Нет аккаунта?
                 &nbsp;
                 <Link
                   component={NextLink}
@@ -100,24 +100,11 @@ const Page = () => {
                   underline="hover"
                   variant="subtitle2"
                 >
-                  Register
+                  Зарегистрироваться
                 </Link>
               </Typography>
             </Stack>
-            <Tabs
-              onChange={handleMethodChange}
-              sx={{ mb: 3 }}
-              value={method}
-            >
-              <Tab
-                label="Email"
-                value="email"
-              />
-              <Tab
-                label="Phone Number"
-                value="phoneNumber"
-              />
-            </Tabs>
+
             {method === 'email' && (
               <form
                 noValidate
@@ -128,7 +115,7 @@ const Page = () => {
                     error={!!(formik.touched.email && formik.errors.email)}
                     fullWidth
                     helperText={formik.touched.email && formik.errors.email}
-                    label="Email Address"
+                    label="Email"
                     name="email"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
@@ -139,7 +126,7 @@ const Page = () => {
                     error={!!(formik.touched.password && formik.errors.password)}
                     fullWidth
                     helperText={formik.touched.password && formik.errors.password}
-                    label="Password"
+                    label="Пароль"
                     name="password"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
@@ -147,9 +134,9 @@ const Page = () => {
                     value={formik.values.password}
                   />
                 </Stack>
-                <FormHelperText sx={{ mt: 1 }}>
-                  Optionally you can skip.
-                </FormHelperText>
+                {/*<FormHelperText sx={{ mt: 1 }}>*/}
+                {/*  Optionally you can skip.*/}
+                {/*</FormHelperText>*/}
                 {formik.errors.submit && (
                   <Typography
                     color="error"
@@ -166,7 +153,7 @@ const Page = () => {
                   type="submit"
                   variant="contained"
                 >
-                  Continue
+                  Продолжить
                 </Button>
                 <Button
                   fullWidth
@@ -176,15 +163,15 @@ const Page = () => {
                 >
                   Skip authentication
                 </Button>
-                <Alert
-                  color="primary"
-                  severity="info"
-                  sx={{ mt: 3 }}
-                >
-                  <div>
-                    You can use <b>demo@devias.io</b> and password <b>Password123!</b>
-                  </div>
-                </Alert>
+                {/*<Alert*/}
+                {/*  color="primary"*/}
+                {/*  severity="info"*/}
+                {/*  sx={{ mt: 3 }}*/}
+                {/*>*/}
+                {/*  <div>*/}
+                {/*    You can use <b>demo@devias.io</b> and password <b>Password123!</b>*/}
+                {/*  </div>*/}
+                {/*</Alert>*/}
               </form>
             )}
             {method === 'phoneNumber' && (

@@ -37,6 +37,7 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
     };
 
     const isFormValid = Object.keys(errors).length === 0;
+    console.log(errorOnServer)
 
     return (
         <div className={styles.popupAddUser}>
@@ -69,6 +70,7 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
                             <span style={{color: 'red'}}>Это поле обязательно</span>}
                         {errorOnServer && errorOnServer.find(err => err.path === 'email')
                             && <span style={{color: 'red'}}>{errorOnServer.find(err => err.path === 'email')?.msg}</span>}
+
                     </label>
                     <label>
                         <TextField
@@ -113,6 +115,8 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
                         />
                         {errors.role && <span style={{color: 'red'}}>{errors.role.message}</span>}
                     </FormControl>
+                    {errorOnServer && errorOnServer[0]?.msg
+                        && <span style={{color: 'red'}}>{errorOnServer[0]?.msg}</span>}
                 </div>
 
                 <Button variant={'outlined'}
