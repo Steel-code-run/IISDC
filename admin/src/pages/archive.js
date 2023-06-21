@@ -166,9 +166,11 @@ const Page = () => {
                                         rowsPerPage={rowsPerPage}
                                         deleteRowHandle={mutationDeleteGrants.mutate}
                                         unarchiveHandle={mutationUnarchiveGrants.mutate}
-                                    /> : <Skeleton variant="rounded"
-                                                   animation="wave"
-                                                   width={'100%'} height={600}/>
+                                    /> : (status === "loading" && grantsList?.length > 0)
+                                        ? <Skeleton variant="rounded"
+                                                    animation="wave"
+                                                    width={'100%'} height={400}/>
+                                        : <p>Количество грантов в архиве равно 0</p>
                             }
                         </Stack>
                     }
@@ -200,9 +202,11 @@ const Page = () => {
                                         rowsPerPage={rowsPerPage}
                                         deleteRowHandle={mutationDeleteCompetition.mutate}
                                         unarchiveHandle={mutationUnarchiveCompetition.mutate}
-                                    /> : <Skeleton variant="rounded"
-                                                   animation="wave"
-                                                   width={'100%'} height={600}/>
+                                    /> : (status === "loading" && competitionsList?.length > 0)
+                                        ? <Skeleton variant="rounded"
+                                                    animation="wave"
+                                                    width={'100%'} height={400}/>
+                                        : <p>Количество конкурсов в архиве равно 0</p>
                             }
                         </Stack>
                     }

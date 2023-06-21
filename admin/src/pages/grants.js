@@ -136,9 +136,11 @@ const Page = () => {
                                     rowsPerPage={rowsPerPage}
                                     deleteRowHandle={mutationDeleteGrant.mutate}
                                     archiveHandle={mutationArchiveGrant.mutate}
-                                /> : <Skeleton variant="rounded"
-                                               animation="wave"
-                                               width={'100%'} height={400}/>
+                                /> : (status === "loading" && grantsList?.length > 0) ? <Skeleton variant="rounded"
+                                                                                                  animation="wave"
+                                                                                                  width={'100%'}
+                                                                                                  height={400}/>
+                                    :  <p>Количество грантов равно 0</p>
                         }
                     </Stack>
 

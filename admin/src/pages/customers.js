@@ -160,9 +160,13 @@ const Page = options => {
                                     rowsPerPage={rowsPerPage}
                                     selected={customersSelection.selected}
                                     deleteRowHandle={mutation.mutate}
-                                /> : <Skeleton variant="rounded"
-                                               animation="wave"
-                                               width={'100%'} height={400}/>
+                                /> : (status === "loading" && users?.length > 0)
+                                    ? <Skeleton variant="rounded"
+                                                animation="wave"
+                                                width={'100%'} height={400}/>
+                                    : (status === "loading" && users?.length <= 0) ?
+                                        <p>Количество пользователей равно 0</p>
+                                        : null
                         }
                     </Stack>
                 </Container>

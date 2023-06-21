@@ -50,7 +50,7 @@ const Page = () => {
     const {data: competitionsList, status, isLoading, isError} = useQuery(
         ['competitions', page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition], () =>
             getCompetitions(page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition))
-    const {data: countCompetitions  } = useQuery(['countCompetitions'], getCountCompetitions);
+    const {data: countCompetitions} = useQuery(['countCompetitions'], getCountCompetitions);
 
     const mutationArchiveCompetition = useMutation(
         (archiveData) => updateCompetition(archiveData), {
@@ -133,24 +133,28 @@ const Page = () => {
                         {/*<CustomersSearch/>*/}
                         {
                             (status === "success" && competitionsList.length > 0) ?
-                            <PostsTable
-                                type={'competition'}
-                                count={countCompetitions || 0}
-                                items={competitionsList}
-                                onDeselectAll={competitionsSelection.handleDeselectAll}
-                                onDeselectOne={competitionsSelection.handleDeselectOne}
-                                onPageChange={handlePageChange}
-                                onRowsPerPageChange={handleRowsPerPageChange}
-                                onSelectAll={competitionsSelection.handleSelectAll}
-                                onSelectOne={competitionsSelection.handleSelectOne}
-                                page={page}
-                                rowsPerPage={rowsPerPage}
-                                selected={competitionsSelection.selected}
-                                deleteRowHandle={mutationDeleteCompetition.mutate}
-                                archiveHandle={mutationArchiveCompetition.mutate}
-                            /> : <Skeleton variant="rounded"
-                                           animation="wave"
-                                           width={'100%'} height={600}/>
+                                <PostsTable
+                                    type={'competition'}
+                                    count={countCompetitions || 0}
+                                    items={competitionsList}
+                                    onDeselectAll={competitionsSelection.handleDeselectAll}
+                                    onDeselectOne={competitionsSelection.handleDeselectOne}
+                                    onPageChange={handlePageChange}
+                                    onRowsPerPageChange={handleRowsPerPageChange}
+                                    onSelectAll={competitionsSelection.handleSelectAll}
+                                    onSelectOne={competitionsSelection.handleSelectOne}
+                                    page={page}
+                                    rowsPerPage={rowsPerPage}
+                                    selected={competitionsSelection.selected}
+                                    deleteRowHandle={mutationDeleteCompetition.mutate}
+                                    archiveHandle={mutationArchiveCompetition.mutate}
+                                /> : (status === "loading" && competitionsList?.length > 0)
+                                    ? <Skeleton variant="rounded"
+                                                animation="wave"
+                                                width={'100%'} height={400}/>
+                                    : (status === "loading" && competitionsList?.length <= 0) ?
+                                        <p>Количество конкурсов равно 0</p>
+                                        : null
                         }
                     </Stack>
                 </Container>
