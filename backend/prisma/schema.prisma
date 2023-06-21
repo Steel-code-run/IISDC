@@ -13,56 +13,83 @@ datasource db {
 }
 
 model grants {
-  id                Int             @id @unique @default(autoincrement())
-  namePost          String          @db.LongText()
+  id                Int       @id @unique @default(autoincrement())
+  namePost          String    @db.LongText()
   dateCreationPost  String?
   directions        String?
-  organization      String?         @db.LongText()
+  organization      String?   @db.LongText()
   deadline          DateTime?
   summary           String?
-  directionForSpent String?         @db.LongText()
-  fullText          String?         @db.LongText()
+  directionForSpent String?   @db.LongText()
+  fullText          String?   @db.LongText()
   link              String?
   linkPDF           String?
   sourceLink        String?
   timeOfParse       DateTime?
-  blackListed       Boolean         @default(false)
-  // События редактирования
-  editActions       users_actions[]
-  parser            parsers?        @relation(fields: [parser_id], references: [id], onDelete: Cascade)
+  blackListed       Boolean   @default(false)
+  parser            parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
   parser_id         Int?
 }
 
 model competitions {
-  id               Int             @id @unique @default(autoincrement())
-  namePost         String          @db.VarChar(255)
+  id               Int       @id @unique @default(autoincrement())
+  namePost         String    @db.VarChar(255)
   dateCreationPost String?
   directions       String?
-  organization     String?         @db.LongText()
+  organization     String?   @db.LongText()
   deadline         DateTime?
-  fullText         String?         @db.LongText()
+  fullText         String?   @db.LongText()
   link             String?
   linkPDF          String?
   sourceLink       String?
   timeOfParse      DateTime?
-  blackListed      Boolean         @default(false)
-  // События редактирования
-  editActions      users_actions[]
-  parser           parsers?        @relation(fields: [parser_id], references: [id], onDelete: Cascade)
+  blackListed      Boolean   @default(false)
+  parser           parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
+  parser_id        Int
+}
+
+model internships {
+  id               Int       @id @unique @default(autoincrement())
+  namePost         String    @db.VarChar(255)
+  dateCreationPost String?
+  directions       String?
+  organization     String?   @db.LongText()
+  fullText         String?   @db.LongText()
+  link             String?
+  linkPDF          String?
+  sourceLink       String?
+  timeOfParse      DateTime?
+  blackListed      Boolean   @default(false)
+  parser           parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
+  parser_id        Int
+}
+
+model vacancies {
+  id               Int       @id @unique @default(autoincrement())
+  namePost         String    @db.VarChar(255)
+  dateCreationPost String?
+  directions       String?
+  organization     String?   @db.LongText()
+  summary          String?
+  fullText         String?   @db.LongText()
+  link             String?
+  linkPDF          String?
+  sourceLink       String?
+  timeOfParse      DateTime?
+  blackListed      Boolean   @default(false)
+  parser           parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
   parser_id        Int
 }
 
 model users {
-  id              Int             @id @unique @default(autoincrement())
-  name            String          @unique
-  email           String
-  password        String
-  role            users_role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  roleId          Int
-  blocked         Boolean         @default(false)
-  User_actions    users_actions[] @relation("User_actions")
-  User_actionsFor users_actions[] @relation("User_actionsFor")
-  acessing_log    acessing_logs[]
+  id           Int             @id @unique @default(autoincrement())
+  name         String          @unique
+  email        String
+  password     String
+  role         users_role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId       Int
+  blocked      Boolean         @default(false)
+  acessing_log acessing_logs[]
 
   User_telegram_settings   users_telegram_settings? @relation(fields: [user_telegram_settingsId], references: [id], onDelete: Cascade)
   user_telegram_settingsId Int?
@@ -70,34 +97,12 @@ model users {
   users_telegramsId String?
 }
 
-model users_actions {
-  id                Int                 @id @unique @default(autoincrement())
-  // от какого пользователя
-  user_id           Int
-  user              users               @relation("User_actions", fields: [user_id], references: [id], onDelete: Cascade)
-  // информация о действии
-  ip                String
-  date              String
-  actionType        users_actions_types
-  // Суда пишем о том что изменилось, что произошло, что было раньше, причину и тд
-  actionDescription String?
-  // с каким юзером связано действие
-  actionForUser     users?              @relation("User_actionsFor", fields: [actionForUserId], references: [id], onDelete: Cascade)
-  actionForUserId   Int?
-  // с каким грантом связано действие
-  Grant             grants?             @relation(fields: [grantId], references: [id], onDelete: Cascade)
-  grantId           Int?
-  // с каким конкурсом связано действие
-  Competition       competitions?       @relation(fields: [competitionId], references: [id], onDelete: Cascade)
-  competitionId     Int?
-}
-
 model users_telegram_settings {
-  id       Int      @id @unique @default(autoincrement())
+  id            Int      @id @unique @default(autoincrement())
   workTimeStart DateTime
   workTimeEnd   DateTime
-  users    users[]
-  directions String?
+  users         users[]
+  directions    String?
 }
 
 model acessing_logs {
@@ -147,16 +152,18 @@ model resources_access {
 }
 
 model parsers {
-  id            Int             @id @unique @default(autoincrement())
-  name          String
-  description   String?
-  isEnabled     Boolean
-  grant         grants[]
-  competition   competitions[]
-  parsing_queue parsing_queue[]
-  pagesToParse  Int
-  cronTime      String?
+  id             Int             @id @unique @default(autoincrement())
+  name           String
+  description    String?
+  isEnabled      Boolean
+  grant          grants[]
+  competition    competitions[]
+  parsing_queue  parsing_queue[]
+  pagesToParse   Int
+  cronTime       String?
   lastSuccessAdd DateTime?
+  internships    internships[]
+  vacancies        vacancies[]
 }
 
 model parsing_queue {
@@ -173,7 +180,7 @@ model appSettings {
 }
 
 model telegram_commands {
-  id     Int    @id @unique @default(autoincrement())
-  query String @db.VarChar(255)
-  TTL  DateTime
+  id    Int      @id @unique @default(autoincrement())
+  query String   @db.VarChar(255)
+  TTL   DateTime
 }

@@ -17,17 +17,17 @@ telegramRouter.get(baseUrl+"/login", async (req, res) => {
 telegramRouter.post(baseUrl+"/login", async (req, res) => {
 
 
-    await check('email').isString().run(req)
+    await check('name').isString().run(req)
     await check('password').isString().run(req)
     await check('telegram_id').isString().run(req)
 
     const telegram_id = req.query.telegram_id
-    const email = req.body.email
     const password = req.body.password
+    const name = req.body.name
 
     const errors = validationResult(req);
 
-    if (typeof email !== 'string') {
+    if (typeof name !== 'string') {
         return res.render('telegram',{errors: [{msg: 'Ошибка с email'}]})
     }
     if (typeof password !== 'string') {
@@ -44,7 +44,7 @@ telegramRouter.post(baseUrl+"/login", async (req, res) => {
 
     const user = await prisma.users.findFirst({
         where: {
-            email: email,
+            name: name,
             password: md5(password)
         }
     })
@@ -67,7 +67,7 @@ telegramRouter.post(baseUrl+"/login", async (req, res) => {
         напишите любое сообщение, чтобы начать`)
     }
 
-    return res.render('telegram/success', {id:124})
+    return res.render('telegram/success')
 })
 
 export default telegramRouter

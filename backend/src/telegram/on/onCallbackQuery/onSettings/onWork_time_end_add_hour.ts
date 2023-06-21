@@ -32,5 +32,5 @@ export const onWork_time_end_add_hour = async (props:OnSomethingProps) => {
         }
     })
 
-    return bot.sendMessage(chatId, `Успешно добавлен 1 час`,)
+    return bot.sendMessage(chatId, `Время окончания рабочего дня установлено на ${telegram_settings.workTimeEnd.getHours()}:${telegram_settings.workTimeEnd.getMinutes()}`)
 }

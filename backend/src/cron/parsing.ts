@@ -1,8 +1,9 @@
 import {CronJob, CronTime} from "cron";
 import prisma from "../prisma/connect";
 import axios from "axios";
-import {Competition, Grant} from "../types/Posts";
+import {Competition, Grant, Internship, Vacancy} from "../types/Posts";
 import {get3DirectionsByText} from "../helpers/getDirectionByText/getDirectionByText";
+import {sendPostByType} from "../telegram/functions/sendPostByType";
 
 type JobData = {
     parserId: number;
@@ -214,132 +215,233 @@ const parsePage = async (
 ) => {
     axios.get(process.env.PARSERS_URL! + "/parsers/"+parser.name+"/"+page)
         .then(async response => {
-            for (const post of response.data) {
-            const postType = post.postType
-
-            if (postType === 'grant') {
-                let grant:Grant = post.postDescription
-
-                // Если грант есть в базе, то не добавляем его и вызываем ошибку
-                const grant_in_db = await prisma.grants.findFirst({
-                  where: {
-                      namePost: grant.namePost,
-                      organization: grant.organization
-                  }
+            // Если постов больше > 0, обновляем время последнего парсинга
+            if (response.data.length > 0) {
+                await prisma.parsers.update({
+                    where:{
+                        id:parser.id
+                    },
+                    data:{
+                        lastSuccessAdd: new Date()
+                    }
                 })
+            }
 
-                if (grant_in_db) {
-                  console.log('grant already exist')
-                  return new Error('grant already exist')
+
+            for (const post of response.data) {
+                const postType = post.postType
+                const postDescription = post.postDescription
+
+                if (postType === 'grant') {
+                    let grant:Grant = postDescription
+
+                    // Если грант есть в базе, то не добавляем его и вызываем ошибку
+                    const grant_in_db = await prisma.grants.findFirst({
+                      where: {
+                          namePost: grant.namePost,
+                          organization: grant.organization
+                      }
+                    })
+
+                    if (grant_in_db) {
+                      console.log('grant already exist')
+                      return new Error('grant already exist')
+                    }
+
+
+                    // Если гранта нет в базе, то добавляем его
+
+                    const data:any = {
+                        namePost: grant.namePost,
+                        timeOfParse: new Date(),
+                    }
+
+                    if (grant.summary)
+                        data.summary = grant.summary
+                    if (grant.fullText)
+                        data.fullText = grant.fullText
+                    if (grant.deadline){
+                        let deadline:Date|null = null
+                        if (grant.deadline)
+                            deadline = new Date(grant.deadline)
+                            if (deadline === null)
+                                return
+                            // если дату не удалось перевести, то оставляем null
+                            if (deadline.toString() === 'Invalid Date')
+                                deadline = null
+
+
+                        data.deadline = deadline
+                    }
+                    if (grant.organization)
+                        data.organization = grant.organization
+                    if (grant.link)
+                        data.link = grant.link
+                    if (grant.linkPDF)
+                        data.linkPDF = grant.linkPDF
+                    if (grant.sourceLink)
+                        data.sourceLink = grant.sourceLink
+                    if (grant.directionForSpent)
+                        data.directionForSpent = grant.directionForSpent
+
+                    let directions:any = []
+                    if (grant.fullText)
+                        directions = get3DirectionsByText(grant.fullText)
+
+                    if (directions)
+                        data.directions = JSON.stringify(directions)
+
+                    data.parser_id = parser.id
+
+                    const post = await prisma.grants.create({
+                        data
+                    })
+
+                    await sendPostByType(post)
+
                 }
 
-                // попытка перевести дату в формат даты
+                if (postType === 'competition') {
+                    let competition:Competition = postDescription
 
-                // Если гранта нет в базе, то добавляем его
+                    // Если конкурс есть в базе, то не добавляем его и вызываем ошибку
+                    const competition_in_db = await prisma.competitions.findFirst({
+                        where: {
+                            namePost: competition.namePost,
+                        }
+                    })
+                    if (competition_in_db) {
+                        console.log('competition already exist')
+                        return new Error('competition already exist')
+                    }
 
-                const data:any = {
-                    namePost: grant.namePost,
-                    timeOfParse: new Date(),
-                }
+                    // Если конкурса нет в базе, то добавляем его
+                    const data:any = {
+                        namePost: competition.namePost,
+                        timeOfParse: new Date(),
+                    }
 
-                if (grant.summary)
-                    data.summary = grant.summary
-                if (grant.fullText)
-                    data.fullText = grant.fullText
-                if (grant.deadline){
-                    let deadline:Date|null = null
-                    if (grant.deadline)
-                        deadline = new Date(grant.deadline)
+                    if (competition.summary)
+                        data.summary = competition.summary
+                    if (competition.fullText)
+                        data.fullText = competition.fullText
+                    if (competition.deadline){
+                        let deadline:Date|null = null
+                        if (competition.deadline)
+                            deadline = new Date(competition.deadline)
                         if (deadline === null)
                             return
                         // если дату не удалось перевести, то оставляем null
                         if (deadline.toString() === 'Invalid Date')
                             deadline = null
-
-
-                    data.deadline = deadline
-                }
-                if (grant.organization)
-                    data.organization = grant.organization
-                if (grant.link)
-                    data.link = grant.link
-                if (grant.linkPDF)
-                    data.linkPDF = grant.linkPDF
-                if (grant.sourceLink)
-                    data.sourceLink = grant.sourceLink
-                if (grant.directionForSpent)
-                    data.directionForSpent = grant.directionForSpent
-
-                let directions:any = []
-                if (grant.fullText)
-                    directions = get3DirectionsByText(grant.fullText)
-
-                if (directions)
-                    data.directions = JSON.stringify(directions)
-
-                data.parser_id = parser.id
-
-                await prisma.grants.create({
-                    data
-                })
-            }
-
-            if (postType === 'competition') {
-                let competition:Competition = post.postDescription
-
-                // Если конкурс есть в базе, то не добавляем его и вызываем ошибку
-                const competition_in_db = await prisma.competitions.findFirst({
-                    where: {
-                        namePost: competition.namePost,
                     }
-                })
-                if (competition_in_db) {
-                    console.log('competition already exist')
-                    return new Error('competition already exist')
+                    if (competition.link)
+                        data.link = competition.link
+                    if (competition.linkPDF)
+                        data.linkPDF = competition.linkPDF
+                    if (competition.sourceLink)
+                        data.sourceLink = competition.sourceLink
+                    if (competition.directionForSpent)
+                        data.directionForSpent = competition.directionForSpent
+                    if (competition.organization)
+                        data.organization = competition.organization
+
+                    let directions;
+                    if (competition.fullText)
+                        directions = get3DirectionsByText(competition.fullText)
+
+                    if (directions)
+                        data.directions = JSON.stringify(directions)
+
+                    data.parser_id = parser.id
+
+                    let post = await prisma.competitions.create({data})
+
+                    await sendPostByType(post)
                 }
 
-                // Если конкурса нет в базе, то добавляем его
-                const data:any = {
-                    namePost: competition.namePost,
-                    timeOfParse: new Date(),
+                if (postType === 'vacancy') {
+                    let vacancy:Vacancy = postDescription
+
+                    // Если вакансия есть в базе, то не добавляем ее и вызываем ошибку
+                    const vacancy_in_db = await prisma.vacancies.findFirst({
+                        where: {
+                            namePost: vacancy.namePost,
+                        }
+                    })
+                    if (vacancy_in_db) {
+                        console.log('vacancy already exist')
+                        return new Error('vacancy already exist')
+                    }
+
+                    // Если вакансии нет в базе, то добавляем ее
+                    const data:any = {
+                        namePost: vacancy.namePost,
+                        timeOfParse: new Date(),
+                    }
+
+                    if (vacancy.summary)
+                        data.summary = vacancy.summary
+                    if (vacancy.fullText)
+                        data.fullText = vacancy.fullText
+                    if (vacancy.link)
+                        data.link = vacancy.link
+                    if (vacancy.linkPDF)
+                        data.linkPDF = vacancy.linkPDF
+                    if (vacancy.sourceLink)
+                        data.sourceLink = vacancy.sourceLink
+                    if (vacancy.organization)
+                        data.organization = vacancy.organization
+
+                    let directions;
+                    if (vacancy.fullText)
+                        directions = get3DirectionsByText(vacancy.fullText)
+
+                    if (directions)
+                        data.directions = JSON.stringify(directions)
+
+                    data.parser_id = parser.id
+
+                    await prisma.vacancies.create({data})
                 }
 
-                if (competition.summary)
-                    data.summary = competition.summary
-                if (competition.fullText)
-                    data.fullText = competition.fullText
-                if (competition.deadline){
-                    let deadline:Date|null = null
-                    if (competition.deadline)
-                        deadline = new Date(competition.deadline)
-                    if (deadline === null)
-                        return
-                    // если дату не удалось перевести, то оставляем null
-                    if (deadline.toString() === 'Invalid Date')
-                        deadline = null
+                if (postType === 'internship') {
+                    let internship:Internship = postDescription
+
+                    // Если стажировка есть в базе, то не добавляем ее и вызываем ошибку
+                    const internship_in_db = await prisma.internships.findFirst({
+                        where: {
+                            namePost: internship.namePost,
+                        }
+                    })
+                    if (internship_in_db) {
+                        console.log('internship already exist')
+                        return new Error('internship already exist')
+                    }
+
+                    // Если стажировки нет в базе, то добавляем ее
+                    const data:any = {
+                        namePost: internship.namePost,
+                        timeOfParse: new Date(),
+                    }
+
+                    if (internship.fullText)
+                        data.fullText = internship.fullText
+                    if (internship.link)
+                        data.link = internship.link
+                    if (internship.linkPDF)
+                        data.linkPDF = internship.linkPDF
+                    if (internship.sourceLink)
+                        data.sourceLink = internship.sourceLink
+                    if (internship.organization)
+                        data.organization = internship.organization
+                    if (internship.dateCreationPost)
+                        data.dateCreationPost = internship.dateCreationPost
+
+
+
                 }
-                if (competition.link)
-                    data.link = competition.link
-                if (competition.linkPDF)
-                    data.linkPDF = competition.linkPDF
-                if (competition.sourceLink)
-                    data.sourceLink = competition.sourceLink
-                if (competition.directionForSpent)
-                    data.directionForSpent = competition.directionForSpent
-                if (competition.organization)
-                    data.organization = competition.organization
 
-                let directions;
-                if (competition.fullText)
-                    directions = get3DirectionsByText(competition.fullText)
-
-                if (directions)
-                    data.directions = JSON.stringify(directions)
-
-                data.parser_id = parser.id
-
-                await prisma.competitions.create({data})
-            }
           }
         }).catch(e => {
         console.log(e)
