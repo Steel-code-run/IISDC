@@ -8,32 +8,10 @@ import {useSnackbar} from "../hooks/use-snackbar";
 import {LogsTable} from "../sections/logs/logs-table";
 import {getLogs} from "../api/logsResponses";
 
-const useCustomers = (data, page, rowsPerPage) => {
-    return useMemo(
-        () => {
-            return applyPagination(data, page, rowsPerPage);
-        },
-        [data, page, rowsPerPage]
-    );
-};
-
-const useCustomerIds = (customers) => {
-    return useMemo(
-        () => {
-            return customers?.map((customer) => customer.id);
-        },
-        [customers]
-    );
-};
-
-
 const Page = () => {
-    const portalPopup = document?.getElementById('portal');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const queryClient = useQueryClient()
-
-    const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
     const orderBy = {
         date: 'desc'
@@ -58,15 +36,6 @@ const Page = () => {
     //             })
     //         }
     //     });
-
-
-    // const [isOpen, setIsOpen] = useState(false);
-    //
-    // const customers = useCustomers(users, page, rowsPerPage);
-    // const customersIds = useCustomerIds(customers);
-    // const customersSelection
-    //     = useSelection(customersIds);
-
 
     const handlePageChange = useCallback(
         (event, value) => {
@@ -138,10 +107,7 @@ const Page = () => {
                     </Stack>
                 </Container>
             </Box>
-            {/*<SnackbarMessage msg={snackbarData.msg}*/}
-            {/*                 type={snackbarData.type}*/}
-            {/*                 openSnackbar={openSnackbar}*/}
-            {/*                 setOpenSnackbar={setOpenSnackbar}/>*/}
+
         </>
     );
 };

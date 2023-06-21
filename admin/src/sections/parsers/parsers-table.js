@@ -88,6 +88,9 @@ export const ParsersTable = (props) => {
                                 <TableCell>
                                     Cron time
                                 </TableCell>
+                                <TableCell>
+                                    Дата последнего успешного добавления
+                                </TableCell>
 
                                 <TableCell>
 
@@ -213,6 +216,9 @@ export const ParsersTable = (props) => {
                                                        }}/>
 
                                         </TableCell>
+                                        <TableCell>
+                                            {parser.lastSuccessAdd}
+                                        </TableCell>
 
                                         <TableCell>
                                             {
@@ -232,6 +238,7 @@ export const ParsersTable = (props) => {
                                                 id: parser.id
                                             })} style={{cursor: 'pointer'}}/>
                                         </TableCell>
+
 
 
                                     </TableRow>
