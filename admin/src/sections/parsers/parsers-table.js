@@ -19,6 +19,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from '@mui/icons-material/Save';
 
 import {useEffect, useState} from "react";
+import {formatDateTime} from "../../config/formatDate";
 
 export const ParsersTable = (props) => {
     const {
@@ -217,7 +218,9 @@ export const ParsersTable = (props) => {
 
                                         </TableCell>
                                         <TableCell>
-                                            {parser.lastSuccessAdd}
+                                            {(parser.lastSuccessAdd)
+                                                ? formatDateTime(new Date(parser.lastSuccessAdd))
+                                                : ''}
                                         </TableCell>
 
                                         <TableCell>
@@ -238,7 +241,6 @@ export const ParsersTable = (props) => {
                                                 id: parser.id
                                             })} style={{cursor: 'pointer'}}/>
                                         </TableCell>
-
 
 
                                     </TableRow>
