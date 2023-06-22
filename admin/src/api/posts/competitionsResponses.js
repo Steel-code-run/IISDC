@@ -39,7 +39,7 @@ export const deleteCompetition = async (id) => {
     return res.data
 }
 
-export const updateCompetiotion = async (updateData) => {
+export const updateCompetition = async (updateData) => {
     try {
         const res = await axios.patch(`${serverUrl}v1/competitions`,
             {

@@ -58,7 +58,7 @@ const PageInternships: FC<PageInternshipsProps> = () => {
 
 
     useEffect(() => {
-        setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
+        setAmountPages(Math.ceil(totalCountPosts / amountPostsPerPage))
     }, [totalCountPosts, setAmountPages, amountPostsPerPage])
 
     React.useEffect(() => {

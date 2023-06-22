@@ -31,7 +31,7 @@ export const grantsApi = createApi({
         getGrants: builder.query<any, IGetGrants>({
             query: ({skip, take, extended, namePost, directions, token}) => {
                 return {
-                    url: `v1/grants/`,
+                    url: `v1/grants`,
                     body: {
                         skip,
                         take,
@@ -81,8 +81,27 @@ export const grantsApi = createApi({
                 return {
                     url: `v1/grants/count`,
                     body: {
-                        namePost,
-                        directions: JSON.stringify(directions)
+                        where: (directions?.length) ? {
+                            "namePost": {
+                                contains: namePost
+                            },
+
+                            "OR": (typeof directions === 'string') ? {
+                                "directions": {
+                                    contains: directions
+                                }
+                            } : directions?.map((dir: string) => {
+                                return {
+                                    "directions": {
+                                        contains: dir
+                                    }
+                                }
+                            })
+                        } : {
+                            "namePost": {
+                                contains: namePost
+                            },
+                        }
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,

@@ -69,22 +69,21 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
 
 
     useEffect(() => {
-        console.log(totalCountPosts, amountPostsPerPage)
         setAmountPages(Math.ceil(totalCountPosts / amountPostsPerPage))
     }, [totalCountPosts, setAmountPages, amountPostsPerPage])
 
 
-    React.useEffect(() => {
-        window.addEventListener('resize', () => checkSizeWindow())
-        checkSizeWindow();
-        (error)
-            ? navigate('/', {
-                state: {
-                    error
-                }
-            })
-            : navigate('/competitions')
-    }, [isLoading])
+    // React.useEffect(() => {
+    //     window.addEventListener('resize', () => checkSizeWindow())
+    //     checkSizeWindow();
+    //     (error)
+    //         ? navigate('/', {
+    //             state: {
+    //                 error
+    //             }
+    //         })
+    //         : navigate('/competitions')
+    // }, [isLoading])
 
     if (!directions || isLoading) return <Dna visible={true}
                                                     height="250"
@@ -92,7 +91,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                                                     ariaLabel="dna-loading"
                                                     wrapperStyle={{}}
                                                     wrapperClass="dna-wrapper"/>
-    //console.log(totalCountPosts, amountPages, page)
+
     return (
         <>
             <Header/>

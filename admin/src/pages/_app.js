@@ -1,3 +1,4 @@
+import React from 'react'
 import Head from 'next/head';
 import {CacheProvider} from '@emotion/react';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
@@ -12,48 +13,48 @@ import 'simplebar-react/dist/simplebar.min.css';
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
 const clientSideEmotionCache = createEmotionCache();
-const queryClient = new QueryClient()
+
 
 const SplashScreen = () => null;
 
 const App = (props) => {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+    const {Component, emotionCache = clientSideEmotionCache, pageProps} = props;
+    const queryClient = React.useRef(new QueryClient());
+    useNProgress();
 
-  useNProgress();
+    const getLayout = Component.getLayout ?? ((page) => page);
 
-  const getLayout = Component.getLayout ?? ((page) => page);
+    const theme = createTheme();
 
-  const theme = createTheme();
-
-  return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>
-          Devias Kit
-        </title>
-        <meta
-          name="viewport"
-          content="initial-scale=1, width=device-width"
-        />
-      </Head>
-      <QueryClientProvider client={queryClient}>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <AuthProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <AuthConsumer>
-              {
-                (auth) => auth.isLoading
-                  ? <SplashScreen />
-                  : getLayout(<Component {...pageProps} />)
-              }
-            </AuthConsumer>
-          </ThemeProvider>
-        </AuthProvider>
-      </LocalizationProvider>
-      </QueryClientProvider>
-    </CacheProvider>
-  );
+    return (
+        <CacheProvider value={emotionCache}>
+            <Head>
+                <title>
+                    Админ - панель
+                </title>
+                <meta
+                    name="viewport"
+                    content="initial-scale=1, width=device-width"
+                />
+            </Head>
+            <QueryClientProvider client={queryClient.current}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <AuthProvider>
+                            <ThemeProvider theme={theme}>
+                                <CssBaseline/>
+                                <AuthConsumer>
+                                    {
+                                        (auth) => auth.isLoading
+                                            ? <SplashScreen/>
+                                            : getLayout(<Component {...pageProps} />)
+                                    }
+                                </AuthConsumer>
+                            </ThemeProvider>
+                        </AuthProvider>
+                    </LocalizationProvider>
+            </QueryClientProvider>
+        </CacheProvider>
+    );
 };
 
 export default App;

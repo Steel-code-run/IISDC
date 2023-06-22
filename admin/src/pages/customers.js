@@ -1,7 +1,7 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import {Box, Button, Container, Stack, SvgIcon, Typography} from '@mui/material';
+import {Box, Button, Container, Skeleton, Stack, SvgIcon, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {CustomersTable} from 'src/sections/customer/customers-table';
 import {applyPagination} from 'src/utils/apply-pagination';
@@ -13,6 +13,7 @@ import {deleteUser, getCountUser, responseUser} from "../api/userResponses";
 import {useSelection} from "../hooks/use-selection";
 import {useUserQuery} from "../hooks/useUserQuery";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
+import {useSnackbar} from "../hooks/use-snackbar";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -37,19 +38,15 @@ const Page = options => {
     const portalPopup = document?.getElementById('portal');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const queryClient = useQueryClient()
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarData, setSnackbarData] = useState({
-        type: '',
-        msg: ''
-    });
+    const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
-    const {data: users, status, isLoading, isError } =
+    const {data: users, status, isLoading, isError} =
         useUserQuery('users',
             responseUser,
-        page*rowsPerPage, rowsPerPage
-    )
-    const queryClient = useQueryClient();
+            page * rowsPerPage, rowsPerPage
+        )
 
     const mutation = useMutation(
         (delUser) => deleteUser(delUser), {
@@ -89,13 +86,9 @@ const Page = options => {
         []
     );
 
-    if (isLoading) {
-        return <h1>Загрузка...</h1>
-    }
     if (isError) {
         return <h1>Ошибка...</h1>
     }
-
 
 
     return (
@@ -153,21 +146,27 @@ const Page = options => {
                         </Stack>
                         {/*<CustomersSearch/>*/}
                         {
-                            (status === "success" && users.length > 0) &&
-                            <CustomersTable
-                                count={countUsers || 0}
-                                items={[...users].reverse()}
-                                onDeselectAll={customersSelection.handleDeselectAll}
-                                onDeselectOne={customersSelection.handleDeselectOne}
-                                onPageChange={handlePageChange}
-                                onRowsPerPageChange={handleRowsPerPageChange}
-                                onSelectAll={customersSelection.handleSelectAll}
-                                onSelectOne={customersSelection.handleSelectOne}
-                                page={page}
-                                rowsPerPage={rowsPerPage}
-                                selected={customersSelection.selected}
-                                deleteRowHandle={mutation.mutate}
-                            />
+                            (status === "success" && users.length > 0) ?
+                                <CustomersTable
+                                    count={countUsers || 0}
+                                    items={[...users].reverse()}
+                                    onDeselectAll={customersSelection.handleDeselectAll}
+                                    onDeselectOne={customersSelection.handleDeselectOne}
+                                    onPageChange={handlePageChange}
+                                    onRowsPerPageChange={handleRowsPerPageChange}
+                                    onSelectAll={customersSelection.handleSelectAll}
+                                    onSelectOne={customersSelection.handleSelectOne}
+                                    page={page}
+                                    rowsPerPage={rowsPerPage}
+                                    selected={customersSelection.selected}
+                                    deleteRowHandle={mutation.mutate}
+                                /> : (status === "loading" && users?.length > 0)
+                                    ? <Skeleton variant="rounded"
+                                                animation="wave"
+                                                width={'100%'} height={400}/>
+                                    : (status === "loading" && users?.length <= 0) ?
+                                        <p>Количество пользователей равно 0</p>
+                                        : null
                         }
                     </Stack>
                 </Container>
@@ -177,7 +176,8 @@ const Page = options => {
                              openSnackbar={openSnackbar}
                              setOpenSnackbar={setOpenSnackbar}/>
         </>
-    );
+    )
+        ;
 };
 
 Page.getLayout = (page) => (

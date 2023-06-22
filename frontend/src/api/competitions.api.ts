@@ -33,7 +33,7 @@ export const competitionsApi = createApi({
         getCompetitions: builder.query<any, IGetCompetitions>({
             query: ({take, skip, extended, namePost, directions, token}) => {
                 return {
-                    url: 'v1/competitions/',
+                    url: 'v1/competitions',
                     body: {
                         skip,
                         take,
@@ -79,10 +79,27 @@ export const competitionsApi = createApi({
                 return {
                     url: 'v1/competitions/count',
                     body: {
-                        skip: 0,
-                        take: 0,
-                        // namePost,
-                        // directions: JSON.stringify(directions)
+                        where: (directions?.length) ? {
+                            "namePost": {
+                                contains: namePost
+                            },
+
+                            "OR": (typeof directions === 'string') ? {
+                                "directions": {
+                                    contains: directions
+                                }
+                            } : directions?.map((dir) => {
+                                return {
+                                    "directions": {
+                                        contains: dir
+                                    }
+                                }
+                            })
+                        } : {
+                            "namePost": {
+                                contains: namePost
+                            },
+                        }
                     },
                     method: 'POST',
                     headers: {

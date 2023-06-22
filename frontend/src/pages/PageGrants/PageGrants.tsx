@@ -55,12 +55,11 @@ const PageGrants: FC<PageGrantsProps> = () => {
 
     useEffect(() => {
         setPage(1)
-        console.log(choicedDirection)
     }, [debounceValue, setDebounceValue, choicedDirection, setChoicedDirection])
 
 
     useEffect(() => {
-        setAmountPages(Math.ceil(totalCountPosts?.data / amountPostsPerPage))
+        setAmountPages(Math.ceil(totalCountPosts / amountPostsPerPage))
     }, [totalCountPosts, setAmountPages, amountPostsPerPage])
 
     React.useEffect(() => {

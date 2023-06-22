@@ -1,6 +1,6 @@
 import {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
-import {Box, Container, Stack, Typography} from '@mui/material';
+import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
@@ -9,6 +9,7 @@ import {getCountParsers, getParsers, updateParsers} from "../api/parsersResponse
 import {ParsersTable} from "../sections/parsers/parsers-table";
 import {useUserQuery} from "../hooks/useUserQuery";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
+import {useSnackbar} from "../hooks/use-snackbar";
 
 
 const useCustomers = (data, page, rowsPerPage) => {
@@ -34,11 +35,9 @@ const Page = options => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
-    const [snackbarData, setSnackbarData] = useState({
-        type: '',
-        msg: ''
-    })
+    const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
+    const queryClient = useQueryClient()
+
     const {data: parsers, status, isLoading, isError } =
         useUserQuery('parsers',
             getParsers,
@@ -47,12 +46,11 @@ const Page = options => {
 
     const {data: countParsers} = useQuery(['parsersCount'], getCountParsers );
 
-    const queryClient = useQueryClient();
     const mutationUpdateParsers = useMutation(
         (updateData) => updateParsers(updateData), {
             onSuccess: (res) => {
-                queryClient.invalidateQueries(['parsers']);
-                setIsOpenSnackbar(true)
+                queryClient?.invalidateQueries(['parsers']);
+                setOpenSnackbar(true)
                 setSnackbarData({
                     msg: res.message,
                     type: 'success'
@@ -60,7 +58,7 @@ const Page = options => {
 
             },
             onError: (err) => {
-                setIsOpenSnackbar(false)
+                setOpenSnackbar(false)
                 setSnackbarData({
                     msg: err.message,
                     type: 'error'
@@ -89,14 +87,10 @@ const Page = options => {
         []
     );
 
-    if (isLoading) {
-        return <h1>Загрузка...</h1>
-    }
+
     if (isError) {
         return <h1>Ошибка...</h1>
     }
-
-
 
     return (
         <>
@@ -131,23 +125,11 @@ const Page = options => {
 
                                 </Stack>
                             </Stack>
-                            {/*<div>*/}
-                            {/*    <Button*/}
-                            {/*        onClick={() => setIsOpen(true)}*/}
-                            {/*        startIcon={(*/}
-                            {/*            <SvgIcon fontSize="small">*/}
-                            {/*                <PlusIcon/>*/}
-                            {/*            </SvgIcon>*/}
-                            {/*        )}*/}
-                            {/*        variant="contained"*/}
-                            {/*    >*/}
-                            {/*        Добавить пользователя*/}
-                            {/*    </Button>*/}
-                            {/*</div>*/}
+
                         </Stack>
                         {/*<ParsersSearch/>*/}
                         {
-                            (status === "success" && parsers?.length > 0) &&
+                            (status === "success" && parsers?.length > 0) ?
                             <ParsersTable
                                 count={countParsers || 0}
                                 items={parsers}
@@ -163,14 +145,17 @@ const Page = options => {
                                 updateParsers={mutationUpdateParsers.mutate}
                                 //deleteRowHandle={mutation.mutate}
                             />
+                                : <Skeleton variant="rounded"
+                                            animation="wave"
+                                            width={'100%'} height={800} />
                         }
                     </Stack>
                 </Container>
             </Box>
             <SnackbarMessage type={snackbarData.type}
                              msg={snackbarData.msg}
-                             openSnackbar={isOpenSnackbar}
-                             setOpenSnackbar={setIsOpenSnackbar}/>
+                             openSnackbar={openSnackbar}
+                             setOpenSnackbar={setOpenSnackbar}/>
         </>
     );
 };
@@ -182,3 +167,4 @@ Page.getLayout = (page) => (
 );
 
 export default Page;
+
