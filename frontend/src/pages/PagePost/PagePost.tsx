@@ -13,9 +13,10 @@ import {
 import DropdownTags from "../../components/UI/DropdownTags/DropdownTags";
 import {useMediaQuery} from "react-responsive";
 import {TPostType} from "../../types/serial/parser";
-import {useUniversalDeleteSwitchHook, useUniversalUpdateSwitchHook,} from "../../store/hooks/universalSwitchHooks";
+import {useUniversalDeleteSwitchHook, useUniversalUpdateSwitchHook,} from "../../hooks/universalSwitchHooks";
 import {TTypesUpdateData} from "../../types/types";
 import classNames from "classnames";
+import {initialValuesUpdateData} from "../../helpers/initialValuesUpdateData";
 
 interface ILocationState {
     state: {
@@ -31,22 +32,7 @@ const PagePost = () => {
     const [isEdit, setIsEdit] = useState(false);
 
     const [updateData, setUpdateData] =
-        useState<TTypesUpdateData>({
-        id: data.id,
-        organization: data.organization,
-        directions: JSON.stringify(data.directions),
-        directionForSpent: data.directionForSpent,
-        dateCreationPost: data.dateCreationPost,
-        deadline: data.deadline,
-        summary: data.summary,
-        fullText: data.fullText,
-        requirements: data.requirements,
-        responsibilities: data.responsibilities,
-        conditions: data.conditions,
-        salary: data.salary,
-        linkPDF: data.linkPDF,
-        link: data.link
-    })
+        useState<TTypesUpdateData<TPostType>>(initialValuesUpdateData(postType, data))
 
     const isVisionBtns = useMediaQuery({query: '(min-width: 540px)'})
 
@@ -199,11 +185,12 @@ const PagePost = () => {
                                 >{data.organization}</div>
 
                             }
-                            <DropdownTags direction={data.directions}
-                                          isActiveDropdown={isEdit && isVisionBtns}
-                                          setUpdateData={setUpdateData}
-                                          updateData={updateData}
-                                          isHighlight={true}/>
+                            <DropdownTags
+                                direction={data.directions}
+                                isActiveDropdown={isEdit && isVisionBtns}
+                                setUpdateData={setUpdateData}
+                                updateData={updateData}
+                                isHighlight={true}/>
                         </>
                     }
                     {
@@ -330,7 +317,7 @@ const PagePost = () => {
                                                 </button>
                                                 <button onClick={async () => {
                                                     setIsEdit(false);
-                                                    if(updateData['id'])
+                                                    if (updateData['id'])
                                                         delete updateData['id'];
 
                                                     await updatePost({

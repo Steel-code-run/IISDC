@@ -1,9 +1,9 @@
-import {TPostType} from "../../types/serial/parser";
-import {isPropsCompetition, isPropsGrant} from "../../types/typeGuards";
-import {TTypesOfPosts} from "../../types/types";
-import {useDeletePostGrantMutation, useUpdatePostGrantMutation} from "../../api/grants.api";
-import {useDeletePostCompetitionMutation, useUpdateCompetitionsMutation} from "../../api/competitions.api";
-import {useDeletePostInternshipMutation, useUpdatePostInternshipMutation} from "../../api/internships.api";
+import {TPostType} from "../types/serial/parser";
+import {isPropsCompetition, isPropsGrant} from "../types/typeGuards";
+import {TTypesOfPosts} from "../types/types";
+import {useDeletePostGrantMutation, useUpdatePostGrantMutation} from "../api/grants.api";
+import {useDeletePostCompetitionMutation, useUpdateCompetitionsMutation} from "../api/competitions.api";
+import {useDeletePostInternshipMutation, useUpdatePostInternshipMutation} from "../api/internships.api";
 
 export const useUniversalUpdateSwitchHook = (typePost: TPostType, propsPost: TTypesOfPosts) => {
     if(isPropsGrant(typePost, propsPost)) {

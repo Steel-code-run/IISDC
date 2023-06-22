@@ -1,4 +1,4 @@
-const {DirectionType} = require("@iisdc/types");
+const {DirectionType} = require("../../types");;
 
 
 const url = 'http://www.digitalwind.ru/';

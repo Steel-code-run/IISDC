@@ -9,7 +9,6 @@ import '../../styles/spinner-loader.scss';
 import {useGetCompetitionsQuery, useGetCountСompetitionsQuery,} from "../../api/competitions.api";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import CardPost from "../../components/CardPost/CardPost";
-import {useNavigate} from "react-router-dom";
 import {directionsList} from "../../config/directions";
 
 export interface PageCompetitionsProps {
@@ -21,7 +20,6 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState<string[] | string>([])
-    const navigate = useNavigate();
 
     const token = window.localStorage.getItem('token');
 
@@ -117,7 +115,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                                                 deadline: post.deadline,
                                                 fullText: post.fullText,
                                                 id: post.id,
-                                                directions: JSON.parse(post.directions),
+                                                directions: (post.directions) ? JSON.parse(post.directions) : [],
                                                 namePost: post.namePost,
                                                 organization: post.organization,
                                                 timeOfParse: post.timeOfParse,

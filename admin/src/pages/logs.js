@@ -1,10 +1,8 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import Head from 'next/head';
 import {Box, Container, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
-import {applyPagination} from 'src/utils/apply-pagination';
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {useSnackbar} from "../hooks/use-snackbar";
 import {LogsTable} from "../sections/logs/logs-table";
 import {getLogs} from "../api/logsResponses";
 
@@ -24,18 +22,6 @@ const Page = () => {
     const {data: logs, status, isLoading, isError } =
         useQuery(['logs', page*rowsPerPage, rowsPerPage, orderBy, where],
             () => getLogs(page*rowsPerPage, rowsPerPage, orderBy, where));
-
-    // const mutation = useMutation(
-    //     (delUser) => deleteUser(delUser), {
-    //         onSuccess: (res) => {
-    //             queryClient.invalidateQueries(["users"]);
-    //             setOpenSnackbar(true)
-    //             setSnackbarData({
-    //                 msg: res.message,
-    //                 type: 'success'
-    //             })
-    //         }
-    //     });
 
     const handlePageChange = useCallback(
         (event, value) => {

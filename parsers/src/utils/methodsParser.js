@@ -5,12 +5,12 @@ const getLinksPosts = (jsdom, querySelector, url = '') => {
         .map((link) => url + link.getAttribute('href'))
 };
 const getLinksPDF = (jsdom, querySelector, url) => {
-    return Array.from(
+    return JSON.stringify(Array.from(
         jsdom.window.document.querySelectorAll(querySelector)
     ).map((link) => {
         if(link.getAttribute('href').includes('http')) return link.getAttribute('href');
         return url + link.getAttribute('href');
-    });
+    }));
 };
 const getDataBySelector = (jsdom, querySelector) => {
     const arr_tags = Array.from(jsdom.window.document.querySelectorAll(querySelector))

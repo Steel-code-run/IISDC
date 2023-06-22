@@ -14,8 +14,15 @@ export type TComponentPage<T extends TPostType> = {
 }
 
 export type TTypesOfPosts = TGrant | TCompetition | TInternship | TVacancy;
-export type TTypesUpdateData = Partial<IUpdateDataGrant
-    | IUpdateDataCompetition | IUpdateDataInternship | IUpdateDataVacancy>;
+// export type TTypesUpdateData = Partial<IUpdateDataGrant
+//     | IUpdateDataCompetition | IUpdateDataInternship | IUpdateDataVacancy>;
+export type TTypesUpdateData<T extends TPostType> = T extends TPostType.grant
+    ? IUpdateDataGrant
+    : T extends TPostType.competition
+        ? IUpdateDataCompetition
+        : T extends TPostType.internship
+            ? IUpdateDataInternship
+            : never
 
 export interface IUpdateDataGrant {
     id: number | undefined,

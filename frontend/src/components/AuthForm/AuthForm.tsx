@@ -30,7 +30,6 @@ const AuthForm: FC<AuthFormProps> = () => {
                 name: login,
                 password: password,
             })
-            console.log(answer)
             const token = answer.data.token.replace('Bearer ', '')
             window.localStorage.setItem("token", token)
             if(answer.status === 200) navigate('/grants')

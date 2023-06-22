@@ -1,5 +1,5 @@
 import {callParser} from "../src";
-import {TParserResult} from "@iisdc/types";
+import {TParserResult} from "../src/types";
 import {parserCallParamsFixture} from "./fixtures/parserCallParams";
 import {describe, expect, test} from '@jest/globals';
 

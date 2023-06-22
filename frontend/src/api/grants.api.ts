@@ -1,6 +1,7 @@
 import '@reduxjs/toolkit/query/react';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {TTypesUpdateData} from "../types/types";
+import {TPostType} from "../types/serial/parser";
 
 export interface IGetGrants {
     skip: number,
@@ -15,7 +16,7 @@ type IGetCountGrants = Omit<any, 'skip' | 'take' | 'extended'>;
 
 interface IUpdateInput {
     id: number
-    updateData: Partial<TTypesUpdateData>,
+    updateData: Partial<TTypesUpdateData<TPostType>>,
     token: string | null
 }
 

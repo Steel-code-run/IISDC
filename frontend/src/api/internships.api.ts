@@ -1,6 +1,7 @@
 import '@reduxjs/toolkit/query/react';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {TTypesUpdateData} from "../types/types";
+import {TPostType} from "../types/serial/parser";
 
 export interface IGetInternships {
     limit: number,
@@ -17,7 +18,7 @@ interface IGetCountInternships {
 }
 
 interface IUpdateInput {
-    updateData: TTypesUpdateData,
+    updateData: TTypesUpdateData<TPostType>,
     token: string | null
 }
 

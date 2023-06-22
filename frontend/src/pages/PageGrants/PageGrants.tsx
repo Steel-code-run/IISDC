@@ -107,7 +107,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
                                                 directionForSpent: post.directionForSpent,
                                                 fullText: post.fullText,
                                                 id: post.id,
-                                                directions: JSON.parse(post.directions),
+                                                directions: (post.directions) ? JSON.parse(post.directions) : [],
                                                 namePost: post.namePost,
                                                 organization: post.organization,
                                                 timeOfParse: post.timeOfParse,

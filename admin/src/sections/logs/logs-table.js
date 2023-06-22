@@ -1,24 +1,9 @@
 import PropTypes from 'prop-types';
-import {
-    Box,
-    Card,
-    Checkbox,
-    Stack,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TablePagination,
-    TableRow,
-    TextField,
-    Typography
-} from '@mui/material';
+import {Box, Card, Table, TableBody, TableCell, TableHead, TablePagination, TableRow} from '@mui/material';
 import {Scrollbar} from 'src/components/scrollbar';
-import Link from 'next/link'
-import EditIcon from "@mui/icons-material/Edit";
-import SaveIcon from '@mui/icons-material/Save';
 
 import {useEffect, useState} from "react";
+import {formatDateTime} from "../../config/formatDate";
 
 export const LogsTable = (props) => {
     const {
@@ -28,7 +13,6 @@ export const LogsTable = (props) => {
         onRowsPerPageChange,
         page = 0,
         rowsPerPage = 0,
-        updateParsers
     } = props;
 
     const [fields, setFields] = useState([]);
@@ -36,13 +20,6 @@ export const LogsTable = (props) => {
         setFields(items)
     }, [items])
 
-    const [isEdit, setIsEdit] = useState({
-        isEditStatus: false,
-        id: null
-    });
-
-    const isEditFieldDisabled = (id, isEdit) => (isEdit.isEditStatus && !isEdit.id)
-        ? true : (isEdit.id !== id)
 
     return (
         <Card>
@@ -51,19 +28,7 @@ export const LogsTable = (props) => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                {/*<TableCell padding="checkbox">*/}
-                                {/*    <Checkbox*/}
-                                {/*        checked={selectedAll}*/}
-                                {/*        indeterminate={selectedSome}*/}
-                                {/*        onChange={(event) => {*/}
-                                {/*            if (event.target.checked) {*/}
-                                {/*                onSelectAll?.();*/}
-                                {/*            } else {*/}
-                                {/*                onDeselectAll?.();*/}
-                                {/*            }*/}
-                                {/*        }}*/}
-                                {/*    />*/}
-                                {/*</TableCell>*/}
+
                                 <TableCell>
                                     IP
                                 </TableCell>
@@ -94,7 +59,7 @@ export const LogsTable = (props) => {
                                         </TableCell>
 
                                         <TableCell>
-                                            {log.date}
+                                            {formatDateTime(new Date(log.date))}
                                         </TableCell>
 
                                         <TableCell>
@@ -121,7 +86,7 @@ export const LogsTable = (props) => {
                 onRowsPerPageChange={onRowsPerPageChange}
                 page={page}
                 rowsPerPage={rowsPerPage}
-                rowsPerPageOptions={[2, 3, 5, 10, 25]}
+                rowsPerPageOptions={[2, 3, 5, 10, 18, 25]}
             />
         </Card>
     );
