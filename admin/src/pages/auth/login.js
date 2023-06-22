@@ -14,16 +14,15 @@ const Page = () => {
   const [method, setMethod] = useState('email');
   const formik = useFormik({
     initialValues: {
-      email: 'demo@devias.io',
-      password: 'Password123!',
+      name: '',
+      password: '',
       submit: null
     },
     validationSchema: Yup.object({
-      email: Yup
+      name: Yup
         .string()
-        .email('Email должен быть валиден')
         .max(255)
-        .required('Email обязателен для заполнения'),
+        .required('Имя обязательно для заполнения'),
       password: Yup
         .string()
         .max(255)
@@ -31,8 +30,8 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await auth.signIn(values.email, values.password);
-        router.push('/');
+        await auth.signIn(values.name, values.password);
+        router.push('/customers');
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -112,15 +111,15 @@ const Page = () => {
               >
                 <Stack spacing={3}>
                   <TextField
-                    error={!!(formik.touched.email && formik.errors.email)}
+                    error={!!(formik.touched.name && formik.errors.name)}
                     fullWidth
-                    helperText={formik.touched.email && formik.errors.email}
-                    label="Email"
-                    name="email"
+                    helperText={formik.touched.name && formik.errors.name}
+                    label="Имя"
+                    name="name"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
-                    type="email"
-                    value={formik.values.email}
+                    type="text"
+                    value={formik.values.name}
                   />
                   <TextField
                     error={!!(formik.touched.password && formik.errors.password)}
@@ -163,30 +162,9 @@ const Page = () => {
                 >
                   Skip authentication
                 </Button>
-                {/*<Alert*/}
-                {/*  color="primary"*/}
-                {/*  severity="info"*/}
-                {/*  sx={{ mt: 3 }}*/}
-                {/*>*/}
-                {/*  <div>*/}
-                {/*    You can use <b>demo@devias.io</b> and password <b>Password123!</b>*/}
-                {/*  </div>*/}
-                {/*</Alert>*/}
               </form>
             )}
-            {method === 'phoneNumber' && (
-              <div>
-                <Typography
-                  sx={{ mb: 1 }}
-                  variant="h6"
-                >
-                  Not available in the demo
-                </Typography>
-                <Typography color="text.secondary">
-                  To prevent unnecessary costs we disabled this feature in the demo.
-                </Typography>
-              </div>
-            )}
+
           </div>
         </Box>
       </Box>

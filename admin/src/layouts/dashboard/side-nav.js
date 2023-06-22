@@ -61,7 +61,7 @@ export const SideNav = (props) => {
                 color="inherit"
                 variant="subtitle1"
               >
-                Интеллктуальная система агрегации грантов и конкурсов
+                  Прототип информационно - поисковой системы сбора данных о грантах, конкурсах и стажировках
               </Typography>
               <Typography
                 color="neutral.400"

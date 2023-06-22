@@ -1,11 +1,12 @@
 import axios from "axios";
 import {defaultHeaders, serverUrl} from "../config/apiConfig";
 
-export const login = async (data) => {
+export const login = async (name, password) => {
 
     const res = await axios.post(`${serverUrl}v1/users/login`,
         {
-            ...data
+            name,
+            password
         }, {
         ...defaultHeaders
         })

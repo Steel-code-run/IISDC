@@ -40,6 +40,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
         directions: choicedDirection,
         token: token
     });
+    console.log(totalCountPosts)
 
 
     const {data = [], error, isLoading} = useGetGrantsQuery({
@@ -55,7 +56,6 @@ const PageGrants: FC<PageGrantsProps> = () => {
 
     useEffect(() => {
         setPage(1)
-        console.log(choicedDirection)
     }, [debounceValue, setDebounceValue, choicedDirection, setChoicedDirection])
 
 

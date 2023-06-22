@@ -15,8 +15,7 @@ import {useRouter} from "next/router";
 const now = new Date();
 
 const Page = () => {
-    const router = useRouter();
-    router.push('/customers')
+
         return (
             <>
                 <Head>
