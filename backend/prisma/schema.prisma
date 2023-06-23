@@ -162,6 +162,7 @@ model parsers {
   pagesToParse   Int
   cronTime       String?
   lastSuccessAdd DateTime?
+  lastSuccessParse DateTime?
   internships    internships[]
   vacancies        vacancies[]
 }
