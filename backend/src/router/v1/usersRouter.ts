@@ -263,8 +263,9 @@ usersRouter.post(base_url+'/login', async (req:CustomRequest, res:any) => {
     }
 
     const token = jwt.sign(payload, process.env.JWT_SECRET!, options)
-
-    return res.status(200).json({token: token});
+    let userWithoutPassword:any = {...user};
+    delete userWithoutPassword.password;
+    return res.status(200).json({token: token,user: userWithoutPassword});
 });
 
 export default usersRouter;
