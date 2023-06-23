@@ -47,7 +47,7 @@ const PagePost = () => {
     }, []);
 
     const navigate = useNavigate();
-    const token = window.localStorage.getItem('token')
+    const token = window.sessionStorage.getItem('token')
 
     useEffect(() => {
         if (!isVisionBtns) {
@@ -324,7 +324,7 @@ const PagePost = () => {
                                                     await updatePost({
                                                         id: data.id,
                                                         updateData,
-                                                        token: window.localStorage.getItem('token')
+                                                        token: window.sessionStorage.getItem('token')
                                                     });
                                                 }}
                                                         className={classNames(

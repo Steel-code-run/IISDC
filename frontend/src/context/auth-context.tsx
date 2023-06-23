@@ -5,27 +5,31 @@ enum HANDLERS {
     INITIALIZE = 'INITIALIZE',
     SIGN_IN = 'SIGN_IN',
     SIGN_OUT = 'SIGN_OUT'
-};
+}
 
 export interface User {
-    id: string
+    id: number
     email: string
     password: string
     name: string
+    blocked: boolean
+    roleId: number
+    user_telegram_settingsId: number | null
+    users_telegramsId: number | null
 }
 
 export type StateType = {
     isAuthenticated: boolean,
     isLoading: boolean,
     user: Partial<User> | null,
-    signIn?: (name:string, password:string) => void
+    signIn?: (name: string, password: string) => void
     signOut?: () => void
-    signUp?: (email:string, name:string, password:string) => void
+    signUp?: (email: string, name: string, password: string) => void
 }
 
 type ActionType = {
     type: keyof typeof HANDLERS
-    payload?: StateType
+    payload?: Partial<User>
 }
 
 export type AuthProviderProps = {
@@ -45,9 +49,10 @@ const initialState = {
 };
 
 const handlers = {
-    [HANDLERS.INITIALIZE]: (state:StateType, action: ActionType) => {
+    [HANDLERS.INITIALIZE]: (state: any, action: ActionType) => {
         const user = action.payload;
 
+        console.log(action)
         return {
             ...state,
             ...(
@@ -64,16 +69,18 @@ const handlers = {
             )
         };
     },
-    [HANDLERS.SIGN_IN]: (state: StateType, action: ActionType) => {
+    [HANDLERS.SIGN_IN]: (state: any, action: ActionType) => {
         const user = action.payload;
 
+        console.log(state)
         return {
             ...state,
             isAuthenticated: true,
             user
         };
     },
-    [HANDLERS.SIGN_OUT]: (state: StateType) => {
+    [HANDLERS.SIGN_OUT]: (state: any) => {
+        console.log(state)
         return {
             ...state,
             isAuthenticated: false,
@@ -82,17 +89,17 @@ const handlers = {
     }
 };
 
-const reducer = (state:StateType, action: ActionType) => (
+const reducer = (state: any, action: ActionType) => (
     handlers[action.type] ? handlers[action.type](state, action) : state
 );
 
 // The role of this context is to propagate authentication state through the App tree.
 
 export const AuthContext =
-    createContext<AuthContextType | undefined>(undefined);
+    createContext<StateType | undefined>(undefined);
 
 export const AuthProvider = (props: AuthProviderProps) => {
-    const { children } = props;
+    const {children} = props;
     const [state, dispatch] = useReducer(reducer, initialState);
     const initialized = useRef(false);
 
@@ -113,11 +120,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         }
 
         if (isAuthenticated) {
-            const user = {
-                id: '5e86809283e28b96d2d38537',
-                name: 'default user',
-                email: 'default.user@tururu.io'
-            };
+            const user = state.user
 
             dispatch({
                 type: HANDLERS.INITIALIZE,
@@ -139,24 +142,22 @@ export const AuthProvider = (props: AuthProviderProps) => {
     );
 
     const signIn = async (name: string, password: string) => {
+        let user;
         try {
             const authData = await loginReq(name, password);
             window.sessionStorage.setItem('token', authData.token);
+            user = authData.user;
+
         } catch (err: any) {
             const error = err.response.data.errors
             throw new Error(error[0].msg)
         }
-
-        const user = {
-            id: '5e86809283e28b96d2d38537',
-            name: 'default',
-            email: 'anika.visser@devias.io'
-        };
-
         dispatch({
             type: HANDLERS.SIGN_IN,
             payload: user
         });
+
+
     };
 
     const signUp = async (email: string, name: string, password: string) => {

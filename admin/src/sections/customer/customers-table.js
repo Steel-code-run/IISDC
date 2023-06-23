@@ -55,7 +55,7 @@ export const CustomersTable = (props) => {
                                 {/*    />*/}
                                 {/*</TableCell>*/}
                                 <TableCell>
-                                    Имя
+                                    Логин
                                 </TableCell>
                                 <TableCell>
                                     Email

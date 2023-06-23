@@ -12,10 +12,8 @@ const LogoutBtn: FC<LogoutBtnProps> = ({type}) => {
     const auth = useAuth();
 
     const logout = async () => {
-        console.log('sdf')
         try {
-            //@ts-ignore
-            await auth?.signOut();
+            if(auth?.signOut) await auth?.signOut();
             navigate('/')
         } catch (e) {
             console.log(e)

@@ -1,13 +1,10 @@
-import React, {FC, useContext} from 'react';
+import React, {FC} from 'react';
 import styles from './AuthForm.module.scss';
 import loginIcon from '../../assets/images/inputLoginIcon.svg';
 import passwordIcon from '../../assets/images/inputPasswordIcon.svg';
 import {useForm} from "react-hook-form";
 import {useLocation, useNavigate} from "react-router-dom";
-import axios from "axios";
-import {loginReq} from "../../api/auth";
 import {useAuth} from "../../hooks/authContext";
-import {AuthContext} from "../../context/auth-context";
 
 export interface AuthFormProps {
 }
@@ -32,9 +29,11 @@ const AuthForm: FC<AuthFormProps> = () => {
     const onSubmit = async ({login, password}: IFormReceivedData) => {
 
         try {
-            //@ts-ignore
-            await auth?.signIn(login, password);
-            navigate('/grants')
+
+            if(auth?.signIn) {
+                await auth?.signIn(login, password);
+            }
+            navigate('/grants');
         } catch (err: any) {
             if (err) {
                 setServerErrors(err.message)

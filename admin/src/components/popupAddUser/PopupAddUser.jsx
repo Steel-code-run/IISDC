@@ -47,7 +47,7 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
                     <label>
                         <TextField
                             id="standard-basic"
-                            label="Ф.И.О"
+                            label="Логин"
                             error={!!errors?.name}
                             fullWidth={true}
                             type={'text'}

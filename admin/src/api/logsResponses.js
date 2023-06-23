@@ -11,6 +11,5 @@ export const getLogs = async (skip, take, orderBy, where) => {
     }, {
         ...defaultHeaders
     })
-    console.log(res)
     return res.data
 }

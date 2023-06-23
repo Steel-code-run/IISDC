@@ -7,17 +7,13 @@ import PageHome from "./pages/PageHome/PageHome";
 import PageGrants from "./pages/PageGrants/PageGrants";
 import PageCompetition from "./pages/PageCompetition/PageCompetition";
 import PagePost from "./pages/PagePost/PagePost";
-import {AuthProvider} from "./context/auth-context";
 
 function App() {
 
     return (
         <div className="App" data-testid="App">
             <Routes>
-                <Route path={'/'} element={
-                    <AuthProvider>
-                        <PageAuth/>
-                    </AuthProvider>}/>
+                <Route path={'/'} element={<PageAuth/>}/>
                 <Route path={'/home'} element={<PageHome/>}/>
                 <Route path={'/grants'} element={<PageGrants/>}/>
                 <Route path={'/competitions'} element={<PageCompetition/>}/>

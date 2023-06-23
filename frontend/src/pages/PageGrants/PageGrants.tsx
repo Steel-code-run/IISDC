@@ -23,7 +23,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState<string[] | string>([])
     const navigate = useNavigate();
-    const token = window.localStorage.getItem('token');
+    const token = window.sessionStorage.getItem('token');
 
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
