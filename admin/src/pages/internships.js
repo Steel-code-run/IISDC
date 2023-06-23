@@ -6,7 +6,7 @@ import {applyPagination} from 'src/utils/apply-pagination';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 import {PostsTable} from "../sections/posts/posts-table";
-import {deleteInternship, getCountInternships, getInternships, updateInternship} from "../api/posts/InternshipsReq";
+import {deleteInternship, getCountInternships, getInternships, updateInternship} from "../api/posts/internshipsReq";
 import {useSnackbar} from "../hooks/use-snackbar";
 
 const useCustomers = (data, page, rowsPerPage) => {
