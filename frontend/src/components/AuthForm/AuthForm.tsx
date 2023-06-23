@@ -1,10 +1,13 @@
-import React, {FC} from 'react';
+import React, {FC, useContext} from 'react';
 import styles from './AuthForm.module.scss';
 import loginIcon from '../../assets/images/inputLoginIcon.svg';
 import passwordIcon from '../../assets/images/inputPasswordIcon.svg';
 import {useForm} from "react-hook-form";
 import {useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
+import {loginReq} from "../../api/auth";
+import {useAuth} from "../../hooks/authContext";
+import {AuthContext} from "../../context/auth-context";
 
 export interface AuthFormProps {
 }
@@ -22,17 +25,18 @@ const AuthForm: FC<AuthFormProps> = () => {
 
     const navigate = useNavigate()
     const {state} = useLocation();
+    const auth = useAuth();
 
     const onSubmit = async ({login, password}: IFormReceivedData) => {
 
         try {
-            const answer = await axios.post(process.env.REACT_APP_SERVER_URL+'v1/users/login', {
-                name: login,
-                password: password,
-            })
-            const token = answer.data.token.replace('Bearer ', '')
-            window.localStorage.setItem("token", token)
-            if(answer.status === 200) navigate('/grants')
+            // const answer = await loginReq(login, password)
+            // const token = answer.token.replace('Bearer ', '')
+            // window.localStorage.setItem("token", token)
+            // if(answer.status === 200) navigate('/grants')
+            await auth?.signIn(login, password);
+            navigate('/grants')
+
 
         } catch (err: any) {
             if(err) {

@@ -17,6 +17,7 @@ import {useUniversalDeleteSwitchHook, useUniversalUpdateSwitchHook,} from "../..
 import {TTypesUpdateData} from "../../types/types";
 import classNames from "classnames";
 import {initialValuesUpdateData} from "../../helpers/initialValuesUpdateData";
+import {WithAuthGuard} from "../../hoc/with-auth-guard";
 
 interface ILocationState {
     state: {
@@ -351,4 +352,4 @@ const PagePost = () => {
     )
 };
 
-export default PagePost;
+export default WithAuthGuard(PagePost);

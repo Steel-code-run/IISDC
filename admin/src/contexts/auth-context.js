@@ -1,6 +1,5 @@
 import {createContext, useContext, useEffect, useReducer, useRef} from 'react';
 import PropTypes from 'prop-types';
-import {useQuery} from "@tanstack/react-query";
 import {login} from "../api/authRequests";
 
 const HANDLERS = {

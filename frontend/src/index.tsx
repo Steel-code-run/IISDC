@@ -5,6 +5,7 @@ import App from './App';
 import {Provider} from "react-redux";
 import {store} from "./store/store";
 import {HashRouter} from "react-router-dom";
+import {AuthConsumer, AuthProvider} from "./context/auth-context";
 
 
 const root = ReactDOM.createRoot(
@@ -13,7 +14,15 @@ const root = ReactDOM.createRoot(
 root.render(
     <Provider store={store}>
         <HashRouter>
-            <App/>
+            <AuthProvider>
+                <AuthConsumer>
+                    {
+                        (auth: any) =>
+                            (auth?.isLoading) ? null :
+                            <App/>
+                    }
+                </AuthConsumer>
+            </AuthProvider>
         </HashRouter>
     </Provider>
 );

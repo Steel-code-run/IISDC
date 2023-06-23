@@ -11,6 +11,7 @@ import {useNavigate} from "react-router-dom";
 import {Dna} from "react-loader-spinner";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import {directionsList} from "../../config/directions";
+import {WithAuthGuard} from "../../hoc/with-auth-guard";
 
 export interface PageGrantsProps {
 }
@@ -139,4 +140,4 @@ const PageGrants: FC<PageGrantsProps> = () => {
     )
 };
 
-export default PageGrants
+export default WithAuthGuard(PageGrants)

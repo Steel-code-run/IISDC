@@ -10,6 +10,7 @@ import '../../styles/spinner-loader.scss';
 import {useNavigate} from "react-router-dom";
 import {Dna} from "react-loader-spinner";
 import {useGetDirectionsQuery} from "../../api/auxiliaryRequests.api";
+import {WithAuthGuard} from "../../hoc/with-auth-guard";
 
 export interface PageInternshipsProps {
 }
@@ -133,4 +134,4 @@ const PageInternships: FC<PageInternshipsProps> = () => {
     )
 };
 
-export default PageInternships
+export default WithAuthGuard(PageInternships)

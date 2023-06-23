@@ -11,12 +11,6 @@ import PageCompetition from "./pages/PageCompetition/PageCompetition";
 import PagePost from "./pages/PagePost/PagePost";
 
 function App() {
-    const navigate = useNavigate()
-    React.useEffect(() => {
-        (window.localStorage.getItem('token'))
-            ? navigate('/grants')
-            : navigate('/')
-    }, [])
 
     return (
         <div className="App" data-testid="App">

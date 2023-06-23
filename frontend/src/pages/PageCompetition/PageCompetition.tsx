@@ -10,6 +10,7 @@ import {useGetCompetitionsQuery, useGetCountСompetitionsQuery,} from "../../api
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import CardPost from "../../components/CardPost/CardPost";
 import {directionsList} from "../../config/directions";
+import {WithAuthGuard} from "../../hoc/with-auth-guard";
 
 export interface PageCompetitionsProps {
 }
@@ -147,4 +148,4 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     )
 };
 
-export default PageCompetitions
+export default WithAuthGuard(PageCompetitions)
