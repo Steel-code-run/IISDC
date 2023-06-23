@@ -4,13 +4,12 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {getParsingSettings, updateParsingSettings} from "../../api/parsersResponse";
 import moment from "moment";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
+import {useSnackbar} from "../../hooks/use-snackbar";
 
 function SettingsParsers(props) {
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [msgObject, setMsgObject] = useState({
-        type: '',
-        msg: ''
-    })
+
+
+    const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
     const FORMAT_TIME = 'HH:mm'
     const queryClient = useQueryClient();
@@ -22,7 +21,7 @@ function SettingsParsers(props) {
             onSuccess: () => {
                 queryClient.invalidateQueries(["parsingSettings"])
                 setOpenSnackbar(true);
-                setMsgObject({
+                setSnackbarData({
                     msg: 'Дата успешно установлена',
                     type: 'success'
                 });
@@ -116,8 +115,8 @@ function SettingsParsers(props) {
                     </CardActions>
                 </Card>
             </form>
-            <SnackbarMessage type={msgObject.type}
-                             msg={msgObject.msg}
+            <SnackbarMessage type={snackbarData.type}
+                             msg={snackbarData.msg}
                              openSnackbar={openSnackbar}
                              setOpenSnackbar={setOpenSnackbar}/>
         </>

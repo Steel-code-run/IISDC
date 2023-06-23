@@ -1,5 +1,7 @@
 import {createContext, useContext, useEffect, useReducer, useRef} from 'react';
 import PropTypes from 'prop-types';
+import {useQuery} from "@tanstack/react-query";
+import {login} from "../api/authRequests";
 
 const HANDLERS = {
   INITIALIZE: 'INITIALIZE',
@@ -75,7 +77,7 @@ export const AuthProvider = (props) => {
     let isAuthenticated = false;
 
     try {
-      isAuthenticated = window.sessionStorage.getItem('authenticated') === 'true';
+      isAuthenticated = !!window.sessionStorage.getItem('token');
     } catch (err) {
       console.error(err);
     }
@@ -83,9 +85,9 @@ export const AuthProvider = (props) => {
     if (isAuthenticated) {
       const user = {
         id: '5e86809283e28b96d2d38537',
-        avatar: '/assets/avatars/avatar-anika-visser.png',
-        name: 'Anika Visser',
-        email: 'anika.visser@devias.io'
+        avatar: '/assets/avatars/defaultUserLogo',
+        name: 'default user',
+        email: 'default.user@tururu.io'
       };
 
       dispatch({
@@ -117,7 +119,7 @@ export const AuthProvider = (props) => {
     const user = {
       id: '5e86809283e28b96d2d38537',
       avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
+      name: 'default',
       email: 'anika.visser@devias.io'
     };
 
@@ -127,21 +129,20 @@ export const AuthProvider = (props) => {
     });
   };
 
-  const signIn = async (email, password) => {
-    if (email !== 'demo@devias.io' || password !== 'Password123!') {
-      throw new Error('Please check your email and password');
-    }
+  const signIn = async (name, password) => {
 
     try {
-      window.sessionStorage.setItem('authenticated', 'true');
+      const authData = await login(name, password);
+      window.sessionStorage.setItem('token', authData.token);
     } catch (err) {
-      console.error(err);
+      const error = err.response.data.errors
+      throw new Error(error[0].msg)
     }
 
     const user = {
       id: '5e86809283e28b96d2d38537',
       avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
+      name: 'default',
       email: 'anika.visser@devias.io'
     };
 
@@ -156,6 +157,7 @@ export const AuthProvider = (props) => {
   };
 
   const signOut = () => {
+    window.sessionStorage.removeItem('token');
     dispatch({
       type: HANDLERS.SIGN_OUT
     });

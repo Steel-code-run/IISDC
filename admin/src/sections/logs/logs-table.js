@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import {
     Box,
     Card,
+    Checkbox,
     Stack,
     Table,
     TableBody,
@@ -9,30 +10,39 @@ import {
     TableHead,
     TablePagination,
     TableRow,
+    TextField,
     Typography
 } from '@mui/material';
 import {Scrollbar} from 'src/components/scrollbar';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Link from 'next/link'
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from '@mui/icons-material/Save';
 
-export const CustomersTable = (props) => {
+import {useEffect, useState} from "react";
+
+export const LogsTable = (props) => {
     const {
         count = 0,
         items = [],
-        onDeselectAll,
-        onDeselectOne,
         onPageChange,
         onRowsPerPageChange,
-        onSelectAll,
-        onSelectOne,
         page = 0,
         rowsPerPage = 0,
-        selected = [],
-        deleteRowHandle
+        updateParsers
     } = props;
 
-    const selectedSome = (selected.length > 0) && (selected.length < items.length);
-    const selectedAll = (items.length > 0) && (selected.length === items.length);
+    const [fields, setFields] = useState([]);
+    useEffect(() => {
+        setFields(items)
+    }, [items])
+
+    const [isEdit, setIsEdit] = useState({
+        isEditStatus: false,
+        id: null
+    });
+
+    const isEditFieldDisabled = (id, isEdit) => (isEdit.isEditStatus && !isEdit.id)
+        ? true : (isEdit.id !== id)
 
     return (
         <Card>
@@ -55,69 +65,45 @@ export const CustomersTable = (props) => {
                                 {/*    />*/}
                                 {/*</TableCell>*/}
                                 <TableCell>
-                                    Имя
+                                    IP
                                 </TableCell>
                                 <TableCell>
-                                    Email
+                                    Дата
                                 </TableCell>
                                 <TableCell>
-                                    Роль
+                                    Метод
                                 </TableCell>
-                                <TableCell align={'center'}>
-                                    Удалить
+                                <TableCell>
+                                    Путь
                                 </TableCell>
+
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {items.length > 0 && items?.map((customer) => {
-
-                                const isSelected = selected.includes(customer.id);
+                            {fields.length > 0 && fields?.map((log) => {
 
                                 return (
                                     <TableRow
                                         hover
-                                        key={customer.id}
+                                        key={log.id}
+                                        //selected={isSelected}
                                     >
 
-                                        {/*<TableCell padding="checkbox">*/}
-                                        {/*    <Checkbox*/}
-                                        {/*        checked={isSelected}*/}
-                                        {/*        onChange={(event) => {*/}
-                                        {/*            if (event.target.checked) {*/}
-                                        {/*                onSelectOne?.(customer.id);*/}
-                                        {/*            } else {*/}
-                                        {/*                onDeselectOne?.(customer.id);*/}
-                                        {/*            }*/}
-                                        {/*        }}*/}
-                                        {/*    />*/}
-                                        {/*</TableCell>*/}
-
                                         <TableCell>
-                                            <Stack
-                                                alignItems="center"
-                                                direction="row"
-                                                spacing={2}
-                                            >
-                                                <Link style={{textDecoration: "none", color: "black"}}
-                                                      href={`/user/${customer.id}`}>
-                                                    <Typography variant="subtitle2">
-                                                        {customer.name}
-                                                    </Typography>
-                                                </Link>
-                                            </Stack>
+                                            {log.ip}
                                         </TableCell>
 
                                         <TableCell>
-                                            {customer.email}
+                                            {log.date}
                                         </TableCell>
 
                                         <TableCell>
-                                            {customer.role.name}
+                                            {log.method}
                                         </TableCell>
 
-                                        <TableCell align={'center'}>
-                                            <DeleteIcon onClick={() => deleteRowHandle({id: customer.id})}
-                                                        style={{cursor: ' pointer'}}/>
+                                        <TableCell>
+                                            {log.path}
+
                                         </TableCell>
 
                                     </TableRow>
@@ -141,7 +127,7 @@ export const CustomersTable = (props) => {
     );
 };
 
-CustomersTable.propTypes = {
+LogsTable.propTypes = {
     count: PropTypes.number,
     items: PropTypes.array,
     onDeselectAll: PropTypes.func,

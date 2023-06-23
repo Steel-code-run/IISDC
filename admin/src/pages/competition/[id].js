@@ -6,7 +6,8 @@ import styles from './competitionPage.module.scss'
 import EditIcon from '@mui/icons-material/Edit';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
-import {getCompetitions, updateCompetiotion} from "../../api/posts/competitionsResponses";
+import {getCompetitions, updateCompetition} from "../../api/posts/competitionsResponses";
+import {useSnackbar} from "../../hooks/use-snackbar";
 
 const Page = () => {
     const router = useRouter();
@@ -19,12 +20,7 @@ const Page = () => {
     const {data, isError, isLoading} = useQuery(['competition', 0, 0, configResponseGrant, whereGrant],
         () => getCompetitions(0, 0, configResponseGrant, whereGrant));
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarData, setSnackbarData] = useState({
-        type: 'success',
-        msg: 'Пользователь удален'
-    });
-
+    const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
     const queryClient = useQueryClient();
 
@@ -36,7 +32,7 @@ const Page = () => {
         setCompetitionData(data?.[0])
     }, [data])
 
-    const mutation = useMutation((data) => updateCompetiotion(data),
+    const mutation = useMutation((data) => updateCompetition(data),
         {
             onSuccess: (res) => {
                 queryClient.invalidateQueries(["competition"]);

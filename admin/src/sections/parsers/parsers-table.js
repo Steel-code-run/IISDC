@@ -19,6 +19,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from '@mui/icons-material/Save';
 
 import {useEffect, useState} from "react";
+import {formatDateTime} from "../../config/formatDate";
 
 export const ParsersTable = (props) => {
     const {
@@ -88,6 +89,9 @@ export const ParsersTable = (props) => {
                                 <TableCell>
                                     Cron time
                                 </TableCell>
+                                <TableCell>
+                                    Дата последнего успешного добавления
+                                </TableCell>
 
                                 <TableCell>
 
@@ -136,7 +140,7 @@ export const ParsersTable = (props) => {
 
                                         <TableCell>
                                             <TextField disabled={isEditFieldDisabled(parser.id, isEdit)}
-                                                       value={parser?.description}
+                                                       value={parser?.description || ''}
                                                        onChange={(e) => {
                                                            setFields(prevState => prevState.map((parser) => {
                                                                if (!isEditFieldDisabled(parser.id, isEdit)) {
@@ -153,7 +157,7 @@ export const ParsersTable = (props) => {
                                         <TableCell>
                                             <Checkbox
                                                 disabled={isEditFieldDisabled(parser.id, isEdit)}
-                                                checked={parser.isEnabled}
+                                                checked={parser?.isEnabled}
                                                 onChange={(e) => {
                                                     // if (event.target.checked) {
                                                     //     onSelectOne?.(parser.id);
@@ -182,7 +186,7 @@ export const ParsersTable = (props) => {
 
                                         <TableCell>
                                             <TextField disabled={isEditFieldDisabled(parser.id, isEdit)}
-                                                       value={parser?.pagesToParse}
+                                                       value={parser?.pagesToParse || ''}
                                                        onChange={(e) => {
                                                            setFields(prevState => prevState.map((parser) => {
                                                                if (!isEditFieldDisabled(parser.id, isEdit)) {
@@ -199,7 +203,7 @@ export const ParsersTable = (props) => {
 
                                         <TableCell>
                                             <TextField disabled={isEditFieldDisabled(parser.id, isEdit)}
-                                                       value={parser?.cronTime}
+                                                       value={parser?.cronTime || ''}
                                                        onChange={(e) => {
                                                            setFields(prevState => prevState.map((parser) => {
                                                                if (!isEditFieldDisabled(parser.id, isEdit)) {
@@ -212,6 +216,11 @@ export const ParsersTable = (props) => {
 
                                                        }}/>
 
+                                        </TableCell>
+                                        <TableCell>
+                                            {(parser.lastSuccessAdd)
+                                                ? formatDateTime(new Date(parser.lastSuccessAdd))
+                                                : ''}
                                         </TableCell>
 
                                         <TableCell>

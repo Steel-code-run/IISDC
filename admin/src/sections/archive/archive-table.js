@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react'
 import {
     Box,
     Card,
@@ -15,9 +14,9 @@ import {
 import {Scrollbar} from 'src/components/scrollbar';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Link from 'next/link'
-import ArchiveIcon from "@mui/icons-material/Archive";
+import UnarchiveIcon from '@mui/icons-material/Unarchive';
 
-export const PostsTable = (props) => {
+export const ArchiveTable = (props) => {
     const {
         type,
         count = 0,
@@ -27,8 +26,9 @@ export const PostsTable = (props) => {
         page = 0,
         rowsPerPage = 0,
         deleteRowHandle,
-        archiveHandle
+        unarchiveHandle
     } = props;
+
 
     return (
         <Card>
@@ -60,9 +60,9 @@ export const PostsTable = (props) => {
                                     Ссылка
                                 </TableCell>
                                 <TableCell align={'center'}>
-                                    Убрать в архив
+                                    Убрать из архив
                                 </TableCell>
-                                <TableCell>
+                                <TableCell align={'center'}>
                                     Удалить
                                 </TableCell>
                             </TableRow>
@@ -70,9 +70,10 @@ export const PostsTable = (props) => {
                         <TableBody>
                             {items.length > 0 && items?.map((post) => {
 
+
                                 return (
                                     <TableRow
-                                        //hover
+                                        hover
                                         key={post.id}
                                     >
 
@@ -112,17 +113,15 @@ export const PostsTable = (props) => {
                                             {post.link}
                                         </TableCell>
                                         <TableCell align={'center'}>
-                                            <ArchiveIcon
-                                                onClick={() => archiveHandle(
-                                                    {
-                                                        id: post.id,
-                                                        data: {
-                                                            blackListed: true
-                                                        }
-                                                    }
-                                                )} style={{cursor: ' pointer'}}/>
+                                            <UnarchiveIcon onClick={() => unarchiveHandle(
+                                                {
+                                                id: post.id,
+                                                data: {
+                                                    blackListed: false
+                                                }
+                                            }
+                                            )} style={{cursor: ' pointer'}}/>
                                         </TableCell>
-
 
                                         <TableCell align={'center'}>
                                             <DeleteIcon onClick={() => deleteRowHandle(post.id)}
@@ -150,7 +149,7 @@ export const PostsTable = (props) => {
     );
 };
 
-PostsTable.propTypes = {
+ArchiveTable.propTypes = {
     count: PropTypes.number,
     items: PropTypes.array,
     onDeselectAll: PropTypes.func,

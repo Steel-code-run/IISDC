@@ -2,23 +2,19 @@ import React, {useEffect, useState} from 'react';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {useRouter} from "next/router";
 import {useUserQuery} from "../../hooks/useUserQuery";
-import {Alert, Box, Button, Container, Snackbar, Stack, SvgIcon, TextField, Typography} from "@mui/material";
+import {Box, Button, Container, Stack, SvgIcon, TextField, Typography} from "@mui/material";
 import styles from './userPage.module.scss'
 import EditIcon from '@mui/icons-material/Edit';
 import {responseUser, updateUser} from "../../api/userResponses";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
+import {useSnackbar} from "../../hooks/use-snackbar";
 
 const Page = () => {
     const router = useRouter();
     const {data, isError, isLoading} = useUserQuery('user', responseUser, 0, 0, router.query.id);
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarData, setSnackbarData] = useState({
-        type: 'success',
-        msg: 'Пользователь удален'
-    });
-
+    const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
     const queryClient = useQueryClient();
 
