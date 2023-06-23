@@ -1,6 +1,7 @@
 import {createContext, useContext, useEffect, useReducer, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {login} from "../api/authRequests";
+import {responseUser} from "../api/userReq";
 
 const HANDLERS = {
     INITIALIZE: 'INITIALIZE',
@@ -77,14 +78,17 @@ export const AuthProvider = (props) => {
 
         try {
             isAuthenticated = !!window.sessionStorage.getItem('token');
-            console.log(isAuthenticated)
         } catch (err) {
             console.error(err);
         }
 
         if (isAuthenticated) {
+            const id_user = window.sessionStorage.getItem('id')
+            let user = state.user;
 
-            const user = state.user;
+            if(!user && id_user) {
+                 user = (await responseUser(0, 0, id_user))[0];
+            }
 
             dispatch({
                 type: HANDLERS.INITIALIZE,
@@ -109,8 +113,9 @@ export const AuthProvider = (props) => {
 
         try {
             const authData = await login(name, password);
-            window.sessionStorage.setItem('token', authData.token);
             const user = authData.user;
+            window.sessionStorage.setItem('token', authData.token);
+            window.sessionStorage.setItem('id', user.id)
 
             dispatch({
                 type: HANDLERS.SIGN_IN,
@@ -129,6 +134,7 @@ export const AuthProvider = (props) => {
 
     const signOut = () => {
         window.sessionStorage.removeItem('token');
+        window.sessionStorage.removeItem('id')
         dispatch({
             type: HANDLERS.SIGN_OUT
         });
