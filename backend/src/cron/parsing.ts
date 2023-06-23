@@ -278,7 +278,7 @@ const parsePage = async (
                     if (grant.link)
                         data.link = grant.link
                     if (grant.linkPDF)
-                        data.linkPDF = grant.linkPDF
+                        data.linkPDF = JSON.stringify(grant.linkPDF)
                     if (grant.sourceLink)
                         data.sourceLink = grant.sourceLink
                     if (grant.directionForSpent)
@@ -338,7 +338,7 @@ const parsePage = async (
                     if (competition.link)
                         data.link = competition.link
                     if (competition.linkPDF)
-                        data.linkPDF = competition.linkPDF
+                        data.linkPDF = JSON.stringify(competition.linkPDF)
                     if (competition.sourceLink)
                         data.sourceLink = competition.sourceLink
                     if (competition.directionForSpent)
@@ -387,7 +387,7 @@ const parsePage = async (
                     if (vacancy.link)
                         data.link = vacancy.link
                     if (vacancy.linkPDF)
-                        data.linkPDF = vacancy.linkPDF
+                        data.linkPDF = JSON.stringify(vacancy.linkPDF)
                     if (vacancy.sourceLink)
                         data.sourceLink = vacancy.sourceLink
                     if (vacancy.organization)
@@ -430,7 +430,7 @@ const parsePage = async (
                     if (internship.link)
                         data.link = internship.link
                     if (internship.linkPDF)
-                        data.linkPDF = internship.linkPDF
+                        data.linkPDF = JSON.stringify(internship.linkPDF)
                     if (internship.sourceLink)
                         data.sourceLink = internship.sourceLink
                     if (internship.organization)
@@ -438,10 +438,7 @@ const parsePage = async (
                     if (internship.dateCreationPost)
                         data.dateCreationPost = internship.dateCreationPost
 
-
-
                 }
-
           }
         }).catch(e => {
         console.log(e)
