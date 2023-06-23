@@ -1,4 +1,4 @@
-import {TParserCallParams, TParserType} from "@iisdc/types";
+import {TParserCallParams, TParserType} from "../../src/types";
 
 export function parserCallParamsFixture(fileUrl = ""):TParserCallParams {
     let def: TParserCallParams = {

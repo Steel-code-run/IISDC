@@ -4,6 +4,7 @@ import Header from "../../components/Header/Header";
 import {ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip,} from 'chart.js';
 import {Pie,} from 'react-chartjs-2';
 import {useGetBeautifulStatsQuery} from "../../api/auxiliaryRequests.api";
+import {WithAuthGuard} from "../../hoc/with-auth-guard";
 
 
 export interface PageHomeProps {
@@ -12,7 +13,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 
 const PageHome: FC<PageHomeProps> = () => {
-    const {data: stats} = useGetBeautifulStatsQuery({token: window.localStorage.getItem('token')});
+    const {data: stats} = useGetBeautifulStatsQuery({token: window.sessionStorage.getItem('token')});
     const arrayStats = []
 
     for (let stat in stats?.data) {
@@ -64,4 +65,4 @@ const PageHome: FC<PageHomeProps> = () => {
     )
 };
 
-export default PageHome;
+export default WithAuthGuard(PageHome);

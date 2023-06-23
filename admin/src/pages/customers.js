@@ -9,7 +9,7 @@ import {createPortal} from "react-dom";
 import PopupAddUser from "../components/popupAddUser/PopupAddUser";
 import Overlay from "../hocs/Overlay/Overlay";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {deleteUser, getCountUser, responseUser} from "../api/userResponses";
+import {deleteUser, getCountUser, responseUser} from "../api/userReq";
 import {useSelection} from "../hooks/use-selection";
 import {useUserQuery} from "../hooks/useUserQuery";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";

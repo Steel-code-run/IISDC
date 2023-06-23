@@ -4,7 +4,7 @@ import loginIcon from '../../assets/images/inputLoginIcon.svg';
 import passwordIcon from '../../assets/images/inputPasswordIcon.svg';
 import {useForm} from "react-hook-form";
 import {useLocation, useNavigate} from "react-router-dom";
-import axios from "axios";
+import {useAuth} from "../../hooks/authContext";
 
 export interface AuthFormProps {
 }
@@ -16,27 +16,26 @@ export interface IFormReceivedData {
 
 const AuthForm: FC<AuthFormProps> = () => {
     const [serverErrors, setServerErrors] = React.useState('')
-    const {register, formState:{
-        errors
-    }, handleSubmit} = useForm<IFormReceivedData>()
+    const {
+        register, formState: {
+            errors
+        }, handleSubmit
+    } = useForm<IFormReceivedData>()
 
     const navigate = useNavigate()
     const {state} = useLocation();
+    const auth = useAuth();
 
     const onSubmit = async ({login, password}: IFormReceivedData) => {
 
         try {
-            const answer = await axios.post(process.env.REACT_APP_SERVER_URL+'v1/users/login', {
-                name: login,
-                password: password,
-            })
-            console.log(answer)
-            const token = answer.data.token.replace('Bearer ', '')
-            window.localStorage.setItem("token", token)
-            if(answer.status === 200) navigate('/grants')
 
+            if(auth?.signIn) {
+                await auth?.signIn(login, password);
+            }
+            navigate('/grants');
         } catch (err: any) {
-            if(err) {
+            if (err) {
                 setServerErrors(err.message)
             }
         }
@@ -53,7 +52,7 @@ const AuthForm: FC<AuthFormProps> = () => {
                         required: true,
 
                     })}
-                       className={styles.authForm__input__inputLogin} type="text" placeholder={'Логин/Телефон'}/>
+                           className={styles.authForm__input__inputLogin} type="text" placeholder={'Логин/Телефон'}/>
                 </div>
                 <div className={styles.authForm__input}>
                     <img className={styles.authForm__input__inputIcon} src={passwordIcon} alt=""/>
@@ -61,7 +60,7 @@ const AuthForm: FC<AuthFormProps> = () => {
                         required: true,
 
                     })}
-                       className={styles.authForm__input__inputPassword} type="password" placeholder={'Пароль'}/>
+                           className={styles.authForm__input__inputPassword} type="password" placeholder={'Пароль'}/>
                 </div>
             </div>
             {
@@ -71,8 +70,9 @@ const AuthForm: FC<AuthFormProps> = () => {
             }
             {
                 (state?.error?.status === 401) ? <p className={styles.authForm__unvalidMessage}>Вы не авторизованы</p>
-                    : (state?.error?.originalStatus === 404) ? <p className={styles.authForm__unvalidMessage}>Страница не найдена</p>
-                    : null
+                    : (state?.error?.originalStatus === 404) ?
+                        <p className={styles.authForm__unvalidMessage}>Страница не найдена</p>
+                        : null
             }
 
             <button type={'submit'} className={styles.authForm__btnSubmit}>Продолжить</button>

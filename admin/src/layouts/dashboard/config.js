@@ -5,6 +5,7 @@ import {PestControl} from "@mui/icons-material";
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import ArchiveIcon from '@mui/icons-material/Archive';
+import AltRouteIcon from '@mui/icons-material/AltRoute';
 
 export const items = [
   // {
@@ -68,6 +69,16 @@ export const items = [
     childrenNav: []
   },
   {
+    title: 'Стажировки',
+    path: '/internships',
+    icon: (
+        <SvgIcon fontSize="small">
+          <PostAddIcon />
+        </SvgIcon>
+    ),
+    childrenNav: []
+  },
+  {
     title: 'Архив',
     path: '/archive',
     icon: (
@@ -121,6 +132,16 @@ export const items = [
     icon: (
         <SvgIcon fontSize="small">
           <SyncAltIcon />
+        </SvgIcon>
+    ),
+    childrenNav: []
+  },
+  {
+    title: 'Роуты',
+    path: '/routes',
+    icon: (
+        <SvgIcon fontSize="small">
+          <AltRouteIcon />
         </SvgIcon>
     ),
     childrenNav: []

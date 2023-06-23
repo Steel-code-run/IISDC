@@ -1,27 +1,19 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './DropdownTags.module.scss';
 import Tag from "../Tag/Tag";
-import {
-    IUpdateDataCompetition,
-    IUpdateDataGrant,
-    IUpdateDataInternship,
-    IUpdateDataVacancy, TTypesUpdateData
-} from "../../../types/types";
+import {IUpdateDataCompetition, IUpdateDataGrant, TTypesUpdateData} from "../../../types/types";
 import classNames from "classnames";
 import {directionsList} from "../../../config/directions";
+import {TPostType} from "../../../types/serial/parser";
 
 export interface IDropdownTagsProps {
     direction: string,
     isActiveDropdown: boolean,
     isHighlight: boolean,
-    setUpdateData: React.Dispatch<React.SetStateAction<TTypesUpdateData>>,
+    setUpdateData: React.Dispatch<React.SetStateAction<TTypesUpdateData<TPostType>>>,
     updateData: IUpdateDataGrant | IUpdateDataCompetition
 }
 
-interface IDirectionsResponse {
-    id: number,
-    directionName: string
-}
 
 const DropdownTags: FC<IDropdownTagsProps> = ({
                                                   direction,
@@ -73,7 +65,6 @@ const DropdownTags: FC<IDropdownTagsProps> = ({
         }
 
     }
-    const token = window.localStorage.getItem('token')
    // const {data: dataDirections} = useGetDirectionsQuery({token});
     const dataDirections = directionsList;
 

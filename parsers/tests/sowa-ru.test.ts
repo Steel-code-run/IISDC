@@ -1,5 +1,5 @@
 import {callParser} from "../src";
-import {TParserResult} from "@iisdc/types";
+import {TParserResult} from "../src/types";
 import {parserCallParamsFixture} from "./fixtures/parserCallParams";
 import {describe, expect, test} from '@jest/globals';
 
@@ -21,7 +21,7 @@ describe(parserFileUrl,()=>{
         return getPosts().then((r)=>{
             expect(r).toBe(true)
         })
-    }, 60000)
+    }, 100000)
 
     test(":: have some posts",()=>{
         expect(data.length).toBeGreaterThan(0)

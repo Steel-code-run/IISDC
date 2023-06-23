@@ -14,8 +14,15 @@ export type TComponentPage<T extends TPostType> = {
 }
 
 export type TTypesOfPosts = TGrant | TCompetition | TInternship | TVacancy;
-export type TTypesUpdateData = Partial<IUpdateDataGrant
-    | IUpdateDataCompetition | IUpdateDataInternship | IUpdateDataVacancy>;
+// export type TTypesUpdateData = Partial<IUpdateDataGrant
+//     | IUpdateDataCompetition | IUpdateDataInternship | IUpdateDataVacancy>;
+export type TTypesUpdateData<T extends TPostType> = T extends TPostType.grant
+    ? IUpdateDataGrant
+    : T extends TPostType.competition
+        ? IUpdateDataCompetition
+        : T extends TPostType.internship
+            ? IUpdateDataInternship
+            : never
 
 export interface IUpdateDataGrant {
     id: number | undefined,
@@ -26,8 +33,9 @@ export interface IUpdateDataGrant {
     deadline: string | null,
     summary: string | null,
     fullText: string | null,
-    link: string | null,
+    link: string | null
     linkPDF: string | null
+    blackListed?: true | false;
 }
 
 export interface IUpdateDataCompetition {
@@ -39,7 +47,7 @@ export interface IUpdateDataCompetition {
     fullText: string | null,
     link: string | null,
     linkPDF: string | null
-
+    blackListed?: true | false;
 }
 
 export interface IUpdateDataInternship {
@@ -52,7 +60,7 @@ export interface IUpdateDataInternship {
     dateCreationPost: string | null,
     organization: string | null,
     link: string | null,
-
+    blackListed?: true | false;
 }
 
 export interface IUpdateDataVacancy {
@@ -65,7 +73,7 @@ export interface IUpdateDataVacancy {
     fullText: string | null;
     dateCreationPost: string | null;
     organization: string | null;
-
+    blackListed?: true | false;
 }
 
 

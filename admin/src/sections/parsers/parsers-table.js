@@ -25,21 +25,16 @@ export const ParsersTable = (props) => {
     const {
         count = 0,
         items = [],
-        onDeselectAll,
-        onDeselectOne,
         onPageChange,
         onRowsPerPageChange,
-        onSelectAll,
-        onSelectOne,
         page = 0,
         rowsPerPage = 0,
         selected = [],
-        deleteRowHandle,
         updateParsers
     } = props;
 
-    const selectedSome = (selected.length > 0) && (selected.length < items.length);
-    const selectedAll = (items.length > 0) && (selected.length === items.length);
+    // const selectedSome = (selected.length > 0) && (selected.length < items.length);
+    // const selectedAll = (items.length > 0) && (selected.length === items.length);
 
     const [fields, setFields] = useState([]);
     useEffect(() => {
@@ -90,7 +85,7 @@ export const ParsersTable = (props) => {
                                     Cron time
                                 </TableCell>
                                 <TableCell>
-                                    Дата последнего успешного добавления
+                                    Дата последнего успешного парсинга
                                 </TableCell>
 
                                 <TableCell>

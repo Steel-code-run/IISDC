@@ -13,9 +13,11 @@ import {
 import DropdownTags from "../../components/UI/DropdownTags/DropdownTags";
 import {useMediaQuery} from "react-responsive";
 import {TPostType} from "../../types/serial/parser";
-import {useUniversalDeleteSwitchHook, useUniversalUpdateSwitchHook,} from "../../store/hooks/universalSwitchHooks";
+import {useUniversalDeleteSwitchHook, useUniversalUpdateSwitchHook,} from "../../hooks/universalSwitchHooks";
 import {TTypesUpdateData} from "../../types/types";
 import classNames from "classnames";
+import {initialValuesUpdateData} from "../../helpers/initialValuesUpdateData";
+import {WithAuthGuard} from "../../hoc/with-auth-guard";
 
 interface ILocationState {
     state: {
@@ -31,22 +33,7 @@ const PagePost = () => {
     const [isEdit, setIsEdit] = useState(false);
 
     const [updateData, setUpdateData] =
-        useState<TTypesUpdateData>({
-        id: data.id,
-        organization: data.organization,
-        directions: JSON.stringify(data.directions),
-        directionForSpent: data.directionForSpent,
-        dateCreationPost: data.dateCreationPost,
-        deadline: data.deadline,
-        summary: data.summary,
-        fullText: data.fullText,
-        requirements: data.requirements,
-        responsibilities: data.responsibilities,
-        conditions: data.conditions,
-        salary: data.salary,
-        linkPDF: data.linkPDF,
-        link: data.link
-    })
+        useState<TTypesUpdateData<TPostType>>(initialValuesUpdateData(postType, data))
 
     const isVisionBtns = useMediaQuery({query: '(min-width: 540px)'})
 
@@ -60,7 +47,7 @@ const PagePost = () => {
     }, []);
 
     const navigate = useNavigate();
-    const token = window.localStorage.getItem('token')
+    const token = window.sessionStorage.getItem('token')
 
     useEffect(() => {
         if (!isVisionBtns) {
@@ -199,11 +186,12 @@ const PagePost = () => {
                                 >{data.organization}</div>
 
                             }
-                            <DropdownTags direction={data.directions}
-                                          isActiveDropdown={isEdit && isVisionBtns}
-                                          setUpdateData={setUpdateData}
-                                          updateData={updateData}
-                                          isHighlight={true}/>
+                            <DropdownTags
+                                direction={data.directions}
+                                isActiveDropdown={isEdit && isVisionBtns}
+                                setUpdateData={setUpdateData}
+                                updateData={updateData}
+                                isHighlight={true}/>
                         </>
                     }
                     {
@@ -319,10 +307,21 @@ const PagePost = () => {
                                         {isVisionBtns &&
                                             <>
                                                 <button onClick={async () => {
-                                                    if (data.id) {
-                                                        await deletePost({token, id: data.id});
-                                                        navigate(-1);
-                                                    }
+                                                    // if (data.id) {
+                                                    //     await deletePost({token, id: data.id});
+                                                    // }
+                                                    if (updateData['id'])
+                                                        delete updateData['id'];
+
+                                                    await updatePost({
+                                                        id: data.id,
+                                                        updateData: {
+                                                            ...updateData,
+                                                            blackListed: true,
+                                                        },
+                                                        token: window.sessionStorage.getItem('token')
+                                                    });
+                                                    navigate(-1);
                                                 }}
                                                         className={classNames(
                                                             styles.pagePost__delete,
@@ -330,13 +329,13 @@ const PagePost = () => {
                                                 </button>
                                                 <button onClick={async () => {
                                                     setIsEdit(false);
-                                                    if(updateData['id'])
+                                                    if (updateData['id'])
                                                         delete updateData['id'];
 
                                                     await updatePost({
                                                         id: data.id,
                                                         updateData,
-                                                        token: window.localStorage.getItem('token')
+                                                        token: window.sessionStorage.getItem('token')
                                                     });
                                                 }}
                                                         className={classNames(
@@ -364,4 +363,4 @@ const PagePost = () => {
     )
 };
 
-export default PagePost;
+export default WithAuthGuard(PagePost);

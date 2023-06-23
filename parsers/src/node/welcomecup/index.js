@@ -1,7 +1,7 @@
 const {getHTML} = require('../../utils/getHTML.js');
 const {getLinksPosts} = require('../../utils/methodsParser.js');
 const {getInfoPosts, getDataBySelector, getLinksPDF} = require("../../utils/methodsParser");
-const {DirectionType, TPostType} = require("@iisdc/types");
+const {DirectionType, TPostType} = require("../../types");;
 
 
 const url = 'https://welcomecup.rsv.ru/managers';

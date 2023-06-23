@@ -1,4 +1,4 @@
-const {DirectionType} = require("@iisdc/types");
+const {DirectionType} = require("../../types");;
 const {getHtmlContent} = require("../../utils/puppeteerGetHtmlContent");
 const cheerio = require("cheerio");
 

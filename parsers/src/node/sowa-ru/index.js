@@ -23,6 +23,7 @@ const querySelectors = {
 
 
 const getPostLazyLoading = async (page, url, querySelectors) => {
+    if(page > 1) url += `page/${page}/`
     const jsdom = await getHTML(url);
     const links = getLinksPosts(jsdom, querySelectors.link, '');
 

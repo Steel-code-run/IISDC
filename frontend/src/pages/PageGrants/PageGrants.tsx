@@ -11,6 +11,7 @@ import {useNavigate} from "react-router-dom";
 import {Dna} from "react-loader-spinner";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import {directionsList} from "../../config/directions";
+import {WithAuthGuard} from "../../hoc/with-auth-guard";
 
 export interface PageGrantsProps {
 }
@@ -22,7 +23,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState<string[] | string>([])
     const navigate = useNavigate();
-    const token = window.localStorage.getItem('token');
+    const token = window.sessionStorage.getItem('token');
 
     const checkSizeWindow = () => {
         const sizeWindow = window.outerWidth;
@@ -107,7 +108,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
                                                 directionForSpent: post.directionForSpent,
                                                 fullText: post.fullText,
                                                 id: post.id,
-                                                directions: JSON.parse(post.directions),
+                                                directions: (post.directions) ? JSON.parse(post.directions) : [],
                                                 namePost: post.namePost,
                                                 organization: post.organization,
                                                 timeOfParse: post.timeOfParse,
@@ -139,4 +140,4 @@ const PageGrants: FC<PageGrantsProps> = () => {
     )
 };
 
-export default PageGrants
+export default WithAuthGuard(PageGrants)
