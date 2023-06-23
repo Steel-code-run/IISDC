@@ -8,7 +8,7 @@ const AuthGuardWrap = (props) => {
 
     const path = useLocation();
     const navigate = useNavigate()
-    const { isAuthenticated } = useAuthContext();
+    const {isAuthenticated} = useAuthContext();
     const ignore = useRef(false);
     const [checked, setChecked] = useState(false);
 
@@ -18,6 +18,8 @@ const AuthGuardWrap = (props) => {
 
     useEffect(
         () => {
+            const token = window.sessionStorage.getItem('token')
+
             if (!path) {
                 return;
             }
@@ -29,7 +31,7 @@ const AuthGuardWrap = (props) => {
 
             ignore.current = true;
 
-            if (!isAuthenticated) {
+            if (!isAuthenticated && !token) {
                 console.log('Not authenticated, redirecting');
                 navigate('/')
             } else {

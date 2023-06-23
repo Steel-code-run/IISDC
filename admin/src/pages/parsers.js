@@ -5,7 +5,7 @@ import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {useSelection} from "../hooks/use-selection";
-import {getCountParsers, getParsers, updateParsers} from "../api/parsersResponse";
+import {getCountParsers, getParsers, updateParsers} from "../api/parsersReq";
 import {ParsersTable} from "../sections/parsers/parsers-table";
 import {useUserQuery} from "../hooks/useUserQuery";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";

@@ -4,18 +4,15 @@ import {TTypesUpdateData} from "../types/types";
 import {TPostType} from "../types/serial/parser";
 
 export interface IGetInternships {
-    limit: number,
-    from: number,
+    skip: number,
+    take: number,
+    extended: boolean
     namePost: string,
-    direction?: string | string[],
+    directions?: string | string[],
     token: string | null
 }
 
-interface IGetCountInternships {
-    namePost?: string,
-    direction?: string | string[],
-    token: string | null
-}
+type IGetCountInternships = Omit<any, 'skip' | 'take' | 'extended'>;
 
 interface IUpdateInput {
     updateData: TTypesUpdateData<TPostType>,
@@ -34,14 +31,34 @@ export const internshipsApi = createApi({
     endpoints: (builder) => ({
 
         getInternships: builder.query<any, IGetInternships>({
-            query: ({limit, from, namePost, direction, token}) => {
+            query: ({skip, take, extended, namePost, directions, token}) => {
                 return {
-                    url: `v2/internships/get`,
+                    url: `v1/internships`,
                     body: {
-                        limit: limit,
-                        from,
-                        namePost,
-                        direction
+                        skip,
+                        take,
+                        extended,
+                        where: (directions?.length) ? {
+                            "namePost": {
+                                contains: namePost
+                            },
+
+                            "OR": (typeof directions === 'string') ? {
+                                "directions": {
+                                    contains: directions
+                                }
+                            } : directions?.map((dir) => {
+                                return {
+                                    "directions": {
+                                        contains: dir
+                                    }
+                                }
+                            })
+                        } : {
+                            "namePost": {
+                                contains: namePost
+                            },
+                        }
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -59,12 +76,31 @@ export const internshipsApi = createApi({
         }),
 
         getCountInternships: builder.query<any, IGetCountInternships>({
-            query: ({namePost, direction, token}) => {
+            query: ({namePost, directions, token}) => {
                 return {
-                    url: `v2/internships/count`,
+                    url: `v1/internships/count`,
                     body: {
-                        namePost,
-                        direction
+                        where: (directions?.length) ? {
+                            "namePost": {
+                                contains: namePost
+                            },
+
+                            "OR": (typeof directions === 'string') ? {
+                                "directions": {
+                                    contains: directions
+                                }
+                            } : directions?.map((dir: string) => {
+                                return {
+                                    "directions": {
+                                        contains: dir
+                                    }
+                                }
+                            })
+                        } : {
+                            "namePost": {
+                                contains: namePost
+                            },
+                        }
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -77,7 +113,7 @@ export const internshipsApi = createApi({
         deletePostInternship: builder.mutation<any, any>({
             query: ({token, id}, ) => (
                 {
-                    url: 'v2/internships/addToBlackList',
+                    url: 'v1/internships/addToBlackList',
                     body: {
                         id
                     },
@@ -92,7 +128,7 @@ export const internshipsApi = createApi({
 
         updatePostInternship: builder.mutation<any, IUpdateInput>({
             query: ({updateData, token}) => ({
-                url: 'v2/internships/update',
+                url: 'v1/internships/update',
                 body: updateData,
                 headers: {
                     'Authorization': `Bearer ${token}`,

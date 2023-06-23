@@ -7,6 +7,7 @@ import PageHome from "./pages/PageHome/PageHome";
 import PageGrants from "./pages/PageGrants/PageGrants";
 import PageCompetition from "./pages/PageCompetition/PageCompetition";
 import PagePost from "./pages/PagePost/PagePost";
+import PageInternships from "./pages/PageInternships/PageInternships";
 
 function App() {
 
@@ -19,7 +20,7 @@ function App() {
                 <Route path={'/competitions'} element={<PageCompetition/>}/>
                 <Route path={'/post'} element={<PagePost/>}/>
                 {/*<Route path={'/vacancies'} element={<PageVacancies/>}/>*/}
-                {/*<Route path={'/internships'} element={<PageInternships/>}/>*/}
+                <Route path={'/internships'} element={<PageInternships/>}/>
 
             </Routes>
 

@@ -41,6 +41,7 @@ export const grantsApi = createApi({
                             "namePost": {
                                 contains: namePost
                             },
+                            blackListed: false,
 
                             "OR": (typeof directions === 'string') ? {
                                 "directions": {
@@ -57,6 +58,7 @@ export const grantsApi = createApi({
                             "namePost": {
                                 contains: namePost
                             },
+                            blackListed: false
                         }
                     },
                     headers: {

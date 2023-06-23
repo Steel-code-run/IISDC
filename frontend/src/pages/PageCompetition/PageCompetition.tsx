@@ -11,6 +11,7 @@ import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import CardPost from "../../components/CardPost/CardPost";
 import {directionsList} from "../../config/directions";
 import {WithAuthGuard} from "../../hoc/with-auth-guard";
+import {useNavigate} from 'react-router-dom'
 
 export interface PageCompetitionsProps {
 }
@@ -21,6 +22,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState<string[] | string>([])
+    const navigate = useNavigate();
 
     const token = window.sessionStorage.getItem('token');
 
@@ -57,12 +59,6 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     const directions = directionsList;
 
     useEffect(() => {
-        window.addEventListener('resize', () => checkSizeWindow())
-        checkSizeWindow()
-    }, [])
-
-
-    useEffect(() => {
         setPage(1)
     }, [debounceValue, setDebounceValue, choicedDirection, setChoicedDirection])
 
@@ -72,17 +68,17 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     }, [totalCountPosts, setAmountPages, amountPostsPerPage])
 
 
-    // React.useEffect(() => {
-    //     window.addEventListener('resize', () => checkSizeWindow())
-    //     checkSizeWindow();
-    //     (error)
-    //         ? navigate('/', {
-    //             state: {
-    //                 error
-    //             }
-    //         })
-    //         : navigate('/competitions')
-    // }, [isLoading])
+    React.useEffect(() => {
+        window.addEventListener('resize', () => checkSizeWindow())
+        checkSizeWindow();
+        (error)
+            ? navigate('/', {
+                state: {
+                    error
+                }
+            })
+            : navigate('/competitions')
+    }, [isLoading])
 
     if (!directions || isLoading) return <Dna visible={true}
                                                     height="250"

@@ -77,6 +77,7 @@ export const AuthProvider = (props) => {
 
         try {
             isAuthenticated = !!window.sessionStorage.getItem('token');
+            console.log(isAuthenticated)
         } catch (err) {
             console.error(err);
         }

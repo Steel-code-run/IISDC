@@ -3,25 +3,25 @@ import Head from 'next/head';
 import {Box, Container, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {LogsTable} from "../sections/logs/logs-table";
-import {getLogs} from "../api/logsReq";
+import {RoutesTable} from "../sections/routes/routes-table";
+import {getRoutes} from "../api/routesReq";
 
 const Page = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const queryClient = useQueryClient()
 
-    const orderBy = {
-        date: 'desc'
-    };
-    const where = {
-        NOT: {
-            path: '/v1/accessing-logs'
-        }
-    }
-    const {data: logs, status, isLoading, isError } =
-        useQuery(['logs', page*rowsPerPage, rowsPerPage, orderBy, where],
-            () => getLogs(page*rowsPerPage, rowsPerPage, orderBy, where));
+    // const orderBy = {
+    //     date: 'desc'
+    // };
+    // const where = {
+    //     NOT: {
+    //         path: '/v1/accessing-logs'
+    //     }
+    // }
+    const {data: routes, status, isLoading, isError } =
+        useQuery(['routes', page*rowsPerPage, rowsPerPage],
+            () => getRoutes(page*rowsPerPage, rowsPerPage));
 
     const handlePageChange = useCallback(
         (event, value) => {
@@ -48,7 +48,7 @@ const Page = () => {
 
             <Head>
                 <title>
-                    Логи
+                    Роуты
                 </title>
             </Head>
             <Box
@@ -67,7 +67,7 @@ const Page = () => {
                         >
                             <Stack spacing={1}>
                                 <Typography variant="h4">
-                                    Логи
+                                    Доступные роуты
                                 </Typography>
                                 <Stack
                                     alignItems="center"
@@ -80,10 +80,10 @@ const Page = () => {
 
                         </Stack>
                         {
-                            (status === "success" && logs.logs.length > 0) &&
-                            <LogsTable
-                                count={logs.count || 0}
-                                items={logs.logs}
+                            (status === "success" && routes?.resources_access.length > 0) &&
+                            <RoutesTable
+                                count={routes?.resources_access_count || 0}
+                                items={routes?.resources_access}
                                 onPageChange={handlePageChange}
                                 onRowsPerPageChange={handleRowsPerPageChange}
                                 page={page}

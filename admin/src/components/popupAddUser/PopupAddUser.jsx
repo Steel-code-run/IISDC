@@ -3,7 +3,7 @@ import styles from './PopupAddUser.module.scss'
 import {Controller, useForm} from "react-hook-form";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {addUser} from "../../api/userResponses";
+import {addUser} from "../../api/userReq";
 
 const PopupAddUser = ({isOpen, setIsOpen}) => {
     const [errorOnServer, setErrorOnServer] = useState(null);

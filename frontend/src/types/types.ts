@@ -33,8 +33,9 @@ export interface IUpdateDataGrant {
     deadline: string | null,
     summary: string | null,
     fullText: string | null,
-    link: string | null,
+    link: string | null
     linkPDF: string | null
+    blackListed?: true | false;
 }
 
 export interface IUpdateDataCompetition {
@@ -46,7 +47,7 @@ export interface IUpdateDataCompetition {
     fullText: string | null,
     link: string | null,
     linkPDF: string | null
-
+    blackListed?: true | false;
 }
 
 export interface IUpdateDataInternship {
@@ -59,7 +60,7 @@ export interface IUpdateDataInternship {
     dateCreationPost: string | null,
     organization: string | null,
     link: string | null,
-
+    blackListed?: true | false;
 }
 
 export interface IUpdateDataVacancy {
@@ -72,7 +73,7 @@ export interface IUpdateDataVacancy {
     fullText: string | null;
     dateCreationPost: string | null;
     organization: string | null;
-
+    blackListed?: true | false;
 }
 
 

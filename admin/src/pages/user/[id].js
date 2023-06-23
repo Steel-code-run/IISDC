@@ -5,7 +5,7 @@ import {useUserQuery} from "../../hooks/useUserQuery";
 import {Box, Button, Container, Stack, SvgIcon, TextField, Typography} from "@mui/material";
 import styles from './userPage.module.scss'
 import EditIcon from '@mui/icons-material/Edit';
-import {responseUser, updateUser} from "../../api/userResponses";
+import {responseUser, updateUser} from "../../api/userReq";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
 import {useSnackbar} from "../../hooks/use-snackbar";

@@ -43,6 +43,7 @@ export const competitionsApi = createApi({
                             "namePost": {
                                 contains: namePost
                             },
+                            blackListed: false,
 
                             "OR": (typeof directions === 'string') ? {
                                 "directions": {
@@ -59,6 +60,7 @@ export const competitionsApi = createApi({
                             "namePost": {
                                 contains: namePost
                             },
+                            blackListed: false,
                         }
                     },
                     method: 'POST',

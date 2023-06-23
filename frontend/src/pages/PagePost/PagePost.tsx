@@ -307,10 +307,21 @@ const PagePost = () => {
                                         {isVisionBtns &&
                                             <>
                                                 <button onClick={async () => {
-                                                    if (data.id) {
-                                                        await deletePost({token, id: data.id});
-                                                        navigate(-1);
-                                                    }
+                                                    // if (data.id) {
+                                                    //     await deletePost({token, id: data.id});
+                                                    // }
+                                                    if (updateData['id'])
+                                                        delete updateData['id'];
+
+                                                    await updatePost({
+                                                        id: data.id,
+                                                        updateData: {
+                                                            ...updateData,
+                                                            blackListed: true,
+                                                        },
+                                                        token: window.sessionStorage.getItem('token')
+                                                    });
+                                                    navigate(-1);
                                                 }}
                                                         className={classNames(
                                                             styles.pagePost__delete,

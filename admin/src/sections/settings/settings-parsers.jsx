@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Card, CardActions, CardContent, CardHeader, Divider, Stack, TextField, Typography} from "@mui/material";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {getParsingSettings, updateParsingSettings} from "../../api/parsersResponse";
+import {getParsingSettings, updateParsingSettings} from "../../api/parsersReq";
 import moment from "moment";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
 import {useSnackbar} from "../../hooks/use-snackbar";

@@ -9,8 +9,9 @@ import Search from "../../components/UI/Search/Search";
 import '../../styles/spinner-loader.scss';
 import {useNavigate} from "react-router-dom";
 import {Dna} from "react-loader-spinner";
-import {useGetDirectionsQuery} from "../../api/auxiliaryRequests.api";
 import {WithAuthGuard} from "../../hoc/with-auth-guard";
+import {directionsList} from "../../config/directions";
+import Dropdown from "../../components/UI/Dropdown/Dropdown";
 
 export interface PageInternshipsProps {
 }
@@ -42,16 +43,16 @@ const PageInternships: FC<PageInternshipsProps> = () => {
     });
 
     const {data = [], error, isLoading} = useGetInternshipsQuery({
-        limit: amountPostsPerPage,
-        from: (page - 1) * amountPostsPerPage,
+        take: amountPostsPerPage,
+        skip: (page - 1) * amountPostsPerPage,
+        extended: true,
         namePost: debounceValue,
-        direction: choicedDirection,
-        token: token
+        directions: choicedDirection,
+        token
     });
 
-    const {data: directions} = useGetDirectionsQuery({
-        token: token
-    });
+    const directions = directionsList;
+
 
     useEffect(() => {
         setPage(1)
@@ -74,7 +75,7 @@ const PageInternships: FC<PageInternshipsProps> = () => {
             : navigate('/internships')
     }, [isLoading])
 
-    if (!directions?.data || isLoading) return <Dna visible={true}
+    if (!directions || isLoading) return <Dna visible={true}
                                                     height="250"
                                                     width="250"
                                                     ariaLabel="dna-loading"
@@ -86,11 +87,16 @@ const PageInternships: FC<PageInternshipsProps> = () => {
             <div className={styles.pageInternships} data-testid="PageInternships">
                 <div className="container">
                     <Search cbDebounce={setDebounceValue}/>
+                    <div className={styles.pageInternships__directionBlock}>
+                        <p className={styles.pageInternships__directionBlock__titleBlock}>{'Направление: '}</p>
+                        <Dropdown listDirections={directions}
+                                  cbChoicedDirection={setChoicedDirection}/>
+                    </div>
 
                     <div className={styles.pageInternships__wrapper}>
                         <div className={styles.pageInternships__posts}>
                             {
-                                data?.data?.map((post: TInternship) => {
+                                data?.map((post: TInternship) => {
                                     return (
                                         <CardPost<TPostType.internship>
                                             props={{
@@ -116,7 +122,7 @@ const PageInternships: FC<PageInternshipsProps> = () => {
                             }
                         </div>
                         {
-                            (data?.data?.length > 0) &&
+                            (data?.length > 0) &&
                             <Pagination count={(amountPages) ? amountPages : 1}
                                         page={page}
                                         defaultPage={page}
