@@ -23,7 +23,7 @@ resourcesRouter.post('/v1/resources/get', async (req , res) => {
     }
 });
 
-resourcesRouter.post('/v1/resources/addRoleAccess', async (req , res) => {
+resourcesRouter.post('/v1/resources/add', async (req , res) => {
 
     await check('path', 'Путь не может быть пустым')
         .notEmpty()
@@ -48,7 +48,7 @@ resourcesRouter.post('/v1/resources/addRoleAccess', async (req , res) => {
         }
     } catch (e) {
         console.log(e);
-        return res.status(500).json({errors: [{msg: 'Ошибка добавления роли'}]});
+        return res.status(500).json({errors: [{msg: 'Ошибка добавления'}]});
     }
 
     try{
@@ -66,7 +66,7 @@ resourcesRouter.post('/v1/resources/addRoleAccess', async (req , res) => {
         }
     } catch (e) {
         console.log(e);
-        return res.status(500).json({errors: [{msg: 'Ошибка добавления роли'}]});
+        return res.status(500).json({errors: [{msg: 'Ошибка добавления'}]});
     }
 
     try {
@@ -82,13 +82,29 @@ resourcesRouter.post('/v1/resources/addRoleAccess', async (req , res) => {
         })
     } catch (e) {
         console.log(e);
-        return res.status(500).json({errors: [{msg: 'Ошибка добавления роли'}]});
+        return res.status(500).json({errors: [{msg: 'Ошибка добавления'}]});
     }
 
-    res.json({msg: 'Роль добавлена'})
+    res.json({msg: 'Добавлено'})
 });
 
-resourcesRouter.post('/v1/resources/removeRoleAccess', async (req , res) => {
+resourcesRouter.post('/v1/resources/delete', async (req , res) => {
+    await check('id', 'Путь не может быть пустым')
+        .notEmpty()
+        .isNumeric()
+        .run(req);
 
+
+    try {
+        await prisma.resources_access.delete({
+            where: {
+                id: req.body.id
+            }
+        })
+    }
+    catch (e) {
+        console.log(e);
+        return res.status(500).json({errors: [{msg: 'Ошибка удаления'}]});
+    }
 });
 export default resourcesRouter;

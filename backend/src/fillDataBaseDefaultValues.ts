@@ -35,6 +35,9 @@ const set_resources_access = async (prisma:PrismaClient)=>{
         "/v1/settings/update",
         "/v1/telegram/login",
         "/v1/accessing-logs",
+        "/v1/resources/get",
+        "/v1/resources/add",
+        "/v1/resources/delete",
     ]
 
     try{
