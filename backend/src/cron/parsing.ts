@@ -222,7 +222,7 @@ const parsePage = async (
                         id:parser.id
                     },
                     data:{
-                        lastSuccessAdd: new Date()
+                        lastSuccessParse: new Date()
                     }
                 })
             }
