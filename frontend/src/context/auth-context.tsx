@@ -1,10 +1,40 @@
 import {createContext, useContext, useEffect, useReducer, useRef} from 'react';
 import {loginReq} from "../api/auth";
 
-const HANDLERS = {
-    INITIALIZE: 'INITIALIZE',
-    SIGN_IN: 'SIGN_IN',
-    SIGN_OUT: 'SIGN_OUT'
+enum HANDLERS {
+    INITIALIZE = 'INITIALIZE',
+    SIGN_IN = 'SIGN_IN',
+    SIGN_OUT = 'SIGN_OUT'
+};
+
+export interface User {
+    id: string
+    email: string
+    password: string
+    name: string
+}
+
+export type StateType = {
+    isAuthenticated: boolean,
+    isLoading: boolean,
+    user: Partial<User> | null,
+    signIn?: (name:string, password:string) => void
+    signOut?: () => void
+    signUp?: (email:string, name:string, password:string) => void
+}
+
+type ActionType = {
+    type: keyof typeof HANDLERS
+    payload?: StateType
+}
+
+export type AuthProviderProps = {
+    children: React.ReactNode
+}
+
+type AuthContextType = {
+    state: StateType;
+    dispatch: React.Dispatch<ActionType>;
 };
 
 
@@ -15,7 +45,7 @@ const initialState = {
 };
 
 const handlers = {
-    [HANDLERS.INITIALIZE]: (state, action) => {
+    [HANDLERS.INITIALIZE]: (state:StateType, action: ActionType) => {
         const user = action.payload;
 
         return {
@@ -34,7 +64,7 @@ const handlers = {
             )
         };
     },
-    [HANDLERS.SIGN_IN]: (state, action) => {
+    [HANDLERS.SIGN_IN]: (state: StateType, action: ActionType) => {
         const user = action.payload;
 
         return {
@@ -43,7 +73,7 @@ const handlers = {
             user
         };
     },
-    [HANDLERS.SIGN_OUT]: (state) => {
+    [HANDLERS.SIGN_OUT]: (state: StateType) => {
         return {
             ...state,
             isAuthenticated: false,
@@ -52,15 +82,16 @@ const handlers = {
     }
 };
 
-const reducer = (state, action) => (
+const reducer = (state:StateType, action: ActionType) => (
     handlers[action.type] ? handlers[action.type](state, action) : state
 );
 
 // The role of this context is to propagate authentication state through the App tree.
 
-export const AuthContext = createContext(initialState);
+export const AuthContext =
+    createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = (props) => {
+export const AuthProvider = (props: AuthProviderProps) => {
     const { children } = props;
     const [state, dispatch] = useReducer(reducer, initialState);
     const initialized = useRef(false);
@@ -107,11 +138,11 @@ export const AuthProvider = (props) => {
         []
     );
 
-    const signIn = async (name, password) => {
+    const signIn = async (name: string, password: string) => {
         try {
             const authData = await loginReq(name, password);
             window.sessionStorage.setItem('token', authData.token);
-        } catch (err) {
+        } catch (err: any) {
             const error = err.response.data.errors
             throw new Error(error[0].msg)
         }
@@ -128,7 +159,7 @@ export const AuthProvider = (props) => {
         });
     };
 
-    const signUp = async (email, name, password) => {
+    const signUp = async (email: string, name: string, password: string) => {
         throw new Error('Sign up is not implemented');
     };
 
