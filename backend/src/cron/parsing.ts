@@ -215,18 +215,6 @@ const parsePage = async (
 ) => {
     axios.get(process.env.PARSERS_URL! + "/parsers/"+parser.name+"/"+page)
         .then(async response => {
-            // Если постов больше > 0, обновляем время последнего парсинга
-            if (response.data.length > 0) {
-                await prisma.parsers.update({
-                    where:{
-                        id:parser.id
-                    },
-                    data:{
-                        lastSuccessParse: new Date()
-                    }
-                })
-            }
-
 
             for (const post of response.data) {
                 const postType = post.postType
@@ -440,6 +428,17 @@ const parsePage = async (
 
                 }
           }
+            // Если постов больше > 0, обновляем время последнего парсинга
+            if (response.data.length > 0) {
+                await prisma.parsers.update({
+                    where:{
+                        id:parser.id
+                    },
+                    data:{
+                        lastSuccessParse: new Date()
+                    }
+                })
+            }
         }).catch(e => {
         console.log(e)
     })
