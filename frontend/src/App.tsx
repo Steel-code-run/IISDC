@@ -2,20 +2,22 @@ import React from 'react';
 import './App.scss';
 import './styles/Pagination.scss';
 import PageAuth from "./pages/PageAuth/PageAuth";
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import PageHome from "./pages/PageHome/PageHome";
 import PageGrants from "./pages/PageGrants/PageGrants";
-import PageVacancies from "./pages/PageVacancies/PageVacancies";
-import PageInternships from "./pages/PageInternships/PageInternships";
 import PageCompetition from "./pages/PageCompetition/PageCompetition";
 import PagePost from "./pages/PagePost/PagePost";
+import {AuthProvider} from "./context/auth-context";
 
 function App() {
 
     return (
         <div className="App" data-testid="App">
             <Routes>
-                <Route path={'/'} element={<PageAuth/>}/>
+                <Route path={'/'} element={
+                    <AuthProvider>
+                        <PageAuth/>
+                    </AuthProvider>}/>
                 <Route path={'/home'} element={<PageHome/>}/>
                 <Route path={'/grants'} element={<PageGrants/>}/>
                 <Route path={'/competitions'} element={<PageCompetition/>}/>

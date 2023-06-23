@@ -12,9 +12,6 @@ const initialState = {
     isAuthenticated: false,
     isLoading: true,
     user: null,
-    signIn: (login, password) => null,
-    signUp: () => null,
-    signOut: () => null
 };
 
 const handlers = {
@@ -111,8 +108,6 @@ export const AuthProvider = (props) => {
     );
 
     const signIn = async (name, password) => {
-        console.log(name, password)
-
         try {
             const authData = await loginReq(name, password);
             window.sessionStorage.setItem('token', authData.token);
@@ -138,7 +133,6 @@ export const AuthProvider = (props) => {
     };
 
     const signOut = () => {
-        console.log('remove token')
         window.sessionStorage.removeItem('token');
         dispatch({
             type: HANDLERS.SIGN_OUT

@@ -13,8 +13,14 @@ const LogoutBtn: FC<LogoutBtnProps> = ({type}) => {
 
     const logout = async () => {
         console.log('sdf')
-        await auth?.signOut();
-        navigate('/')
+        try {
+            //@ts-ignore
+            await auth?.signOut();
+            navigate('/')
+        } catch (e) {
+            console.log(e)
+        }
+
     }
 
     return (
@@ -22,7 +28,6 @@ const LogoutBtn: FC<LogoutBtnProps> = ({type}) => {
         (type === 'burgerBtn')
             ? <div onClick={logout} className={styles.logoutBtnBurger} data-testid="LogoutBtn">Выйти</div>
             : <button onClick={logout} className={styles.logoutBtn} data-testid="LogoutBtn">Выйти</button>
-
 
 
     )

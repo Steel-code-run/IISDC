@@ -19,9 +19,11 @@ export interface IFormReceivedData {
 
 const AuthForm: FC<AuthFormProps> = () => {
     const [serverErrors, setServerErrors] = React.useState('')
-    const {register, formState:{
-        errors
-    }, handleSubmit} = useForm<IFormReceivedData>()
+    const {
+        register, formState: {
+            errors
+        }, handleSubmit
+    } = useForm<IFormReceivedData>()
 
     const navigate = useNavigate()
     const {state} = useLocation();
@@ -30,16 +32,11 @@ const AuthForm: FC<AuthFormProps> = () => {
     const onSubmit = async ({login, password}: IFormReceivedData) => {
 
         try {
-            // const answer = await loginReq(login, password)
-            // const token = answer.token.replace('Bearer ', '')
-            // window.localStorage.setItem("token", token)
-            // if(answer.status === 200) navigate('/grants')
+            //@ts-ignore
             await auth?.signIn(login, password);
             navigate('/grants')
-
-
         } catch (err: any) {
-            if(err) {
+            if (err) {
                 setServerErrors(err.message)
             }
         }
@@ -56,7 +53,7 @@ const AuthForm: FC<AuthFormProps> = () => {
                         required: true,
 
                     })}
-                       className={styles.authForm__input__inputLogin} type="text" placeholder={'Логин/Телефон'}/>
+                           className={styles.authForm__input__inputLogin} type="text" placeholder={'Логин/Телефон'}/>
                 </div>
                 <div className={styles.authForm__input}>
                     <img className={styles.authForm__input__inputIcon} src={passwordIcon} alt=""/>
@@ -64,7 +61,7 @@ const AuthForm: FC<AuthFormProps> = () => {
                         required: true,
 
                     })}
-                       className={styles.authForm__input__inputPassword} type="password" placeholder={'Пароль'}/>
+                           className={styles.authForm__input__inputPassword} type="password" placeholder={'Пароль'}/>
                 </div>
             </div>
             {
@@ -74,8 +71,9 @@ const AuthForm: FC<AuthFormProps> = () => {
             }
             {
                 (state?.error?.status === 401) ? <p className={styles.authForm__unvalidMessage}>Вы не авторизованы</p>
-                    : (state?.error?.originalStatus === 404) ? <p className={styles.authForm__unvalidMessage}>Страница не найдена</p>
-                    : null
+                    : (state?.error?.originalStatus === 404) ?
+                        <p className={styles.authForm__unvalidMessage}>Страница не найдена</p>
+                        : null
             }
 
             <button type={'submit'} className={styles.authForm__btnSubmit}>Продолжить</button>

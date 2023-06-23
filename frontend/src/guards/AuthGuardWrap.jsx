@@ -9,7 +9,6 @@ const AuthGuardWrap = (props) => {
     const path = useLocation();
     const navigate = useNavigate()
     const { isAuthenticated } = useAuthContext();
-    console.log(isAuthenticated)
     const ignore = useRef(false);
     const [checked, setChecked] = useState(false);
 
