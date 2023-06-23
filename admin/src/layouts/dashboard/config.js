@@ -68,6 +68,16 @@ export const items = [
     childrenNav: []
   },
   {
+    title: 'Стажировки',
+    path: '/internships',
+    icon: (
+        <SvgIcon fontSize="small">
+          <PostAddIcon />
+        </SvgIcon>
+    ),
+    childrenNav: []
+  },
+  {
     title: 'Архив',
     path: '/archive',
     icon: (

@@ -6,7 +6,7 @@ import styles from './grantPage.module.scss'
 import EditIcon from '@mui/icons-material/Edit';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
-import {getGrants, updateGrant} from "../../api/posts/grantsResponses";
+import {getGrants, updateGrant} from "../../api/posts/grantsReq";
 import {useSnackbar} from "../../hooks/use-snackbar";
 
 const Page = () => {

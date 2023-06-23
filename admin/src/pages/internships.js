@@ -6,7 +6,7 @@ import {applyPagination} from 'src/utils/apply-pagination';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 import {PostsTable} from "../sections/posts/posts-table";
-import {deleteGrant, getCountGrants, getGrants, updateGrant} from "../api/posts/grantsReq";
+import {deleteInternship, getCountInternships, getInternships, updateInternship} from "../api/posts/InternshipsReq";
 import {useSnackbar} from "../hooks/use-snackbar";
 
 const useCustomers = (data, page, rowsPerPage) => {
@@ -34,38 +34,38 @@ const Page = () => {
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
     const queryClient = useQueryClient();
-    const configGrantsRes = {
+    const configInternshipsRes = {
         extended: true
     }
-    const whereGrants = {
+    const whereInternships = {
         blackListed: false
     }
 
-    const {data: grantsList, status, isLoadingGrant, isErrorGrant} = useQuery(
-        ['grants', page * rowsPerPage, rowsPerPage, configGrantsRes, whereGrants],
-        () => getGrants(page * rowsPerPage, rowsPerPage, configGrantsRes, whereGrants))
-    const {data: countGrants} = useQuery(['countGrants'], getCountGrants);
+    const {data: InternshipsList, status, isLoadingInternship, isErrorInternship} = useQuery(
+        ['internships', page * rowsPerPage, rowsPerPage, configInternshipsRes, whereInternships],
+        () => getInternships(page * rowsPerPage, rowsPerPage, configInternshipsRes, whereInternships))
+    const {data: countInternships} = useQuery(['countInternships'], getCountInternships);
 
 
-    const mutationArchiveGrant = useMutation(
-        (archiveData) => updateGrant(archiveData), {
+    const mutationArchiveInternship = useMutation(
+        (archiveData) => updateInternship(archiveData), {
             onSuccess: () => {
-                queryClient.invalidateQueries(["grants"]);
+                queryClient.invalidateQueries(["internships"]);
                 setOpenSnackbar(true)
                 setSnackbarData({
-                    msg: 'Грант убран в архив',
+                    msg: 'Стажировка убрана в архив',
                     type: 'success'
                 })
             }
         })
 
-    const mutationDeleteGrant = useMutation(
-        (delGrantId) => deleteGrant(delGrantId), {
+    const mutationDeleteInternship = useMutation(
+        (delInternshipId) => deleteInternship(delInternshipId), {
             onSuccess: (res) => {
-                queryClient.invalidateQueries(["grants"]);
+                queryClient.invalidateQueries(["internships"]);
                 setOpenSnackbar(true)
                 setSnackbarData({
-                    msg: 'Грант успешно удален',
+                    msg: 'Стажировка успешно удалена',
                     type: 'success'
                 })
             }
@@ -88,7 +88,7 @@ const Page = () => {
         []
     );
 
-    if (isErrorGrant) {
+    if (isErrorInternship) {
         return <h1>Ошибка...</h1>
     }
 
@@ -117,7 +117,7 @@ const Page = () => {
                         >
                             <Stack spacing={1}>
                                 <Typography variant="h4">
-                                    Гранты
+                                    Стажировки
                                 </Typography>
 
                             </Stack>
@@ -125,22 +125,22 @@ const Page = () => {
                         </Stack>
                         {/*<CustomersSearch/>*/}
                         {
-                            (status === "success" && grantsList.length > 0) ?
+                            (status === "success" && InternshipsList.length > 0) ?
                                 <PostsTable
-                                    type={'grant'}
-                                    count={countGrants || 0}
-                                    items={grantsList}
+                                    type={'internships'}
+                                    count={countInternships || 0}
+                                    items={InternshipsList}
                                     onPageChange={handlePageChange}
                                     onRowsPerPageChange={handleRowsPerPageChange}
                                     page={page}
                                     rowsPerPage={rowsPerPage}
-                                    deleteRowHandle={mutationDeleteGrant.mutate}
-                                    archiveHandle={mutationArchiveGrant.mutate}
-                                /> : (status === "loading" && grantsList?.length > 0) ? <Skeleton variant="rounded"
+                                    deleteRowHandle={mutationDeleteInternship.mutate}
+                                    archiveHandle={mutationArchiveInternship.mutate}
+                                /> : (status === "loading" && InternshipsList?.length > 0) ? <Skeleton variant="rounded"
                                                                                                   animation="wave"
                                                                                                   width={'100%'}
                                                                                                   height={400}/>
-                                    :  <p>Количество грантов равно 0</p>
+                                    :  <p>Количество стажировок равно 0</p>
                         }
                     </Stack>
 

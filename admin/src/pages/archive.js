@@ -10,10 +10,10 @@ import {
     getCompetitions,
     getCountCompetitions,
     updateCompetition
-} from "../api/posts/competitionsResponses";
+} from "../api/posts/competitionsReq";
 import {useSnackbar} from "../hooks/use-snackbar";
 import {ArchiveTable} from "../sections/archive/archive-table";
-import {deleteGrant, getCountGrants, getGrants, updateGrant} from "../api/posts/grantsResponses";
+import {deleteGrant, getCountGrants, getGrants, updateGrant} from "../api/posts/grantsReq";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(

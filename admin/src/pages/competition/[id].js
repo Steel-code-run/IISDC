@@ -6,7 +6,7 @@ import styles from './competitionPage.module.scss'
 import EditIcon from '@mui/icons-material/Edit';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
-import {getCompetitions, updateCompetition} from "../../api/posts/competitionsResponses";
+import {getCompetitions, updateCompetition} from "../../api/posts/competitionsReq";
 import {useSnackbar} from "../../hooks/use-snackbar";
 
 const Page = () => {

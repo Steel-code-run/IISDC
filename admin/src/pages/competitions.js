@@ -12,7 +12,7 @@ import {
     getCompetitions,
     getCountCompetitions,
     updateCompetition
-} from "../api/posts/competitionsResponses";
+} from "../api/posts/competitionsReq";
 import {useSnackbar} from "../hooks/use-snackbar";
 
 const useCustomers = (data, page, rowsPerPage) => {

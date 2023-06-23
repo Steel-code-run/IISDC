@@ -30,6 +30,19 @@ export const PostsTable = (props) => {
         archiveHandle
     } = props;
 
+    const defineLinkPost = (type, id) => {
+        switch (type) {
+            case 'grants':
+                return `/grant/${id}`;
+            case 'competitions':
+                return `/competitions/${id}`;
+            case 'internships':
+                return `/internships/${id}`;
+            default:
+                return '/'
+        }
+    }
+
     return (
         <Card>
             <Scrollbar>
@@ -99,7 +112,7 @@ export const PostsTable = (props) => {
                                                 spacing={2}
                                             >
                                                 <Link style={{textDecoration: "none", color: "black"}}
-                                                      href={(type === 'grant') ? `/grant/${post.id}` : `/competition/${post.id}`}>
+                                                      href={defineLinkPost(type, post.id)}>
                                                     <Typography variant="subtitle2">
                                                         {post.namePost}
                                                     </Typography>
