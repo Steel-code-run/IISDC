@@ -11,7 +11,9 @@ accessingLogsWarningsRouter.post(baseUrl, async (req, res) => {
     try {
         let logs = await prisma.accessing_logs_warnings.findMany({
             where: req.body.where,
-            orderBy: req.body.orderBy,
+            orderBy: req.body.orderBy || {
+                id: 'desc'
+            },
             include: {
                 user: {
                     select: {
@@ -48,6 +50,7 @@ accessingLogsWarningsRouter.post(baseUrl + '/update', async (req, res) => {
             where: {
                 id: Number(req.body.id)
             },
+
             data: req.body.data
         })
         return res.json({
