@@ -13,6 +13,6 @@
 		"downlevelIteration": true,
 		"baseUrl": ".",
 	},
-	"include": ["./src/**/*", "./src/**/*.json", "./src/**/*.ejs"],
-	"exclude": ["node_modules", "dist", "src/**/*.js"]
+	"include": ["./src/**/*"],
+	"exclude": ["node_modules", "dist", "src/**/*.js"],
 }

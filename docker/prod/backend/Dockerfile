@@ -8,4 +8,6 @@ RUN npm install
 
 RUN npm run build
 
+RUN npm run postBuild
+
 EXPOSE 3000
