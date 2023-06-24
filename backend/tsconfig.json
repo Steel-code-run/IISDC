@@ -12,8 +12,7 @@
 		"isolatedModules": false,
 		"downlevelIteration": true,
 		"baseUrl": ".",
-
 	},
-	"include": ["./src/**/*"],
+	"include": ["./src/**/*", "./src/**/*.json", "./src/**/*.ejs"],
 	"exclude": ["node_modules", "dist", "src/**/*.js"]
 }
