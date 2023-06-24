@@ -47,7 +47,7 @@ export default async function accessingLog(req:CustomRequest, res:Request, next:
             const log = logs[i];
             ips.add(log.ip)
         }
-        if (ips.size > 0){
+        if (ips.size > 2){
             let description = `Пользователь ${req.user.name} зашел с ${ips.size} разных ip адресов`
 
             let type = accessing_logs_warnings_types.login_from_5_ip_addresses_in_60_minutes

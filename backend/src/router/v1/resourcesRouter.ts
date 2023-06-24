@@ -130,7 +130,7 @@ resourcesRouter.post('/v1/resources/update', async (req , res) => {
         .run(req);
 
     const errors = validationResult(req);
-    if (errors) {
+    if (!errors.isEmpty()) {
         return res.status(422).json({errors: errors});
     }
 

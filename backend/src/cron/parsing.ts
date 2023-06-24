@@ -200,7 +200,6 @@ const parse = async (parserId:number) => {
         job.isRunning = false;
     }
 
-    console.log(parser_data)
 }
 
 /**

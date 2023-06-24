@@ -20,6 +20,7 @@ import cronRouter from "./router/v1/cronRouter";
 import competionsRouter from "./router/v1/competionsRouter";
 import accessingLogsRouter from "./router/v1/acessingLogsRouter";
 import internshipsRouter from "./router/v1/internshipsRouter";
+import accessingLogsWarningsRouter from "./router/v1/accessingLogsWarningsRouter";
 
 dotenv.config();
 const app = express();
@@ -63,6 +64,7 @@ connect().then(async _ => {
 	app.use(cronRouter);
 	app.use(accessingLogsRouter);
 	app.use(internshipsRouter);
+	app.use(accessingLogsWarningsRouter);
 
 	// routes end
 
