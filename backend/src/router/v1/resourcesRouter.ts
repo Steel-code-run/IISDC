@@ -10,6 +10,9 @@ resourcesRouter.post('/v1/resources/get', async (req , res) => {
             where: req.body.where,
             skip: req.body.skip,
             take: req.body.take,
+            orderBy: req.body.orderBy || {
+                id: 'desc'
+            },
         })
         let resources_access_count = await prisma.resources_access.count({
             where: req.body.where,
