@@ -12,6 +12,12 @@ app.get('/', (req, res) => {
     res.send('Server start');
 });
 app.get('/parsers/:name/:page', async function (req , res){
+
+    if (!req.params.name || !req.params.page) {
+        res.status(403).send('false params' );
+    }
+    console.log(req.params)
+
     const {name, page} = req.params;
     const parsers = parsersParams ;
     const matchParser = parsers.filter((parser: any) => parser.name === name)?.[0];

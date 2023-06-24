@@ -55,12 +55,12 @@ export const parsersParams = [
         fileUrl: "tvoyhod",
         parserType: TParserType.nodejs
     },
-    // {
-    //     name: "cptgrantov",
-    //     url: "https://t.me/cptcptgrantov",
-    //     fileUrl: "cptgrantov",
-    //     parserType: TParserType.nodejs
-    // },
+    {
+        name: "cptgrantov",
+        url: "https://t.me/cptcptgrantov",
+        fileUrl: "cptgrantov",
+        parserType: TParserType.nodejs
+    },
     {
         name: "fadm.gov",
         url: "https://fadm.gov.ru/",
