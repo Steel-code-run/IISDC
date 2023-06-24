@@ -1,7 +1,7 @@
 import {CustomRequest} from "../../types/Express";
 import express, {Router, Express, Response} from "express";
 import prisma from "../../prisma/connect";
-import {check} from "express-validator";
+import {check, validationResult} from "express-validator";
 
 let resourcesRouter = Router();
 resourcesRouter.post('/v1/resources/get', async (req , res) => {
@@ -12,6 +12,9 @@ resourcesRouter.post('/v1/resources/get', async (req , res) => {
             take: req.body.take,
             orderBy: req.body.orderBy || {
                 id: 'desc'
+            },
+            include:{
+                role: true
             },
         })
         let resources_access_count = await prisma.resources_access.count({
@@ -110,4 +113,61 @@ resourcesRouter.post('/v1/resources/delete', async (req , res) => {
         return res.status(500).json({errors: [{msg: 'Ошибка удаления'}]});
     }
 });
+
+resourcesRouter.post('/v1/resources/update', async (req , res) => {
+    await check('id', 'Путь не может быть пустым')
+        .notEmpty()
+        .isNumeric()
+        .run(req);
+
+    await check('path', 'Путь не может быть пустым')
+        .notEmpty()
+        .run(req);
+
+    await check('role_id', 'Роль не может быть пустой')
+        .notEmpty()
+        .isNumeric()
+        .run(req);
+
+    const errors = validationResult(req);
+    if (errors) {
+        return res.status(422).json({errors: errors});
+    }
+
+    const role = await prisma.users_role.findUnique({
+        where: {
+            id: req.body.role_id
+        },
+    })
+
+    if (!role) {
+        return res.status(422).json({errors: [{msg: 'Роль не найдена'}]});
+    }
+
+    const data = {} as any
+    data["path"]= req.body.path;
+    data["id"]= req.body.id;
+
+    try {
+        await prisma.resources_access.update({
+            where: {
+                id: data.id
+            },
+            data: {
+                path: data.path,
+                role: {
+                    connect: {
+                        id: role.id
+                    }
+                }
+            }
+        })
+    }
+    catch (e) {
+        console.log(e);
+        return res.status(500).json({errors: [{msg: 'Ошибка обновления'}]});
+    }
+
+    res.json({msg: 'Обновлено'})
+})
 export default resourcesRouter;
