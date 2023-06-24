@@ -65,6 +65,9 @@ internshipsRouter.post('/v1/internships/', async (req, res) => {
         let internships:any = await prisma.internships.findMany({
             take: Number(req.body.take) || 10,
             skip: Number(req.body.skip) || 0,
+            orderBy: req.body.orderBy || {
+                id: 'desc'
+            },
             where: where
         })
         if (!extended) {

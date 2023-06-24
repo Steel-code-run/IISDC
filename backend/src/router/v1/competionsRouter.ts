@@ -65,6 +65,9 @@ competitionsRouter.post('/v1/competitions/', async (req, res) => {
         let competitions:any = await prisma.competitions.findMany({
             take: Number(req.body.take) || 10,
             skip: Number(req.body.skip) || 0,
+            orderBy: req.body.orderBy || {
+                id: 'desc'
+            },
             where: where
         })
         if (!extended) {
