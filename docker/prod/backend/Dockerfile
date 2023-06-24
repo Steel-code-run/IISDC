@@ -6,6 +6,8 @@ COPY ./backend/ /app
 
 RUN npm install
 
+RUN npm run prisma:migrate
+
 RUN npm run build
 
 RUN npm run postBuild
