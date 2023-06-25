@@ -12,6 +12,12 @@ export default async function(req: CustomRequest, res: express.Response, next: e
         }
     })
 
+    // если ресурс не описан - пропускаем
+    if (resourceAccess.length < 1){
+        next()
+        return
+    }
+
     if (resourceAccess.length > 0) {
         for (let i = 0; i < resourceAccess.length; i++) {
             const access = resourceAccess[i];
@@ -27,10 +33,6 @@ export default async function(req: CustomRequest, res: express.Response, next: e
         return res.status(403).json({errors: [{
             msg: 'У вас нет доступа к этому ресурсу'
             }]});
-    } else {
-        return res.status(403).json({errors: [{
-            msg: 'Ресурс не описан в защитной системе, или у вас нет доступа к нему'
-        }]});
     }
 
 }
