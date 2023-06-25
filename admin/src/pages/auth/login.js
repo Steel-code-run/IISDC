@@ -1,10 +1,9 @@
 import {useCallback, useState} from 'react';
 import Head from 'next/head';
-import NextLink from 'next/link';
 import {useRouter} from 'next/navigation';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {Alert, Box, Button, FormHelperText, Link, Stack, Tab, Tabs, TextField, Typography} from '@mui/material';
+import {Box, Button, Stack, TextField, Typography} from '@mui/material';
 import {useAuth} from 'src/hooks/use-auth';
 import {Layout as AuthLayout} from 'src/layouts/auth/layout';
 
@@ -30,8 +29,13 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await auth.signIn(values.name, values.password);
-        router.push('/customers');
+        const error = await auth.signIn(values.name, values.password);
+        console.log(error)
+        if(!error) {
+            router.push('/customers');
+        } else {
+            throw new Error(error)
+        }
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -87,21 +91,21 @@ const Page = () => {
               <Typography variant="h4">
                 Авторизация
               </Typography>
-              <Typography
-                color="text.secondary"
-                variant="body2"
-              >
-                Нет аккаунта?
-                &nbsp;
-                <Link
-                  component={NextLink}
-                  href="/auth/register"
-                  underline="hover"
-                  variant="subtitle2"
-                >
-                  Зарегистрироваться
-                </Link>
-              </Typography>
+              {/*<Typography*/}
+              {/*  color="text.secondary"*/}
+              {/*  variant="body2"*/}
+              {/*>*/}
+              {/*  Нет аккаунта?*/}
+              {/*  &nbsp;*/}
+              {/*  <Link*/}
+              {/*    component={NextLink}*/}
+              {/*    href="/auth/register"*/}
+              {/*    underline="hover"*/}
+              {/*    variant="subtitle2"*/}
+              {/*  >*/}
+              {/*    Зарегистрироваться*/}
+              {/*  </Link>*/}
+              {/*</Typography>*/}
             </Stack>
 
             {method === 'email' && (

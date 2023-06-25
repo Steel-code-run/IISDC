@@ -60,7 +60,7 @@ export const ArchiveTable = (props) => {
                                     Ссылка
                                 </TableCell>
                                 <TableCell align={'center'}>
-                                    Убрать из архив
+                                    Восстановить
                                 </TableCell>
                                 <TableCell align={'center'}>
                                     Удалить

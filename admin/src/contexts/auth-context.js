@@ -115,7 +115,9 @@ export const AuthProvider = (props) => {
             const authData = await login(name, password);
             const user = authData.user;
             window.sessionStorage.setItem('token', authData.token);
-            window.sessionStorage.setItem('id', user.id)
+            window.sessionStorage.setItem('id', user.id);
+            if(user.name !== 'admin')
+                return new Error('Пользователь не имеет необходимых прав')
 
             dispatch({
                 type: HANDLERS.SIGN_IN,
@@ -123,7 +125,7 @@ export const AuthProvider = (props) => {
             });
         } catch (err) {
             const error = err.response.data.errors
-            throw new Error(error[0].msg)
+            throw new Error(error[0].msg);
         }
 
     };

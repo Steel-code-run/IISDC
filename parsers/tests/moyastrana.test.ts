@@ -1,5 +1,5 @@
 import {callParser} from "../src";
-import {TParserResult, TPostType} from "../src/types";
+import {isCompetitionPost, isGrantPost, TParserResult, TPostType} from "../src/types";
 import {parserCallParamsFixture} from "./fixtures/parserCallParams";
 import {describe, expect, test} from '@jest/globals';
 
@@ -23,6 +23,15 @@ describe(parserFileUrl,()=>{
 
     test(":: have some posts",()=>{
         expect(data.length).toBeGreaterThan(0)
+    })
+    test(":: posts contains deadline", ()=>{
+        let hasDeadline = data.some((el)=>{
+            if(isGrantPost(el) || isCompetitionPost(el) ){
+
+                return el?.postDescription?.deadline
+            }
+        })
+        expect(true).toBe(hasDeadline)
     })
 
     test(":: all posts contains postType", ()=>{

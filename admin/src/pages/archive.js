@@ -14,6 +14,7 @@ import {
 import {useSnackbar} from "../hooks/use-snackbar";
 import {ArchiveTable} from "../sections/archive/archive-table";
 import {deleteGrant, getCountGrants, getGrants, updateGrant} from "../api/posts/grantsReq";
+import {getCountInternships, getInternships, updateInternship} from "../api/posts/internshipsReq";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -39,17 +40,17 @@ const Page = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
-    const configCompetitionRes = {
+    const config = {
         extended: true
     }
-    const whereCompetition = {
+    const where = {
         blackListed: true
     }
     const queryClient = useQueryClient()
 
     const {data: competitionsList, status, isLoading, isError: isErrorCompetition} = useQuery(
-        ['competitions', page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition], () =>
-            getCompetitions(page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition))
+        ['competitions', page * rowsPerPage, rowsPerPage, config, where], () =>
+            getCompetitions(page * rowsPerPage, rowsPerPage, config, where))
     const {data: countCompetitions  } = useQuery(['countCompetitions'], getCountCompetitions);
 
     const mutationUnarchiveCompetition = useMutation(
@@ -77,8 +78,8 @@ const Page = () => {
         });
 
     const {data: grantsList, status: statusGrants, isLoading: isLoadingGrants, isError: isErrorGrants} = useQuery(
-        ['grants', page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition], () =>
-            getGrants(page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition))
+        ['grants', page * rowsPerPage, rowsPerPage, config, where], () =>
+            getGrants(page * rowsPerPage, rowsPerPage, config, where))
     const {data: countGrants  } = useQuery(['countGrants'], getCountGrants);
 
     const mutationUnarchiveGrants = useMutation(
@@ -100,6 +101,35 @@ const Page = () => {
                 setOpenSnackbar(true)
                 setSnackbarData({
                     msg: 'Грант успешно удален',
+                    type: 'success'
+                })
+            }
+        });
+
+    const {data: internshipsList, status: statusInternships, isLoading: isLoadingInternships, isError: isErrorInternships} = useQuery(
+        ['grants', page * rowsPerPage, rowsPerPage, config, where], () =>
+            getInternships(page * rowsPerPage, rowsPerPage, config, where))
+    const {data: countInternships  } = useQuery(['countInternships'], getCountInternships);
+
+    const mutationUnarchiveInternships = useMutation(
+        (archiveData) => updateInternship(archiveData), {
+            onSuccess: () => {
+                queryClient.invalidateQueries(["internships"]);
+                setOpenSnackbar(true)
+                setSnackbarData({
+                    msg: 'Стажировка убрана в архив',
+                    type: 'success'
+                })
+            }
+        })
+
+    const mutationDeleteInternships = useMutation(
+        (delInterId) => deleteInternships(delInterId), {
+            onSuccess: () => {
+                queryClient.invalidateQueries(["internships"]);
+                setOpenSnackbar(true)
+                setSnackbarData({
+                    msg: 'Стажировка успешно удалена',
                     type: 'success'
                 })
             }
@@ -207,6 +237,42 @@ const Page = () => {
                                                     animation="wave"
                                                     width={'100%'} height={400}/>
                                         : <p>Количество конкурсов в архиве равно 0</p>
+                            }
+                        </Stack>
+                    }
+                    {
+                        !isErrorInternships &&
+                        <Stack spacing={3} marginTop={10}>
+                            <Stack
+                                direction="row"
+                                justifyContent="space-between"
+                                spacing={4}
+                            >
+                                <Stack spacing={1}>
+                                    <Typography variant="h4">
+                                        Архив стажировок
+                                    </Typography>
+
+                                </Stack>
+
+                            </Stack>
+                            {/*<CustomersSearch/>*/}
+                            {
+                                (status === "success" && internshipsList?.length > 0) ?
+                                    <ArchiveTable
+                                        count={countInternships || 0}
+                                        items={internshipsList}
+                                        onPageChange={handlePageChange}
+                                        onRowsPerPageChange={handleRowsPerPageChange}
+                                        page={page}
+                                        rowsPerPage={rowsPerPage}
+                                        deleteRowHandle={mutationDeleteInternships.mutate}
+                                        unarchiveHandle={mutationUnarchiveInternships.mutate}
+                                    /> : (status === "loading" && internshipsList?.length > 0)
+                                        ? <Skeleton variant="rounded"
+                                                    animation="wave"
+                                                    width={'100%'} height={400}/>
+                                        : <p>Количество стажировок в архиве равно 0</p>
                             }
                         </Stack>
                     }

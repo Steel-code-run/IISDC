@@ -2,7 +2,7 @@ import axios from "axios";
 import {defaultHeaders, serverUrl} from "../../config/apiConfig";
 
 export const getInternships = async (skip, take, config, where ={}) => {
-    const res = await axios.post(`${serverUrl}v1/internships/`,
+    const res = await axios.post(`${serverUrl}v1/internships`,
         {
             skip,
             take,
@@ -29,7 +29,7 @@ export const getCountInternships = async () => {
 }
 
 export const deleteInternship = async (id) => {
-    const res = await axios.delete(`${serverUrl}v1/internships/`, {
+    const res = await axios.delete(`${serverUrl}v1/internships`, {
         data: {
             id
         },
@@ -40,7 +40,7 @@ export const deleteInternship = async (id) => {
 
 export const updateInternship = async (updateData) => {
     try {
-        const res = await axios.patch(`${serverUrl}v1/internships/`,
+        const res = await axios.patch(`${serverUrl}v1/internships`,
             {
                 ...updateData
             },{
