@@ -200,7 +200,6 @@ const parse = async (parserId:number) => {
         job.isRunning = false;
     }
 
-    console.log(parser_data)
 }
 
 /**
@@ -215,6 +214,7 @@ const parsePage = async (
 ) => {
     axios.get(process.env.PARSERS_URL! + "/parsers/"+parser.name+"/"+page)
         .then(async response => {
+            let successAddInDb = false;
 
             for (const post of response.data) {
                 const postType = post.postType
@@ -286,6 +286,7 @@ const parsePage = async (
                     })
 
                     await sendPostByType(post)
+                    successAddInDb = true
 
                 }
 
@@ -346,6 +347,8 @@ const parsePage = async (
                     let post = await prisma.competitions.create({data})
 
                     await sendPostByType(post)
+                    successAddInDb = true
+
                 }
 
                 if (postType === 'vacancy') {
@@ -391,6 +394,8 @@ const parsePage = async (
                     data.parser_id = parser.id
 
                     await prisma.vacancies.create({data})
+                    successAddInDb = true
+
                 }
 
                 if (postType === 'internship') {
@@ -426,6 +431,11 @@ const parsePage = async (
                     if (internship.dateCreationPost)
                         data.dateCreationPost = internship.dateCreationPost
 
+                    data.parser_id = parser.id
+
+                    await prisma.internships.create({data})
+
+                    successAddInDb = true
                 }
           }
             // Если постов больше > 0, обновляем время последнего парсинга
@@ -436,6 +446,19 @@ const parsePage = async (
                     },
                     data:{
                         lastSuccessParse: new Date()
+                    }
+                })
+            }
+
+            // Если был хотя бы один успешно добавленный пост,
+            // то обновляем время последнего успешного добавления
+            if (successAddInDb) {
+                await prisma.parsers.update({
+                    where:{
+                        id:parser.id
+                    },
+                    data:{
+                        lastSuccessAdd: new Date()
                     }
                 })
             }

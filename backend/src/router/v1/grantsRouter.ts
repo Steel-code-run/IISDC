@@ -86,6 +86,9 @@ grantsRouter.post('/v1/grants/', async (req, res) => {
         let grants:any = await prisma.grants.findMany({
             take: Number(req.body.take) || 10,
             skip: Number(req.body.skip) || 0,
+            orderBy: req.body.orderBy || {
+              id: 'desc'
+            },
             where: where
         })
         if (!extended) {
@@ -118,7 +121,10 @@ grantsRouter.post('/v1/grants/count', async (req, res) => {
 
         try {
             let count = await prisma.grants.count({
-                where: where
+                where: where,
+                orderBy: req.body.orderBy || {
+                    id: 'desc'
+                },
             })
             return res.status(200).json(count);
         } catch (e){

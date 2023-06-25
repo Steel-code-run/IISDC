@@ -10,6 +10,7 @@
         "prisma:generate": "prisma generate",
         "prisma:seed": "ts-node ./src/fillDataBaseDefaultValues.ts",
         "build": "tsc",
+        "postBuild": "cp -r src/views dist/views && cp -r src/public dist/public",
         "start": "node dist/app.js"
     },
     "author": "",

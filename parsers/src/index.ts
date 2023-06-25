@@ -7,8 +7,6 @@ import {isTParserResult} from "./types/src/typeGuards";
 
 const execPromise = util.promisify(exec);
 const callNodeTsParser = (params:TParserCallParams): Promise<TParserResult> => {
-	// console.log(process.env.NODE_ENV)
-
 	let execString;
 	try {
 		execString = `node  ${path.join(__dirname,"node",params.parser.fileUrl)}`
@@ -26,17 +24,10 @@ const callNodeTsParser = (params:TParserCallParams): Promise<TParserResult> => {
 	})
 };
 
-// const callPythonParser: TCallParser = (params):TParserResult => {
-//
-//
-// }
-
 export const callParser = async (params:TParserCallParams): Promise<TParserResult> => {
 	switch (params.parser.parserType) {
 		case TParserType.nodejs:
 			return callNodeTsParser(params);
-		// case TParserTypes.python:
-		//     return callPythonParser(params);
 		default:
 			throw new Error('Unknown parser type');
 	}

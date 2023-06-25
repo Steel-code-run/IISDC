@@ -94,7 +94,8 @@ model users {
   User_telegram_settings   users_telegram_settings? @relation(fields: [user_telegram_settingsId], references: [id], onDelete: Cascade)
   user_telegram_settingsId Int?
 
-  users_telegramsId String?
+  users_telegramsId      String?
+  accessing_logs_warnigs accessing_logs_warnings[]
 }
 
 model users_telegram_settings {
@@ -152,18 +153,18 @@ model resources_access {
 }
 
 model parsers {
-  id             Int             @id @unique @default(autoincrement())
-  name           String
-  description    String?
-  isEnabled      Boolean
-  grant          grants[]
-  competition    competitions[]
-  parsing_queue  parsing_queue[]
-  pagesToParse   Int
-  cronTime       String?
-  lastSuccessAdd DateTime?
+  id               Int             @id @unique @default(autoincrement())
+  name             String
+  description      String?
+  isEnabled        Boolean
+  grant            grants[]
+  competition      competitions[]
+  parsing_queue    parsing_queue[]
+  pagesToParse     Int
+  cronTime         String?
+  lastSuccessAdd   DateTime?
   lastSuccessParse DateTime?
-  internships    internships[]
+  internships      internships[]
   vacancies        vacancies[]
 }
 
@@ -184,4 +185,14 @@ model telegram_commands {
   id    Int      @id @unique @default(autoincrement())
   query String   @db.VarChar(255)
   TTL   DateTime
+}
+
+model accessing_logs_warnings {
+  id          Int      @id @unique @default(autoincrement())
+  user        users?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int?
+  date        DateTime
+  description String
+  type        String
+  isSolved    Boolean  @default(false)
 }
