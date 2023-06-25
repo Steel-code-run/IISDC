@@ -8,15 +8,13 @@ const AuthGuardWrap = (props) => {
 
     const path = useLocation();
     const navigate = useNavigate()
-    const {isAuthenticated, user} = useAuthContext();
+    const {isAuthenticated} = useAuthContext();
     const ignore = useRef(false);
     const [checked, setChecked] = useState(false);
 
     // Only do authentication check on component mount.
     // This flow allows you to manually redirect the user after sign-out, otherwise this will be
     // triggered and will automatically redirect to sign-in page.
-
-    console.log(user)
 
     useEffect(
         () => {

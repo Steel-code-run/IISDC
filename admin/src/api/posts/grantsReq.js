@@ -22,7 +22,9 @@ export const getCountGrants = async () => {
         skip: 0,
         take: 0
     }, {
-        ...defaultHeaders
+         headers: {
+                ...defaultHeaders
+    }
     })
 
     return res.data

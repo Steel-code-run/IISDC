@@ -108,8 +108,8 @@ const PopupAddUser = ({isOpen, setIsOpen}) => {
                                         field.onChange(e.target.value);
                                     }}
                                 >
-                                    <MenuItem value={2}>Админ</MenuItem>
-                                    <MenuItem value={3}>Пользователь</MenuItem>
+                                    <MenuItem value={17}>Админ</MenuItem>
+                                    <MenuItem value={18}>Пользователь</MenuItem>
                                 </Select>
                             )}
                         />

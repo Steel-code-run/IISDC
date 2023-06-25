@@ -116,7 +116,7 @@ export const AuthProvider = (props) => {
             const user = authData.user;
             window.sessionStorage.setItem('token', authData.token);
             window.sessionStorage.setItem('id', user.id);
-            if(user.name !== 'admin')
+            if(user.roleId !== 17)
                 return new Error('Пользователь не имеет необходимых прав')
 
             dispatch({

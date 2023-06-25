@@ -8,14 +8,19 @@ export const getParsers = async (skip, take) => {
             skip,
             take
         }, {
-        ...defaultHeaders
-    })
+            headers: {
+
+                ...defaultHeaders
+            }
+        })
     return res.data
 }
 
 export const getCountParsers = async () => {
-    const res =  await axios.post(`${serverUrl}v1/parsers/count`, {}, {
-        ...defaultHeaders
+    const res = await axios.post(`${serverUrl}v1/parsers/count`, {}, {
+         headers: {
+                ...defaultHeaders
+    }
     })
     return res.data.count
 }
@@ -24,22 +29,26 @@ export const updateParsers = async (updateData) => {
 
     try {
 
-        const res =  await axios.patch(`${serverUrl}v1/parsers`, {
+        const res = await axios.patch(`${serverUrl}v1/parsers`, {
             ...updateData
 
         }, {
-            ...defaultHeaders
+             headers: {
+                ...defaultHeaders
+    }
         })
         return res.data
-    } catch(err) {
+    } catch (err) {
         return err.data
     }
 
 }
 
 export const getParsingSettings = async () => {
-    const res =  await axios.post(`${serverUrl}v1/settings`, {}, {
-        ...defaultHeaders
+    const res = await axios.post(`${serverUrl}v1/settings`, {}, {
+         headers: {
+                ...defaultHeaders
+    }
     })
     return res.data
 }
@@ -49,7 +58,9 @@ export const updateParsingSettings = async (updateData) => {
     const res = await axios.post(`${serverUrl}v1/settings/update`, {
         ...updateData
     }, {
-        ...defaultHeaders
+         headers: {
+                ...defaultHeaders
+    }
     })
     return res.data
 }

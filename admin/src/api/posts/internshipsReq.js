@@ -22,7 +22,9 @@ export const getCountInternships = async () => {
         skip: 0,
         take: 0
     }, {
-        ...defaultHeaders
+         headers: {
+                ...defaultHeaders
+    }
     })
 
     return res.data
