@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import {
+    Alert, AlertTitle,
     Avatar,
     Badge,
-    Box,
+    Box, Button,
     IconButton,
     Popover,
     Stack,
@@ -16,6 +17,8 @@ import {AccountPopover} from './account-popover';
 import {alpha} from "@mui/material/styles";
 import {Bars3Icon, BellIcon} from "@heroicons/react/24/solid";
 import {useState} from "react";
+import {useQuery} from "@tanstack/react-query";
+import {getWarnings} from "../../api/logsReq";
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
@@ -34,9 +37,11 @@ export const TopNav = (props) => {
     const handleClosePopupNotif = () => {
         setAnchorEl(null);
     };
+    const {data: warnings, status, error} = useQuery(['warnings'], getWarnings);
 
     const open = Boolean(anchorEl);
     const id = open ? 'id-notif' : undefined;
+
 
     return (
         <>
@@ -104,7 +109,7 @@ export const TopNav = (props) => {
                                         aria-describedby={id}>
                                 <Badge
                                     badgeContent={4}
-                                    color="success"
+                                    color={(warnings?.logs?.length > 0) ? 'error': 'default'}
                                     variant="dot"
                                 >
                                     <SvgIcon fontSize="small">
@@ -123,7 +128,22 @@ export const TopNav = (props) => {
                                 horizontal: 'left',
                             }}
                         >
-                            <Typography sx={{p: 2}}>The content of the Popover.</Typography>
+                            {
+                                warnings?.logs?.length > 0 && warnings?.logs?.map(err => {
+                                    return (
+                                        <Alert
+                                            action={
+                                                <Button color="inherit" size="small">
+                                                    Скрыть
+                                                </Button>
+                                            }
+                                            severity="error">
+                                            <AlertTitle>Внимание!</AlertTitle>
+                                            {err.description}
+                                        </Alert>
+                                    )
+                                })
+                            }
                         </Popover>
                         <Avatar
                             onClick={accountPopover.handleOpen}

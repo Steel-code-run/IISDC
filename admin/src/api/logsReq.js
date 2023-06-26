@@ -9,9 +9,32 @@ export const getLogs = async (skip, take, orderBy, where) => {
         where,
         orderBy
     }, {
-         headers: {
-                ...defaultHeaders
-    }
+        headers: {
+            ...defaultHeaders
+        }
+    })
+    return res.data
+}
+
+export const getWarnings = async () => {
+    const res = await axios.post(`${serverUrl}v1/accessing-logs/warnings`, {
+        where: {
+            isSolved: false
+        }
+    }, {
+        headers: defaultHeaders
+    })
+    return res.data
+}
+
+export const updateWarnings = async ({id, isSolved}) => {
+    const res = await axios.post(`${serverUrl}v1/accessing-logs/warnings/update`, {
+        id,
+        data: {
+            isSolved
+        }
+    }, {
+        headers: defaultHeaders
     })
     return res.data
 }

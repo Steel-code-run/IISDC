@@ -2,6 +2,7 @@ import {createContext, useContext, useEffect, useReducer, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {login} from "../api/authRequests";
 import {responseUser} from "../api/userReq";
+import {getRoles} from "../api/rolesReq";
 
 const HANDLERS = {
     INITIALIZE: 'INITIALIZE',
@@ -114,11 +115,11 @@ export const AuthProvider = (props) => {
         try {
             const authData = await login(name, password);
             const user = authData.user;
+            const roleName = (await getRoles()).find(item => item.id === user.roleId).name;
+            if(roleName !== 'admin')
+                return new Error('Пользователь не имеет необходимых прав')
             window.sessionStorage.setItem('token', authData.token);
             window.sessionStorage.setItem('id', user.id);
-            if(user.roleId !== 17)
-                return new Error('Пользователь не имеет необходимых прав')
-
             dispatch({
                 type: HANDLERS.SIGN_IN,
                 payload: user

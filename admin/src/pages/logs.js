@@ -4,7 +4,8 @@ import {Box, Container, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {LogsTable} from "../sections/logs/logs-table";
-import {getLogs} from "../api/logsReq";
+import {getLogs, getWarnings} from "../api/logsReq";
+import {WarningsTable} from "../sections/logs/warnings-table";
 
 const Page = () => {
     const [page, setPage] = useState(0);
@@ -22,6 +23,8 @@ const Page = () => {
     const {data: logs, status, isLoading, isError } =
         useQuery(['logs', page*rowsPerPage, rowsPerPage, orderBy, where],
             () => getLogs(page*rowsPerPage, rowsPerPage, orderBy, where));
+
+    const {data: warnings, status: statusWarn, error} = useQuery(['warnings'], getWarnings);
 
     const handlePageChange = useCallback(
         (event, value) => {
@@ -91,6 +94,40 @@ const Page = () => {
                             />
                         }
                     </Stack>
+                    <Stack spacing={3} marginTop={'40px'}>
+                        <Stack
+                            direction="row"
+                            justifyContent="space-between"
+                            spacing={4}
+                        >
+                            <Stack spacing={1}>
+                                <Typography variant="h4">
+                                    Предупреждения
+                                </Typography>
+                                <Stack
+                                    alignItems="center"
+                                    direction="row"
+                                    spacing={1}
+                                >
+
+                                </Stack>
+                            </Stack>
+
+                        </Stack>
+                        {
+                            (statusWarn === "success" && warnings?.logs?.length > 0) &&
+                            <WarningsTable
+                                count={warnings?.count || 0}
+                                items={warnings?.logs}
+                                onPageChange={handlePageChange}
+                                onRowsPerPageChange={handleRowsPerPageChange}
+                                page={page}
+                                rowsPerPage={rowsPerPage}
+                            />
+                        }
+                    </Stack>
+
+
                 </Container>
             </Box>
 
