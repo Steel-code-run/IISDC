@@ -52,7 +52,6 @@ const handlers = {
     [HANDLERS.INITIALIZE]: (state: any, action: ActionType) => {
         const user = action.payload;
 
-        console.log(action)
         return {
             ...state,
             ...(
@@ -72,7 +71,6 @@ const handlers = {
     [HANDLERS.SIGN_IN]: (state: any, action: ActionType) => {
         const user = action.payload;
 
-        console.log(state)
         return {
             ...state,
             isAuthenticated: true,
@@ -80,7 +78,6 @@ const handlers = {
         };
     },
     [HANDLERS.SIGN_OUT]: (state: any) => {
-        console.log(state)
         return {
             ...state,
             isAuthenticated: false,

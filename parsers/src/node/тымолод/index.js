@@ -30,9 +30,6 @@ async function getPosts(page)  {
         if (postType === 'grant') {
             const additionalPage = await getHTML(link);
             const fullText = getDataBySelector(additionalPage.window.document, querySelectors.fullText);
-
-
-
             const deadline = getDataBySelector(additionalPage.window.document, querySelectors.fullText, fullTextRegExp.deadline);
             const directionForSpent = getDataBySelector(additionalPage.window.document, querySelectors.fullText, fullTextRegExp.directionForSpent);
             const summary = getDataBySelector(additionalPage.window.document, querySelectors.fullText, fullTextRegExp.summary);

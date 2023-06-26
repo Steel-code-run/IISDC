@@ -1,4 +1,4 @@
-export const token = window.sessionStorage.getItem('token')
+export const token = (typeof window !== "undefined") ? window.sessionStorage.getItem('token') : ''
 
 export const defaultHeaders = {
     Authorization: 'Bearer ' + token

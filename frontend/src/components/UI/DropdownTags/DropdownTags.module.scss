@@ -62,7 +62,7 @@
     height: fit-content;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    border: 3px solid #9D9BCA;
+    border: 3px solid #FF963C;
     background-color: #fff;
     z-index: 2;
     overflow-y: scroll;
@@ -72,7 +72,7 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      background: #9D9BCA;
+      background: #FF963C;
 
       border-radius: 5px;
     }
@@ -85,14 +85,14 @@
       flex-wrap: wrap;
       gap: 10px 10px;
       padding: 10px;
-      border-bottom: 3px solid #9D9BCA;
-      border-right: 3px solid #9D9BCA;
+      border-bottom: 3px solid #FF963C;
+      border-right: 3px solid #FF963C;
     }
 
   }
   &__activeDropdownBorders {
     border-radius: 10px 10px 0 0;
-    border: 3px solid #9D9BCA;
+    border: 3px solid #FF963C;
   }
 
   &__input {
@@ -107,7 +107,7 @@
     &__direction {
       position: relative;
       padding: 2px 0 4px 10px;
-      border-right: 3px solid #9D9BCA;
+      border-right: 3px solid #FF963C;
 
     }
 
@@ -116,14 +116,14 @@
       position: absolute;
       width: calc(100% + 20px);
       height: 3px;
-      background-color: #9D9BCA;
+      background-color: #FF963C;
       bottom: -2px;
       left: -20px;
     }
   }
 
   &__highlightField {
-    border: 3px solid #9D9BCA;
+    border: 3px solid #FF963C;
   }
 }
 

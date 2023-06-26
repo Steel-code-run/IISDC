@@ -21,8 +21,7 @@ async function getPosts(page)  {
         rejectUnauthorized: false, // (NOTE: this will disable client verification)
         passphrase: "YYY"
     })
-    const postsOnPage = await
-    axios.get(url +"&offset=" + (page-1)*10,{
+    const postsOnPage = await axios.get(url +"&offset=" + (page-1)*10,{
         httpsAgent
     })
     .then((res)=>{
@@ -36,6 +35,7 @@ async function getPosts(page)  {
             }
         }
     })
+    //console.log(postsOnPage)
 
 
     for (let i = 0; i < postsOnPage.length; i++) {

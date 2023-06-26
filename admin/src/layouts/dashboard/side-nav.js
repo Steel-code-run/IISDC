@@ -3,7 +3,6 @@ import {usePathname} from 'next/navigation';
 import PropTypes from 'prop-types';
 import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
 import {Box, Divider, Drawer, Stack, SvgIcon, Typography, useMediaQuery} from '@mui/material';
-import {Logo} from 'src/components/logo';
 import {Scrollbar} from 'src/components/scrollbar';
 import {items} from './config';
 import {SideNavItem} from './side-nav-item';
@@ -43,7 +42,7 @@ export const SideNav = (props) => {
               width: 32
             }}
           >
-            <Logo />
+            {/*<Logo />*/}
           </Box>
           <Box
             sx={{

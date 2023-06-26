@@ -5,7 +5,7 @@ import {Router} from "express";
 
 const rolesRouter = Router();
 
-rolesRouter.post('/v1/roles', async (req, res) => {
+rolesRouter.post('/v1/roles/create', async (req, res) => {
 
     await check('name', 'Имя должно быть не менее 4 символов')
         .isLength({min:4})

@@ -32,12 +32,12 @@ export const PostsTable = (props) => {
 
     const defineLinkPost = (type, id) => {
         switch (type) {
-            case 'grants':
+            case 'grant':
                 return `/grant/${id}`;
-            case 'competitions':
-                return `/competitions/${id}`;
-            case 'internships':
-                return `/internships/${id}`;
+            case 'competition':
+                return `/competition/${id}`;
+            case 'internship':
+                return `/internship/${id}`;
             default:
                 return '/'
         }

@@ -213,8 +213,8 @@ export const ParsersTable = (props) => {
 
                                         </TableCell>
                                         <TableCell>
-                                            {(parser.lastSuccessAdd)
-                                                ? formatDateTime(new Date(parser.lastSuccessAdd))
+                                            {(parser.lastSuccessParse)
+                                                ? formatDateTime(new Date(parser.lastSuccessParse))
                                                 : ''}
                                         </TableCell>
 
