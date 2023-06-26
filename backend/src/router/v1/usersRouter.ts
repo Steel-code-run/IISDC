@@ -245,6 +245,9 @@ usersRouter.post(base_url+'/login', async (req:CustomRequest, res:any) => {
             where: {
                 name: req.body.name,
                 password: md5(req.body.password)
+            },
+            include: {
+                role: true,
             }
         })
     } catch (e) {
