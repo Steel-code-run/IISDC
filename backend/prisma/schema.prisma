@@ -155,7 +155,7 @@ model resources_access {
 
 model parsers {
   id               Int             @id @unique @default(autoincrement())
-  name             String
+  name             String @unique
   description      String?
   isEnabled        Boolean
   grant            grants[]

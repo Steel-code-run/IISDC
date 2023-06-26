@@ -302,3 +302,23 @@ export const parsersParams = [
         parserType: TParserType.nodejs
     }
 ]
+
+// CREATE SQL QUERIES
+
+/*
+// ['fasie', 'guap.ru', 'integraciya', 'RSCI', 'minobrnauki', 'rb.ru', 'rcfoundation',
+'sowa-ru', 'tvoyhod', 'cptgrantov', 'fadm.gov', 'oreluniver', 'rsv', 'vsekonkursy',
+'eee-science', 'fond_culture', 'president_grants', 'docs.edu.gov', 'skyconf', 'sdtech',
+'itonecup', 'konkurs.rcfoundation', 'premia.myvmeste', 'moyastrana', 'world-it-planet',
+'chemeco', 'basis-foundation', 'case-in', 'generation-startup', 'gnesin-academy', 'iclrc',
+'steel2real', 'prlib', 'imoscow', 'bfsistema', 'inno-media', 'project.lanbook', 'rscf',
+'ruseasons', 'sberstudent', 'start.kontur', 'smallhomeland', 'tyvigre', 'fondpotanin',
+'komissarov-foundation', 'get-investor', 'tymolod', 'allfest', 'welcomecup', 'digitalwind']
+
+INSERT INTO `parser`.`parser` (`name`, `isEnabled`, `pagesToParse`, `cronTime`) VALUES ('fasie', '1', '1', '10 5 12 * * *');
+INSERT INTO `parser`.`parser` (`name`, `isEnabled`, `pagesToParse`, `cronTime`) VALUES ('guap.ru', '1', '1', '10 10 12 * * *');
+INSERT INTO `parser`.`parser` (`name`, `isEnabled`, `pagesToParse`, `cronTime`) VALUES ('integraciya', '1', '1', '10 15 12 * * *');
+INSERT INTO `parser`.`parser` (`name`, `isEnabled`, `pagesToParse`, `cronTime`) VALUES ('RSCI', '1', '1', '10 10 12 * * *');
+
+
+ */
