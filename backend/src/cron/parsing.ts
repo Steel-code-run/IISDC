@@ -316,198 +316,198 @@ const parsePage = async (
                 }
 
 
-                // if (postType === 'competition') {
-                //     let competition:Competition = postDescription
-                //
-                //     // Если конкурс есть в базе, то не добавляем его и вызываем ошибку
-                //     const competition_in_db = await prisma.competitions.findFirst({
-                //         where: {
-                //             namePost: competition.namePost,
-                //         }
-                //     })
-                //     if (competition_in_db) {
-                //         console.log('competition already exist')
-                //         return new Error('competition already exist')
-                //     }
-                //
-                //     // Если конкурса нет в базе, то добавляем его
-                //     const data:any = {
-                //         namePost: competition.namePost,
-                //         timeOfParse: new Date(),
-                //     }
-                //
-                //     if (competition.summary)
-                //         data.summary = competition.summary
-                //     if (competition.fullText)
-                //         data.fullText = competition.fullText
-                //     if (competition.deadline){
-                //         let deadline:Date|null = null
-                //         if (competition.deadline)
-                //             deadline = new Date(competition.deadline)
-                //         if (deadline === null)
-                //             return
-                //         // если дату не удалось перевести, то оставляем null
-                //         if (deadline.toString() === 'Invalid Date')
-                //             deadline = null
-                //     }
-                //     if (competition.link)
-                //         data.link = competition.link
-                //     if (competition.linkPDF)
-                //         data.linkPDF = JSON.stringify(competition.linkPDF)
-                //     if (competition.sourceLink)
-                //         data.sourceLink = competition.sourceLink
-                //     if (competition.directionForSpent)
-                //         data.directionForSpent = competition.directionForSpent
-                //     if (competition.organization)
-                //         data.organization = competition.organization
-                //
-                //     try {
-                //         if (competition.fullText)
-                //             data.directions = await openai.getDirectionsFromText(competition.fullText)
-                //         else
-                //             data.directions = []
-                //     } catch (e) {
-                //         console.log(e?.response.data.error);
-                //         data.directions = []
-                //     }
-                //
-                //     if (competition.dateCreationPost)
-                //         try {
-                //             data.dateCreationPost = new Date(competition.dateCreationPost)
-                //         } catch (e) {}
-                //
-                //     data.directions = JSON.stringify(data.directions)
-                //
-                //     data.parser_id = parser.id
-                //
-                //     if (!data.deadline){
-                //         try {
-                //             if (competition.fullText)
-                //                 data.deadline = await openai.getDeadlineFromText(competition.fullText)
-                //         } catch (e) {
-                //             if (e?.response?.data?.error)
-                //                 console.log(e?.response.data.error);
-                //         }
-                //     }
-                //
-                //     let post = await prisma.competitions.create({data})
-                //
-                //     await sendPostByType(post)
-                //     successAddInDb = true
-                //
-                // }
+                if (postType === 'competition') {
+                    let competition:Competition = postDescription
 
-                // if (postType === 'vacancy') {
-                //     let vacancy:Vacancy = postDescription
-                //
-                //     // Если вакансия есть в базе, то не добавляем ее и вызываем ошибку
-                //     const vacancy_in_db = await prisma.vacancies.findFirst({
-                //         where: {
-                //             namePost: vacancy.namePost,
-                //         }
-                //     })
-                //     if (vacancy_in_db) {
-                //         console.log('vacancy already exist')
-                //         return new Error('vacancy already exist')
-                //     }
-                //
-                //     // Если вакансии нет в базе, то добавляем ее
-                //     const data:any = {
-                //         namePost: vacancy.namePost,
-                //         timeOfParse: new Date(),
-                //     }
-                //
-                //     if (vacancy.summary)
-                //         data.summary = vacancy.summary
-                //     if (vacancy.fullText)
-                //         data.fullText = vacancy.fullText
-                //     if (vacancy.link)
-                //         data.link = vacancy.link
-                //     if (vacancy.linkPDF)
-                //         data.linkPDF = JSON.stringify(vacancy.linkPDF)
-                //     if (vacancy.sourceLink)
-                //         data.sourceLink = vacancy.sourceLink
-                //     if (vacancy.organization)
-                //         data.organization = vacancy.organization
-                //
-                //     try {
-                //         if (vacancy.fullText)
-                //             data.directions = await openai.getDirectionsFromText(vacancy.fullText)
-                //         else
-                //             data.directions = []
-                //     } catch (e) {
-                //         console.log(e?.response.data.error);
-                //         data.directions = []
-                //     }
-                //     if (vacancy.dateCreationPost)
-                //         try {
-                //             data.dateCreationPost = new Date(vacancy.dateCreationPost)
-                //         } catch (e) {}
-                //
-                //     data.directions = JSON.stringify(data.directions)
-                //
-                //     data.parser_id = parser.id
-                //
-                //     await prisma.vacancies.create({data})
-                //     successAddInDb = true
-                //
-                // }
+                    // Если конкурс есть в базе, то не добавляем его и вызываем ошибку
+                    const competition_in_db = await prisma.competitions.findFirst({
+                        where: {
+                            namePost: competition.namePost,
+                        }
+                    })
+                    if (competition_in_db) {
+                        console.log('competition already exist')
+                        return new Error('competition already exist')
+                    }
 
-                // if (postType === 'internship') {
-                //     let internship:Internship = postDescription
-                //
-                //     // Если стажировка есть в базе, то не добавляем ее и вызываем ошибку
-                //     const internship_in_db = await prisma.internships.findFirst({
-                //         where: {
-                //             namePost: internship.namePost,
-                //         }
-                //     })
-                //     if (internship_in_db) {
-                //         console.log('internship already exist')
-                //         return new Error('internship already exist')
-                //     }
-                //
-                //     // Если стажировки нет в базе, то добавляем ее
-                //     const data:any = {
-                //         namePost: internship.namePost,
-                //         timeOfParse: new Date(),
-                //     }
-                //
-                //     if (internship.fullText)
-                //         data.fullText = internship.fullText
-                //     if (internship.link)
-                //         data.link = internship.link
-                //     if (internship.linkPDF)
-                //         data.linkPDF = JSON.stringify(internship.linkPDF)
-                //     if (internship.sourceLink)
-                //         data.sourceLink = internship.sourceLink
-                //     if (internship.organization)
-                //         data.organization = internship.organization
-                //     if (internship.dateCreationPost)
-                //         try {
-                //             data.dateCreationPost = new Date(internship.dateCreationPost)
-                //         } catch (e) {}
-                //
-                //     data.parser_id = parser.id
-                //
-                //
-                //     try {
-                //         if (internship.fullText)
-                //             data.directions = await openai.getDirectionsFromText(internship.fullText)
-                //         else
-                //             data.directions = []
-                //     } catch (e) {
-                //         console.log(e?.response.data.error);
-                //         data.directions = []
-                //     }
-                //
-                //     data.directions = JSON.stringify(data.directions)
-                //
-                //
-                //     await prisma.internships.create({data})
-                //
-                //     successAddInDb = true
-                // }
+                    // Если конкурса нет в базе, то добавляем его
+                    const data:any = {
+                        namePost: competition.namePost,
+                        timeOfParse: new Date(),
+                    }
+
+                    if (competition.summary)
+                        data.summary = competition.summary
+                    if (competition.fullText)
+                        data.fullText = competition.fullText
+                    if (competition.deadline){
+                        let deadline:Date|null = null
+                        if (competition.deadline)
+                            deadline = new Date(competition.deadline)
+                        if (deadline === null)
+                            return
+                        // если дату не удалось перевести, то оставляем null
+                        if (deadline.toString() === 'Invalid Date')
+                            deadline = null
+                    }
+                    if (competition.link)
+                        data.link = competition.link
+                    if (competition.linkPDF)
+                        data.linkPDF = JSON.stringify(competition.linkPDF)
+                    if (competition.sourceLink)
+                        data.sourceLink = competition.sourceLink
+                    if (competition.directionForSpent)
+                        data.directionForSpent = competition.directionForSpent
+                    if (competition.organization)
+                        data.organization = competition.organization
+
+                    try {
+                        if (competition.fullText)
+                            data.directions = get3DirectionsByText(competition.fullText)
+                        else
+                            data.directions = []
+                    } catch (e) {
+                        console.log(e?.response.data.error);
+                        data.directions = []
+                    }
+
+                    if (competition.dateCreationPost)
+                        try {
+                            data.dateCreationPost = new Date(competition.dateCreationPost)
+                        } catch (e) {}
+
+                    data.directions = JSON.stringify(data.directions)
+
+                    data.parser_id = parser.id
+
+                    // if (!data.deadline){
+                    //     try {
+                    //         if (competition.fullText)
+                    //             data.deadline = await openai.getDeadlineFromText(competition.fullText)
+                    //     } catch (e) {
+                    //         if (e?.response?.data?.error)
+                    //             console.log(e?.response.data.error);
+                    //     }
+                    // }
+
+                    let post = await prisma.competitions.create({data})
+
+                    await sendPostByType(post)
+                    successAddInDb = true
+
+                }
+
+                if (postType === 'vacancy') {
+                    let vacancy:Vacancy = postDescription
+
+                    // Если вакансия есть в базе, то не добавляем ее и вызываем ошибку
+                    const vacancy_in_db = await prisma.vacancies.findFirst({
+                        where: {
+                            namePost: vacancy.namePost,
+                        }
+                    })
+                    if (vacancy_in_db) {
+                        console.log('vacancy already exist')
+                        return new Error('vacancy already exist')
+                    }
+
+                    // Если вакансии нет в базе, то добавляем ее
+                    const data:any = {
+                        namePost: vacancy.namePost,
+                        timeOfParse: new Date(),
+                    }
+
+                    if (vacancy.summary)
+                        data.summary = vacancy.summary
+                    if (vacancy.fullText)
+                        data.fullText = vacancy.fullText
+                    if (vacancy.link)
+                        data.link = vacancy.link
+                    if (vacancy.linkPDF)
+                        data.linkPDF = JSON.stringify(vacancy.linkPDF)
+                    if (vacancy.sourceLink)
+                        data.sourceLink = vacancy.sourceLink
+                    if (vacancy.organization)
+                        data.organization = vacancy.organization
+
+                    try {
+                        if (vacancy.fullText)
+                            data.directions = get3DirectionsByText(vacancy.fullText)
+                        else
+                            data.directions = []
+                    } catch (e) {
+                        console.log(e?.response.data.error);
+                        data.directions = []
+                    }
+                    if (vacancy.dateCreationPost)
+                        try {
+                            data.dateCreationPost = new Date(vacancy.dateCreationPost)
+                        } catch (e) {}
+
+                    data.directions = JSON.stringify(data.directions)
+
+                    data.parser_id = parser.id
+
+                    await prisma.vacancies.create({data})
+                    successAddInDb = true
+
+                }
+
+                if (postType === 'internship') {
+                    let internship:Internship = postDescription
+
+                    // Если стажировка есть в базе, то не добавляем ее и вызываем ошибку
+                    const internship_in_db = await prisma.internships.findFirst({
+                        where: {
+                            namePost: internship.namePost,
+                        }
+                    })
+                    if (internship_in_db) {
+                        console.log('internship already exist')
+                        return new Error('internship already exist')
+                    }
+
+                    // Если стажировки нет в базе, то добавляем ее
+                    const data:any = {
+                        namePost: internship.namePost,
+                        timeOfParse: new Date(),
+                    }
+
+                    if (internship.fullText)
+                        data.fullText = internship.fullText
+                    if (internship.link)
+                        data.link = internship.link
+                    if (internship.linkPDF)
+                        data.linkPDF = JSON.stringify(internship.linkPDF)
+                    if (internship.sourceLink)
+                        data.sourceLink = internship.sourceLink
+                    if (internship.organization)
+                        data.organization = internship.organization
+                    if (internship.dateCreationPost)
+                        try {
+                            data.dateCreationPost = new Date(internship.dateCreationPost)
+                        } catch (e) {}
+
+                    data.parser_id = parser.id
+
+
+                    try {
+                        if (internship.fullText)
+                            data.directions = get3DirectionsByText(internship.fullText)
+                        else
+                            data.directions = []
+                    } catch (e) {
+                        console.log(e?.response.data.error);
+                        data.directions = []
+                    }
+
+                    data.directions = JSON.stringify(data.directions)
+
+
+                    await prisma.internships.create({data})
+
+                    successAddInDb = true
+                }
 
 
           }
