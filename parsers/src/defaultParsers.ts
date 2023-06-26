@@ -306,19 +306,56 @@ export const parsersParams = [
 // CREATE SQL QUERIES
 
 /*
-// ['fasie', 'guap.ru', 'integraciya', 'RSCI', 'minobrnauki', 'rb.ru', 'rcfoundation',
-'sowa-ru', 'tvoyhod', 'cptgrantov', 'fadm.gov', 'oreluniver', 'rsv', 'vsekonkursy',
-'eee-science', 'fond_culture', 'president_grants', 'docs.edu.gov', 'skyconf', 'sdtech',
-'itonecup', 'konkurs.rcfoundation', 'premia.myvmeste', 'moyastrana', 'world-it-planet',
-'chemeco', 'basis-foundation', 'case-in', 'generation-startup', 'gnesin-academy', 'iclrc',
-'steel2real', 'prlib', 'imoscow', 'bfsistema', 'inno-media', 'project.lanbook', 'rscf',
-'ruseasons', 'sberstudent', 'start.kontur', 'smallhomeland', 'tyvigre', 'fondpotanin',
-'komissarov-foundation', 'get-investor', 'tymolod', 'allfest', 'welcomecup', 'digitalwind']
-
-INSERT INTO `parser`.`parser` (`name`, `isEnabled`, `pagesToParse`, `cronTime`) VALUES ('fasie', '1', '1', '10 5 12 * * *');
-INSERT INTO `parser`.`parser` (`name`, `isEnabled`, `pagesToParse`, `cronTime`) VALUES ('guap.ru', '1', '1', '10 10 12 * * *');
-INSERT INTO `parser`.`parser` (`name`, `isEnabled`, `pagesToParse`, `cronTime`) VALUES ('integraciya', '1', '1', '10 15 12 * * *');
-INSERT INTO `parser`.`parser` (`name`, `isEnabled`, `pagesToParse`, `cronTime`) VALUES ('RSCI', '1', '1', '10 10 12 * * *');
-
+INSERT INTO `parsers` (`name`, `isEnabled`, `pagesToParser`, `cronTime`) VALUES
+('fasie', 1, 1, '10 10 12 * * *'),
+('guap.ru', 1, 1, '10 15 12 * * *'),
+('integraciya', 1, 1, '10 20 12 * * *'),
+('RSCI', 1, 1, '10 25 12 * * *'),
+('minobrnauki', 1, 1, '10 30 12 * * *'),
+('rb.ru', 1, 1, '10 35 12 * * *'),
+('rcfoundation', 1, 1, '10 40 12 * * *'),
+('sowa-ru', 1, 1, '10 45 12 * * *'),
+('tvoyhod', 1, 1, '10 50 12 * * *'),
+('cptgrantov', 1, 1, '10 55 12 * * *'),
+('fadm.gov', 1, 1, '10 0 13 * * *'),
+('oreluniver', 1, 1, '10 5 13 * * *'),
+('rsv', 1, 1, '10 10 13 * * *'),
+('vsekonkursy', 1, 1, '10 15 13 * * *'),
+('eee-science', 1, 1, '10 20 13 * * *'),
+('fond_culture', 1, 1, '10 25 13 * * *'),
+('president_grants', 1, 1, '10 30 13 * * *'),
+('docs.edu.gov', 1, 1, '10 35 13 * * *'),
+('skyconf', 1, 1, '10 40 13 * * *'),
+('sdtech', 1, 1, '10 45 13 * * *'),
+('itonecup', 1, 1, '10 50 13 * * *'),
+('konkurs.rcfoundation', 1, 1, '10 55 13 * * *'),
+('premia.myvmeste', 1, 1, '10 0 14 * * *'),
+('moyastrana', 1, 1, '10 5 14 * * *'),
+('world-it-planet', 1, 1, '10 10 14 * * *'),
+('chemeco', 1, 1, '10 15 14 * * *'),
+('basis-foundation', 1, 1, '10 20 14 * * *'),
+('case-in', 1, 1, '10 25 14 * * *'),
+('generation-startup', 1, 1, '10 30 14 * * *'),
+('gnesin-academy', 1, 1, '10 35 14 * * *'),
+('iclrc', 1, 1, '10 40 14 * * *'),
+('steel2real', 1, 1, '10 45 14 * * *'),
+('prlib', 1, 1, '10 50 14 * * *'),
+('imoscow', 1, 1, '10 55 14 * * *'),
+('bfsistema', 1, 1, '10 0 15 * * *'),
+('inno-media', 1, 1, '10 5 15 * * *'),
+('project.lanbook', 1, 1, '10 10 15 * * *'),
+('rscf', 1, 1, '10 15 15 * * *'),
+('ruseasons', 1, 1, '10 20 15 * * *'),
+('sberstudent', 1, 1, '10 25 15 * * *'),
+('start.kontur', 1, 1, '10 30 15 * * *'),
+('smallhomeland', 1, 1, '10 35 15 * * *'),
+('tyvigre', 1, 1, '10 40 15 * * *'),
+('fondpotanin', 1, 1, '10 45 15 * * *'),
+('komissarov-foundation', 1, 1, '10 50 15 * * *'),
+('get-investor', 1, 1, '10 55 15 * * *'),
+('tymolod', 1, 1, '10 0 16 * * *'),
+('allfest', 1, 1, '10 5 16 * * *'),
+('welcomecup', 1, 1, '10 10 16 * * *'),
+('digitalwind', 1, 1, '10 15 16 * * *');
 
  */
