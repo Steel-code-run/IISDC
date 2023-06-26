@@ -15,7 +15,7 @@ datasource db {
 model grants {
   id                Int       @id @unique @default(autoincrement())
   namePost          String    @db.LongText()
-  dateCreationPost  String?
+  dateCreationPost  DateTime?
   directions        String?
   organization      String?   @db.LongText()
   deadline          DateTime?
@@ -34,8 +34,9 @@ model grants {
 model competitions {
   id               Int       @id @unique @default(autoincrement())
   namePost         String    @db.VarChar(255)
-  dateCreationPost String?
+  dateCreationPost DateTime?
   directions       String?
+  summary          String?
   organization     String?   @db.LongText()
   deadline         DateTime?
   fullText         String?   @db.LongText()
@@ -51,7 +52,7 @@ model competitions {
 model internships {
   id               Int       @id @unique @default(autoincrement())
   namePost         String    @db.VarChar(255)
-  dateCreationPost String?
+  dateCreationPost DateTime?
   directions       String?
   organization     String?   @db.LongText()
   fullText         String?   @db.LongText()
@@ -67,7 +68,7 @@ model internships {
 model vacancies {
   id               Int       @id @unique @default(autoincrement())
   namePost         String    @db.VarChar(255)
-  dateCreationPost String?
+  dateCreationPost DateTime?
   directions       String?
   organization     String?   @db.LongText()
   summary          String?

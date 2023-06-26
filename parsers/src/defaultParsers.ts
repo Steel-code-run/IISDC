@@ -92,13 +92,13 @@ export const parsersParams = [
         parserType: TParserType.nodejs
     },
     {
-        name: 'фонд_культ._иниц',
+        name: 'fond_culture',
         url: "https://фондкультурныхинициатив.рф/",
         fileUrl: "фонд_культ._иниц",
         parserType: TParserType.nodejs
     },
     {
-        name: 'президентские_гранты',
+        name: 'president_grants',
         url: "https://президентскиегранты.рф/",
         fileUrl: "президентские_гранты",
         parserType: TParserType.nodejs
@@ -134,7 +134,7 @@ export const parsersParams = [
         parserType: TParserType.nodejs
     },
     {
-        name: 'премия.мывместе',
+        name: 'premia.myvmeste',
         url: "https://премия.мывместе.рф/",
         fileUrl: "премия.мывместе",
         parserType: TParserType.nodejs
@@ -278,7 +278,7 @@ export const parsersParams = [
         parserType: TParserType.nodejs
     },
     {
-        name: "тымолод",
+        name: "tymolod",
         url: "https://тымолод.рф/",
         fileUrl: "тымолод",
         parserType: TParserType.nodejs
@@ -301,5 +301,4 @@ export const parsersParams = [
         fileUrl: "digitalwind",
         parserType: TParserType.nodejs
     }
-
 ]

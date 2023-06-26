@@ -14,22 +14,27 @@ app.get('/', (req, res) => {
 app.get('/parsers/:name/:page', async function (req , res){
 
     if (!req.params.name || !req.params.page) {
-        res.status(403).send('false params' );
+        return res.status(403).send('false params' );
     }
     console.log(req.params)
 
     const {name, page} = req.params;
     const parsers = parsersParams ;
     const matchParser = parsers.filter((parser: any) => parser.name === name)?.[0];
+
+    if (!matchParser) {
+        return res.status(403).send('Undefined parser');
+    }
+
     if(matchParser && +page > 0) {
         const posts = await callParser({
             parser: matchParser,
             page: +page
         })
-        res.status(200).send( posts);
+        return res.status(200).send( posts);
     }
     else {
-        res.status(403).send('false params' );
+        return res.status(403).send('false params' );
     }
 
 });

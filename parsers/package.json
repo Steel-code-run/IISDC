@@ -18,7 +18,7 @@
   },
   "scripts": {
     "test": "jest",
-    "server": "nodemon src/app.ts --watch ../**/**.ts",
+    "server": "nodemon src/app.ts --watch ./**/**.ts",
     "start": "node dist/app.js",
     "build": "tsc"
   },

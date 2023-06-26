@@ -51,6 +51,7 @@
         "md5": "^2.3.0",
         "natural": "^6.5.0",
         "node-telegram-bot-api": "^0.61.0",
+        "openai": "^3.3.0",
         "prisma": "^4.13.0",
         "rewire": "^6.0.0"
     }

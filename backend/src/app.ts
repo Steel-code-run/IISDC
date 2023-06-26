@@ -21,7 +21,8 @@ import competionsRouter from "./router/v1/competionsRouter";
 import accessingLogsRouter from "./router/v1/acessingLogsRouter";
 import internshipsRouter from "./router/v1/internshipsRouter";
 import accessingLogsWarningsRouter from "./router/v1/accessingLogsWarningsRouter";
-
+import openai from "./openai";
+import {directions} from "./directions";
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3003;
