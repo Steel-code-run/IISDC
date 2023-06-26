@@ -72,10 +72,9 @@ export const WarningsTable = (props) => {
 
                                 return (
                                     <TableRow
-                                        sx={{
+                                        sx={(!log?.isSolved) ? {
                                             backgroundColor: '#fccdcd',
-                                        }}
-                                        hover
+                                        } : null}
                                         key={log.id}
                                         //selected={isSelected}
                                     >

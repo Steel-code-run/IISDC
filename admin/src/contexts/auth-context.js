@@ -115,7 +115,7 @@ export const AuthProvider = (props) => {
         try {
             const authData = await login(name, password);
             const user = authData.user;
-            const roleName = (await getRoles()).find(item => item.id === user.roleId).name;
+            const roleName = user.role.name
             if(roleName !== 'admin')
                 return new Error('Пользователь не имеет необходимых прав')
             window.sessionStorage.setItem('token', authData.token);

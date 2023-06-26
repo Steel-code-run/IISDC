@@ -31,6 +31,7 @@ const PagePost = () => {
     const location: ILocationState = useLocation();
     const {data, postType} = location.state;
     const user = useAuth()
+    console.log(user)
 
     const [isEdit, setIsEdit] = useState(false);
 
@@ -44,9 +45,6 @@ const PagePost = () => {
     const [deletePost] = useUniversalDeleteSwitchHook(postType, data)();
     const [updatePost] = useUniversalUpdateSwitchHook(postType, data)();
 
-    useEffect(() => {
-
-    }, []);
 
     const navigate = useNavigate();
     const token = window.sessionStorage.getItem('token')
@@ -108,7 +106,8 @@ const PagePost = () => {
                         <>
                             {
                                 (isEdit || updateData.summary) && <div
-                                    className={classNames(styles.pagePost__field, styles.pagePost__summary, highLightField(isEdit))}
+                                    className={classNames(styles.pagePost__field, styles.pagePost__summary, highLightField(
+                                        isEdit && !updateData.summary))}
                                     contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     data-text={'Сумма гранта: '}
@@ -133,7 +132,7 @@ const PagePost = () => {
                                 <div
                                     className={classNames(
                                         styles.pagePost__field,
-                                        highLightField(isEdit))}
+                                        highLightField(isEdit && !updateData.organization))}
                                     contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     data-text={'Организаторы: '}
@@ -161,7 +160,7 @@ const PagePost = () => {
                                     }}
                                     className={classNames(
                                         styles.pagePost__field,
-                                        highLightField(isEdit))}>
+                                        highLightField(isEdit && !updateData.directionForSpent))}>
                                     {data.directionForSpent}</div>
                             }
                         </>
@@ -174,7 +173,7 @@ const PagePost = () => {
                                 <div
                                     className={classNames(
                                         styles.pagePost__field,
-                                        highLightField(isEdit))}
+                                        highLightField(isEdit && !updateData.organization))}
                                     contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     data-text={'Организаторы: '}
@@ -204,7 +203,7 @@ const PagePost = () => {
                                 <div
                                     className={classNames(
                                         styles.pagePost__field,
-                                        highLightField(isEdit))}
+                                        highLightField(isEdit && !updateData.salary))}
                                     contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     data-text={'Зарплата: '}
@@ -224,7 +223,7 @@ const PagePost = () => {
                                 <div
                                     className={classNames(
                                         styles.pagePost__field,
-                                        highLightField(isEdit))}
+                                        highLightField(isEdit && !updateData.requirements))}
                                     contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     data-text={'Требования: '}
@@ -242,7 +241,7 @@ const PagePost = () => {
                                 <div
                                     className={classNames(
                                         styles.pagePost__field,
-                                        highLightField(isEdit))}
+                                        highLightField(isEdit && !updateData.conditions))}
                                     contentEditable={isEdit}
                                     suppressContentEditableWarning={true}
                                     data-text={'Условия: '}
@@ -262,7 +261,7 @@ const PagePost = () => {
                         <div
                             className={classNames(
                                 styles.pagePost__field,
-                                highLightField(isEdit),
+                                highLightField(isEdit && !updateData.fullText),
                                 styles.pagePost__fullText)}
                             contentEditable={isEdit}
                             suppressContentEditableWarning={true}
@@ -349,7 +348,7 @@ const PagePost = () => {
                                     </>
                                     :
                                     <>
-                                        {user?.user?.name === 'admin' && isVisionBtns
+                                        {user?.user?.role?.name === 'admin' && isVisionBtns
                                             && <button onClick={() => setIsEdit(!isEdit)}
                                                        className={classNames(
                                                            styles.pagePost__edit,
