@@ -9,7 +9,9 @@ export const getLogs = async (skip, take, orderBy, where) => {
         where,
         orderBy
     }, {
-        ...defaultHeaders
+         headers: {
+                ...defaultHeaders
+    }
     })
     return res.data
 }

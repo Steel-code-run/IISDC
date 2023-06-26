@@ -18,6 +18,7 @@ import {TTypesUpdateData} from "../../types/types";
 import classNames from "classnames";
 import {initialValuesUpdateData} from "../../helpers/initialValuesUpdateData";
 import {WithAuthGuard} from "../../hoc/with-auth-guard";
+import {useAuth} from "../../hooks/authContext";
 
 interface ILocationState {
     state: {
@@ -29,6 +30,7 @@ interface ILocationState {
 const PagePost = () => {
     const location: ILocationState = useLocation();
     const {data, postType} = location.state;
+    const user = useAuth()
 
     const [isEdit, setIsEdit] = useState(false);
 
@@ -325,7 +327,7 @@ const PagePost = () => {
                                                 }}
                                                         className={classNames(
                                                             styles.pagePost__delete,
-                                                            styles.pagePost__btn)}>Удалить
+                                                            styles.pagePost__btn)}>В архив
                                                 </button>
                                                 <button onClick={async () => {
                                                     setIsEdit(false);
@@ -347,7 +349,7 @@ const PagePost = () => {
                                     </>
                                     :
                                     <>
-                                        {isVisionBtns
+                                        {user?.user?.name === 'admin' && isVisionBtns
                                             && <button onClick={() => setIsEdit(!isEdit)}
                                                        className={classNames(
                                                            styles.pagePost__edit,

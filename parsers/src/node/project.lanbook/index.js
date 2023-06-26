@@ -1,6 +1,6 @@
 const {getHTML} = require('../../utils/getHTML.js');
 const {getDataBySelector, getLinksPDF} = require("../../utils/methodsParser");
-const {DirectionType} = require("../../types");;
+const {DirectionType} = require("../../types");
 
 
 const url = 'https://project.lanbook.com';

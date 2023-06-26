@@ -74,5 +74,5 @@ async function getPosts(page)  {
     return posts;
 }
 getPosts(Number(page)).then((posts) => {
-    console.log(JSON.stringify(posts.reverse()));
+    console.log(JSON.stringify(posts.reverse(), null, 2));
 });

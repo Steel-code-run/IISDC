@@ -43,6 +43,22 @@ const defineTypePost = (namePost) => {
 }
 
 const definePostDescription = (postType, jsdom, querySelectors, link, url) => {
+
+    const checkValidDate = (date) => {
+        try {
+
+            const formatDate = new Date(date);
+            if(formatDate !== 'Invalid Date') {
+                return formatDate?.toISOString()
+            } else {
+                return ''
+            }
+        } catch (e) {
+            return ''
+        }
+
+    }
+
     switch (postType) {
         case 'grant':
             return {
@@ -53,7 +69,7 @@ const definePostDescription = (postType, jsdom, querySelectors, link, url) => {
                     directionForSpent: "",
                     summary: getSummaryGrant(jsdom, querySelectors?.text),
                     fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
-                    deadline: getDataBySelector(jsdom, querySelectors?.deadline),
+                    deadline: checkValidDate(getDataBySelector(jsdom, querySelectors?.deadline)),
                     linkPDF: getLinksPDF(jsdom, querySelectors?.linkPDF, url),
                     link,
                 },
@@ -65,7 +81,7 @@ const definePostDescription = (postType, jsdom, querySelectors, link, url) => {
                 postDescription: {
                     namePost: getDataBySelector(jsdom, querySelectors?.title),
                     dateCreationPost: getDataBySelector(jsdom, querySelectors?.date),
-                    deadline: getDataBySelector(jsdom, querySelectors?.deadline),
+                    deadline: checkValidDate(getDataBySelector(jsdom, querySelectors?.deadline)),
                     direction: [],
                     fullText: getDataBySelector(jsdom, querySelectors?.text).replaceAll('\n', ''),
                     linkPDF: getLinksPDF(jsdom, querySelectors?.linkPDF, url),

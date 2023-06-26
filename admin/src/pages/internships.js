@@ -127,7 +127,7 @@ const Page = () => {
                         {
                             (status === "success" && InternshipsList.length > 0) ?
                                 <PostsTable
-                                    type={'internships'}
+                                    type={'internship'}
                                     count={countInternships || 0}
                                     items={InternshipsList}
                                     onPageChange={handlePageChange}

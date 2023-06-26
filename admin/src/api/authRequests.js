@@ -8,7 +8,9 @@ export const login = async (name, password) => {
             name,
             password
         }, {
-        ...defaultHeaders
+         headers: {
+                ...defaultHeaders
+    }
         })
 
     return res.data

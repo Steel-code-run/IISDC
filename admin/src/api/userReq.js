@@ -25,7 +25,8 @@ export const addUser = async (data) => {
     try {
         const res = await axios.post(`${serverUrl}v1/users`,
             {
-                ...data
+                ...data,
+                role_id: data.role
             }, {
                 headers: {
                     ...defaultHeaders
