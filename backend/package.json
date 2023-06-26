@@ -39,7 +39,7 @@
         "@types/natural": "^5.1.2",
         "@types/rewire": "^2.5.28",
         "axios": "^1.4.0",
-        "better-sqlite3": "^8.0.1",
+        "better-sqlite3": "^8.4.0",
         "cors": "^2.8.5",
         "cron": "^2.3.1",
         "dotenv": "^16.0.3",
