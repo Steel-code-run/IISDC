@@ -2,45 +2,46 @@ import React, {useEffect, useState} from 'react';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {useRouter} from "next/router";
 import {Box, Button, Container, Stack, SvgIcon, TextField, Typography} from "@mui/material";
-import styles from './competitionPage.module.scss'
+import styles from './internshipPage.module.scss'
 import EditIcon from '@mui/icons-material/Edit';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
-import {getCompetitions, updateCompetition} from "../../api/posts/competitionsReq";
+import {getInternships, updateInternship} from "../../api/posts/internshipsReq";
 import {useSnackbar} from "../../hooks/use-snackbar";
 import {formatDateInISOUTC0} from "../../helpers/formatDate";
 
 const Page = () => {
     const router = useRouter();
-    const configResponseGrant = {
+    const configResponseInternship = {
         extended: true
     }
-    const whereGrant = {
+    const whereInternship = {
         id: Number(router.query.id)
     }
-    const {data, isError, isLoading} = useQuery(['competition', 0, 0, configResponseGrant, whereGrant],
-        () => getCompetitions(0, 0, configResponseGrant, whereGrant));
+    const {data, isError, isLoading} = useQuery(['internships', 0, 0, configResponseInternship, whereInternship],
+        () => getInternships(0, 0, configResponseInternship, whereInternship));
 
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
     const queryClient = useQueryClient();
 
     const [isEditing, setIsEditing] = useState(false);
-    const [competitionData, setCompetitionData] = useState(null);
-
+    const [internshipData, setInternshipData] = useState(null);
 
     useEffect(() => {
-        setCompetitionData(data?.[0])
+        setInternshipData(data?.[0])
     }, [data])
 
-    const mutation = useMutation((data) => updateCompetition(data),
+    const mutation = useMutation(
+        (data) => updateInternship(data),
         {
             onSuccess: (res) => {
-                queryClient.invalidateQueries(["competition"]);
+
+                queryClient.invalidateQueries(["internship"]);
                 setOpenSnackbar(true);
                 setSnackbarData({
                     type: 'success',
-                    msg: 'Конкурс успешно обновлен'
+                    msg: 'Стажировка успешно обновлена'
                 });
             },
             onError: (err) => {
@@ -63,16 +64,18 @@ const Page = () => {
     }
 
     const handleChangeDataUser = (e) => {
-        setCompetitionData((prevFormData) => ({
+        setInternshipData((prevFormData) => ({
             ...prevFormData,
             [e.target.name]: e.target.value,
         }));
     };
 
     const handleUpdatedDataUser = () => {
-        mutation.mutate({data: competitionData, id: data[0].id});
+        mutation.mutate({id: data[0].id, data: internshipData});
         setIsEditing(false);
     }
+
+
 
     return (
         <>
@@ -84,7 +87,7 @@ const Page = () => {
             }}>
                 <Container>
                     <Typography
-                        variant={'h4'}>Данные гранта: {competitionData?.namePost}</Typography>
+                        variant={'h4'}>Данные гранта: {internshipData?.namePost}</Typography>
                     <Stack component={'user'}>
                         {data && <Box style={{
                             marginTop: '50px',
@@ -98,28 +101,17 @@ const Page = () => {
                                        variant="outlined"
                                        size="small"
                                        name="namePost"
-                                       value={competitionData?.namePost}
+                                       value={internshipData?.namePost}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
+
                             <TextField
-                                className={styles.competitionPage__textField}
+                                className={styles.internshipPage__textField}
                                 label="Дата создания поста"
                                 type="date"
                                 name={'dateCreationPost'}
-                                value={formatDateInISOUTC0(competitionData?.dateCreationPost)}
-                                onChange={handleChangeDataUser}
-                                disabled={!isEditing}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                            <TextField
-                                className={styles.competitionPage__textField}
-                                label="Дедлайн"
-                                type="date"
-                                name={'deadline'}
-                                value={formatDateInISOUTC0(competitionData?.deadline)}
+                                value={formatDateInISOUTC0(internshipData?.dateCreationPost)}
                                 onChange={handleChangeDataUser}
                                 disabled={!isEditing}
                                 InputLabelProps={{
@@ -127,12 +119,22 @@ const Page = () => {
                                 }}
                             />
 
+
                             <TextField className={styles.userPage__textField}
                                        label="Организация"
                                        variant="outlined"
                                        size="small"
                                        name="organization"
-                                       value={competitionData?.organization}
+                                       value={internshipData?.organization}
+                                       disabled={!isEditing}
+                                       onChange={handleChangeDataUser}
+                            />
+                            <TextField className={styles.userPage__textField}
+                                       label="responsibility"
+                                       variant="outlined"
+                                       size="small"
+                                       name="responsibility"
+                                       value={internshipData?.responsibility}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
@@ -142,7 +144,7 @@ const Page = () => {
                                        variant="outlined"
                                        size="small"
                                        name="link"
-                                       value={competitionData?.link}
+                                       value={internshipData?.link}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
@@ -152,30 +154,21 @@ const Page = () => {
                                        variant="outlined"
                                        size="small"
                                        name="linkPDF"
-                                       value={competitionData?.linkPDF }
+                                       value={internshipData?.linkPDF }
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
                             <TextField className={styles.userPage__textField}
                                        label="Описание"
                                        variant="outlined"
-                                       multiline
                                        size="medium"
+                                       multiline
                                        name="fullText"
-                                       value={competitionData?.fullText }
+                                       value={internshipData?.fullText }
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
 
-                            {/*<TextField className={styles.userPage__textField}*/}
-                            {/*           label="Роль"*/}
-                            {/*           variant="outlined"*/}
-                            {/*           size="small"*/}
-                            {/*           name={"role"}*/}
-                            {/*           value={(competitionData) ? competitionData?.role.name : data[0].role.name}*/}
-                            {/*           disabled={true}*/}
-                            {/*           onChange={handleChangeDataUser}*/}
-                            {/*/>*/}
 
                             <Stack
                                 direction="row"

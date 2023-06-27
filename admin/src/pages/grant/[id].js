@@ -8,8 +8,6 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
 import {getGrants, updateGrant} from "../../api/posts/grantsReq";
 import {useSnackbar} from "../../hooks/use-snackbar";
-import moment from "moment/moment";
-import {FORMAT_DATE} from "../../constants/timeConstants";
 import {formatDateInISOUTC0} from "../../helpers/formatDate";
 
 const Page = () => {
@@ -176,6 +174,16 @@ const Page = () => {
                                        size="small"
                                        name="linkPDF"
                                        value={grantData?.linkPDF }
+                                       disabled={!isEditing}
+                                       onChange={handleChangeDataUser}
+                            />
+                            <TextField className={styles.userPage__textField}
+                                       label="Описание"
+                                       variant="outlined"
+                                       size="medium"
+                                       multiline
+                                       name="fullText"
+                                       value={grantData?.fullText }
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
