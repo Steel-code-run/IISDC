@@ -14,7 +14,7 @@ import {
 import {useSnackbar} from "../hooks/use-snackbar";
 import {ArchiveTable} from "../sections/archive/archive-table";
 import {deleteGrant, getCountGrants, getGrants, updateGrant} from "../api/posts/grantsReq";
-import {getCountInternships, getInternships, updateInternship} from "../api/posts/internshipsReq";
+import {deleteInternship, getCountInternships, getInternships, updateInternship} from "../api/posts/internshipsReq";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -124,7 +124,7 @@ const Page = () => {
         })
 
     const mutationDeleteInternships = useMutation(
-        (delInterId) => deleteInternships(delInterId), {
+        (delInterId) => deleteInternship(delInterId), {
             onSuccess: () => {
                 queryClient.invalidateQueries(["internships"]);
                 setOpenSnackbar(true)
