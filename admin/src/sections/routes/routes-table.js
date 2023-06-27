@@ -60,7 +60,7 @@ export const RoutesTable = (props) => {
                                         </TableCell>
 
                                         <TableCell>
-                                            {route.role.name}
+                                            {route?.role?.name}
                                         </TableCell>
 
                                     </TableRow>
