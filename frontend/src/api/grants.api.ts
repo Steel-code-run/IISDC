@@ -10,6 +10,7 @@ export interface IGetGrants {
     namePost: string,
     directions?: string | string[],
     token: string | null
+    deadlineBy?: string | null | undefined
 }
 
 type IGetCountGrants = Omit<any, 'skip' | 'take' | 'extended'>;
@@ -30,7 +31,7 @@ export const grantsApi = createApi({
     tagTypes: ['Grants'],
     endpoints: (builder) => ({
         getGrants: builder.query<any, IGetGrants>({
-            query: ({skip, take, extended, namePost, directions, token}) => {
+            query: ({skip, take, extended, namePost, directions, token, deadlineBy}) => {
                 return {
                     url: `v1/grants`,
                     body: {
@@ -42,6 +43,9 @@ export const grantsApi = createApi({
                                 contains: namePost
                             },
                             blackListed: false,
+                            deadline: {
+                                gte: deadlineBy
+                            },
 
                             "OR": (typeof directions === 'string') ? {
                                 "directions": {
@@ -58,7 +62,10 @@ export const grantsApi = createApi({
                             "namePost": {
                                 contains: namePost
                             },
-                            blackListed: false
+                            blackListed: false,
+                            deadline: {
+                                gte: deadlineBy
+                            }
                         }
                     },
                     headers: {

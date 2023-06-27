@@ -12,9 +12,11 @@ export interface IGetCompetitions {
     namePost: string,
     directions?: string[] | string,
     token: string | null
+    deadlineBy?: string | null | undefined
+
 }
 
-type IGetCountCompetitions  = Omit<IGetCompetitions, 'take' | 'skip' | 'extended'> ;
+type IGetCountCompetitions = Omit<IGetCompetitions, 'take' | 'skip' | 'extended'>;
 
 interface IUpdateInput {
     id: number
@@ -32,7 +34,14 @@ export const competitionsApi = createApi({
     endpoints: (builder) => ({
 
         getCompetitions: builder.query<any, IGetCompetitions>({
-            query: ({take, skip, extended, namePost, directions, token}) => {
+            query: ({
+                        take,
+                        skip,
+                        extended,
+                        namePost,
+                        directions, deadlineBy,
+                        token
+                    }) => {
                 return {
                     url: 'v1/competitions',
                     body: {
@@ -44,6 +53,9 @@ export const competitionsApi = createApi({
                                 contains: namePost
                             },
                             blackListed: false,
+                            deadline: {
+                                gte: deadlineBy
+                            },
 
                             "OR": (typeof directions === 'string') ? {
                                 "directions": {
@@ -61,6 +73,9 @@ export const competitionsApi = createApi({
                                 contains: namePost
                             },
                             blackListed: false,
+                            deadline: {
+                                gte: deadlineBy
+                            },
                         }
                     },
                     method: 'POST',
@@ -113,7 +128,7 @@ export const competitionsApi = createApi({
         }),
 
         deletePostCompetition: builder.mutation<any, any>({
-            query: ({token, id}, ) => (
+            query: ({token, id},) => (
                 {
                     url: 'v1/competitions',
                     body: {

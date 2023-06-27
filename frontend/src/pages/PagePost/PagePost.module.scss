@@ -43,15 +43,17 @@ $textBtns: #fff;
 	}
 
 	&__dateCreationPost {
-		background: #00BA95;
+
 		flex: 1 1 30%;
-		border: 3px solid #008E72;
+		flex-basis: 300px;
+
 	}
 
 	&__deadline {
-		background: #BA2E36;
+
 		flex: 1 1 30%;
-		border: 3px solid #9E262C;
+		flex-basis: 300px;
+
 	}
 
 	&__dateCreationPost, &__deadline {
