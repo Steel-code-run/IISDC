@@ -8,6 +8,7 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
 import {getCompetitions, updateCompetition} from "../../api/posts/competitionsReq";
 import {useSnackbar} from "../../hooks/use-snackbar";
+import {formatDateInISOUTC0} from "../../helpers/formatDate";
 
 const Page = () => {
     const router = useRouter();
@@ -101,23 +102,29 @@ const Page = () => {
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
-                            <TextField className={styles.userPage__textField}
-                                       label="Дата создания поста"
-                                       variant="outlined"
-                                       size="small"
-                                       name="dateCreationPost"
-                                       value={competitionData?.dateCreationPost}
-                                       disabled={!isEditing}
-                                       onChange={handleChangeDataUser}
+                            <TextField
+                                className={styles.competitionPage__textField}
+                                label="Дата создания поста"
+                                type="date"
+                                name={'dateCreationPost'}
+                                value={formatDateInISOUTC0(competitionData?.dateCreationPost)}
+                                onChange={handleChangeDataUser}
+                                disabled={!isEditing}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
-                            <TextField className={styles.userPage__textField}
-                                       label="Дедлайн"
-                                       variant="outlined"
-                                       size="small"
-                                       name="deadline"
-                                       value={competitionData?.deadline}
-                                       disabled={!isEditing}
-                                       onChange={handleChangeDataUser}
+                            <TextField
+                                className={styles.competitionPage__textField}
+                                label="Дедлайн"
+                                type="date"
+                                name={'deadline'}
+                                value={formatDateInISOUTC0(competitionData?.deadline)}
+                                onChange={handleChangeDataUser}
+                                disabled={!isEditing}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
 
                             <TextField className={styles.userPage__textField}

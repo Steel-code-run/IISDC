@@ -1,5 +1,6 @@
 import {createContext, useContext, useEffect, useReducer, useRef} from 'react';
 import {loginReq} from "../api/auth";
+import {getUserById} from "../api/users";
 
 enum HANDLERS {
     INITIALIZE = 'INITIALIZE',
@@ -16,6 +17,10 @@ export interface User {
     roleId: number
     user_telegram_settingsId: number | null
     users_telegramsId: number | null
+    role: {
+        id: number
+        name: string
+    }
 }
 
 export type StateType = {
@@ -117,7 +122,14 @@ export const AuthProvider = (props: AuthProviderProps) => {
         }
 
         if (isAuthenticated) {
-            const user = state.user
+            const id_user = window.sessionStorage.getItem('id')
+            let user = state.user;
+
+            console.log(user, id_user)
+
+            if(!user && id_user) {
+                user = (await getUserById(0, 0, id_user));
+            }
 
             dispatch({
                 type: HANDLERS.INITIALIZE,
@@ -143,6 +155,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         try {
             const authData = await loginReq(name, password);
             window.sessionStorage.setItem('token', authData.token);
+            window.sessionStorage.setItem('id', authData.user.id);
             user = authData.user;
 
         } catch (err: any) {
@@ -163,6 +176,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
 
     const signOut = () => {
         window.sessionStorage.removeItem('token');
+        window.sessionStorage.removeItem('id');
         dispatch({
             type: HANDLERS.SIGN_OUT
         });

@@ -16,11 +16,9 @@ export const getLogs = async (skip, take, orderBy, where) => {
     return res.data
 }
 
-export const getWarnings = async () => {
+export const getWarnings = async (where) => {
     const res = await axios.post(`${serverUrl}v1/accessing-logs/warnings`, {
-        where: {
-            isSolved: false
-        }
+        where
     }, {
         headers: defaultHeaders
     })

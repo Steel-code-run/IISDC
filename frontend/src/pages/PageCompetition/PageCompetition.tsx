@@ -12,6 +12,8 @@ import CardPost from "../../components/CardPost/CardPost";
 import {directionsList} from "../../config/directions";
 import {WithAuthGuard} from "../../hoc/with-auth-guard";
 import {useNavigate} from 'react-router-dom'
+import FilterDate from "../../components/filterDate/filterDate";
+import {rangeDeadlineData} from "../../helpers/formatDate";
 
 export interface PageCompetitionsProps {
 }
@@ -22,6 +24,8 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState<string[] | string>([])
+    const [dayDeadline, setDayDeadline] = useState(0)
+    const [checkedFilter, setCheckedFilter] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const token = window.sessionStorage.getItem('token');
@@ -41,18 +45,33 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     const {data: totalCountPosts} = useGetCountСompetitionsQuery({
         namePost: debounceValue,
         directions: choicedDirection,
-        token
+        token,
+        ...(
+            (checkedFilter) &&
+            {
+                deadlineBy: rangeDeadlineData(dayDeadline)
+            }
+
+        )
+
     });
     //console.log(totalCountPosts)
 
 
-    const {data = [], error, isLoading} = useGetCompetitionsQuery( {
+    const {data = [], error, isLoading} = useGetCompetitionsQuery({
         take: amountPostsPerPage,
         skip: (page - 1) * amountPostsPerPage,
         extended: true,
         namePost: debounceValue,
         directions: choicedDirection,
-        token
+        token,
+        ...(
+            (checkedFilter) &&
+            {
+                deadlineBy: rangeDeadlineData(dayDeadline)
+            }
+
+        )
     });
 
     //const {data: directions} = useGetDirectionsQuery({token});
@@ -81,11 +100,11 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     }, [isLoading])
 
     if (!directions || isLoading) return <Dna visible={true}
-                                                    height="250"
-                                                    width="250"
-                                                    ariaLabel="dna-loading"
-                                                    wrapperStyle={{}}
-                                                    wrapperClass="dna-wrapper"/>
+                                              height="250"
+                                              width="250"
+                                              ariaLabel="dna-loading"
+                                              wrapperStyle={{}}
+                                              wrapperClass="dna-wrapper"/>
 
     return (
         <>
@@ -93,10 +112,16 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
             <div className={styles.pageCompetition} data-testid="PageCompetition">
                 <div className="container">
                     <Search cbDebounce={setDebounceValue}/>
-                    <div className={styles.pageCompetition__directionBlock}>
-                        <p className={styles.pageCompetition__directionBlock__titleBlock}>{'Направление: '}</p>
-                        <Dropdown listDirections={directions}
-                                  cbChoicedDirection={setChoicedDirection}/>
+                    <div className={styles.pageCompetition__filterBlock}>
+                        <div className={styles.pageCompetition__directionBlock}>
+                            <p className={styles.pageCompetition__directionBlock__titleBlock}>{'Направление: '}</p>
+                            <Dropdown listDirections={directions}
+                                      cbChoicedDirection={setChoicedDirection}/>
+                        </div>
+                        <FilterDate dayDeadline={dayDeadline}
+                                    setDayDeadline={setDayDeadline}
+                                    checkedFilter={checkedFilter}
+                                    setCheckedFilter={setCheckedFilter}/>
                     </div>
 
                     <div className={styles.pageCompetition__wrapper}>

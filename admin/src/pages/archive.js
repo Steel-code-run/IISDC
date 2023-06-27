@@ -14,25 +14,7 @@ import {
 import {useSnackbar} from "../hooks/use-snackbar";
 import {ArchiveTable} from "../sections/archive/archive-table";
 import {deleteGrant, getCountGrants, getGrants, updateGrant} from "../api/posts/grantsReq";
-import {getCountInternships, getInternships, updateInternship} from "../api/posts/internshipsReq";
-
-const useCustomers = (data, page, rowsPerPage) => {
-    return useMemo(
-        () => {
-            return applyPagination(data, page, rowsPerPage);
-        },
-        [data, page, rowsPerPage]
-    );
-};
-
-const useCustomerIds = (customers) => {
-    return useMemo(
-        () => {
-            return customers?.map((customer) => customer.id);
-        },
-        [customers]
-    );
-};
+import {deleteInternship, getCountInternships, getInternships, updateInternship} from "../api/posts/internshipsReq";
 
 
 const Page = () => {
@@ -107,7 +89,7 @@ const Page = () => {
         });
 
     const {data: internshipsList, status: statusInternships, isLoading: isLoadingInternships, isError: isErrorInternships} = useQuery(
-        ['grants', page * rowsPerPage, rowsPerPage, config, where], () =>
+        ['internships', page * rowsPerPage, rowsPerPage, config, where], () =>
             getInternships(page * rowsPerPage, rowsPerPage, config, where))
     const {data: countInternships  } = useQuery(['countInternships'], getCountInternships);
 
@@ -124,7 +106,7 @@ const Page = () => {
         })
 
     const mutationDeleteInternships = useMutation(
-        (delInterId) => deleteInternships(delInterId), {
+        (delInterId) => deleteInternship(delInterId), {
             onSuccess: () => {
                 queryClient.invalidateQueries(["internships"]);
                 setOpenSnackbar(true)

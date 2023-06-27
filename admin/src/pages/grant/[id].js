@@ -8,6 +8,9 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
 import {getGrants, updateGrant} from "../../api/posts/grantsReq";
 import {useSnackbar} from "../../hooks/use-snackbar";
+import moment from "moment/moment";
+import {FORMAT_DATE} from "../../constants/timeConstants";
+import {formatDateInISOUTC0} from "../../helpers/formatDate";
 
 const Page = () => {
     const router = useRouter();
@@ -74,6 +77,8 @@ const Page = () => {
         setIsEditing(false);
     }
 
+
+
     return (
         <>
             <Box className={{
@@ -102,23 +107,30 @@ const Page = () => {
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
-                            <TextField className={styles.userPage__textField}
-                                       label="Дата создания поста"
-                                       variant="outlined"
-                                       size="small"
-                                       name="dateCreationPost"
-                                       value={grantData?.dateCreationPost}
-                                       disabled={!isEditing}
-                                       onChange={handleChangeDataUser}
+
+                            <TextField
+                                className={styles.grantPage__textField}
+                                label="Дата создания поста"
+                                type="date"
+                                name={'dateCreationPost'}
+                                value={formatDateInISOUTC0(grantData?.dateCreationPost)}
+                                onChange={handleChangeDataUser}
+                                disabled={!isEditing}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
-                            <TextField className={styles.userPage__textField}
-                                       label="Дедлайн"
-                                       variant="outlined"
-                                       size="small"
-                                       name="deadline"
-                                       value={grantData?.deadline}
-                                       disabled={!isEditing}
-                                       onChange={handleChangeDataUser}
+                            <TextField
+                                className={styles.grantPage__textField}
+                                label="Дедлайн"
+                                type="date"
+                                name={'deadline'}
+                                value={formatDateInISOUTC0(grantData?.deadline)}
+                                onChange={handleChangeDataUser}
+                                disabled={!isEditing}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
                             <TextField className={styles.userPage__textField}
                                        label="Сумма"

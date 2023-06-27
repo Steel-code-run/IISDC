@@ -19,6 +19,7 @@ import {Bars3Icon, BellIcon} from "@heroicons/react/24/solid";
 import {useState} from "react";
 import {useQuery} from "@tanstack/react-query";
 import {getWarnings} from "../../api/logsReq";
+import {formatDateTime} from "../../config/formatDate";
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
@@ -28,8 +29,6 @@ export const TopNav = (props) => {
     const {onNavOpen} = props;
     const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
     const accountPopover = usePopover();
-
-
     const handleClickPopupNotif = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -37,7 +36,11 @@ export const TopNav = (props) => {
     const handleClosePopupNotif = () => {
         setAnchorEl(null);
     };
-    const {data: warnings, status, error} = useQuery(['warnings'], getWarnings);
+    const whereWarn = {
+        isSolved: false
+    }
+    const {data: warnings, status, error} = useQuery(['warnings', whereWarn],
+        () => getWarnings(whereWarn));
 
     const open = Boolean(anchorEl);
     const id = open ? 'id-notif' : undefined;
@@ -121,6 +124,10 @@ export const TopNav = (props) => {
                         <Popover
                             id={'id-bell'}
                             open={open}
+                            sx={{
+                                maxHeight: '500px',
+                                overflowY: 'scroll'
+                            }}
                             anchorEl={anchorEl}
                             onClose={handleClosePopupNotif}
                             anchorOrigin={{
@@ -138,7 +145,7 @@ export const TopNav = (props) => {
                                                 </Button>
                                             }
                                             severity="error">
-                                            <AlertTitle>Внимание!</AlertTitle>
+                                            <AlertTitle>Внимание! {` ${formatDateTime(new Date(err.date))}`}</AlertTitle>
                                             {err.description}
                                         </Alert>
                                     )

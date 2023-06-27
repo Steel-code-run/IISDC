@@ -23,8 +23,9 @@ const Page = () => {
     const {data: logs, status, isLoading, isError } =
         useQuery(['logs', page*rowsPerPage, rowsPerPage, orderBy, where],
             () => getLogs(page*rowsPerPage, rowsPerPage, orderBy, where));
-
-    const {data: warnings, status: statusWarn, error} = useQuery(['warnings'], getWarnings);
+    const whereWarn = {}
+    const {data: warnings, status: statusWarn, error} = useQuery(['warnings', whereWarn],
+        () => getWarnings(whereWarn));
 
     const handlePageChange = useCallback(
         (event, value) => {
