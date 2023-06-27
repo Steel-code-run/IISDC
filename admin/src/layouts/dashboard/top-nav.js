@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
 import {
-    Alert, AlertTitle,
+    Alert,
+    AlertTitle,
     Avatar,
     Badge,
-    Box, Button,
+    Box,
     IconButton,
     Popover,
     Stack,
     SvgIcon,
     Tooltip,
-    Typography,
     useMediaQuery
 } from '@mui/material';
 import {usePopover} from 'src/hooks/use-popover';
@@ -20,6 +20,7 @@ import {useState} from "react";
 import {useQuery} from "@tanstack/react-query";
 import {getWarnings} from "../../api/logsReq";
 import {formatDateTime} from "../../config/formatDate";
+import Link from "next/link";
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
@@ -138,16 +139,13 @@ export const TopNav = (props) => {
                             {
                                 (warnings?.logs?.length > 0) ? warnings?.logs?.map(err => {
                                     return (
-                                        <Alert
-                                            // action={
-                                            //     <Button color="inherit" size="small">
-                                            //         Скрыть
-                                            //     </Button>
-                                            // }
-                                            severity="error">
-                                            <AlertTitle>Внимание! {` ${formatDateTime(new Date(err.date))}`}</AlertTitle>
-                                            {err.description}
-                                        </Alert>
+                                        <Link href={'/logs'} style={{textDecoration: 'none'}}>
+                                            <Alert
+                                                severity="error">
+                                                <AlertTitle>Внимание! {` ${formatDateTime(new Date(err.date))}`}</AlertTitle>
+                                                {err.description}
+                                            </Alert>
+                                        </Link>
                                     )
                                 }) : <Alert
                                     severity="info">

@@ -37,7 +37,7 @@ const Page = () => {
         {
             onSuccess: (res) => {
 
-                queryClient.invalidateQueries(["internship"]);
+                queryClient.invalidateQueries(["internships"]);
                 setOpenSnackbar(true);
                 setSnackbarData({
                     type: 'success',
