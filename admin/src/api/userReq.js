@@ -45,9 +45,8 @@ export const deleteUser = async ({id}) => {
         data: {
             id
         },
-        headers: {
-            ...defaultHeaders
-        }
+        headers: defaultHeaders
+
     })
     return res.data
 }
@@ -56,18 +55,16 @@ export const updateUser = async (data) => {
     return await axios.patch(`${serverUrl}v1/users`, {
         ...data
     }, {
-        headers: {
-            ...defaultHeaders
-        }
+        headers: defaultHeaders
+
     })
 
 }
 
 export const getCountUser = async () => {
     const res =  await axios.post(`${serverUrl}v1/users/count`,{}, {
-        headers: {
-            ...defaultHeaders
-        }
+        headers: defaultHeaders
+
     })
     return res.data.count
 }
