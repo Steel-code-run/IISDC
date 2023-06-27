@@ -136,20 +136,24 @@ export const TopNav = (props) => {
                             }}
                         >
                             {
-                                warnings?.logs?.length > 0 && warnings?.logs?.map(err => {
+                                (warnings?.logs?.length > 0) ? warnings?.logs?.map(err => {
                                     return (
                                         <Alert
-                                            action={
-                                                <Button color="inherit" size="small">
-                                                    Скрыть
-                                                </Button>
-                                            }
+                                            // action={
+                                            //     <Button color="inherit" size="small">
+                                            //         Скрыть
+                                            //     </Button>
+                                            // }
                                             severity="error">
                                             <AlertTitle>Внимание! {` ${formatDateTime(new Date(err.date))}`}</AlertTitle>
                                             {err.description}
                                         </Alert>
                                     )
-                                })
+                                }) : <Alert
+
+                                    severity="info">
+                                    {'Новых уведомлений нет'}
+                                </Alert>
                             }
                         </Popover>
                         <Avatar
