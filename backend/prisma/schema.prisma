@@ -54,6 +54,7 @@ model internships {
   namePost         String    @db.VarChar(255)
   dateCreationPost DateTime?
   directions       String?
+  responsibilities String?
   organization     String?   @db.LongText()
   fullText         String?   @db.LongText()
   link             String?
