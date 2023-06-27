@@ -3,6 +3,7 @@ import {createButton} from "../../functions/Button";
 import {param} from "express-validator";
 import {competitions_keyboard} from "../../keyboards";
 import prisma from "../../../prisma/connect";
+import {directions as directions_const} from "../../../directions";
 import {getUserTelegramSettingsOrCreate} from "../../functions/getUserTelegramSettingsOrCreate";
 
 export const onCompetitions_get = async (props:OnSomethingProps) => {
@@ -35,7 +36,7 @@ export const onCompetitions_get = async (props:OnSomethingProps) => {
     }
 
     if (!directions?.length)
-        directions = []
+        directions = directions_const
 
     for (let i = 0; i < directions.length; i++) {
         where.OR.push({
