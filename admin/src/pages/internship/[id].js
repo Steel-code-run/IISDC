@@ -91,6 +91,7 @@ const Page = () => {
                     <Stack component={'user'}>
                         {data && <Box style={{
                             marginTop: '50px',
+                            marginBottom: '40px',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '30px 0'
@@ -134,7 +135,7 @@ const Page = () => {
                                        variant="outlined"
                                        size="small"
                                        name="responsibility"
-                                       value={internshipData?.responsibility}
+                                       value={internshipData?.responsibilities}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
