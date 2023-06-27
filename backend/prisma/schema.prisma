@@ -106,7 +106,7 @@ model users_telegram_settings {
   workTimeStart DateTime
   workTimeEnd   DateTime
   users         users[]
-  directions    String?
+  directions    String? @db.VarChar(400)
 }
 
 model acessing_logs {
