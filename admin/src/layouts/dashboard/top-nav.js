@@ -150,7 +150,6 @@ export const TopNav = (props) => {
                                         </Alert>
                                     )
                                 }) : <Alert
-
                                     severity="info">
                                     {'Новых уведомлений нет'}
                                 </Alert>
