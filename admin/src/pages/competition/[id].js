@@ -95,6 +95,7 @@ const Page = () => {
                     <Stack component={'user'}>
                         {data && <Box style={{
                             marginTop: '50px',
+                            marginBottom: '40px',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '30px 0'

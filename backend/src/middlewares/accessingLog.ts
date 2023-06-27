@@ -50,7 +50,7 @@ export default async function accessingLog(req:CustomRequest, res:Request, next:
         if (ips.size > 2){
             let description = `Пользователь ${req.user.name} зашел с ${ips.size} разных ip адресов`
 
-            let type = accessing_logs_warnings_types.login_from_5_ip_addresses_in_60_minutes
+            let type = accessing_logs_warnings_types.login_from_many_ip_addresses_in_60_minutes
 
             // если в течение последних 60 минут уже было зафиксировано такое же событие - не отправляем уведомление
             let lastLog = await prisma.accessing_logs_warnings.findFirst({

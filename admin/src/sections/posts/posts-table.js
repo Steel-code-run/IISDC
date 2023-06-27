@@ -16,6 +16,7 @@ import {Scrollbar} from 'src/components/scrollbar';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Link from 'next/link'
 import ArchiveIcon from "@mui/icons-material/Archive";
+import {defineLinkPost} from "../../helpers/switchLinkPost";
 
 export const PostsTable = (props) => {
     const {
@@ -30,18 +31,6 @@ export const PostsTable = (props) => {
         archiveHandle
     } = props;
 
-    const defineLinkPost = (type, id) => {
-        switch (type) {
-            case 'grant':
-                return `/grant/${id}`;
-            case 'competition':
-                return `/competition/${id}`;
-            case 'internship':
-                return `/internship/${id}`;
-            default:
-                return '/'
-        }
-    }
 
     return (
         <Card>

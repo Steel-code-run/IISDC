@@ -15,6 +15,7 @@ import {Scrollbar} from 'src/components/scrollbar';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Link from 'next/link'
 import UnarchiveIcon from '@mui/icons-material/Unarchive';
+import {defineLinkPost} from "../../helpers/switchLinkPost";
 
 export const ArchiveTable = (props) => {
     const {
@@ -99,7 +100,7 @@ export const ArchiveTable = (props) => {
                                                 spacing={2}
                                             >
                                                 <Link style={{textDecoration: "none", color: "black"}}
-                                                      href={(type === 'grant') ? `/grant/${post.id}` : `/competition/${post.id}`}>
+                                                      href={defineLinkPost(type, post.id)}>
                                                     <Typography variant="subtitle2">
                                                         {post.namePost}
                                                     </Typography>

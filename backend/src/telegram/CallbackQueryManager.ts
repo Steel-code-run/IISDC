@@ -9,7 +9,7 @@ export class CallbackQueryManager {
     private _path:string = '';
     private _params:{[key:string]:string} = {};
     private _id: number = -1;
-    private readonly TTL:number = 1000 * 60 * 60 * 24 * 7; // 7 days
+    private readonly TTL:number = 1000 * 60 * 60 * 24 * 1; // 1 day
 
     get query(): string {
         return this._query;

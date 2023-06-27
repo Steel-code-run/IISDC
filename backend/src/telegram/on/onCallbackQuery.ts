@@ -53,7 +53,7 @@ ${link}
 
         const callbackQuery = new CallbackQueryManager()
         await callbackQuery.getQueryFromDb(query_data)
-        await callbackQuery.deleteQueryInDb()
+        // await callbackQuery.deleteQueryInDb()
         await callbackQuery.deleteExpiredQueries()
 
         switch (callbackQuery.path) {
