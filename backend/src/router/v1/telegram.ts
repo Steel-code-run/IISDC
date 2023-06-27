@@ -3,6 +3,7 @@ import prisma from "../../prisma/connect";
 import {check, validationResult} from "express-validator";
 import md5 from "md5";
 import {bot} from "../../telegram/init";
+import {directions} from "../../directions";
 
 const telegramRouter = Router();
 
@@ -52,13 +53,46 @@ telegramRouter.post(baseUrl+"/login", async (req, res) => {
     if (!user){
         return res.render('telegram',{errors: [{msg: 'Не получилось войти'}]})
     }
+    let telegram_setting
+
+    if (user.user_telegram_settingsId) {
+        telegram_setting = await prisma.users_telegram_settings.findFirst({
+            where: {
+                id: user.user_telegram_settingsId
+            }
+        })
+    }
+    if (!telegram_setting){
+        let workTimeStart = new Date()
+        workTimeStart.setHours(9)
+        workTimeStart.setMinutes(0)
+
+        let workTimeEnd = new Date()
+        workTimeEnd.setHours(20)
+        workTimeEnd.setMinutes(0)
+
+        telegram_setting = await prisma.users_telegram_settings.create({
+            data: {
+                workTimeStart: workTimeStart,
+                workTimeEnd: workTimeEnd
+            }
+        })
+    }
+    if (!telegram_setting)
+        return res.render('telegram',{errors: [{msg: 'Не получилось войти'}]})
+
 
     await prisma.users.update({
         where:{
             id:user.id
         },
         data:{
-            users_telegramsId:telegram_id
+            users_telegramsId:telegram_id,
+            User_telegram_settings:{
+                connect:{
+                    id:telegram_setting.id
+                }
+            }
         }
     })
 

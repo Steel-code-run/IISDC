@@ -5,7 +5,6 @@
 /**/build/
 /**/built/
 /**/logs.txt
-/**/*.db
 *.local
 ./release.tar.gz
 .env

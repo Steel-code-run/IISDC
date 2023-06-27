@@ -4,6 +4,7 @@ import axios from "axios";
 import {Competition, Grant, Internship, Vacancy} from "../types/Posts";
 import {get3DirectionsByText} from "../helpers/getDirectionByText/getDirectionByText";
 import {sendPostByType} from "../telegram/functions/sendPostByType";
+import openai from "../openai";
 
 type JobData = {
     parserId: number;
@@ -258,9 +259,18 @@ const parsePage = async (
                             if (deadline.toString() === 'Invalid Date')
                                 deadline = null
 
-
                         data.deadline = deadline
                     }
+
+                    // if (!data.deadline){
+                    //     try {
+                    //         if (grant.fullText)
+                    //         data.deadline = await openai.getDeadlineFromText(grant.fullText)
+                    //     } catch (e) {
+                    //         if (e?.response?.data?.error)
+                    //             console.log(e?.response.data.error);
+                    //     }
+                    // }
                     if (grant.organization)
                         data.organization = grant.organization
                     if (grant.link)
@@ -272,12 +282,27 @@ const parsePage = async (
                     if (grant.directionForSpent)
                         data.directionForSpent = grant.directionForSpent
 
-                    let directions:any = []
-                    if (grant.fullText)
-                        directions = get3DirectionsByText(grant.fullText)
 
-                    if (directions)
-                        data.directions = JSON.stringify(directions)
+                    try {
+                        if (grant.fullText)
+                            data.directions = get3DirectionsByText(grant.fullText)
+                        else
+                            data.directions = []
+                    } catch (e) {
+                        console.log(e?.response.data.error);
+                        data.directions = []
+                    }
+
+                    console.log(data.directions)
+
+
+                    if (grant.dateCreationPost)
+                        try {
+                            data.dateCreationPost = new Date(grant.dateCreationPost)
+                        } catch (e) {}
+
+                    data.directions = JSON.stringify(data.directions)
+
 
                     data.parser_id = parser.id
 
@@ -289,6 +314,7 @@ const parsePage = async (
                     successAddInDb = true
 
                 }
+
 
                 if (postType === 'competition') {
                     let competition:Competition = postDescription
@@ -335,14 +361,34 @@ const parsePage = async (
                     if (competition.organization)
                         data.organization = competition.organization
 
-                    let directions;
-                    if (competition.fullText)
-                        directions = get3DirectionsByText(competition.fullText)
+                    try {
+                        if (competition.fullText)
+                            data.directions = get3DirectionsByText(competition.fullText)
+                        else
+                            data.directions = []
+                    } catch (e) {
+                        console.log(e?.response.data.error);
+                        data.directions = []
+                    }
 
-                    if (directions)
-                        data.directions = JSON.stringify(directions)
+                    if (competition.dateCreationPost)
+                        try {
+                            data.dateCreationPost = new Date(competition.dateCreationPost)
+                        } catch (e) {}
+
+                    data.directions = JSON.stringify(data.directions)
 
                     data.parser_id = parser.id
+
+                    // if (!data.deadline){
+                    //     try {
+                    //         if (competition.fullText)
+                    //             data.deadline = await openai.getDeadlineFromText(competition.fullText)
+                    //     } catch (e) {
+                    //         if (e?.response?.data?.error)
+                    //             console.log(e?.response.data.error);
+                    //     }
+                    // }
 
                     let post = await prisma.competitions.create({data})
 
@@ -384,12 +430,21 @@ const parsePage = async (
                     if (vacancy.organization)
                         data.organization = vacancy.organization
 
-                    let directions;
-                    if (vacancy.fullText)
-                        directions = get3DirectionsByText(vacancy.fullText)
+                    try {
+                        if (vacancy.fullText)
+                            data.directions = get3DirectionsByText(vacancy.fullText)
+                        else
+                            data.directions = []
+                    } catch (e) {
+                        console.log(e?.response.data.error);
+                        data.directions = []
+                    }
+                    if (vacancy.dateCreationPost)
+                        try {
+                            data.dateCreationPost = new Date(vacancy.dateCreationPost)
+                        } catch (e) {}
 
-                    if (directions)
-                        data.directions = JSON.stringify(directions)
+                    data.directions = JSON.stringify(data.directions)
 
                     data.parser_id = parser.id
 
@@ -429,14 +484,32 @@ const parsePage = async (
                     if (internship.organization)
                         data.organization = internship.organization
                     if (internship.dateCreationPost)
-                        data.dateCreationPost = internship.dateCreationPost
+                        try {
+                            data.dateCreationPost = new Date(internship.dateCreationPost)
+                        } catch (e) {}
 
                     data.parser_id = parser.id
+
+
+                    try {
+                        if (internship.fullText)
+                            data.directions = get3DirectionsByText(internship.fullText)
+                        else
+                            data.directions = []
+                    } catch (e) {
+                        console.log(e?.response.data.error);
+                        data.directions = []
+                    }
+
+                    data.directions = JSON.stringify(data.directions)
+
 
                     await prisma.internships.create({data})
 
                     successAddInDb = true
                 }
+
+
           }
             // Если постов больше > 0, обновляем время последнего парсинга
             if (response.data.length > 0) {

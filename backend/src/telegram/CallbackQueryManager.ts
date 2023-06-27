@@ -27,17 +27,15 @@ export class CallbackQueryManager {
         if (typeof id === 'string') id = parseInt(id);
         if (isNaN(id)) return;
         this._id = id;
-        await prisma.telegram_commands.findUnique({
+        let command = await prisma.telegram_commands.findUnique({
             where: {
                 id: id,
             }
-        }).then(command => {
-            if (!command) return;
-            this._query = command.query;
-            this._path = this._getPath();
-            console.log(this._path)
-            this._params = this._getParams();
         })
+        if (!command) return;
+        this._query = command.query;
+        this._path = this._getPath();
+        this._params = this._getParams();
         return
     }
 
@@ -45,7 +43,6 @@ export class CallbackQueryManager {
         this._params = params;
         this._path = path;
         this._query = this._buildQuery();
-
 
         const command = await prisma.telegram_commands.create({
             data: {

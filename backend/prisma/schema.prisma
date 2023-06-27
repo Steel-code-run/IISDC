@@ -15,7 +15,7 @@ datasource db {
 model grants {
   id                Int       @id @unique @default(autoincrement())
   namePost          String    @db.LongText()
-  dateCreationPost  String?
+  dateCreationPost  DateTime?
   directions        String?
   organization      String?   @db.LongText()
   deadline          DateTime?
@@ -34,8 +34,9 @@ model grants {
 model competitions {
   id               Int       @id @unique @default(autoincrement())
   namePost         String    @db.VarChar(255)
-  dateCreationPost String?
+  dateCreationPost DateTime?
   directions       String?
+  summary          String?
   organization     String?   @db.LongText()
   deadline         DateTime?
   fullText         String?   @db.LongText()
@@ -45,14 +46,15 @@ model competitions {
   timeOfParse      DateTime?
   blackListed      Boolean   @default(false)
   parser           parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
-  parser_id        Int
+  parser_id        Int?
 }
 
 model internships {
   id               Int       @id @unique @default(autoincrement())
   namePost         String    @db.VarChar(255)
-  dateCreationPost String?
+  dateCreationPost DateTime?
   directions       String?
+  responsibilities String?
   organization     String?   @db.LongText()
   fullText         String?   @db.LongText()
   link             String?
@@ -61,16 +63,17 @@ model internships {
   timeOfParse      DateTime?
   blackListed      Boolean   @default(false)
   parser           parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
-  parser_id        Int
+  parser_id        Int?
 }
 
 model vacancies {
   id               Int       @id @unique @default(autoincrement())
   namePost         String    @db.VarChar(255)
-  dateCreationPost String?
+  dateCreationPost DateTime?
   directions       String?
   organization     String?   @db.LongText()
-  summary          String?
+  salary          String?
+  responsibilities String?
   fullText         String?   @db.LongText()
   link             String?
   linkPDF          String?
@@ -78,7 +81,7 @@ model vacancies {
   timeOfParse      DateTime?
   blackListed      Boolean   @default(false)
   parser           parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
-  parser_id        Int
+  parser_id        Int?
 }
 
 model users {
@@ -103,7 +106,7 @@ model users_telegram_settings {
   workTimeStart DateTime
   workTimeEnd   DateTime
   users         users[]
-  directions    String?
+  directions    String? @db.VarChar(400)
 }
 
 model acessing_logs {
@@ -154,7 +157,7 @@ model resources_access {
 
 model parsers {
   id               Int             @id @unique @default(autoincrement())
-  name             String
+  name             String @unique
   description      String?
   isEnabled        Boolean
   grant            grants[]

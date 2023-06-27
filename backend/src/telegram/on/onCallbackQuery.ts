@@ -12,6 +12,8 @@ import {onGrants_get} from "./onCallbackQuery/onGrants_get";
 import {onWork_time} from "./onCallbackQuery/onSettings/onWork_time";
 import {onWork_time_end_add_hour} from "./onCallbackQuery/onSettings/onWork_time_end_add_hour";
 import {onWork_time_start_add_hour} from "./onCallbackQuery/onSettings/onWork_time_start_add_hour";
+import {onCompetitions} from "./onCallbackQuery/onCompetitions";
+import {onCompetitions_get} from "./onCallbackQuery/onCompetitions_get";
 
 export const onCallbackQuery = (bot: TelegramBot) => {
     bot.on('callback_query', async (query) => {
@@ -75,6 +77,13 @@ ${link}
                 await onGrants_get({bot, chatId, user, callbackQuery})
                 await onGrants({bot, chatId, user})
                 return
+            case 'competitions':
+                await onCompetitions({bot, chatId, user})
+                return
+            case 'competitions_get':
+                await onCompetitions_get({bot, chatId, user, callbackQuery})
+                await onCompetitions({bot, chatId, user})
+                return
             case 'settings_work_time':
                 await onWork_time({bot, chatId, user})
                 return
@@ -86,6 +95,10 @@ ${link}
                 await onWork_time_start_add_hour({bot, chatId, user, callbackQuery})
                 await onWork_time({bot, chatId, user})
                 return
+            case "main":
+                await onDefault({bot, chatId, user})
+                return
+
         }
 
         await bot.sendMessage(chatId, "Скорее всего время жизни кнопки истекло")

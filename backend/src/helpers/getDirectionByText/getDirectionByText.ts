@@ -12,25 +12,26 @@ import Pedagogy from "./directions/Pedagogy";
 import SocialWork from "./directions/SocialWork";
 import Tourism from "./directions/Tourism";
 import pedagogy from "./directions/Pedagogy";
-import economy from "./directions/Economy";
-
+import Economy from "./directions/Economy";
 
 const porterStemmer = natural.PorterStemmerRu,
     classifier = new natural.BayesClassifier(porterStemmer);
 
-classifier.addDocument(Design.props, Design.name);
-classifier.addDocument(Biotech.props, Biotech.name);
-classifier.addDocument(Chemistry.props, Chemistry.name);
-classifier.addDocument(Drones.props, Drones.name);
-classifier.addDocument(Geography.props, Geography.name);
-classifier.addDocument(IT.props, IT.name);
-classifier.addDocument(Journalism.props, Journalism.name);
-classifier.addDocument(libraryScience.props, libraryScience.name);
-classifier.addDocument(Medicine.props, Medicine.name);
-classifier.addDocument(Pedagogy.props, Pedagogy.name);
-classifier.addDocument(SocialWork.props, SocialWork.name);
-classifier.addDocument(Tourism.props, Tourism.name);
-classifier.addDocument(pedagogy.props, pedagogy.name);
+
+Design.props.forEach((el) => classifier.addDocument(el, Design.name));
+Biotech.props.forEach((el) => classifier.addDocument(el, Biotech.name));
+Chemistry.props.forEach((el) => classifier.addDocument(el, Chemistry.name));
+Drones.props.forEach((el) => classifier.addDocument(el, Drones.name));
+Geography.props.forEach((el) => classifier.addDocument(el, Geography.name));
+IT.props.forEach((el) => classifier.addDocument(el, IT.name));
+Journalism.props.forEach((el) => classifier.addDocument(el, Journalism.name));
+libraryScience.props.forEach((el) => classifier.addDocument(el, libraryScience.name));
+Medicine.props.forEach((el) => classifier.addDocument(el, Medicine.name));
+Pedagogy.props.forEach((el) => classifier.addDocument(el, Pedagogy.name));
+SocialWork.props.forEach((el) => classifier.addDocument(el, SocialWork.name));
+Tourism.props.forEach((el) => classifier.addDocument(el, Tourism.name));
+pedagogy.props.forEach((el) => classifier.addDocument(el, pedagogy.name));
+Economy.props.forEach((el) => classifier.addDocument(el, Economy.name));
 
 
 classifier.train();
@@ -45,11 +46,13 @@ export const get3DirectionsByText = (text: string) => {
     // console.log(myClassifications)
     // console.log(classificationsValuesSum)
 
-    directions.push(classifications[0].label)
-    if (myClassifications?.[1]?.proc > 0.000001)
+    if (myClassifications?.[0]?.proc > myClassifications?.[1]?.proc)
+        directions.push(classifications[0].label)
+    if (myClassifications?.[1]?.proc > myClassifications?.[2]?.proc)
         directions.push(classifications[1].label)
-    if (myClassifications?.[2]?.proc > 0.000001)
+    if (myClassifications?.[2]?.proc > myClassifications?.[3]?.proc)
         directions.push(classifications[2].label)
+
     return directions
 
 };
