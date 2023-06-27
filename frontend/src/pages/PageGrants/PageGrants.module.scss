@@ -14,6 +14,8 @@
   &__filterBlock {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
+    gap: 20px 0;
   }
 
   &__posts {

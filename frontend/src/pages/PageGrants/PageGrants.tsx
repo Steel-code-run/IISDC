@@ -13,6 +13,8 @@ import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import {directionsList} from "../../config/directions";
 import {WithAuthGuard} from "../../hoc/with-auth-guard";
 import TextField from '@mui/material/TextField';
+import {rangeDeadlineData} from "../../helpers/formatDate";
+import FilterDate from "../../components/filterDate/filterDate";
 
 export interface PageGrantsProps {
 }
@@ -23,7 +25,9 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState<string[] | string>([])
-    const [dayDeadline, setDayDeadline] = useState(null)
+    const [dayDeadline, setDayDeadline] =
+        useState(0)
+    const [checkedFilter, setCheckedFilter] = useState<boolean>(false);
     const navigate = useNavigate();
     const token = window.sessionStorage.getItem('token');
 
@@ -52,7 +56,13 @@ const PageGrants: FC<PageGrantsProps> = () => {
         namePost: debounceValue,
         directions: choicedDirection,
         token: token,
-        deadlineBy: dayDeadline
+        ...(
+            (checkedFilter) &&
+            {
+                deadlineBy: rangeDeadlineData(dayDeadline)
+            }
+
+        )
     });
 
     const directions = directionsList;
@@ -96,24 +106,12 @@ const PageGrants: FC<PageGrantsProps> = () => {
                             <Dropdown listDirections={directions}
                                       cbChoicedDirection={setChoicedDirection}/>
                         </div>
-                        <TextField
-                            className={styles.pageGrants__datePicker}
-                            id="date"
-                            label="Дней до дедлайна:"
-                            type="number"
-                            value={dayDeadline}
-                            onChange={(e: any) => {
-                                setDayDeadline(e.target.value)
-                            }}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                        <Button onClick={async () => {
 
-                        }}>
-                            Отфильтровать
-                        </Button>
+                        <FilterDate dayDeadline={dayDeadline}
+                                    setDayDeadline={setDayDeadline}
+                                    checkedFilter={checkedFilter}
+                                    setCheckedFilter={setCheckedFilter}/>
+
                     </div>
 
                     <div className={styles.pageGrants__wrapper}>

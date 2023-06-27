@@ -21,6 +21,7 @@ import {WithAuthGuard} from "../../hoc/with-auth-guard";
 import {useAuth} from "../../hooks/authContext";
 import {TextField} from "@mui/material";
 import moment from "moment";
+import {FORMAT_DATE, ISO_FULL_DATE} from "../../constants/timeConstants";
 
 
 interface ILocationState {
@@ -71,13 +72,13 @@ const PagePost = () => {
             [e.target.name]: value,
         }));
     };
-    const FORMAT_TIME = 'yyyy-MM-DD';
+
     const formatDateInISOUTC0 = (date: any) => moment(Date.parse(date))
         .utcOffset(0)
-        .format(FORMAT_TIME);
-    const formatDateInISOUTC0Full = (data: any) => moment(data, FORMAT_TIME)
+        .format(FORMAT_DATE);
+    const formatDateInISOUTC0Full = (data: any) => moment(data, FORMAT_DATE)
         //.utcOffset(0)
-        .format('yyyy-MM-DD[T]HH:mm:00.000[Z]');
+        .format(ISO_FULL_DATE);
 
     const highLightField = (turn: boolean) => (turn) ? styles.pagePost__highlightField : '';
 

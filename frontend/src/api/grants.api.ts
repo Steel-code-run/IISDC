@@ -10,7 +10,7 @@ export interface IGetGrants {
     namePost: string,
     directions?: string | string[],
     token: string | null
-    deadlineBy: string | null
+    deadlineBy?: string | null | undefined
 }
 
 type IGetCountGrants = Omit<any, 'skip' | 'take' | 'extended'>;
