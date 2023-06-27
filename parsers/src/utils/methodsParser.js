@@ -252,10 +252,11 @@ const getInfoPosts = async (querySelectors, links, baseUrl = '' ) => {
 
     for (let index in links) {
         const jsdom = await getHTML(links[index])
-        const {title} = querySelectors;
+        const {title, text } = querySelectors;
 
-        const namePost = getDataBySelector(jsdom, title);
-        result.push(definePostDescription(defineTypePost(namePost), jsdom, querySelectors, links[index], baseUrl));
+        const namePost = getDataBySelector(jsdom, title)
+        const fullText = getDataBySelector(jsdom, text)
+        result.push(definePostDescription(defineTypePost(namePost + ' ' + fullText), jsdom, querySelectors, links[index], baseUrl));
     }
 
     return result
