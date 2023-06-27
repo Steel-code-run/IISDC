@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {useRouter} from "next/router";
-import {Box, Button, Container, Stack, SvgIcon, TextField, Typography} from "@mui/material";
+import {Chip, Box, Button, Container, Stack, SvgIcon, TextField, Typography} from "@mui/material";
 import styles from './grantPage.module.scss'
 import EditIcon from '@mui/icons-material/Edit';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
@@ -9,6 +9,8 @@ import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
 import {getGrants, updateGrant} from "../../api/posts/grantsReq";
 import {useSnackbar} from "../../hooks/use-snackbar";
 import {formatDateInISOUTC0} from "../../helpers/formatDate";
+import ListChips from "../../components/listChips/ListChips";
+import {directionsList} from "../../constants/directions";
 
 const Page = () => {
     const router = useRouter();
@@ -18,8 +20,10 @@ const Page = () => {
     const whereGrant = {
         id: Number(router.query.id)
     }
-    const {data, isError, isLoading} = useQuery(['grant', 0, 0, configResponseGrant, whereGrant],
+    const {data, isError, isLoading, status} = useQuery(['grants', 0, 0, configResponseGrant, whereGrant],
         () => getGrants(0, 0, configResponseGrant, whereGrant));
+
+
 
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
@@ -27,17 +31,23 @@ const Page = () => {
 
     const [isEditing, setIsEditing] = useState(false);
     const [grantData, setGrantData] = useState(null);
+    const [selectChips, setSelectChips] = useState([]);
 
     useEffect(() => {
-        setGrantData(data?.[0])
-    }, [data])
+
+            setGrantData(data?.[0]);
+            setSelectChips((data?.[0]?.directions) ? JSON.parse(data?.[0]?.directions) : []);
+
+    }, [data, setSelectChips])
+
+
 
     const mutation = useMutation(
         (data) => updateGrant(data),
         {
             onSuccess: (res) => {
 
-                queryClient.invalidateQueries(["grant"]);
+                queryClient.invalidateQueries(["grants"]);
                 setOpenSnackbar(true);
                 setSnackbarData({
                     type: 'success',
@@ -54,8 +64,8 @@ const Page = () => {
             },
 
         });
-    if (isLoading) return <div>Loading...</div>
 
+    if (isLoading || status === "loading") return <div>Loading...</div>
     if (isError) return <div>Error...</div>
 
 
@@ -71,10 +81,12 @@ const Page = () => {
     };
 
     const handleUpdatedDataUser = () => {
-        mutation.mutate({id: data[0].id, data: grantData});
+        mutation.mutate({id: data[0].id, data: {
+            ...grantData,
+                directions: JSON.stringify(selectChips)
+            }});
         setIsEditing(false);
     }
-
 
 
     return (
@@ -139,6 +151,12 @@ const Page = () => {
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
+
+                            <ListChips
+                                setSelectChips={setSelectChips}
+                                selectChips={selectChips}
+                                />
+
                             <TextField className={styles.userPage__textField}
                                        label="Организация"
                                        variant="outlined"
@@ -173,7 +191,7 @@ const Page = () => {
                                        variant="outlined"
                                        size="small"
                                        name="linkPDF"
-                                       value={grantData?.linkPDF }
+                                       value={grantData?.linkPDF}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
@@ -183,7 +201,7 @@ const Page = () => {
                                        size="medium"
                                        multiline
                                        name="fullText"
-                                       value={grantData?.fullText }
+                                       value={grantData?.fullText}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
