@@ -87,7 +87,7 @@ const Page = () => {
             }}>
                 <Container>
                     <Typography
-                        variant={'h4'}>Данные гранта: {internshipData?.namePost}</Typography>
+                        variant={'h4'}>Данные стажировки: {internshipData?.namePost}</Typography>
                     <Stack component={'user'}>
                         {data && <Box style={{
                             marginTop: '50px',

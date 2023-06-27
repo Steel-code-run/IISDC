@@ -70,7 +70,6 @@ export const ArchiveTable = (props) => {
                         <TableBody>
                             {items.length > 0 && items?.map((post) => {
 
-
                                 return (
                                     <TableRow
                                         hover
