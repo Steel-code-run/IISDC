@@ -124,8 +124,7 @@ export const ParsersTable = (props) => {
                                                 direction="row"
                                                 spacing={2}
                                             >
-                                                <Link style={{textDecoration: "none", color: "black"}}
-                                                      href={`/user/${parser.id}`}>
+                                                <Link style={{textDecoration: "none", color: "black"}}>
                                                     <Typography variant="subtitle2">
                                                         {parser.name}
                                                     </Typography>
