@@ -19,6 +19,9 @@ import classNames from "classnames";
 import {initialValuesUpdateData} from "../../helpers/initialValuesUpdateData";
 import {WithAuthGuard} from "../../hoc/with-auth-guard";
 import {useAuth} from "../../hooks/authContext";
+import {TextField} from "@mui/material";
+import moment from "moment";
+
 
 interface ILocationState {
     state: {
@@ -31,12 +34,15 @@ const PagePost = () => {
     const location: ILocationState = useLocation();
     const {data, postType} = location.state;
     const user = useAuth()
-    console.log(user)
 
     const [isEdit, setIsEdit] = useState(false);
 
     const [updateData, setUpdateData] =
-        useState<TTypesUpdateData<TPostType>>(initialValuesUpdateData(postType, data))
+        useState<TTypesUpdateData<TPostType>>(initialValuesUpdateData(postType, data));
+
+    useEffect(() => {
+        setUpdateData(initialValuesUpdateData(postType, data))
+    }, [])
 
     const isVisionBtns = useMediaQuery({query: '(min-width: 540px)'})
 
@@ -53,11 +59,30 @@ const PagePost = () => {
         if (!isVisionBtns) {
             setIsEdit(false)
         }
-    }, [isVisionBtns])
+    }, [isVisionBtns]);
+
+    const handleChangeDataUser = (e: any) => {
+        let value = e.target.value
+        if(e.target.name === 'deadnline' || e.target.name === 'dateCreationPost') {
+            value = formatDateInISOUTC0Full(value)
+        }
+        setUpdateData((prevFormData) => ({
+            ...prevFormData,
+            [e.target.name]: value,
+        }));
+    };
+    const FORMAT_TIME = 'yyyy-MM-DD';
+    const formatDateInISOUTC0 = (date: any) => moment(Date.parse(date))
+        .utcOffset(0)
+        .format(FORMAT_TIME);
+    const formatDateInISOUTC0Full = (data: any) => moment(data, FORMAT_TIME)
+        //.utcOffset(0)
+        .format('yyyy-MM-DD[T]HH:mm:00.000[Z]');
 
     const highLightField = (turn: boolean) => (turn) ? styles.pagePost__highlightField : '';
 
 
+    console.log(formatDateInISOUTC0(updateData.dateCreationPost))
     return (
         <>
             <Header/>
@@ -67,36 +92,38 @@ const PagePost = () => {
                         styles.pagePost__row,
                         styles.pagePost__header)}>
                         <h1 className={classNames(styles.pagePost__namePost)}>{data.namePost}</h1>
+
                         <div className={classNames(styles.pagePost__dates)}>
-                            {(isEdit || updateData.dateCreationPost) && <div
-                                className={classNames(
-                                    styles.pagePost__dateCreationPost)}>{'Дата создания поста \n'}
-                                <p contentEditable={isEdit}
-                                   suppressContentEditableWarning={true}
-                                   onInput={(e) => {
-                                       const target = e.target as HTMLElement;
-                                       setUpdateData({
-                                           ...updateData,
-                                           dateCreationPost: target.textContent
-                                       })
-                                   }}
-                                >{data.dateCreationPost}</p></div>}
+                            {(isEdit || updateData?.dateCreationPost) &&
+                                <TextField
+                                    className={styles.pagePost__dateCreationPost}
+                                    label="Дата создания поста"
+                                    type="date"
+                                    name={'dateCreationPost'}
+                                    value={formatDateInISOUTC0(updateData.dateCreationPost)}
+                                    onChange={(e) => handleChangeDataUser(e)}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                            }
                             {
                                 (isUpdateDataGrant(postType, updateData)
                                     || isUpdateDataCompetition(postType, updateData)) &&
-                                (isEdit || updateData.deadline) && <div
-                                    className={classNames(
-                                        styles.pagePost__deadline)}>{'Дата окончания подачи заявок \n'}
-                                    <p contentEditable={isEdit}
-                                       suppressContentEditableWarning={true}
-                                       onInput={(e) => {
-                                           const target = e.target as HTMLElement;
-                                           setUpdateData({
-                                               ...updateData,
-                                               deadline: target.textContent
-                                           })
-                                       }}
-                                    >{data.deadline}</p></div>
+                                (isEdit || updateData.deadline) &&
+                                <TextField
+                                    className={styles.pagePost__deadline}
+                                    id="date"
+                                    label="Дедлайн подачи заявки"
+                                    type="date"
+                                    name={'deadline'}
+                                    value={formatDateInISOUTC0(updateData.deadline)}
+                                    onChange={(e) =>
+                                        handleChangeDataUser(e)}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
                             }
                         </div>
 

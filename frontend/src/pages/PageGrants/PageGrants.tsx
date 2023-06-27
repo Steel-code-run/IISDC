@@ -4,7 +4,7 @@ import {useGetCountGrantsQuery, useGetGrantsQuery} from "../../api/grants.api";
 import CardPost from "../../components/CardPost/CardPost";
 import Header from "../../components/Header/Header";
 import {TGrant, TPostType} from "../../types/serial/parser";
-import {Pagination} from "@mui/material";
+import {Button, Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import '../../styles/spinner-loader.scss';
 import {useNavigate} from "react-router-dom";
@@ -12,6 +12,7 @@ import {Dna} from "react-loader-spinner";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import {directionsList} from "../../config/directions";
 import {WithAuthGuard} from "../../hoc/with-auth-guard";
+import TextField from '@mui/material/TextField';
 
 export interface PageGrantsProps {
 }
@@ -22,6 +23,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const [amountPages, setAmountPages] = useState<number>(1)
     const [debounceValue, setDebounceValue] = useState<string>('')
     const [choicedDirection, setChoicedDirection] = useState<string[] | string>([])
+    const [dayDeadline, setDayDeadline] = useState(null)
     const navigate = useNavigate();
     const token = window.sessionStorage.getItem('token');
 
@@ -49,7 +51,8 @@ const PageGrants: FC<PageGrantsProps> = () => {
         extended: true,
         namePost: debounceValue,
         directions: choicedDirection,
-        token: token
+        token: token,
+        deadlineBy: dayDeadline
     });
 
     const directions = directionsList;
@@ -76,21 +79,41 @@ const PageGrants: FC<PageGrantsProps> = () => {
     }, [isLoading])
 
     if (!directions || isLoading) return <Dna visible={true}
-                                                              height="250"
-                                                              width="250"
-                                                              ariaLabel="dna-loading"
-                                                              wrapperStyle={{}}
-                                                              wrapperClass="dna-wrapper"/>
+                                              height="250"
+                                              width="250"
+                                              ariaLabel="dna-loading"
+                                              wrapperStyle={{}}
+                                              wrapperClass="dna-wrapper"/>
     return (
         <>
             <Header/>
             <div className={styles.pageGrants} data-testid="PageGrants">
                 <div className="container">
                     <Search cbDebounce={setDebounceValue}/>
-                    <div className={styles.pageGrants__directionBlock}>
-                        <p className={styles.pageGrants__directionBlock__titleBlock}>{'Направление: '}</p>
-                        <Dropdown listDirections={directions}
-                                  cbChoicedDirection={setChoicedDirection}/>
+                    <div className={styles.pageGrants__filterBlock}>
+                        <div className={styles.pageGrants__directionBlock}>
+                            <p className={styles.pageGrants__directionBlock__titleBlock}>{'Направление: '}</p>
+                            <Dropdown listDirections={directions}
+                                      cbChoicedDirection={setChoicedDirection}/>
+                        </div>
+                        <TextField
+                            className={styles.pageGrants__datePicker}
+                            id="date"
+                            label="Дней до дедлайна:"
+                            type="number"
+                            value={dayDeadline}
+                            onChange={(e: any) => {
+                                setDayDeadline(e.target.value)
+                            }}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        <Button onClick={async () => {
+
+                        }}>
+                            Отфильтровать
+                        </Button>
                     </div>
 
                     <div className={styles.pageGrants__wrapper}>
