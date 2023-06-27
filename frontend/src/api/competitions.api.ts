@@ -93,13 +93,21 @@ export const competitionsApi = createApi({
                     : ['Competitions'],
         }),
         getCountСompetitions: builder.query<any, IGetCountCompetitions>({
-            query: ({namePost, directions, token}) => {
+            query: ({
+                        namePost,
+                        directions,
+                        token,
+                        deadlineBy
+                    }) => {
                 return {
                     url: 'v1/competitions/count',
                     body: {
                         where: (directions?.length) ? {
                             "namePost": {
                                 contains: namePost
+                            },
+                            deadline: {
+                                gte: deadlineBy
                             },
 
                             "OR": (typeof directions === 'string') ? {
@@ -116,6 +124,9 @@ export const competitionsApi = createApi({
                         } : {
                             "namePost": {
                                 contains: namePost
+                            },
+                            deadline: {
+                                gte: deadlineBy
                             },
                         }
                     },
