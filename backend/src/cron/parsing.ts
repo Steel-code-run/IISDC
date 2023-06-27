@@ -232,6 +232,11 @@ const parsePage = async (
                 const postType = post.postType
                 const postDescription = post.postDescription
 
+                // если нет namePost то скипаем
+
+                if (postDescription.namePost.length < 3)
+                    continue
+
                 if (postType === 'grant') {
                     let grant:Grant = postDescription
 
