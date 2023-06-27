@@ -71,7 +71,8 @@ model vacancies {
   dateCreationPost DateTime?
   directions       String?
   organization     String?   @db.LongText()
-  summary          String?
+  salary          String?
+  responsibilities String?
   fullText         String?   @db.LongText()
   link             String?
   linkPDF          String?
