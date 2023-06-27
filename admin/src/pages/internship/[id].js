@@ -1,57 +1,47 @@
 import React, {useEffect, useState} from 'react';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {useRouter} from "next/router";
-import {Chip, Box, Button, Container, Stack, SvgIcon, TextField, Typography} from "@mui/material";
-import styles from './grantPage.module.scss'
+import {Box, Button, Container, Stack, SvgIcon, TextField, Typography} from "@mui/material";
+import styles from './internshipPage.module.scss'
 import EditIcon from '@mui/icons-material/Edit';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
-import {getGrants, updateGrant} from "../../api/posts/grantsReq";
+import {getInternships, updateInternship} from "../../api/posts/internshipsReq";
 import {useSnackbar} from "../../hooks/use-snackbar";
 import {formatDateInISOUTC0} from "../../helpers/formatDate";
-import ListChips from "../../components/listChips/ListChips";
-import {directionsList} from "../../constants/directions";
 
 const Page = () => {
     const router = useRouter();
-    const configResponseGrant = {
+    const configResponseInternship = {
         extended: true
     }
-    const whereGrant = {
+    const whereInternship = {
         id: Number(router.query.id)
     }
-    const {data, isError, isLoading, status} = useQuery(['grants', 0, 0, configResponseGrant, whereGrant],
-        () => getGrants(0, 0, configResponseGrant, whereGrant));
-
-
+    const {data, isError, isLoading} = useQuery(['internships', 0, 0, configResponseInternship, whereInternship],
+        () => getInternships(0, 0, configResponseInternship, whereInternship));
 
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
     const queryClient = useQueryClient();
 
     const [isEditing, setIsEditing] = useState(false);
-    const [grantData, setGrantData] = useState(null);
-    const [selectChips, setSelectChips] = useState([]);
+    const [internshipData, setInternshipData] = useState(null);
 
     useEffect(() => {
-
-            setGrantData(data?.[0]);
-            setSelectChips((data?.[0]?.directions) ? JSON.parse(data?.[0]?.directions) : []);
-
-    }, [data, setSelectChips])
-
-
+        setInternshipData(data?.[0])
+    }, [data])
 
     const mutation = useMutation(
-        (data) => updateGrant(data),
+        (data) => updateInternship(data),
         {
             onSuccess: (res) => {
 
-                queryClient.invalidateQueries(["grants"]);
+                queryClient.invalidateQueries(["internship"]);
                 setOpenSnackbar(true);
                 setSnackbarData({
                     type: 'success',
-                    msg: 'Грант успешно обновлен'
+                    msg: 'Стажировка успешно обновлена'
                 });
             },
             onError: (err) => {
@@ -64,8 +54,8 @@ const Page = () => {
             },
 
         });
+    if (isLoading) return <div>Loading...</div>
 
-    if (isLoading || status === "loading") return <div>Loading...</div>
     if (isError) return <div>Error...</div>
 
 
@@ -74,19 +64,17 @@ const Page = () => {
     }
 
     const handleChangeDataUser = (e) => {
-        setGrantData((prevFormData) => ({
+        setInternshipData((prevFormData) => ({
             ...prevFormData,
             [e.target.name]: e.target.value,
         }));
     };
 
     const handleUpdatedDataUser = () => {
-        mutation.mutate({id: data[0].id, data: {
-            ...grantData,
-                directions: JSON.stringify(selectChips)
-            }});
+        mutation.mutate({id: data[0].id, data: internshipData});
         setIsEditing(false);
     }
+
 
 
     return (
@@ -99,7 +87,7 @@ const Page = () => {
             }}>
                 <Container>
                     <Typography
-                        variant={'h4'}>Данные гранта: {grantData?.namePost}</Typography>
+                        variant={'h4'}>Данные гранта: {internshipData?.namePost}</Typography>
                     <Stack component={'user'}>
                         {data && <Box style={{
                             marginTop: '50px',
@@ -113,65 +101,40 @@ const Page = () => {
                                        variant="outlined"
                                        size="small"
                                        name="namePost"
-                                       value={grantData?.namePost}
+                                       value={internshipData?.namePost}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
 
                             <TextField
-                                className={styles.grantPage__textField}
+                                className={styles.internshipPage__textField}
                                 label="Дата создания поста"
                                 type="date"
                                 name={'dateCreationPost'}
-                                value={formatDateInISOUTC0(grantData?.dateCreationPost)}
+                                value={formatDateInISOUTC0(internshipData?.dateCreationPost)}
                                 onChange={handleChangeDataUser}
                                 disabled={!isEditing}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                            />
-                            <TextField
-                                className={styles.grantPage__textField}
-                                label="Дедлайн"
-                                type="date"
-                                name={'deadline'}
-                                value={formatDateInISOUTC0(grantData?.deadline)}
-                                onChange={handleChangeDataUser}
-                                disabled={!isEditing}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                            <TextField className={styles.userPage__textField}
-                                       label="Сумма"
-                                       variant="outlined"
-                                       size="small"
-                                       name="summary"
-                                       value={grantData?.summary}
-                                       disabled={!isEditing}
-                                       onChange={handleChangeDataUser}
                             />
 
-                            <ListChips
-                                setSelectChips={setSelectChips}
-                                selectChips={selectChips}
-                                />
 
                             <TextField className={styles.userPage__textField}
                                        label="Организация"
                                        variant="outlined"
                                        size="small"
                                        name="organization"
-                                       value={grantData?.organization}
+                                       value={internshipData?.organization}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
                             <TextField className={styles.userPage__textField}
-                                       label="Направление расходывания средств"
+                                       label="responsibility"
                                        variant="outlined"
                                        size="small"
-                                       name="directionForSpent"
-                                       value={grantData?.directionForSpent}
+                                       name="responsibility"
+                                       value={internshipData?.responsibility}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
@@ -181,7 +144,7 @@ const Page = () => {
                                        variant="outlined"
                                        size="small"
                                        name="link"
-                                       value={grantData?.link}
+                                       value={internshipData?.link}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
@@ -191,7 +154,7 @@ const Page = () => {
                                        variant="outlined"
                                        size="small"
                                        name="linkPDF"
-                                       value={grantData?.linkPDF}
+                                       value={internshipData?.linkPDF }
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
@@ -201,7 +164,7 @@ const Page = () => {
                                        size="medium"
                                        multiline
                                        name="fullText"
-                                       value={grantData?.fullText}
+                                       value={internshipData?.fullText }
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />

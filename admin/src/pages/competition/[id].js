@@ -9,6 +9,7 @@ import SnackbarMessage from "../../components/snackbarMessage/SnackbarMessage";
 import {getCompetitions, updateCompetition} from "../../api/posts/competitionsReq";
 import {useSnackbar} from "../../hooks/use-snackbar";
 import {formatDateInISOUTC0} from "../../helpers/formatDate";
+import ListChips from "../../components/listChips/ListChips";
 
 const Page = () => {
     const router = useRouter();
@@ -18,7 +19,7 @@ const Page = () => {
     const whereGrant = {
         id: Number(router.query.id)
     }
-    const {data, isError, isLoading} = useQuery(['competition', 0, 0, configResponseGrant, whereGrant],
+    const {data, isError, isLoading} = useQuery(['competitions', 0, 0, configResponseGrant, whereGrant],
         () => getCompetitions(0, 0, configResponseGrant, whereGrant));
 
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
@@ -27,16 +28,21 @@ const Page = () => {
 
     const [isEditing, setIsEditing] = useState(false);
     const [competitionData, setCompetitionData] = useState(null);
+    const [selectChips, setSelectChips] = useState([]);
 
 
     useEffect(() => {
-        setCompetitionData(data?.[0])
-    }, [data])
+
+            setCompetitionData(data?.[0]);
+            setSelectChips((data?.[0]?.directions) ? JSON.parse(data?.[0]?.directions) : []);
+
+    }, [data, setSelectChips])
+
 
     const mutation = useMutation((data) => updateCompetition(data),
         {
             onSuccess: (res) => {
-                queryClient.invalidateQueries(["competition"]);
+                queryClient.invalidateQueries(["competitions"]);
                 setOpenSnackbar(true);
                 setSnackbarData({
                     type: 'success',
@@ -53,7 +59,8 @@ const Page = () => {
             },
 
         });
-    if (isLoading) return <div>Loading...</div>
+
+    if (isLoading || status === "loading") return <div>Loading...</div>
 
     if (isError) return <div>Error...</div>
 
@@ -127,6 +134,11 @@ const Page = () => {
                                 }}
                             />
 
+                            <ListChips
+                                setSelectChips={setSelectChips}
+                                selectChips={selectChips}
+                            />
+
                             <TextField className={styles.userPage__textField}
                                        label="Организация"
                                        variant="outlined"
@@ -153,6 +165,16 @@ const Page = () => {
                                        size="small"
                                        name="linkPDF"
                                        value={competitionData?.linkPDF }
+                                       disabled={!isEditing}
+                                       onChange={handleChangeDataUser}
+                            />
+                            <TextField className={styles.userPage__textField}
+                                       label="Описание"
+                                       variant="outlined"
+                                       multiline
+                                       size="medium"
+                                       name="fullText"
+                                       value={competitionData?.fullText }
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
