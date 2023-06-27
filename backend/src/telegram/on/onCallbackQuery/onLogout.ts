@@ -19,5 +19,5 @@ export const onLogout = async (props:OnSomethingProps) => {
         }
     })
 
-    bot.sendMessage(chatId, 'Выполненен выход из акканта')
+    bot.sendMessage(chatId, 'Выполнен выход из аккаунта')
 }
