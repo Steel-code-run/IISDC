@@ -4,7 +4,7 @@ import {useGetCountGrantsQuery, useGetGrantsQuery} from "../../api/grants.api";
 import CardPost from "../../components/CardPost/CardPost";
 import Header from "../../components/Header/Header";
 import {TGrant, TPostType} from "../../types/serial/parser";
-import {Button, Pagination} from "@mui/material";
+import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import '../../styles/spinner-loader.scss';
 import {useNavigate} from "react-router-dom";
@@ -12,7 +12,6 @@ import {Dna} from "react-loader-spinner";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import {directionsList} from "../../config/directions";
 import {WithAuthGuard} from "../../hoc/with-auth-guard";
-import TextField from '@mui/material/TextField';
 import {rangeDeadlineData} from "../../helpers/formatDate";
 import FilterDate from "../../components/filterDate/filterDate";
 
@@ -45,7 +44,14 @@ const PageGrants: FC<PageGrantsProps> = () => {
     const {data: totalCountPosts} = useGetCountGrantsQuery({
         namePost: debounceValue,
         directions: choicedDirection,
-        token: token
+        token: token,
+        ...(
+            (checkedFilter) &&
+            {
+                deadlineBy: rangeDeadlineData(dayDeadline)
+            }
+
+        )
     });
 
 

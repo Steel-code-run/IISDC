@@ -86,7 +86,8 @@ export const grantsApi = createApi({
             query: ({
                         namePost,
                         directions,
-                        token
+                        token,
+                deadlineBy
                     }) => {
                 return {
                     url: `v1/grants/count`,
@@ -94,6 +95,9 @@ export const grantsApi = createApi({
                         where: (directions?.length) ? {
                             "namePost": {
                                 contains: namePost
+                            },
+                            deadline: {
+                                gte: deadlineBy
                             },
 
                             "OR": (typeof directions === 'string') ? {
@@ -111,6 +115,9 @@ export const grantsApi = createApi({
                             "namePost": {
                                 contains: namePost
                             },
+                            deadline: {
+                                gte: deadlineBy
+                            }
                         }
                     },
                     headers: {

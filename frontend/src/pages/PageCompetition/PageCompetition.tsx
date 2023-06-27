@@ -45,7 +45,15 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     const {data: totalCountPosts} = useGetCountСompetitionsQuery({
         namePost: debounceValue,
         directions: choicedDirection,
-        token
+        token,
+        ...(
+            (checkedFilter) &&
+            {
+                deadlineBy: rangeDeadlineData(dayDeadline)
+            }
+
+        )
+
     });
     //console.log(totalCountPosts)
 
