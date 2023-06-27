@@ -1,0 +1,19 @@
+.filterDate {
+
+  display: flex;
+  align-items: center;
+  gap: 0 15px;
+
+
+  &__datePicker {
+    width: 300px;
+  }
+  &__checkbox {
+    width: 20px;
+    & input {
+    opacity: 100% !important;
+
+
+    }
+  }
+}
