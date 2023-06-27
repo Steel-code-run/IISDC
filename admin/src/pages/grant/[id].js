@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {useRouter} from "next/router";
-import {Chip, Box, Button, Container, Stack, SvgIcon, TextField, Typography} from "@mui/material";
+import {Box, Button, Container, Stack, SvgIcon, TextField, Typography} from "@mui/material";
 import styles from './grantPage.module.scss'
 import EditIcon from '@mui/icons-material/Edit';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
@@ -10,7 +10,6 @@ import {getGrants, updateGrant} from "../../api/posts/grantsReq";
 import {useSnackbar} from "../../hooks/use-snackbar";
 import {formatDateInISOUTC0} from "../../helpers/formatDate";
 import ListChips from "../../components/listChips/ListChips";
-import {directionsList} from "../../constants/directions";
 
 const Page = () => {
     const router = useRouter();
