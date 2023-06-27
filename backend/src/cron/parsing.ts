@@ -216,6 +216,17 @@ const parsePage = async (
     axios.get(process.env.PARSERS_URL! + "/parsers/"+parser.name+"/"+page)
         .then(async response => {
             let successAddInDb = false;
+            // Если постов больше > 0, обновляем время последнего парсинга
+            if (response.data.length > 0) {
+                await prisma.parsers.update({
+                    where:{
+                        id:parser.id
+                    },
+                    data:{
+                        lastSuccessParse: new Date()
+                    }
+                })
+            }
 
             for (const post of response.data) {
                 const postType = post.postType
@@ -234,7 +245,8 @@ const parsePage = async (
 
                     if (grant_in_db) {
                       console.log('grant already exist')
-                      return new Error('grant already exist')
+                      continue;
+                      // return new Error('grant already exist')
                     }
 
 
@@ -327,7 +339,7 @@ const parsePage = async (
                     })
                     if (competition_in_db) {
                         console.log('competition already exist')
-                        return new Error('competition already exist')
+                        continue;
                     }
 
                     // Если конкурса нет в базе, то добавляем его
@@ -408,7 +420,7 @@ const parsePage = async (
                     })
                     if (vacancy_in_db) {
                         console.log('vacancy already exist')
-                        return new Error('vacancy already exist')
+                        continue;
                     }
 
                     // Если вакансии нет в базе, то добавляем ее
@@ -511,17 +523,7 @@ const parsePage = async (
 
 
           }
-            // Если постов больше > 0, обновляем время последнего парсинга
-            if (response.data.length > 0) {
-                await prisma.parsers.update({
-                    where:{
-                        id:parser.id
-                    },
-                    data:{
-                        lastSuccessParse: new Date()
-                    }
-                })
-            }
+
 
             // Если был хотя бы один успешно добавленный пост,
             // то обновляем время последнего успешного добавления

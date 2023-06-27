@@ -306,7 +306,7 @@ export const parsersParams = [
 // CREATE SQL QUERIES
 
 /*
-INSERT INTO `parsers` (`name`, `isEnabled`, `pagesToParser`, `cronTime`) VALUES
+INSERT INTO `parsers` (`name`, `isEnabled`, `pagesToParse`, `cronTime`) VALUES
 ('fasie', 1, 1, '10 10 12 * * *'),
 ('guap.ru', 1, 1, '10 15 12 * * *'),
 ('integraciya', 1, 1, '10 20 12 * * *'),
