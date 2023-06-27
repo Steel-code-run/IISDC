@@ -46,7 +46,7 @@ model competitions {
   timeOfParse      DateTime?
   blackListed      Boolean   @default(false)
   parser           parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
-  parser_id        Int
+  parser_id        Int?
 }
 
 model internships {
@@ -62,7 +62,7 @@ model internships {
   timeOfParse      DateTime?
   blackListed      Boolean   @default(false)
   parser           parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
-  parser_id        Int
+  parser_id        Int?
 }
 
 model vacancies {
@@ -80,7 +80,7 @@ model vacancies {
   timeOfParse      DateTime?
   blackListed      Boolean   @default(false)
   parser           parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
-  parser_id        Int
+  parser_id        Int?
 }
 
 model users {
