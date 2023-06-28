@@ -23,10 +23,11 @@ async function getPosts(page)  {
     })
     const postsOnPage = await axios.get(url +"&offset=" + (page-1)*10,{
         httpsAgent
-    })
-    .then((res)=>{
+    }).then((res)=>{
         try {
-            return JSON.parse(res.data.slice(res.data.lastIndexOf('\t')));
+
+
+            return res.data;
         } catch (e) {
             try {
                 return JSON.parse(res.data);
@@ -35,10 +36,10 @@ async function getPosts(page)  {
             }
         }
     })
-    //console.log(postsOnPage)
 
 
     for (let i = 0; i < postsOnPage.length; i++) {
+        console.log(postsOnPage[i])
         const namePost = postsOnPage[i].title.rendered;
         let dateCreationPost = new Date(postsOnPage[i].date)
         const link = postsOnPage[i].link;
@@ -67,6 +68,7 @@ async function getPosts(page)  {
             });
             posts.push(post)
         }
+        posts.push(post)
     }
 
 

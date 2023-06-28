@@ -16,6 +16,9 @@ const now = new Date();
 
 const Page = () => {
 
+        const { push } = useRouter();
+        push('/customers')
+
         return (
             <>
                 <Head>

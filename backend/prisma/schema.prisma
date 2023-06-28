@@ -16,15 +16,15 @@ model grants {
   id                Int       @id @unique @default(autoincrement())
   namePost          String    @db.LongText()
   dateCreationPost  DateTime?
-  directions        String?
+  directions        String?   @db.LongText()
   organization      String?   @db.LongText()
   deadline          DateTime?
-  summary           String?
+  summary           String?   @db.LongText()
   directionForSpent String?   @db.LongText()
   fullText          String?   @db.LongText()
-  link              String?
-  linkPDF           String?
-  sourceLink        String?
+  link              String?   @db.LongText()
+  linkPDF           String?   @db.LongText()
+  sourceLink        String?   @db.LongText()
   timeOfParse       DateTime?
   blackListed       Boolean   @default(false)
   parser            parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
@@ -36,13 +36,13 @@ model competitions {
   namePost         String    @db.VarChar(255)
   dateCreationPost DateTime?
   directions       String?
-  summary          String?
+  summary          String?   @db.LongText()
   organization     String?   @db.LongText()
   deadline         DateTime?
   fullText         String?   @db.LongText()
-  link             String?
-  linkPDF          String?
-  sourceLink       String?
+  link             String?   @db.LongText()
+  linkPDF          String?   @db.LongText()
+  sourceLink       String?   @db.LongText()
   timeOfParse      DateTime?
   blackListed      Boolean   @default(false)
   parser           parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
@@ -54,12 +54,12 @@ model internships {
   namePost         String    @db.VarChar(255)
   dateCreationPost DateTime?
   directions       String?
-  responsibilities String?
+  responsibilities String?   @db.LongText()
   organization     String?   @db.LongText()
   fullText         String?   @db.LongText()
-  link             String?
-  linkPDF          String?
-  sourceLink       String?
+  link             String?   @db.LongText()
+  linkPDF          String?   @db.LongText()
+  sourceLink       String?   @db.LongText()
   timeOfParse      DateTime?
   blackListed      Boolean   @default(false)
   parser           parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
@@ -72,12 +72,12 @@ model vacancies {
   dateCreationPost DateTime?
   directions       String?
   organization     String?   @db.LongText()
-  salary          String?
-  responsibilities String?
+  salary           String?   @db.LongText()
+  responsibilities String?   @db.LongText()
   fullText         String?   @db.LongText()
-  link             String?
-  linkPDF          String?
-  sourceLink       String?
+  link             String?   @db.LongText()
+  linkPDF          String?   @db.LongText()
+  sourceLink       String?   @db.LongText()
   timeOfParse      DateTime?
   blackListed      Boolean   @default(false)
   parser           parsers?  @relation(fields: [parser_id], references: [id], onDelete: Cascade)
