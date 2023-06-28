@@ -83,7 +83,6 @@ const PagePost = () => {
     const highLightField = (turn: boolean) => (turn) ? styles.pagePost__highlightField : '';
 
 
-    console.log(formatDateInISOUTC0(updateData.dateCreationPost))
     return (
         <>
             <Header/>
@@ -95,19 +94,19 @@ const PagePost = () => {
                         <h1 className={classNames(styles.pagePost__namePost)}>{data.namePost}</h1>
 
                         <div className={classNames(styles.pagePost__dates)}>
-                            {(isEdit || updateData?.dateCreationPost) &&
-                                <TextField
-                                    className={styles.pagePost__dateCreationPost}
-                                    label="Дата создания поста"
-                                    type="date"
-                                    name={'dateCreationPost'}
-                                    value={formatDateInISOUTC0(updateData.dateCreationPost)}
-                                    onChange={(e) => handleChangeDataUser(e)}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            }
+                            {/*{(isEdit || updateData?.dateCreationPost) &&*/}
+                            {/*    <TextField*/}
+                            {/*        className={styles.pagePost__dateCreationPost}*/}
+                            {/*        label="Дата создания поста"*/}
+                            {/*        type="date"*/}
+                            {/*        name={'dateCreationPost'}*/}
+                            {/*        value={formatDateInISOUTC0(updateData.dateCreationPost)}*/}
+                            {/*        onChange={(e) => handleChangeDataUser(e)}*/}
+                            {/*        InputLabelProps={{*/}
+                            {/*            shrink: true,*/}
+                            {/*        }}*/}
+                            {/*    />*/}
+                            {/*}*/}
                             {
                                 (isUpdateDataGrant(postType, updateData)
                                     || isUpdateDataCompetition(postType, updateData)) &&
@@ -225,64 +224,23 @@ const PagePost = () => {
                     }
                     {
                         (isPropsInternship(postType, data) && isUpdateDataInternship(postType, updateData)) &&
-                        <>
-                            {
-                                (isEdit || updateData.salary) &&
-                                <div
-                                    className={classNames(
-                                        styles.pagePost__field,
-                                        highLightField(isEdit && !updateData.salary))}
-                                    contentEditable={isEdit}
-                                    suppressContentEditableWarning={true}
-                                    data-text={'Зарплата: '}
-                                    onInput={(e) => {
-                                        const target = e.target as HTMLElement;
-                                        setUpdateData({
-                                            ...updateData,
-                                            salary: target.textContent
-                                        })
-                                    }}
-                                >{data.salary}</div>
-
-                            }
-                            {/*<div className={styles.pagePost__field + highLightField(isEdit)}>{'Возможности: ' + data.responsibilities}</div>*/}
-                            {
-                                (isEdit || updateData.requirements) &&
-                                <div
-                                    className={classNames(
-                                        styles.pagePost__field,
-                                        highLightField(isEdit && !updateData.requirements))}
-                                    contentEditable={isEdit}
-                                    suppressContentEditableWarning={true}
-                                    data-text={'Требования: '}
-                                    onInput={(e) => {
-                                        const target = e.target as HTMLElement;
-                                        setUpdateData({
-                                            ...updateData,
-                                            requirements: target.textContent
-                                        })
-                                    }}
-                                >{data.requirements}</div>
-                            }
-                            {
-                                (isEdit || updateData.conditions) &&
-                                <div
-                                    className={classNames(
-                                        styles.pagePost__field,
-                                        highLightField(isEdit && !updateData.conditions))}
-                                    contentEditable={isEdit}
-                                    suppressContentEditableWarning={true}
-                                    data-text={'Условия: '}
-                                    onInput={(e) => {
-                                        const target = e.target as HTMLElement;
-                                        setUpdateData({
-                                            ...updateData,
-                                            conditions: target.textContent
-                                        })
-                                    }}
-                                >{data.conditions}</div>
-                            }
-                        </>
+                        (isEdit || updateData.responsibilities) &&
+                        <div
+                            className={classNames(
+                                styles.pagePost__field,
+                                highLightField(isEdit && !updateData.responsibilities),
+                                styles.pagePost__fullText)}
+                            contentEditable={isEdit}
+                            suppressContentEditableWarning={true}
+                            data-text={'Обязанности: '}
+                            onInput={(e) => {
+                                const target = e.target as HTMLElement;
+                                setUpdateData({
+                                    ...updateData,
+                                    responsibilities: target.textContent
+                                })
+                            }}
+                        >{data.responsibilities}</div>
                     }
 
                     {(isEdit || updateData.fullText?.replace(/(\r\n|\n|\r| )/gm, '')) &&

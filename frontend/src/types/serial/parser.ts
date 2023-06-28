@@ -93,14 +93,8 @@ export type TVacancy = {
 
 export type TInternship = {
 	id?:number,
-	//требования
-	requirements: string;
 	// обязанности
 	responsibilities: string;
-	// условия
-	conditions: string;
-	// Зарплата
-	salary: string;
 	// Направление
 	direction?: string;
 	// полный текст
