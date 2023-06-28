@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react';
+import {useState} from 'react';
 import Head from 'next/head';
 import {useRouter} from 'next/navigation';
 import {useFormik} from 'formik';
@@ -30,7 +30,6 @@ const Page = () => {
     onSubmit: async (values, helpers) => {
       try {
         const error = await auth.signIn(values.name, values.password);
-        console.log(error)
         if(!error) {
             router.push('/customers');
         } else {
@@ -43,21 +42,6 @@ const Page = () => {
       }
     }
   });
-
-  const handleMethodChange = useCallback(
-    (event, value) => {
-      setMethod(value);
-    },
-    []
-  );
-
-  const handleSkip = useCallback(
-    () => {
-      auth.skip();
-      router.push('/');
-    },
-    [auth, router]
-  );
 
   return (
     <>

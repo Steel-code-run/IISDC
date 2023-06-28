@@ -1,8 +1,7 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import Head from 'next/head';
 import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
-import {applyPagination} from 'src/utils/apply-pagination';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 import {
@@ -170,6 +169,7 @@ const Page = () => {
                             {
                                 (status === "success" && grantsList?.length > 0) ?
                                     <ArchiveTable
+                                        type={'grant'}
                                         count={countGrants || 0}
                                         items={grantsList}
                                         onPageChange={handlePageChange}
@@ -206,6 +206,7 @@ const Page = () => {
                             {
                                 (status === "success" && competitionsList?.length > 0) ?
                                     <ArchiveTable
+                                        type={'competition'}
                                         count={countCompetitions || 0}
                                         items={competitionsList}
                                         onPageChange={handlePageChange}
@@ -242,6 +243,7 @@ const Page = () => {
                             {
                                 (status === "success" && internshipsList?.length > 0) ?
                                     <ArchiveTable
+                                        type={'internship'}
                                         count={countInternships || 0}
                                         items={internshipsList}
                                         onPageChange={handlePageChange}

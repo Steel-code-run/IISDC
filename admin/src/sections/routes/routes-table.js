@@ -36,7 +36,7 @@ export const RoutesTable = (props) => {
                                 </TableCell>
 
                                 <TableCell>
-                                    ID Роли
+                                    Название роли
                                 </TableCell>
 
                             </TableRow>
@@ -60,8 +60,7 @@ export const RoutesTable = (props) => {
                                         </TableCell>
 
                                         <TableCell>
-                                            {route.roleId}
-
+                                            {route?.role?.name}
                                         </TableCell>
 
                                     </TableRow>

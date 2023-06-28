@@ -91,10 +91,11 @@ const Page = () => {
             }}>
                 <Container>
                     <Typography
-                        variant={'h4'}>Данные гранта: {competitionData?.namePost}</Typography>
+                        variant={'h4'}>Данные конкурса: {competitionData?.namePost}</Typography>
                     <Stack component={'user'}>
                         {data && <Box style={{
                             marginTop: '50px',
+                            marginBottom: '40px',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '30px 0'
