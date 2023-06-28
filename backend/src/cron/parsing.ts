@@ -244,14 +244,12 @@ const parsePage = async (
                     const grant_in_db = await prisma.grants.findFirst({
                       where: {
                           namePost: grant.namePost,
-                          organization: grant.organization
                       }
                     })
 
                     if (grant_in_db) {
                       console.log('grant already exist')
                       continue;
-                      // return new Error('grant already exist')
                     }
 
 
@@ -525,8 +523,6 @@ const parsePage = async (
 
                     successAddInDb = true
                 }
-
-
           }
 
 
