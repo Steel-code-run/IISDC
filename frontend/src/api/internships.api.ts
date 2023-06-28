@@ -15,6 +15,7 @@ export interface IGetInternships {
 type IGetCountInternships = Omit<any, 'skip' | 'take' | 'extended'>;
 
 interface IUpdateInput {
+    id: number
     updateData: TTypesUpdateData<TPostType>,
     token: string | null
 }
@@ -113,23 +114,33 @@ export const internshipsApi = createApi({
         deletePostInternship: builder.mutation<any, any>({
             query: ({token, id}, ) => (
                 {
-                    url: 'v1/internships/addToBlackList',
+                    url: 'v1/internships',
                     body: {
+                        skip: 0,
+                        take: 1
+                    },
+                    params: {
                         id
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
-                    method: 'PATCH'
+                    method: 'DELETE'
                 }
             ),
             invalidatesTags: [{type: 'Internships', id: 'LIST'}]
         }),
 
         updatePostInternship: builder.mutation<any, IUpdateInput>({
-            query: ({updateData, token}) => ({
-                url: 'v1/internships/update',
-                body: updateData,
+            query: ({id, updateData,
+                        token}) => ({
+                url: 'v1/internships',
+                body: {
+                    id,
+                    data: {
+                        ...updateData
+                    }
+                },
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },

@@ -136,16 +136,16 @@ export const items = [
     ),
     childrenNav: []
   },
-  {
-    title: 'Роуты',
-    path: '/routes',
-    icon: (
-        <SvgIcon fontSize="small">
-          <AltRouteIcon />
-        </SvgIcon>
-    ),
-    childrenNav: []
-  },
+  // {
+  //   title: 'Роуты',
+  //   path: '/routes',
+  //   icon: (
+  //       <SvgIcon fontSize="small">
+  //         <AltRouteIcon />
+  //       </SvgIcon>
+  //   ),
+  //   childrenNav: []
+  // },
   // {
   //   title: 'Login',
   //   path: '/auth/login',
