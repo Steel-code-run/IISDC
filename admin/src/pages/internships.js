@@ -7,25 +7,36 @@ import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 import {PostsTable} from "../sections/posts/posts-table";
 import {deleteInternship, getCountInternships, getInternships, updateInternship} from "../api/posts/internshipsReq";
 import {useSnackbar} from "../hooks/use-snackbar";
+import {CustomersSearch} from "../sections/customer/customers-search";
 
 
 const Page = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
+    const [searchValue, setSearchValue] = useState('')
+
 
     const queryClient = useQueryClient();
     const configInternshipsRes = {
         extended: true
     }
     const whereInternships = {
-        blackListed: false
+        blackListed: false,
+        ...(
+            (!searchValue) ? {} : {
+                namePost: {
+                    startsWith: searchValue
+                }
+            }
+        )
     }
 
     const {data: InternshipsList, status, isLoadingInternship, isErrorInternship} = useQuery(
         ['internships', page * rowsPerPage, rowsPerPage, configInternshipsRes, whereInternships],
         () => getInternships(page * rowsPerPage, rowsPerPage, configInternshipsRes, whereInternships))
-    const {data: countInternships} = useQuery(['countInternships'], getCountInternships);
+    const {data: countInternships} = useQuery(['countInternships', whereInternships],
+        () => getCountInternships(whereInternships));
 
 
     const mutationArchiveInternship = useMutation(
@@ -68,6 +79,9 @@ const Page = () => {
         },
         []
     );
+    const handleSearch = useCallback((value) => {
+        setSearchValue(value)
+    })
 
     if (isErrorInternship) {
         return <h1>Ошибка...</h1>
@@ -113,7 +127,10 @@ const Page = () => {
                             </Stack>
 
                         </Stack>
-                        {/*<CustomersSearch/>*/}
+                        <CustomersSearch
+                            placeholder={'Поиск стажировки'}
+                            searchValue={searchValue}
+                                         handleSearchValue={handleSearch}/>
                         {
                             (status === "success" && InternshipsList.length > 0) ?
                                 <PostsTable
