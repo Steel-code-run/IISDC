@@ -17,8 +17,14 @@ import {deleteInternship, getCountInternships, getInternships, updateInternship}
 
 
 const Page = () => {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [pageGrants, setPageGrants] = useState(1);
+    const [rowsPerPageGrants, setRowsPerPageGrants] = useState(5);
+
+    const [pageCompetitions, setPageCompetitions] = useState(1);
+    const [rowsPerPageCompetitions, setRowsPerPageCompetitions] = useState(5);
+
+    const [pageInternships, setPageInternships] = useState(1);
+    const [rowsPerPageInternships, setRowsPerPageInternships] = useState(5);
 
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
     const config = {
@@ -30,9 +36,11 @@ const Page = () => {
     const queryClient = useQueryClient()
 
     const {data: competitionsList, status, isLoading, isError: isErrorCompetition} = useQuery(
-        ['competitions', page * rowsPerPage, rowsPerPage, config, where], () =>
-            getCompetitions(page * rowsPerPage, rowsPerPage, config, where))
-    const {data: countCompetitions  } = useQuery(['countCompetitions'], getCountCompetitions);
+        ['competitions', pageCompetitions * rowsPerPageCompetitions, rowsPerPageCompetitions, config, where], () =>
+            getCompetitions(pageCompetitions * rowsPerPageCompetitions, rowsPerPageCompetitions, config, where))
+
+    const {data: countCompetitions  } = useQuery(['countCompetitions', where],
+        () => getCountCompetitions(where));
 
     const mutationUnarchiveCompetition = useMutation(
         (archiveData) => updateCompetition(archiveData), {
@@ -59,9 +67,10 @@ const Page = () => {
         });
 
     const {data: grantsList, status: statusGrants, isLoading: isLoadingGrants, isError: isErrorGrants} = useQuery(
-        ['grants', page * rowsPerPage, rowsPerPage, config, where], () =>
-            getGrants(page * rowsPerPage, rowsPerPage, config, where))
-    const {data: countGrants  } = useQuery(['countGrants'], getCountGrants);
+        ['grants', pageGrants * rowsPerPageGrants, rowsPerPageGrants, config, where], () =>
+            getGrants(pageGrants * rowsPerPageGrants, rowsPerPageGrants, config, where))
+    const {data: countGrants,  } = useQuery(['countGrants', where],
+        () =>  getCountGrants(where));
 
     const mutationUnarchiveGrants = useMutation(
         (archiveData) => updateGrant(archiveData), {
@@ -88,9 +97,9 @@ const Page = () => {
         });
 
     const {data: internshipsList, status: statusInternships, isLoading: isLoadingInternships, isError: isErrorInternships} = useQuery(
-        ['internships', page * rowsPerPage, rowsPerPage, config, where], () =>
-            getInternships(page * rowsPerPage, rowsPerPage, config, where))
-    const {data: countInternships  } = useQuery(['countInternships'], getCountInternships);
+        ['internships', pageInternships * rowsPerPageInternships, rowsPerPageInternships, config, where], () =>
+            getInternships(pageInternships * rowsPerPageInternships, rowsPerPageInternships, config, where))
+    const {data: countInternships  } = useQuery(['countInternships', where], () => getCountInternships(where));
 
     const mutationUnarchiveInternships = useMutation(
         (archiveData) => updateInternship(archiveData), {
@@ -117,16 +126,44 @@ const Page = () => {
         });
 
 
-    const handlePageChange = useCallback(
+    const handlePageChangeGrants = useCallback(
         (event, value) => {
-            setPage(value);
+            setPageGrants(value);
         },
         []
     );
 
-    const handleRowsPerPageChange = useCallback(
+    const handleRowsPerPageChangeGrants = useCallback(
         (event) => {
-            setRowsPerPage(event.target.value);
+            setRowsPerPageGrants(event.target.value);
+        },
+        []
+    );
+
+    const handlePageChangeCompetitions = useCallback(
+        (event, value) => {
+            setPageCompetitions(value);
+        },
+        []
+    );
+
+    const handleRowsPerPageChangeCompetitions = useCallback(
+        (event) => {
+            setRowsPerPageCompetitions(event.target.value);
+        },
+        []
+    );
+
+    const handlePageChangeInternships = useCallback(
+        (event, value) => {
+            setPageInternships(value);
+        },
+        []
+    );
+
+    const handleRowsPerPageChangeInternships = useCallback(
+        (event) => {
+            setRowsPerPageInternships(event.target.value);
         },
         []
     );
@@ -172,10 +209,10 @@ const Page = () => {
                                         type={'grant'}
                                         count={countGrants || 0}
                                         items={grantsList}
-                                        onPageChange={handlePageChange}
-                                        onRowsPerPageChange={handleRowsPerPageChange}
-                                        page={page}
-                                        rowsPerPage={rowsPerPage}
+                                        onPageChange={handlePageChangeGrants}
+                                        onRowsPerPageChange={handleRowsPerPageChangeGrants}
+                                        page={pageGrants}
+                                        rowsPerPage={rowsPerPageGrants}
                                         deleteRowHandle={mutationDeleteGrants.mutate}
                                         unarchiveHandle={mutationUnarchiveGrants.mutate}
                                     /> : (status === "loading" && grantsList?.length > 0)
@@ -209,10 +246,10 @@ const Page = () => {
                                         type={'competition'}
                                         count={countCompetitions || 0}
                                         items={competitionsList}
-                                        onPageChange={handlePageChange}
-                                        onRowsPerPageChange={handleRowsPerPageChange}
-                                        page={page}
-                                        rowsPerPage={rowsPerPage}
+                                        onPageChange={handlePageChangeCompetitions}
+                                        onRowsPerPageChange={handleRowsPerPageChangeCompetitions}
+                                        page={pageCompetitions}
+                                        rowsPerPage={rowsPerPageCompetitions}
                                         deleteRowHandle={mutationDeleteCompetition.mutate}
                                         unarchiveHandle={mutationUnarchiveCompetition.mutate}
                                     /> : (status === "loading" && competitionsList?.length > 0)
@@ -246,10 +283,10 @@ const Page = () => {
                                         type={'internship'}
                                         count={countInternships || 0}
                                         items={internshipsList}
-                                        onPageChange={handlePageChange}
-                                        onRowsPerPageChange={handleRowsPerPageChange}
-                                        page={page}
-                                        rowsPerPage={rowsPerPage}
+                                        onPageChange={handlePageChangeInternships}
+                                        onRowsPerPageChange={handleRowsPerPageChangeInternships}
+                                        page={pageInternships}
+                                        rowsPerPage={rowsPerPageInternships}
                                         deleteRowHandle={mutationDeleteInternships.mutate}
                                         unarchiveHandle={mutationUnarchiveInternships.mutate}
                                     /> : (status === "loading" && internshipsList?.length > 0)

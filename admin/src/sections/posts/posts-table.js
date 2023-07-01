@@ -71,7 +71,6 @@ export const PostsTable = (props) => {
                         </TableHead>
                         <TableBody>
                             {items.length > 0 && items?.map((post) => {
-                                console.log(post?.directions)
 
                                 return (
                                     <TableRow

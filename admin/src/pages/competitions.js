@@ -52,6 +52,7 @@ const Page = () => {
             getCompetitions(page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition))
     const {data: countCompetitions} = useQuery(['countCompetitions'], getCountCompetitions);
 
+    
     const mutationArchiveCompetition = useMutation(
         (archiveData) => updateCompetition(archiveData), {
             onSuccess: () => {

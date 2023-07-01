@@ -46,6 +46,7 @@ const Page = () => {
         () => getGrants(page * rowsPerPage, rowsPerPage, configGrantsRes, whereGrants))
     const {data: countGrants} = useQuery(['countGrants'], getCountGrants);
 
+    console.log(countGrants)
 
     const mutationArchiveGrant = useMutation(
         (archiveData) => updateGrant(archiveData), {
