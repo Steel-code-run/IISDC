@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
-import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
+import {Box, CircularProgress, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
@@ -46,8 +46,6 @@ const Page = () => {
         () => getGrants(page * rowsPerPage, rowsPerPage, configGrantsRes, whereGrants))
     const {data: countGrants} = useQuery(['countGrants'], getCountGrants);
 
-    console.log(countGrants)
-
     const mutationArchiveGrant = useMutation(
         (archiveData) => updateGrant(archiveData), {
             onSuccess: () => {
@@ -88,6 +86,14 @@ const Page = () => {
         },
         []
     );
+    if (isLoadingGrant) {
+        return  <CircularProgress size={100} sx={{
+            position: "absolute",
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)'
+        }}/>
+    }
 
     if (isErrorGrant) {
         return <h1>Ошибка...</h1>
@@ -141,7 +147,7 @@ const Page = () => {
                                                                                                   animation="wave"
                                                                                                   width={'100%'}
                                                                                                   height={400}/>
-                                    :  <p>Количество грантов равно 0</p>
+                                    : <p>Количество грантов равно 0</p>
                         }
                     </Stack>
 

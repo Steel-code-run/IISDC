@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
-import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
+import {Box, CircularProgress, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
@@ -47,7 +47,7 @@ const Page = () => {
     }
     const queryClient = useQueryClient()
 
-    const {data: competitionsList, status, isLoading, isError} = useQuery(
+    const {data: competitionsList, status, isLoadingCompetition, isError} = useQuery(
         ['competitions', page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition], () =>
             getCompetitions(page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition))
     const {data: countCompetitions} = useQuery(['countCompetitions'], getCountCompetitions);
@@ -98,6 +98,15 @@ const Page = () => {
 
     if (isError) {
         return <h1>Ошибка...</h1>
+    }
+
+    if (isLoadingCompetition) {
+        return  <CircularProgress size={100} sx={{
+            position: "absolute",
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)'
+        }}/>
     }
 
     return (

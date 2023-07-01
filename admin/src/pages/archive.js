@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React from 'react';
 import Head from 'next/head';
 import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
@@ -14,17 +14,10 @@ import {useSnackbar} from "../hooks/use-snackbar";
 import {ArchiveTable} from "../sections/archive/archive-table";
 import {deleteGrant, getCountGrants, getGrants, updateGrant} from "../api/posts/grantsReq";
 import {deleteInternship, getCountInternships, getInternships, updateInternship} from "../api/posts/internshipsReq";
+import {useTable} from "../hooks/useTable";
 
 
 const Page = () => {
-    const [pageGrants, setPageGrants] = useState(1);
-    const [rowsPerPageGrants, setRowsPerPageGrants] = useState(5);
-
-    const [pageCompetitions, setPageCompetitions] = useState(1);
-    const [rowsPerPageCompetitions, setRowsPerPageCompetitions] = useState(5);
-
-    const [pageInternships, setPageInternships] = useState(1);
-    const [rowsPerPageInternships, setRowsPerPageInternships] = useState(5);
 
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
     const config = {
@@ -33,13 +26,34 @@ const Page = () => {
     const where = {
         blackListed: true
     }
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
+
+    const [pageGrants,
+        setPageGrants,
+        rowsPerPageGrants,
+        setRowsPerPageGrants,
+        handlePageChangeGrants,
+        handleRowsPerPageChangeGrants] = useTable('grants');
+
+    const [pageCompetitions,
+        setPageCompetitions,
+        rowsPerPageCompetitions,
+        setRowsPerPageCompetitions,
+        handlePageChangeCompetitions,
+        handleRowsPerPageChangeCompetitions] = useTable('competitions');
+
+    const [pageInternships,
+        setPageInternships,
+        rowsPerPageInternships,
+        setRowsPerPageInternships,
+        handlePageChangeInternships,
+        handleRowsPerPageChangeInternships] = useTable('competitions')
 
     const {data: competitionsList, status, isLoading, isError: isErrorCompetition} = useQuery(
         ['competitions', pageCompetitions * rowsPerPageCompetitions, rowsPerPageCompetitions, config, where], () =>
             getCompetitions(pageCompetitions * rowsPerPageCompetitions, rowsPerPageCompetitions, config, where))
 
-    const {data: countCompetitions  } = useQuery(['countCompetitions', where],
+    const {data: countCompetitions} = useQuery(['countCompetitions', where],
         () => getCountCompetitions(where));
 
     const mutationUnarchiveCompetition = useMutation(
@@ -69,8 +83,8 @@ const Page = () => {
     const {data: grantsList, status: statusGrants, isLoading: isLoadingGrants, isError: isErrorGrants} = useQuery(
         ['grants', pageGrants * rowsPerPageGrants, rowsPerPageGrants, config, where], () =>
             getGrants(pageGrants * rowsPerPageGrants, rowsPerPageGrants, config, where))
-    const {data: countGrants,  } = useQuery(['countGrants', where],
-        () =>  getCountGrants(where));
+    const {data: countGrants,} = useQuery(['countGrants', where],
+        () => getCountGrants(where));
 
     const mutationUnarchiveGrants = useMutation(
         (archiveData) => updateGrant(archiveData), {
@@ -96,10 +110,15 @@ const Page = () => {
             }
         });
 
-    const {data: internshipsList, status: statusInternships, isLoading: isLoadingInternships, isError: isErrorInternships} = useQuery(
+    const {
+        data: internshipsList,
+        status: statusInternships,
+        isLoading: isLoadingInternships,
+        isError: isErrorInternships
+    } = useQuery(
         ['internships', pageInternships * rowsPerPageInternships, rowsPerPageInternships, config, where], () =>
             getInternships(pageInternships * rowsPerPageInternships, rowsPerPageInternships, config, where))
-    const {data: countInternships  } = useQuery(['countInternships', where], () => getCountInternships(where));
+    const {data: countInternships} = useQuery(['countInternships', where], () => getCountInternships(where));
 
     const mutationUnarchiveInternships = useMutation(
         (archiveData) => updateInternship(archiveData), {
@@ -124,49 +143,6 @@ const Page = () => {
                 })
             }
         });
-
-
-    const handlePageChangeGrants = useCallback(
-        (event, value) => {
-            setPageGrants(value);
-        },
-        []
-    );
-
-    const handleRowsPerPageChangeGrants = useCallback(
-        (event) => {
-            setRowsPerPageGrants(event.target.value);
-        },
-        []
-    );
-
-    const handlePageChangeCompetitions = useCallback(
-        (event, value) => {
-            setPageCompetitions(value);
-        },
-        []
-    );
-
-    const handleRowsPerPageChangeCompetitions = useCallback(
-        (event) => {
-            setRowsPerPageCompetitions(event.target.value);
-        },
-        []
-    );
-
-    const handlePageChangeInternships = useCallback(
-        (event, value) => {
-            setPageInternships(value);
-        },
-        []
-    );
-
-    const handleRowsPerPageChangeInternships = useCallback(
-        (event) => {
-            setRowsPerPageInternships(event.target.value);
-        },
-        []
-    );
 
 
     return (
