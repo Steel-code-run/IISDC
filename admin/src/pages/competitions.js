@@ -14,6 +14,7 @@ import {
     updateCompetition
 } from "../api/posts/competitionsReq";
 import {useSnackbar} from "../hooks/use-snackbar";
+import {CustomersSearch} from "../sections/customer/customers-search";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -37,21 +38,30 @@ const useCustomerIds = (customers) => {
 const Page = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [searchValue, setSearchValue] = useState('')
 
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
     const configCompetitionRes = {
         extended: true
     }
     const whereCompetition = {
-        blackListed: false
+        blackListed: false,
+        ...(
+            (!searchValue) ? {} : {
+                namePost: {
+                    startsWith: searchValue
+                }
+            }
+        )
     }
     const queryClient = useQueryClient()
 
     const {data: competitionsList, status, isLoadingCompetition, isError} = useQuery(
         ['competitions', page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition], () =>
-            getCompetitions(page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition))
-    const {data: countCompetitions} = useQuery(['countCompetitions'], getCountCompetitions);
+            getCompetitions(page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition));
 
+    const {data: countCompetitions} = useQuery(['countCompetitions', whereCompetition],
+        () => getCountCompetitions(whereCompetition));
     
     const mutationArchiveCompetition = useMutation(
         (archiveData) => updateCompetition(archiveData), {
@@ -94,7 +104,10 @@ const Page = () => {
             setRowsPerPage(event.target.value);
         },
         []
-    );
+    )
+    const handleSearch = useCallback((value) => {
+        setSearchValue(value)
+    })
 
     if (isError) {
         return <h1>Ошибка...</h1>
@@ -140,7 +153,10 @@ const Page = () => {
                             </Stack>
 
                         </Stack>
-                        {/*<CustomersSearch/>*/}
+                        <CustomersSearch
+                            placeholder={'Поиск конкурса'}
+                            searchValue={searchValue}
+                                         handleSearchValue={handleSearch}/>
                         {
                             (status === "success" && competitionsList.length > 0) ?
                                 <PostsTable

@@ -14,6 +14,7 @@ import {useSelection} from "../hooks/use-selection";
 import {useUserQuery} from "../hooks/useUserQuery";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 import {useSnackbar} from "../hooks/use-snackbar";
+import {CustomersSearch} from "../sections/customer/customers-search";
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -38,14 +39,25 @@ const Page = options => {
     const portalPopup = document?.getElementById('portal');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [searchValue, setSearchValue] = useState('');
+
     const queryClient = useQueryClient()
 
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
+    const whereUser = {
+        ...(
+            (!searchValue) ? {} : {
+                name: {
+                    startsWith: searchValue
+                }
+            }
+        )
+    }
 
     const {data: users, status, isLoading, isError} =
         useUserQuery('users',
             responseUser,
-            page * rowsPerPage, rowsPerPage
+            page * rowsPerPage, rowsPerPage, whereUser
         )
 
     const mutation = useMutation(
@@ -60,7 +72,8 @@ const Page = options => {
             }
         });
 
-    const {data: countUsers} = useQuery(['usersLength'], getCountUser);
+    const {data: countUsers, isError: isErrorCount} = useQuery(['usersLength', whereUser],
+        () => getCountUser(whereUser));
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -69,11 +82,14 @@ const Page = options => {
     const customersSelection
         = useSelection(customersIds);
 
+    // useEffect(() => {
+    //     setPage()
+    // }, [])
+
 
     const handlePageChange = useCallback(
         (event, value) => {
             setPage(value);
-
         },
         []
     );
@@ -85,9 +101,15 @@ const Page = options => {
         },
         []
     );
+    const handleSearch = useCallback((value) => {
+        setSearchValue(value)
+    })
 
     if (isError) {
         return <h1>Ошибка...</h1>
+    }
+    if(isErrorCount) {
+        return <h1>Ошибка при получении числа пользователей...</h1>
     }
 
 
@@ -144,7 +166,10 @@ const Page = options => {
                                 </Button>
                             </div>
                         </Stack>
-                        {/*<CustomersSearch/>*/}
+                        <CustomersSearch
+                            placeholder={'Поиск пользователя'}
+                            searchValue={searchValue}
+                            handleSearchValue={handleSearch}/>
                         {
                             (status === "success" && users.length > 0) ?
                                 <CustomersTable
