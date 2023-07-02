@@ -32,9 +32,9 @@ export const grantsApi = createApi({
     endpoints: (builder) => ({
         getGrants: builder.query<any, IGetGrants>({
             query: ({skip, take, extended, namePost, directions, token, deadlineBy}) => {
-                return {
-                    url: `v1/grants`,
-                    body: {
+
+                const objData = {
+
                         skip,
                         take,
                         extended,
@@ -67,7 +67,15 @@ export const grantsApi = createApi({
                                 gte: deadlineBy
                             }
                         }
-                    },
+                    };
+
+                if(!deadlineBy) {
+                    //@ts-ignore
+                    delete objData?.['where']?.['deadline']
+                }
+                return {
+                    url: `v1/grants`,
+                    body: objData,
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },

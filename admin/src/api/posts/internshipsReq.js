@@ -17,10 +17,11 @@ export const getInternships = async (skip, take, config, where ={}) => {
     return res.data
 }
 
-export const getCountInternships = async () => {
+export const getCountInternships = async (where) => {
     const res = await axios.post(`${serverUrl}v1/internships/count`, {
         skip: 0,
-        take: 0
+        take: 0,
+        where
     }, {
          headers: {
                 ...defaultHeaders

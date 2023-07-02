@@ -1,7 +1,7 @@
 import axios from "axios";
 import {defaultHeaders, serverUrl} from "../../config/apiConfig";
 
-export const getCompetitions = async (skip, take, config, where ={}) => {
+export const getCompetitions = async (skip, take, config, where = {}) => {
     const res = await axios.post(`${serverUrl}v1/competitions`,
         {
             skip,
@@ -17,15 +17,17 @@ export const getCompetitions = async (skip, take, config, where ={}) => {
     return res.data
 }
 
-export const getCountCompetitions  = async () => {
-    const res = await axios.post(`${serverUrl}v1/competitions/count`, {
-        skip: 0,
-        take: 0
-    }, {
-         headers: {
+export const getCountCompetitions = async (where) => {
+    const res = await axios.post(`${serverUrl}v1/competitions/count`,
+        {
+            skip: 0,
+            take: 0,
+            where
+        }, {
+            headers: {
                 ...defaultHeaders
-    }
-    })
+            }
+        })
 
     return res.data
 }
@@ -46,7 +48,7 @@ export const updateCompetition = async (updateData) => {
         const res = await axios.patch(`${serverUrl}v1/competitions`,
             {
                 ...updateData
-            },{
+            }, {
                 headers: defaultHeaders
             })
         return res.data

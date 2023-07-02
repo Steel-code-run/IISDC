@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import Head from 'next/head';
-import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
+import {Box, CircularProgress, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
@@ -8,6 +8,8 @@ import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 import {PostsTable} from "../sections/posts/posts-table";
 import {deleteGrant, getCountGrants, getGrants, updateGrant} from "../api/posts/grantsReq";
 import {useSnackbar} from "../hooks/use-snackbar";
+import {CustomersSearch} from "../sections/customer/customers-search";
+
 
 const useCustomers = (data, page, rowsPerPage) => {
     return useMemo(
@@ -32,20 +34,28 @@ const Page = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
+    const [searchValue, setSearchValue] = useState('')
+
 
     const queryClient = useQueryClient();
     const configGrantsRes = {
         extended: true
     }
     const whereGrants = {
-        blackListed: false
+        blackListed: false,
+        ...(
+            (!searchValue) ? {} : {
+                namePost: {
+                    startsWith: searchValue
+                }
+            }
+        )
     }
 
     const {data: grantsList, status, isLoadingGrant, isErrorGrant} = useQuery(
         ['grants', page * rowsPerPage, rowsPerPage, configGrantsRes, whereGrants],
         () => getGrants(page * rowsPerPage, rowsPerPage, configGrantsRes, whereGrants))
-    const {data: countGrants} = useQuery(['countGrants'], getCountGrants);
-
+    const {data: countGrants} = useQuery(['countGrants', whereGrants], () => getCountGrants(whereGrants));
 
     const mutationArchiveGrant = useMutation(
         (archiveData) => updateGrant(archiveData), {
@@ -86,7 +96,19 @@ const Page = () => {
 
         },
         []
-    );
+    )
+
+    const handleSearch = useCallback((value) => {
+        setSearchValue(value)
+    })
+    if (isLoadingGrant) {
+        return <CircularProgress size={100} sx={{
+            position: "absolute",
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)'
+        }}/>
+    }
 
     if (isErrorGrant) {
         return <h1>Ошибка...</h1>
@@ -123,7 +145,10 @@ const Page = () => {
                             </Stack>
 
                         </Stack>
-                        {/*<CustomersSearch/>*/}
+                        <CustomersSearch
+                            placeholder={'Поиск гранта'}
+                            searchValue={searchValue}
+                            handleSearchValue={handleSearch}/>
                         {
                             (status === "success" && grantsList.length > 0) ?
                                 <PostsTable
@@ -140,7 +165,7 @@ const Page = () => {
                                                                                                   animation="wave"
                                                                                                   width={'100%'}
                                                                                                   height={400}/>
-                                    :  <p>Количество грантов равно 0</p>
+                                    : <p>Количество грантов равно 0</p>
                         }
                     </Stack>
 

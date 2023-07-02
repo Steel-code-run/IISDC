@@ -42,42 +42,52 @@ export const competitionsApi = createApi({
                         directions, deadlineBy,
                         token
                     }) => {
+
+
+                const objData = {
+
+                    skip,
+                    take,
+                    extended,
+                    where: (directions?.length) ? {
+                        "namePost": {
+                            contains: namePost
+                        },
+                        blackListed: false,
+                        deadline: {
+                            gte: deadlineBy
+                        },
+
+                        "OR": (typeof directions === 'string') ? {
+                            "directions": {
+                                contains: directions
+                            }
+                        } : directions?.map((dir) => {
+                            return {
+                                "directions": {
+                                    contains: dir
+                                }
+                            }
+                        })
+                    } : {
+                        "namePost": {
+                            contains: namePost
+                        },
+                        blackListed: false,
+                        deadline: {
+                            gte: deadlineBy
+                        }
+                    }
+                };
+
+                if(!deadlineBy) {
+                    //@ts-ignore
+                    delete objData?.['where']?.['deadline']
+                }
+
                 return {
                     url: 'v1/competitions',
-                    body: {
-                        skip,
-                        take,
-                        extended,
-                        where: (directions?.length) ? {
-                            "namePost": {
-                                contains: namePost
-                            },
-                            blackListed: false,
-                            deadline: {
-                                gte: deadlineBy
-                            },
-
-                            "OR": (typeof directions === 'string') ? {
-                                "directions": {
-                                    contains: directions
-                                }
-                            } : directions?.map((dir) => {
-                                return {
-                                    "directions": {
-                                        contains: dir
-                                    }
-                                }
-                            })
-                        } : {
-                            "namePost": {
-                                contains: namePost
-                            },
-                            blackListed: false,
-                            deadline: {
-                                gte: deadlineBy
-                            },
-                        }
-                    },
+                    body: objData,
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`

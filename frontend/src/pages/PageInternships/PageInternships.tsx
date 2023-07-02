@@ -107,10 +107,7 @@ const PageInternships: FC<PageInternshipsProps> = () => {
                                                 namePost: post.namePost,
                                                 organization: post.organization,
                                                 timeOfParse: post.timeOfParse,
-                                                requirements: post.requirements,
-                                                salary: post.salary,
                                                 responsibilities: post.responsibilities,
-                                                conditions: post.conditions,
                                                 direction: post.direction,
                                                 sourceLink: post.sourceLink
                                             }}

@@ -2,7 +2,6 @@ import {createContext, useContext, useEffect, useReducer, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {login} from "../api/authRequests";
 import {responseUser} from "../api/userReq";
-import {getRoles} from "../api/rolesReq";
 
 const HANDLERS = {
     INITIALIZE: 'INITIALIZE',
@@ -86,9 +85,12 @@ export const AuthProvider = (props) => {
         if (isAuthenticated) {
             const id_user = window.sessionStorage.getItem('id')
             let user = state.user;
+            const whereUser = {
+                id: parseInt(id_user)
+            }
 
             if(!user && id_user) {
-                 user = (await responseUser(0, 0, id_user))[0];
+                 user = (await responseUser(0, 0, whereUser))[0];
             }
 
             dispatch({

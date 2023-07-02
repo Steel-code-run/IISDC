@@ -17,10 +17,12 @@ export const getGrants = async (skip, take, config, where ={}) => {
     return res.data
 }
 
-export const getCountGrants = async () => {
+export const getCountGrants = async (where) => {
+    // console.log(where)
     const res = await axios.post(`${serverUrl}v1/grants/count`, {
         skip: 0,
-        take: 0
+        take: 0,
+        where
     }, {
          headers: {
                 ...defaultHeaders

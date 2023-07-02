@@ -2,14 +2,11 @@ import axios from "axios";
 import {defaultHeaders, serverUrl} from "../config/apiConfig";
 
 
-export const responseUser = async (page, rowsPerPage, id) => {
+export const responseUser = async (page, rowsPerPage, whereUser) => {
     const {data} = await axios.post(`${serverUrl}v1/users/get`, {
             skip: page,
             take: rowsPerPage,
-
-            where: (!id) ? {} : {
-                "id": parseInt(id)
-            }
+            where: whereUser
         },
         {
             headers: {
@@ -61,8 +58,11 @@ export const updateUser = async (data) => {
 
 }
 
-export const getCountUser = async () => {
-    const res =  await axios.post(`${serverUrl}v1/users/count`,{}, {
+export const getCountUser = async (where) => {
+    console.log(where)
+    const res =  await axios.post(`${serverUrl}v1/users/count`,{
+        where
+    }, {
         headers: defaultHeaders
 
     })

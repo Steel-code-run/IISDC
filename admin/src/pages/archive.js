@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React from 'react';
 import Head from 'next/head';
 import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
@@ -14,11 +14,10 @@ import {useSnackbar} from "../hooks/use-snackbar";
 import {ArchiveTable} from "../sections/archive/archive-table";
 import {deleteGrant, getCountGrants, getGrants, updateGrant} from "../api/posts/grantsReq";
 import {deleteInternship, getCountInternships, getInternships, updateInternship} from "../api/posts/internshipsReq";
+import {useTable} from "../hooks/useTable";
 
 
 const Page = () => {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
     const config = {
@@ -27,12 +26,35 @@ const Page = () => {
     const where = {
         blackListed: true
     }
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
+
+    const [pageGrants,
+        setPageGrants,
+        rowsPerPageGrants,
+        setRowsPerPageGrants,
+        handlePageChangeGrants,
+        handleRowsPerPageChangeGrants] = useTable('grants');
+
+    const [pageCompetitions,
+        setPageCompetitions,
+        rowsPerPageCompetitions,
+        setRowsPerPageCompetitions,
+        handlePageChangeCompetitions,
+        handleRowsPerPageChangeCompetitions] = useTable('competitions');
+
+    const [pageInternships,
+        setPageInternships,
+        rowsPerPageInternships,
+        setRowsPerPageInternships,
+        handlePageChangeInternships,
+        handleRowsPerPageChangeInternships] = useTable('competitions')
 
     const {data: competitionsList, status, isLoading, isError: isErrorCompetition} = useQuery(
-        ['competitions', page * rowsPerPage, rowsPerPage, config, where], () =>
-            getCompetitions(page * rowsPerPage, rowsPerPage, config, where))
-    const {data: countCompetitions  } = useQuery(['countCompetitions'], getCountCompetitions);
+        ['competitions', pageCompetitions * rowsPerPageCompetitions, rowsPerPageCompetitions, config, where], () =>
+            getCompetitions(pageCompetitions * rowsPerPageCompetitions, rowsPerPageCompetitions, config, where))
+
+    const {data: countCompetitions} = useQuery(['countCompetitions', where],
+        () => getCountCompetitions(where));
 
     const mutationUnarchiveCompetition = useMutation(
         (archiveData) => updateCompetition(archiveData), {
@@ -59,9 +81,10 @@ const Page = () => {
         });
 
     const {data: grantsList, status: statusGrants, isLoading: isLoadingGrants, isError: isErrorGrants} = useQuery(
-        ['grants', page * rowsPerPage, rowsPerPage, config, where], () =>
-            getGrants(page * rowsPerPage, rowsPerPage, config, where))
-    const {data: countGrants  } = useQuery(['countGrants'], getCountGrants);
+        ['grants', pageGrants * rowsPerPageGrants, rowsPerPageGrants, config, where], () =>
+            getGrants(pageGrants * rowsPerPageGrants, rowsPerPageGrants, config, where))
+    const {data: countGrants,} = useQuery(['countGrants', where],
+        () => getCountGrants(where));
 
     const mutationUnarchiveGrants = useMutation(
         (archiveData) => updateGrant(archiveData), {
@@ -87,10 +110,15 @@ const Page = () => {
             }
         });
 
-    const {data: internshipsList, status: statusInternships, isLoading: isLoadingInternships, isError: isErrorInternships} = useQuery(
-        ['internships', page * rowsPerPage, rowsPerPage, config, where], () =>
-            getInternships(page * rowsPerPage, rowsPerPage, config, where))
-    const {data: countInternships  } = useQuery(['countInternships'], getCountInternships);
+    const {
+        data: internshipsList,
+        status: statusInternships,
+        isLoading: isLoadingInternships,
+        isError: isErrorInternships
+    } = useQuery(
+        ['internships', pageInternships * rowsPerPageInternships, rowsPerPageInternships, config, where], () =>
+            getInternships(pageInternships * rowsPerPageInternships, rowsPerPageInternships, config, where))
+    const {data: countInternships} = useQuery(['countInternships', where], () => getCountInternships(where));
 
     const mutationUnarchiveInternships = useMutation(
         (archiveData) => updateInternship(archiveData), {
@@ -115,21 +143,6 @@ const Page = () => {
                 })
             }
         });
-
-
-    const handlePageChange = useCallback(
-        (event, value) => {
-            setPage(value);
-        },
-        []
-    );
-
-    const handleRowsPerPageChange = useCallback(
-        (event) => {
-            setRowsPerPage(event.target.value);
-        },
-        []
-    );
 
 
     return (
@@ -172,10 +185,10 @@ const Page = () => {
                                         type={'grant'}
                                         count={countGrants || 0}
                                         items={grantsList}
-                                        onPageChange={handlePageChange}
-                                        onRowsPerPageChange={handleRowsPerPageChange}
-                                        page={page}
-                                        rowsPerPage={rowsPerPage}
+                                        onPageChange={handlePageChangeGrants}
+                                        onRowsPerPageChange={handleRowsPerPageChangeGrants}
+                                        page={pageGrants}
+                                        rowsPerPage={rowsPerPageGrants}
                                         deleteRowHandle={mutationDeleteGrants.mutate}
                                         unarchiveHandle={mutationUnarchiveGrants.mutate}
                                     /> : (status === "loading" && grantsList?.length > 0)
@@ -209,10 +222,10 @@ const Page = () => {
                                         type={'competition'}
                                         count={countCompetitions || 0}
                                         items={competitionsList}
-                                        onPageChange={handlePageChange}
-                                        onRowsPerPageChange={handleRowsPerPageChange}
-                                        page={page}
-                                        rowsPerPage={rowsPerPage}
+                                        onPageChange={handlePageChangeCompetitions}
+                                        onRowsPerPageChange={handleRowsPerPageChangeCompetitions}
+                                        page={pageCompetitions}
+                                        rowsPerPage={rowsPerPageCompetitions}
                                         deleteRowHandle={mutationDeleteCompetition.mutate}
                                         unarchiveHandle={mutationUnarchiveCompetition.mutate}
                                     /> : (status === "loading" && competitionsList?.length > 0)
@@ -246,10 +259,10 @@ const Page = () => {
                                         type={'internship'}
                                         count={countInternships || 0}
                                         items={internshipsList}
-                                        onPageChange={handlePageChange}
-                                        onRowsPerPageChange={handleRowsPerPageChange}
-                                        page={page}
-                                        rowsPerPage={rowsPerPage}
+                                        onPageChange={handlePageChangeInternships}
+                                        onRowsPerPageChange={handleRowsPerPageChangeInternships}
+                                        page={pageInternships}
+                                        rowsPerPage={rowsPerPageInternships}
                                         deleteRowHandle={mutationDeleteInternships.mutate}
                                         unarchiveHandle={mutationUnarchiveInternships.mutate}
                                     /> : (status === "loading" && internshipsList?.length > 0)

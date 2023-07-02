@@ -12,7 +12,13 @@ import {useSnackbar} from "../../hooks/use-snackbar";
 
 const Page = () => {
     const router = useRouter();
-    const {data, isError, isLoading} = useUserQuery('user', responseUser, 0, 0, router.query.id);
+    const idUser = router.query.id;
+
+    const whereUser = {
+        ...(idUser) ? {id: parseInt(idUser)} : {},
+
+    }
+    const {data, isError, isLoading} = useUserQuery('user', responseUser, 0, 0, whereUser);
 
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
