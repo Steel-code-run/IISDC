@@ -46,7 +46,7 @@ const Page = () => {
         ...(
             (!searchValue) ? {} : {
                 namePost: {
-                    startsWith: searchValue
+                    contains: searchValue
                 }
             }
         )
