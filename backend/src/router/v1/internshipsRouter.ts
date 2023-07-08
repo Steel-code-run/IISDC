@@ -54,8 +54,10 @@ async function getQueryDate(data:any) {
     return where;
 }
 
+/**
+ * @api {post} /v1/internships/ Получение списка стажировок
+ */
 internshipsRouter.post('/v1/internships/', async (req, res) => {
-
 
     let extended = req.body.extended || false;
 
@@ -70,22 +72,6 @@ internshipsRouter.post('/v1/internships/', async (req, res) => {
             },
             where: where
         })
-        if (!extended) {
-            internships = internships.map((internship:any) => {
-                let obj = Object.assign({}, internship);
-
-                delete obj.fullText;
-                delete obj.linkPDF;
-                delete obj.sourceLink;
-                delete obj.parser_id;
-                delete obj.dateCreationPost;
-                delete obj.blackListed;
-                delete obj.link;
-                delete obj.editActions;
-
-                return obj;
-            })
-        }
 
         return res.status(200).json(internships);
     } catch (e){
@@ -157,7 +143,6 @@ internshipsRouter.patch('/v1/internships', async (req, res) => {
     } catch (e){
         return res.status(500).json(e);
     }
-
 })
 
 export default internshipsRouter;

@@ -76,7 +76,9 @@ async function getQueryDate(data:any) {
 }
 
 
-// Отдает посты и их кол-во по фильтру
+/**
+ * @api {post} /v1/grants/ Получение списка грантов
+ */
 grantsRouter.post('/v1/grants/', async (req, res) => {
 
 

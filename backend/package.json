@@ -8,6 +8,7 @@
         "dev:prod": "node dist/app.js",
         "prisma:migrate": "prisma migrate dev --name fromNpm",
         "prisma:generate": "prisma generate",
+        "prisma:migrate:apply": "prisma db push",
         "prisma:seed": "ts-node ./src/fillDataBaseDefaultValues.ts",
         "build": "tsc",
         "postBuild": "cp -r src/views dist/views && cp -r src/public dist/public",
