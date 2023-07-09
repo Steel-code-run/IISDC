@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Head from 'next/head';
 import {Box, CircularProgress, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
@@ -46,11 +46,17 @@ const Page = () => {
         ...(
             (!searchValue) ? {} : {
                 namePost: {
-                    startsWith: searchValue
+                    contains: searchValue
                 }
             }
         )
     }
+
+    useEffect(() => {
+        if(searchValue) {
+            setPage(0);
+        }
+    }, [searchValue])
 
     const {data: grantsList, status, isLoadingGrant, isErrorGrant} = useQuery(
         ['grants', page * rowsPerPage, rowsPerPage, configGrantsRes, whereGrants],
