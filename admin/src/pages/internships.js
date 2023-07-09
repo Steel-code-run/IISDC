@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Head from 'next/head';
 import {Box, CircularProgress, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
@@ -31,6 +31,12 @@ const Page = () => {
             }
         )
     }
+
+    useEffect(() => {
+        if(searchValue) {
+            setPage(0);
+        }
+    }, [searchValue])
 
     const {data: InternshipsList, status, isLoadingInternship, isErrorInternship} = useQuery(
         ['internships', page * rowsPerPage, rowsPerPage, configInternshipsRes, whereInternships],
