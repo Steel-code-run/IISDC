@@ -73,7 +73,14 @@ internshipsRouter.post('/v1/internships/', async (req, res) => {
             where: where
         })
 
-        return res.status(200).json(internships);
+        let count = await prisma.internships.count({
+            where: where
+        })
+
+        return res.status(200).json({
+            count,
+            internships
+        });
     } catch (e){
         console.log(e);
         return res.status(500).json(e);
