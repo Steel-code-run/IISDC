@@ -4,16 +4,11 @@ import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
-import {
-    deleteCompetition,
-    getCompetitions,
-    getCountCompetitions,
-    updateCompetition
-} from "../api/posts/competitionsReq";
+import {deleteCompetition, getCompetitions, updateCompetition} from "../api/posts/competitionsReq";
 import {useSnackbar} from "../hooks/use-snackbar";
 import {ArchiveTable} from "../sections/archive/archive-table";
-import {deleteGrant, getCountGrants, getGrants, updateGrant} from "../api/posts/grantsReq";
-import {deleteInternship, getCountInternships, getInternships, updateInternship} from "../api/posts/internshipsReq";
+import {deleteGrant, getGrants, updateGrant} from "../api/posts/grantsReq";
+import {deleteInternship, getInternships, updateInternship} from "../api/posts/internshipsReq";
 import {useTable} from "../hooks/useTable";
 
 
@@ -53,8 +48,10 @@ const Page = () => {
         ['competitions', pageCompetitions * rowsPerPageCompetitions, rowsPerPageCompetitions, config, where], () =>
             getCompetitions(pageCompetitions * rowsPerPageCompetitions, rowsPerPageCompetitions, config, where))
 
-    const {data: countCompetitions} = useQuery(['countCompetitions', where],
-        () => getCountCompetitions(where));
+    const {count: countCompetitions, competitions} = (competitionsList) ? competitionsList : {
+        count: 0,
+        competitions: []
+    };
 
     const mutationUnarchiveCompetition = useMutation(
         (archiveData) => updateCompetition(archiveData), {
@@ -82,9 +79,14 @@ const Page = () => {
 
     const {data: grantsList, status: statusGrants, isLoading: isLoadingGrants, isError: isErrorGrants} = useQuery(
         ['grants', pageGrants * rowsPerPageGrants, rowsPerPageGrants, config, where], () =>
-            getGrants(pageGrants * rowsPerPageGrants, rowsPerPageGrants, config, where))
-    const {data: countGrants,} = useQuery(['countGrants', where],
-        () => getCountGrants(where));
+            getGrants(pageGrants * rowsPerPageGrants, rowsPerPageGrants, config, where));
+
+
+
+    const {count: countGrants, grants} = (grantsList) ? grantsList : {
+        count: 0,
+        grants: []
+    };
 
     const mutationUnarchiveGrants = useMutation(
         (archiveData) => updateGrant(archiveData), {
@@ -118,7 +120,12 @@ const Page = () => {
     } = useQuery(
         ['internships', pageInternships * rowsPerPageInternships, rowsPerPageInternships, config, where], () =>
             getInternships(pageInternships * rowsPerPageInternships, rowsPerPageInternships, config, where))
-    const {data: countInternships} = useQuery(['countInternships', where], () => getCountInternships(where));
+
+
+    const {count: countInternships, internships} = (internshipsList) ? internshipsList : {
+        count: 0,
+        internships: []
+    };
 
     const mutationUnarchiveInternships = useMutation(
         (archiveData) => updateInternship(archiveData), {
@@ -180,18 +187,18 @@ const Page = () => {
                             </Stack>
                             {/*<CustomersSearch/>*/}
                             {
-                                (status === "success" && grantsList?.length > 0) ?
+                                (status === "success" && countGrants > 0) ?
                                     <ArchiveTable
                                         type={'grant'}
                                         count={countGrants || 0}
-                                        items={grantsList}
+                                        items={grants}
                                         onPageChange={handlePageChangeGrants}
                                         onRowsPerPageChange={handleRowsPerPageChangeGrants}
                                         page={pageGrants}
                                         rowsPerPage={rowsPerPageGrants}
                                         deleteRowHandle={mutationDeleteGrants.mutate}
                                         unarchiveHandle={mutationUnarchiveGrants.mutate}
-                                    /> : (status === "loading" && grantsList?.length > 0)
+                                    /> : (status === "loading" && countGrants > 0)
                                         ? <Skeleton variant="rounded"
                                                     animation="wave"
                                                     width={'100%'} height={400}/>
@@ -217,18 +224,18 @@ const Page = () => {
                             </Stack>
                             {/*<CustomersSearch/>*/}
                             {
-                                (status === "success" && competitionsList?.length > 0) ?
+                                (status === "success" && countCompetitions > 0) ?
                                     <ArchiveTable
                                         type={'competition'}
                                         count={countCompetitions || 0}
-                                        items={competitionsList}
+                                        items={competitions}
                                         onPageChange={handlePageChangeCompetitions}
                                         onRowsPerPageChange={handleRowsPerPageChangeCompetitions}
                                         page={pageCompetitions}
                                         rowsPerPage={rowsPerPageCompetitions}
                                         deleteRowHandle={mutationDeleteCompetition.mutate}
                                         unarchiveHandle={mutationUnarchiveCompetition.mutate}
-                                    /> : (status === "loading" && competitionsList?.length > 0)
+                                    /> : (status === "loading" && countCompetitions > 0)
                                         ? <Skeleton variant="rounded"
                                                     animation="wave"
                                                     width={'100%'} height={400}/>
@@ -254,18 +261,18 @@ const Page = () => {
                             </Stack>
                             {/*<CustomersSearch/>*/}
                             {
-                                (status === "success" && internshipsList?.length > 0) ?
+                                (status === "success" && countInternships > 0) ?
                                     <ArchiveTable
                                         type={'internship'}
                                         count={countInternships || 0}
-                                        items={internshipsList}
+                                        items={internships}
                                         onPageChange={handlePageChangeInternships}
                                         onRowsPerPageChange={handleRowsPerPageChangeInternships}
                                         page={pageInternships}
                                         rowsPerPage={rowsPerPageInternships}
                                         deleteRowHandle={mutationDeleteInternships.mutate}
                                         unarchiveHandle={mutationUnarchiveInternships.mutate}
-                                    /> : (status === "loading" && internshipsList?.length > 0)
+                                    /> : (status === "loading" && countInternships > 0)
                                         ? <Skeleton variant="rounded"
                                                     animation="wave"
                                                     width={'100%'} height={400}/>
