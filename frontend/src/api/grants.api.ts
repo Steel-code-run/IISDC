@@ -13,8 +13,6 @@ export interface IGetGrants {
     deadlineBy?: string | null | undefined
 }
 
-type IGetCountGrants = Omit<any, 'skip' | 'take' | 'extended'>;
-
 interface IUpdateInput {
     id: number
     updateData: Partial<TTypesUpdateData<TPostType>>,
@@ -90,51 +88,7 @@ export const grantsApi = createApi({
                     ]
                     : [{type: 'Grants', id: 'LIST'}],
         }),
-        getCountGrants: builder.query<any, IGetCountGrants>({
-            query: ({
-                        namePost,
-                        directions,
-                        token,
-                deadlineBy
-                    }) => {
-                return {
-                    url: `v1/grants/count`,
-                    body: {
-                        where: (directions?.length) ? {
-                            "namePost": {
-                                contains: namePost
-                            },
-                            deadline: {
-                                gte: deadlineBy
-                            },
 
-                            "OR": (typeof directions === 'string') ? {
-                                "directions": {
-                                    contains: directions
-                                }
-                            } : directions?.map((dir: string) => {
-                                return {
-                                    "directions": {
-                                        contains: dir
-                                    }
-                                }
-                            })
-                        } : {
-                            "namePost": {
-                                contains: namePost
-                            },
-                            deadline: {
-                                gte: deadlineBy
-                            }
-                        }
-                    },
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    method: 'POST'
-                }
-            }
-        }),
         deletePostGrant: builder.mutation<any, any>({
             query: ({token, id},) => (
                 {
@@ -179,5 +133,4 @@ export const {
     useUpdatePostGrantMutation,
     useDeletePostGrantMutation,
     useGetGrantsQuery,
-    useGetCountGrantsQuery,
 } = grantsApi;

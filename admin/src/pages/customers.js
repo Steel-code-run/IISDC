@@ -54,6 +54,13 @@ const Page = options => {
         )
     }
 
+    useEffect(() => {
+        if(searchValue) {
+            setPage(0);
+        }
+    }, [searchValue])
+
+
     const {data: users, status, isLoading, isError} =
         useUserQuery('users',
             responseUser,
