@@ -16,7 +16,6 @@ export interface IGetCompetitions {
 
 }
 
-type IGetCountCompetitions = Omit<IGetCompetitions, 'take' | 'skip' | 'extended'>;
 
 interface IUpdateInput {
     id: number
@@ -102,51 +101,6 @@ export const competitionsApi = createApi({
                     ]
                     : ['Competitions'],
         }),
-        getCountСompetitions: builder.query<any, IGetCountCompetitions>({
-            query: ({
-                        namePost,
-                        directions,
-                        token,
-                        deadlineBy
-                    }) => {
-                return {
-                    url: 'v1/competitions/count',
-                    body: {
-                        where: (directions?.length) ? {
-                            "namePost": {
-                                contains: namePost
-                            },
-                            deadline: {
-                                gte: deadlineBy
-                            },
-
-                            "OR": (typeof directions === 'string') ? {
-                                "directions": {
-                                    contains: directions
-                                }
-                            } : directions?.map((dir) => {
-                                return {
-                                    "directions": {
-                                        contains: dir
-                                    }
-                                }
-                            })
-                        } : {
-                            "namePost": {
-                                contains: namePost
-                            },
-                            deadline: {
-                                gte: deadlineBy
-                            },
-                        }
-                    },
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    },
-                }
-            }
-        }),
 
         deletePostCompetition: builder.mutation<any, any>({
             query: ({token, id},) => (
@@ -189,7 +143,6 @@ export const competitionsApi = createApi({
 });
 
 export const {
-    useGetCountСompetitionsQuery,
     useGetCompetitionsQuery,
     useUpdateCompetitionsMutation,
     useDeletePostCompetitionMutation

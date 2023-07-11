@@ -60,6 +60,7 @@ const Page = options => {
         }
     }, [searchValue])
 
+
     const {data: users, status, isLoading, isError} =
         useUserQuery('users',
             responseUser,

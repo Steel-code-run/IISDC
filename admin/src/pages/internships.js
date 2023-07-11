@@ -5,7 +5,7 @@ import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 import {PostsTable} from "../sections/posts/posts-table";
-import {deleteInternship, getCountInternships, getInternships, updateInternship} from "../api/posts/internshipsReq";
+import {deleteInternship, getInternships, updateInternship} from "../api/posts/internshipsReq";
 import {useSnackbar} from "../hooks/use-snackbar";
 import {CustomersSearch} from "../sections/customer/customers-search";
 
@@ -41,8 +41,13 @@ const Page = () => {
     const {data: InternshipsList, status, isLoadingInternship, isErrorInternship} = useQuery(
         ['internships', page * rowsPerPage, rowsPerPage, configInternshipsRes, whereInternships],
         () => getInternships(page * rowsPerPage, rowsPerPage, configInternshipsRes, whereInternships))
-    const {data: countInternships} = useQuery(['countInternships', whereInternships],
-        () => getCountInternships(whereInternships));
+
+    const initialData = {
+        count: 0,
+        internships: []
+    }
+
+    const {count, internships} = (InternshipsList) ? InternshipsList : initialData;
 
 
     const mutationArchiveInternship = useMutation(
@@ -138,18 +143,18 @@ const Page = () => {
                             searchValue={searchValue}
                                          handleSearchValue={handleSearch}/>
                         {
-                            (status === "success" && InternshipsList.length > 0) ?
+                            (status === "success" && count > 0) ?
                                 <PostsTable
                                     type={'internship'}
-                                    count={countInternships || 0}
-                                    items={InternshipsList}
+                                    count={count}
+                                    items={internships}
                                     onPageChange={handlePageChange}
                                     onRowsPerPageChange={handleRowsPerPageChange}
                                     page={page}
                                     rowsPerPage={rowsPerPage}
                                     deleteRowHandle={mutationDeleteInternship.mutate}
                                     archiveHandle={mutationArchiveInternship.mutate}
-                                /> : (status === "loading" && InternshipsList?.length > 0) ? <Skeleton variant="rounded"
+                                /> : (status === "loading" && count) ? <Skeleton variant="rounded"
                                                                                                   animation="wave"
                                                                                                   width={'100%'}
                                                                                                   height={400}/>

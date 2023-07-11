@@ -75,6 +75,10 @@ async function getQueryDate(data:any) {
     return where;
 }
 
+
+/**
+ * @api {post} /v1/grants/ Получение списка грантов
+ */
 grantsRouter.post('/v1/grants/', async (req, res) => {
 
 
@@ -91,30 +95,24 @@ grantsRouter.post('/v1/grants/', async (req, res) => {
             },
             where: where
         })
-        if (!extended) {
-            grants = grants.map((grant:any) => {
-                let obj = Object.assign({}, grant);
 
-                delete obj.fullText;
-                delete obj.linkPDF;
-                delete obj.sourceLink;
-                delete obj.parser_id;
-                delete obj.dateCreationPost;
-                delete obj.blackListed;
-                delete obj.link;
-                delete obj.editActions;
+        let count = await prisma.grants.count({
+            where: where
+        })
 
-                return obj;
-            })
-        }
-
-        return res.status(200).json(grants);
+        return res.status(200).json({
+            grants: grants,
+            count: count
+        });
     } catch (e){
         console.log(e);
         return res.status(500).json(e);
     }
 })
 
+/**
+ * Отдает кол-во постов по фильтру
+ */
 grantsRouter.post('/v1/grants/count', async (req, res) => {
 
         let where = await getQueryDate(req.body.where);
@@ -131,7 +129,9 @@ grantsRouter.post('/v1/grants/count', async (req, res) => {
             return res.status(500).json(e);
         }
 });
-
+/**
+ * Отдает пост по id
+ */
 grantsRouter.post('/v1/grants/:id', async (req, res) => {
     let id = Number(req.params.id);
 
@@ -148,7 +148,9 @@ grantsRouter.post('/v1/grants/:id', async (req, res) => {
     }
 
 });
-
+/**
+ * Удаляет пост по id
+ */
 grantsRouter.delete('/v1/grants', async (req, res) => {
     let id = Number(req.query.id) || req.body.id;
 
@@ -164,6 +166,9 @@ grantsRouter.delete('/v1/grants', async (req, res) => {
     }
 })
 
+/**
+ * Обновляет пост по id
+ */
 grantsRouter.patch('/v1/grants', async (req, res) => {
     let id = Number(req.query.id) || req.body.id;
 
@@ -181,7 +186,6 @@ grantsRouter.patch('/v1/grants', async (req, res) => {
     } catch (e){
         return res.status(500).json(e);
     }
-
 })
 
 export default grantsRouter;

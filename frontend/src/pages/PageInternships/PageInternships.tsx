@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './PageInternships.module.scss';
-import {useGetCountInternshipsQuery, useGetInternshipsQuery} from "../../api/internships.api";
+import {useGetInternshipsQuery} from "../../api/internships.api";
 import CardPost from "../../components/CardPost/CardPost";
 import Header from "../../components/Header/Header";
 import {TInternship, TPostType} from "../../types/serial/parser";
@@ -36,11 +36,6 @@ const PageInternships: FC<PageInternshipsProps> = () => {
         }
     }
 
-    const {data: totalCountPosts} = useGetCountInternshipsQuery({
-        namePost: debounceValue,
-        direction: choicedDirection,
-        token: token
-    });
 
     const {data = [], error, isLoading} = useGetInternshipsQuery({
         take: amountPostsPerPage,
@@ -51,6 +46,8 @@ const PageInternships: FC<PageInternshipsProps> = () => {
         token
     });
 
+    const {count, internships} = data;
+
     const directions = directionsList;
 
 
@@ -60,8 +57,8 @@ const PageInternships: FC<PageInternshipsProps> = () => {
 
 
     useEffect(() => {
-        setAmountPages(Math.ceil(totalCountPosts / amountPostsPerPage))
-    }, [totalCountPosts, setAmountPages, amountPostsPerPage])
+        setAmountPages(Math.ceil(count / amountPostsPerPage))
+    }, [count, setAmountPages, amountPostsPerPage])
 
     React.useEffect(() => {
         window.addEventListener('resize', () => checkSizeWindow())
@@ -96,7 +93,7 @@ const PageInternships: FC<PageInternshipsProps> = () => {
                     <div className={styles.pageInternships__wrapper}>
                         <div className={styles.pageInternships__posts}>
                             {
-                                data?.map((post: TInternship) => {
+                                internships?.map((post: TInternship) => {
                                     return (
                                         <CardPost<TPostType.internship>
                                             props={{
@@ -119,7 +116,7 @@ const PageInternships: FC<PageInternshipsProps> = () => {
                             }
                         </div>
                         {
-                            (data?.length > 0) &&
+                            (count > 0) &&
                             <Pagination count={(amountPages) ? amountPages : 1}
                                         page={page}
                                         defaultPage={page}

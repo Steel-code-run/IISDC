@@ -54,6 +54,10 @@ async function getQueryDate(data:any) {
     return where;
 }
 
+
+/**
+ * @api {post} /v1/competitions/ Получение списка конкурсов
+ */
 competitionsRouter.post('/v1/competitions/', async (req, res) => {
 
 
@@ -70,29 +74,24 @@ competitionsRouter.post('/v1/competitions/', async (req, res) => {
             },
             where: where
         })
-        if (!extended) {
-            competitions = competitions.map((competition:any) => {
-                let obj = Object.assign({}, competition);
 
-                delete obj.fullText;
-                delete obj.linkPDF;
-                delete obj.sourceLink;
-                delete obj.parser_id;
-                delete obj.dateCreationPost;
-                delete obj.blackListed;
-                delete obj.link;
-                delete obj.editActions;
+        let count = await prisma.competitions.count({
+            where: where
+        })
 
-                return obj;
-            })
-        }
-
-        return res.status(200).json(competitions);
+        return res.status(200).json({
+            count: count,
+            competitions: competitions
+        });
     } catch (e){
         console.log(e);
         return res.status(500).json(e);
     }
 })
+
+/**
+ * @api {post} /v1/competitions/count Получение количества конкурсов
+ */
 
 competitionsRouter.post('/v1/competitions/count', async (req, res) => {
 
@@ -108,6 +107,9 @@ competitionsRouter.post('/v1/competitions/count', async (req, res) => {
         }
 });
 
+/**
+ * @api {post} /v1/competitions/:id Получение конкурса
+ */
 competitionsRouter.post('/v1/competitions/:id', async (req, res) => {
     let id = Number(req.params.id);
 
@@ -125,6 +127,10 @@ competitionsRouter.post('/v1/competitions/:id', async (req, res) => {
 
 });
 
+/**
+ * @api {delete} /v1/competitions Удаление конкурса
+ */
+
 competitionsRouter.delete('/v1/competitions', async (req, res) => {
     let id = Number(req.query.id) || req.body.id;
 
@@ -140,6 +146,9 @@ competitionsRouter.delete('/v1/competitions', async (req, res) => {
     }
 })
 
+/**
+ * @api {patch} /v1/competitions Обновление конкурса
+ */
 competitionsRouter.patch('/v1/competitions', async (req, res) => {
     let id = Number(req.query.id) || req.body.id;
 

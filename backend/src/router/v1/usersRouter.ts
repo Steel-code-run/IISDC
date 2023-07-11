@@ -110,7 +110,14 @@ usersRouter.post(base_url + "/get", async (req:express.Request, res:express.Resp
                 id: 'desc'
             }
         });
-        return res.status(200).json(users);
+
+        let count = await prisma.users.count({
+            where: req.body.where || {}
+        })
+        return res.status(200).json({
+            users: users,
+            count: count
+        });
     } catch (e) {
         return res.status(500).json({errors: [{msg: 'Ошибка при получении пользователей'}]});
     }
