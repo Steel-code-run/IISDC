@@ -53,7 +53,7 @@ export const sendPostByType = async (post: grants | competitions) => {
                 if (!isMatch){
                     continue;
                 }
-                bot?.sendMessage(user.users_telegramsId, `Новая запись в направлении ${post.directions}:\n${post.namePost}\n${post.link}`)
+                bot?.sendMessage(user.users_telegramsId, `Новая запись:\n${post.namePost}\n${post.link}`)
             }
         }
     }
