@@ -1,18 +1,12 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Head from 'next/head';
 import {Box, CircularProgress, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {useSelection} from "../hooks/use-selection";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 import {PostsTable} from "../sections/posts/posts-table";
-import {
-    deleteCompetition,
-    getCompetitions,
-    getCountCompetitions,
-    updateCompetition
-} from "../api/posts/competitionsReq";
+import {deleteCompetition, getCompetitions, updateCompetition} from "../api/posts/competitionsReq";
 import {useSnackbar} from "../hooks/use-snackbar";
 import {CustomersSearch} from "../sections/customer/customers-search";
 
@@ -54,14 +48,26 @@ const Page = () => {
             }
         )
     }
+
+    useEffect(() => {
+        if(searchValue) {
+            setPage(0);
+        }
+    }, [searchValue])
+
     const queryClient = useQueryClient()
 
     const {data: competitionsList, status, isLoadingCompetition, isError} = useQuery(
         ['competitions', page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition], () =>
             getCompetitions(page * rowsPerPage, rowsPerPage, configCompetitionRes, whereCompetition));
 
-    const {data: countCompetitions} = useQuery(['countCompetitions', whereCompetition],
-        () => getCountCompetitions(whereCompetition));
+
+    const initialData = {
+        count: 0,
+        competitions: []
+    }
+
+    const {count, competitions} = (competitionsList) ? competitionsList : initialData;
     
     const mutationArchiveCompetition = useMutation(
         (archiveData) => updateCompetition(archiveData), {
@@ -87,10 +93,7 @@ const Page = () => {
             }
         });
 
-    const competitions = useCustomers(competitionsList, page, rowsPerPage);
-    const competitionsIds = useCustomerIds(competitions);
-    const competitionsSelection
-        = useSelection(competitionsIds);
+
 
     const handlePageChange = useCallback(
         (event, value) => {
@@ -161,17 +164,12 @@ const Page = () => {
                             (status === "success" && competitionsList.length > 0) ?
                                 <PostsTable
                                     type={'competition'}
-                                    count={countCompetitions || 0}
-                                    items={competitionsList}
-                                    onDeselectAll={competitionsSelection.handleDeselectAll}
-                                    onDeselectOne={competitionsSelection.handleDeselectOne}
+                                    count={count || 0}
+                                    items={competitions}
                                     onPageChange={handlePageChange}
                                     onRowsPerPageChange={handleRowsPerPageChange}
-                                    onSelectAll={competitionsSelection.handleSelectAll}
-                                    onSelectOne={competitionsSelection.handleSelectOne}
                                     page={page}
                                     rowsPerPage={rowsPerPage}
-                                    selected={competitionsSelection.selected}
                                     deleteRowHandle={mutationDeleteCompetition.mutate}
                                     archiveHandle={mutationArchiveCompetition.mutate}
                                 /> : (status === "loading" && competitionsList?.length > 0)

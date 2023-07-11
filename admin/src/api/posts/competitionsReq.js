@@ -17,21 +17,6 @@ export const getCompetitions = async (skip, take, config, where = {}) => {
     return res.data
 }
 
-export const getCountCompetitions = async (where) => {
-    const res = await axios.post(`${serverUrl}v1/competitions/count`,
-        {
-            skip: 0,
-            take: 0,
-            where
-        }, {
-            headers: {
-                ...defaultHeaders
-            }
-        })
-
-    return res.data
-}
-
 export const deleteCompetition = async (id) => {
     const res = await axios.delete(`${serverUrl}v1/competitions`, {
         data: {

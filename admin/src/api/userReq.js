@@ -57,14 +57,3 @@ export const updateUser = async (data) => {
     })
 
 }
-
-export const getCountUser = async (where) => {
-    console.log(where)
-    const res =  await axios.post(`${serverUrl}v1/users/count`,{
-        where
-    }, {
-        headers: defaultHeaders
-
-    })
-    return res.data.count
-}

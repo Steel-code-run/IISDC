@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Head from 'next/head';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import {Box, Button, Container, Skeleton, Stack, SvgIcon, Typography} from '@mui/material';
@@ -53,6 +53,13 @@ const Page = options => {
             }
         )
     }
+
+    useEffect(() => {
+        if(searchValue) {
+            setPage(0);
+        }
+    }, [searchValue])
+
 
     const {data: users, status, isLoading, isError} =
         useUserQuery('users',

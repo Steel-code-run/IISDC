@@ -7,6 +7,10 @@ import usersRouter from "./usersRouter";
 const parsersRouter = Router();
 
 const baseUrl = '/v1/parsers'
+
+/**
+ * @api {post} /v1/parsers Получение списка парсеров
+ */
 parsersRouter.post(baseUrl, async (req, res) => {
 
 
@@ -29,15 +33,23 @@ parsersRouter.post(baseUrl, async (req, res) => {
                 id: 'desc'
             },
             where: req.body.where || {}
-
         });
-        return res.status(200).json(parsers);
+
+        let count = await prisma.parsers.count({
+            where: req.body.where || {}
+        });
+
+        return res.status(200).json({
+            parsers: parsers,
+            count: count
+        });
     }
     catch (e) {
         return res.status(500).json({errors: [{msg: 'Ошибка при получении парсеров'}]});
     }
 
 })
+
 
 usersRouter.post(baseUrl + "/count", async (req:express.Request, res:express.Response) => {
     try{

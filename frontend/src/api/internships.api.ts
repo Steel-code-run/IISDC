@@ -12,8 +12,6 @@ export interface IGetInternships {
     token: string | null
 }
 
-type IGetCountInternships = Omit<any, 'skip' | 'take' | 'extended'>;
-
 interface IUpdateInput {
     id: number
     updateData: TTypesUpdateData<TPostType>,
@@ -76,41 +74,6 @@ export const internshipsApi = createApi({
                     : [{ type: 'Internships', id: 'LIST' }],
         }),
 
-        getCountInternships: builder.query<any, IGetCountInternships>({
-            query: ({namePost, directions, token}) => {
-                return {
-                    url: `v1/internships/count`,
-                    body: {
-                        where: (directions?.length) ? {
-                            "namePost": {
-                                contains: namePost
-                            },
-
-                            "OR": (typeof directions === 'string') ? {
-                                "directions": {
-                                    contains: directions
-                                }
-                            } : directions?.map((dir: string) => {
-                                return {
-                                    "directions": {
-                                        contains: dir
-                                    }
-                                }
-                            })
-                        } : {
-                            "namePost": {
-                                contains: namePost
-                            },
-                        }
-                    },
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    method: 'POST'
-                }
-            }
-        }),
-
         deletePostInternship: builder.mutation<any, any>({
             query: ({token, id}, ) => (
                 {
@@ -155,7 +118,6 @@ export const internshipsApi = createApi({
 
 export const {
     useGetInternshipsQuery,
-    useGetCountInternshipsQuery,
     useUpdatePostInternshipMutation,
     useDeletePostInternshipMutation
 } = internshipsApi;

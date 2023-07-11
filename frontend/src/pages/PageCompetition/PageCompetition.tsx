@@ -6,7 +6,7 @@ import {Pagination} from "@mui/material";
 import Search from "../../components/UI/Search/Search";
 import {Dna} from "react-loader-spinner";
 import '../../styles/spinner-loader.scss';
-import {useGetCompetitionsQuery, useGetCountСompetitionsQuery,} from "../../api/competitions.api";
+import {useGetCompetitionsQuery,} from "../../api/competitions.api";
 import Dropdown from "../../components/UI/Dropdown/Dropdown";
 import CardPost from "../../components/CardPost/CardPost";
 import {directionsList} from "../../config/directions";
@@ -42,22 +42,6 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
     }
 
 
-    const {data: totalCountPosts} = useGetCountСompetitionsQuery({
-        namePost: debounceValue,
-        directions: choicedDirection,
-        token,
-        ...(
-            (checkedFilter) &&
-            {
-                deadlineBy: rangeDeadlineData(dayDeadline)
-            }
-
-        )
-
-    });
-    //console.log(totalCountPosts)
-
-
     const {data = [], error, isLoading} = useGetCompetitionsQuery({
         take: amountPostsPerPage,
         skip: (page - 1) * amountPostsPerPage,
@@ -74,6 +58,8 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
         )
     });
 
+    const {count, competitions} = data;
+
     //const {data: directions} = useGetDirectionsQuery({token});
     const directions = directionsList;
 
@@ -83,8 +69,8 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
 
 
     useEffect(() => {
-        setAmountPages(Math.ceil(totalCountPosts / amountPostsPerPage))
-    }, [totalCountPosts, setAmountPages, amountPostsPerPage])
+        setAmountPages(Math.ceil(count / amountPostsPerPage))
+    }, [count, setAmountPages, amountPostsPerPage])
 
 
     React.useEffect(() => {
@@ -127,7 +113,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                     <div className={styles.pageCompetition__wrapper}>
                         <div className={styles.pageCompetition__posts}>
                             {
-                                data?.map((post: TCompetition) => {
+                                competitions?.map((post: TCompetition) => {
                                     return (
                                         <CardPost<TPostType.competition>
                                             props={{
@@ -151,7 +137,7 @@ const PageCompetitions: FC<PageCompetitionsProps> = () => {
                             }
                         </div>
                         {
-                            (data?.length > 0) &&
+                            (count > 0) &&
                             <Pagination count={(amountPages) ? amountPages : 1}
                                         page={page}
                                         defaultPage={page}

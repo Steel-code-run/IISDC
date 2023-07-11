@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Head from 'next/head';
 import {Box, CircularProgress, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
@@ -6,7 +6,7 @@ import {applyPagination} from 'src/utils/apply-pagination';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
 import {PostsTable} from "../sections/posts/posts-table";
-import {deleteGrant, getCountGrants, getGrants, updateGrant} from "../api/posts/grantsReq";
+import {deleteGrant, getGrants, updateGrant} from "../api/posts/grantsReq";
 import {useSnackbar} from "../hooks/use-snackbar";
 import {CustomersSearch} from "../sections/customer/customers-search";
 
@@ -52,10 +52,22 @@ const Page = () => {
         )
     }
 
+    useEffect(() => {
+        if(searchValue) {
+            setPage(0);
+        }
+    }, [searchValue])
+
     const {data: grantsList, status, isLoadingGrant, isErrorGrant} = useQuery(
         ['grants', page * rowsPerPage, rowsPerPage, configGrantsRes, whereGrants],
         () => getGrants(page * rowsPerPage, rowsPerPage, configGrantsRes, whereGrants))
-    const {data: countGrants} = useQuery(['countGrants', whereGrants], () => getCountGrants(whereGrants));
+
+    const initialData = {
+        count: 0,
+        grants: []
+    }
+
+    const {count, grants} = (grantsList) ? grantsList : initialData;
 
     const mutationArchiveGrant = useMutation(
         (archiveData) => updateGrant(archiveData), {
@@ -150,18 +162,18 @@ const Page = () => {
                             searchValue={searchValue}
                             handleSearchValue={handleSearch}/>
                         {
-                            (status === "success" && grantsList.length > 0) ?
+                            (status === "success" && count > 0) ?
                                 <PostsTable
                                     type={'grant'}
-                                    count={countGrants || 0}
-                                    items={grantsList}
+                                    count={count || 0}
+                                    items={grants}
                                     onPageChange={handlePageChange}
                                     onRowsPerPageChange={handleRowsPerPageChange}
                                     page={page}
                                     rowsPerPage={rowsPerPage}
                                     deleteRowHandle={mutationDeleteGrant.mutate}
                                     archiveHandle={mutationArchiveGrant.mutate}
-                                /> : (status === "loading" && grantsList?.length > 0) ? <Skeleton variant="rounded"
+                                /> : (status === "loading" && count > 0) ? <Skeleton variant="rounded"
                                                                                                   animation="wave"
                                                                                                   width={'100%'}
                                                                                                   height={400}/>

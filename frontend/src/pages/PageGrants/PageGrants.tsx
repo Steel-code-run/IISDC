@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './PageGrants.module.scss';
-import {useGetCountGrantsQuery, useGetGrantsQuery} from "../../api/grants.api";
+import {useGetGrantsQuery} from "../../api/grants.api";
 import CardPost from "../../components/CardPost/CardPost";
 import Header from "../../components/Header/Header";
 import {TGrant, TPostType} from "../../types/serial/parser";
@@ -41,18 +41,6 @@ const PageGrants: FC<PageGrantsProps> = () => {
         }
     }
 
-    const {data: totalCountPosts} = useGetCountGrantsQuery({
-        namePost: debounceValue,
-        directions: choicedDirection,
-        token: token,
-        ...(
-            (checkedFilter) &&
-            {
-                deadlineBy: rangeDeadlineData(dayDeadline)
-            }
-
-        )
-    });
 
 
     const {data = [], error, isLoading} = useGetGrantsQuery({
@@ -71,6 +59,8 @@ const PageGrants: FC<PageGrantsProps> = () => {
         )
     });
 
+    const {count, grants} = data;
+
     const directions = directionsList;
 
     useEffect(() => {
@@ -79,8 +69,8 @@ const PageGrants: FC<PageGrantsProps> = () => {
 
 
     useEffect(() => {
-        setAmountPages(Math.ceil(totalCountPosts / amountPostsPerPage))
-    }, [totalCountPosts, setAmountPages, amountPostsPerPage])
+        setAmountPages(Math.ceil(count / amountPostsPerPage))
+    }, [count, setAmountPages, amountPostsPerPage])
 
     React.useEffect(() => {
         window.addEventListener('resize', () => checkSizeWindow())
@@ -123,7 +113,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
                     <div className={styles.pageGrants__wrapper}>
                         <div className={styles.pageGrants__posts}>
                             {
-                                data?.map((post: TGrant) => {
+                                grants?.map((post: TGrant) => {
                                     return (
                                         <CardPost<TPostType.grant>
                                             props={{
@@ -149,7 +139,7 @@ const PageGrants: FC<PageGrantsProps> = () => {
                             }
                         </div>
                         {
-                            (data?.length > 0) &&
+                            (count > 0) &&
                             <Pagination count={(amountPages) ? amountPages : 1}
                                         page={page}
                                         defaultPage={page}
