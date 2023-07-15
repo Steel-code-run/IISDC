@@ -23,6 +23,7 @@ const Page = () => {
         () => getGrants(0, 0, configResponseGrant, whereGrant));
 
 
+    const {grants} = (data) ? data : {grants: []};
 
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
@@ -34,10 +35,10 @@ const Page = () => {
 
     useEffect(() => {
 
-            setGrantData(data?.[0]);
-            setSelectChips((data?.[0]?.directions) ? JSON.parse(data?.[0]?.directions) : []);
+            setGrantData(grants?.[0]);
+            setSelectChips((grants?.[0]?.directions) ? JSON.parse(grants?.[0]?.directions) : []);
 
-    }, [data, setSelectChips])
+    }, [grants, setSelectChips])
 
 
 
@@ -80,7 +81,7 @@ const Page = () => {
     };
 
     const handleUpdatedDataUser = () => {
-        mutation.mutate({id: data[0].id, data: {
+        mutation.mutate({id: grants[0].id, data: {
             ...grantData,
                 directions: JSON.stringify(selectChips)
             }});
