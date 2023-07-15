@@ -3,9 +3,9 @@ import Head from 'next/head';
 import {Box, Container, Skeleton, Stack, Typography} from '@mui/material';
 import {Layout as DashboardLayout} from 'src/layouts/dashboard/layout';
 import {applyPagination} from 'src/utils/apply-pagination';
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useSelection} from "../hooks/use-selection";
-import {getCountParsers, getParsers, updateParsers} from "../api/parsersReq";
+import {getParsers, updateParsers} from "../api/parsersReq";
 import {ParsersTable} from "../sections/parsers/parsers-table";
 import {useUserQuery} from "../hooks/useUserQuery";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
@@ -38,13 +38,18 @@ const Page = options => {
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
     const queryClient = useQueryClient()
 
-    const {data: parsers, status, isLoading, isError } =
+    const {data: parsersList, status, isLoading, isError} =
         useUserQuery('parsers',
             getParsers,
-            page*rowsPerPage, rowsPerPage
+            page * rowsPerPage, rowsPerPage
         )
 
-    const {data: countParsers} = useQuery(['parsersCount'], getCountParsers );
+    const initialData = {
+        count: 0,
+        parsers: []
+    }
+
+    const {count, parsers} = (parsersList) ? parsersList : initialData;
 
     const mutationUpdateParsers = useMutation(
         (updateData) => updateParsers(updateData), {
@@ -129,25 +134,26 @@ const Page = options => {
                         </Stack>
                         {/*<ParsersSearch/>*/}
                         {
-                            (status === "success" && parsers?.length > 0) ?
-                            <ParsersTable
-                                count={countParsers || 0}
-                                items={parsers}
-                                onDeselectAll={customersSelection.handleDeselectAll}
-                                onDeselectOne={customersSelection.handleDeselectOne}
-                                onPageChange={handlePageChange}
-                                onRowsPerPageChange={handleRowsPerPageChange}
-                                onSelectAll={customersSelection.handleSelectAll}
-                                onSelectOne={customersSelection.handleSelectOne}
-                                page={page}
-                                rowsPerPage={rowsPerPage}
-                                selected={parsers?.filter((parser) => parser.isEnabled).map((parsers) => parsers.id)}
-                                updateParsers={mutationUpdateParsers.mutate}
-                                //deleteRowHandle={mutation.mutate}
-                            />
+                            (status === "success" && count > 0) ?
+                                <ParsersTable
+                                    count={count || 0}
+                                    items={parsers}
+                                    onDeselectAll={customersSelection.handleDeselectAll}
+                                    onDeselectOne={customersSelection.handleDeselectOne}
+                                    onPageChange={handlePageChange}
+                                    onRowsPerPageChange={handleRowsPerPageChange}
+                                    onSelectAll={customersSelection.handleSelectAll}
+                                    onSelectOne={customersSelection.handleSelectOne}
+                                    page={page}
+                                    rowsPerPage={rowsPerPage}
+                                    selected={parsers?.filter((parser) => parser.isEnabled)
+                                        .map((parsers) => parsers.id)}
+                                    updateParsers={mutationUpdateParsers.mutate}
+                                    //deleteRowHandle={mutation.mutate}
+                                />
                                 : <Skeleton variant="rounded"
                                             animation="wave"
-                                            width={'100%'} height={800} />
+                                            width={'100%'} height={800}/>
                         }
                     </Stack>
                 </Container>

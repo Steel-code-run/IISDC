@@ -8,8 +8,8 @@ import {applyPagination} from 'src/utils/apply-pagination';
 import {createPortal} from "react-dom";
 import PopupAddUser from "../components/popupAddUser/PopupAddUser";
 import Overlay from "../hocs/Overlay/Overlay";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {deleteUser, getCountUser, responseUser} from "../api/userReq";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {deleteUser, responseUser} from "../api/userReq";
 import {useSelection} from "../hooks/use-selection";
 import {useUserQuery} from "../hooks/useUserQuery";
 import SnackbarMessage from "../components/snackbarMessage/SnackbarMessage";
@@ -61,7 +61,7 @@ const Page = options => {
     }, [searchValue])
 
 
-    const {data: users, status, isLoading, isError} =
+    const {data: usersList, status, isLoading, isError} =
         useUserQuery('users',
             responseUser,
             page * rowsPerPage, rowsPerPage, whereUser
@@ -79,8 +79,12 @@ const Page = options => {
             }
         });
 
-    const {data: countUsers, isError: isErrorCount} = useQuery(['usersLength', whereUser],
-        () => getCountUser(whereUser));
+    const initialData = {
+        count: 0,
+        users: []
+    }
+
+    const {count, users} = (usersList) ? usersList : initialData;
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -88,10 +92,6 @@ const Page = options => {
     const customersIds = useCustomerIds(customers);
     const customersSelection
         = useSelection(customersIds);
-
-    // useEffect(() => {
-    //     setPage()
-    // }, [])
 
 
     const handlePageChange = useCallback(
@@ -115,9 +115,7 @@ const Page = options => {
     if (isError) {
         return <h1>Ошибка...</h1>
     }
-    if(isErrorCount) {
-        return <h1>Ошибка при получении числа пользователей...</h1>
-    }
+
 
 
     return (
@@ -178,9 +176,9 @@ const Page = options => {
                             searchValue={searchValue}
                             handleSearchValue={handleSearch}/>
                         {
-                            (status === "success" && users.length > 0) ?
+                            (status === "success" && count > 0) ?
                                 <CustomersTable
-                                    count={countUsers || 0}
+                                    count={count || 0}
                                     items={[...users].reverse()}
                                     onDeselectAll={customersSelection.handleDeselectAll}
                                     onDeselectOne={customersSelection.handleDeselectOne}
@@ -192,11 +190,11 @@ const Page = options => {
                                     rowsPerPage={rowsPerPage}
                                     selected={customersSelection.selected}
                                     deleteRowHandle={mutation.mutate}
-                                /> : (status === "loading" && users?.length > 0)
+                                /> : (status === "loading" && count > 0)
                                     ? <Skeleton variant="rounded"
                                                 animation="wave"
                                                 width={'100%'} height={400}/>
-                                    : (status === "loading" && users?.length <= 0) ?
+                                    : (status === "loading" && count <= 0) ?
                                         <p>Количество пользователей равно 0</p>
                                         : null
                         }
