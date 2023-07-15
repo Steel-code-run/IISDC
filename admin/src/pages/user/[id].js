@@ -20,6 +20,10 @@ const Page = () => {
     }
     const {data, isError, isLoading} = useUserQuery('user', responseUser, 0, 0, whereUser);
 
+    const {users} = (data) ? data : {
+        users: []
+    }
+
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
     const queryClient = useQueryClient();
@@ -29,8 +33,8 @@ const Page = () => {
 
 
     useEffect(() => {
-        setUserData(data?.[0])
-    }, [data])
+        setUserData(users?.[0])
+    }, [users])
 
     const mutation = useMutation((data) => updateUser(data),
         {
@@ -73,7 +77,7 @@ const Page = () => {
     };
 
     const handleUpdatedDataUser = () => {
-        mutation.mutate({...userData, id: data[0].id});
+        mutation.mutate({...userData, id: users[0].id});
         setIsEditing(false);
     }
 
@@ -102,7 +106,7 @@ const Page = () => {
                                        variant="outlined"
                                        size="small"
                                        name="name"
-                                       value={(userData) ? userData?.name : data[0].name}
+                                       value={(userData) ? userData?.name : users[0].name}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
@@ -113,7 +117,7 @@ const Page = () => {
                                        variant="outlined"
                                        size="small"
                                        name="email"
-                                       value={(userData) ? userData?.email : data[0].email}
+                                       value={(userData) ? userData?.email : users[0].email}
                                        disabled={!isEditing}
                                        onChange={handleChangeDataUser}
                             />
@@ -123,7 +127,7 @@ const Page = () => {
                                        variant="outlined"
                                        size="small"
                                        name={"role"}
-                                       value={(userData) ? userData?.role.name : data[0].role.name}
+                                       value={(userData) ? userData?.role.name : users[0].role.name}
                                        disabled={true}
                                        onChange={handleChangeDataUser}
                             />

@@ -21,6 +21,10 @@ const Page = () => {
     const {data, isError, isLoading} = useQuery(['internships', 0, 0, configResponseInternship, whereInternship],
         () => getInternships(0, 0, configResponseInternship, whereInternship));
 
+    const {internships} = (data) ? data : {
+        internships: []
+    }
+
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
     const queryClient = useQueryClient();
@@ -29,8 +33,8 @@ const Page = () => {
     const [internshipData, setInternshipData] = useState(null);
 
     useEffect(() => {
-        setInternshipData(data?.[0])
-    }, [data])
+        setInternshipData(internships?.[0])
+    }, [internships])
 
     const mutation = useMutation(
         (data) => updateInternship(data),
@@ -71,7 +75,7 @@ const Page = () => {
     };
 
     const handleUpdatedDataUser = () => {
-        mutation.mutate({id: data[0].id, data: internshipData});
+        mutation.mutate({id: internships[0].id, data: internshipData});
         setIsEditing(false);
     }
 

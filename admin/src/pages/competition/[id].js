@@ -22,6 +22,8 @@ const Page = () => {
     const {data, isError, isLoading} = useQuery(['competitions', 0, 0, configResponseGrant, whereGrant],
         () => getCompetitions(0, 0, configResponseGrant, whereGrant));
 
+    const {competitions} = (data) ? data : {competitions: []};
+
     const [openSnackbar, setOpenSnackbar, snackbarData, setSnackbarData] = useSnackbar();
 
     const queryClient = useQueryClient();
@@ -33,10 +35,10 @@ const Page = () => {
 
     useEffect(() => {
 
-            setCompetitionData(data?.[0]);
-            setSelectChips((data?.[0]?.directions) ? JSON.parse(data?.[0]?.directions) : []);
+            setCompetitionData(competitions?.[0]);
+            setSelectChips((competitions?.[0]?.directions) ? JSON.parse(competitions?.[0]?.directions) : []);
 
-    }, [data, setSelectChips])
+    }, [competitions, setSelectChips])
 
 
     const mutation = useMutation((data) => updateCompetition(data),
@@ -77,7 +79,7 @@ const Page = () => {
     };
 
     const handleUpdatedDataUser = () => {
-        mutation.mutate({data: competitionData, id: data[0].id});
+        mutation.mutate({data: competitionData, id: competitions?.[0].id});
         setIsEditing(false);
     }
 
