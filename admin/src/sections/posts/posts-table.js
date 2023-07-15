@@ -30,8 +30,7 @@ export const PostsTable = (props) => {
         deleteRowHandle,
         archiveHandle
     } = props;
-
-
+    
     return (
         <Card>
             <Scrollbar>

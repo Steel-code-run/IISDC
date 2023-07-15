@@ -161,7 +161,7 @@ const Page = () => {
                             searchValue={searchValue}
                                          handleSearchValue={handleSearch}/>
                         {
-                            (status === "success" && competitionsList.length > 0) ?
+                            (status === "success" && count > 0) ?
                                 <PostsTable
                                     type={'competition'}
                                     count={count || 0}
@@ -172,11 +172,11 @@ const Page = () => {
                                     rowsPerPage={rowsPerPage}
                                     deleteRowHandle={mutationDeleteCompetition.mutate}
                                     archiveHandle={mutationArchiveCompetition.mutate}
-                                /> : (status === "loading" && competitionsList?.length > 0)
+                                /> : (status === "loading" && count > 0)
                                     ? <Skeleton variant="rounded"
                                                 animation="wave"
                                                 width={'100%'} height={400}/>
-                                    : (status === "loading" && competitionsList?.length <= 0) ?
+                                    : (status === "loading" && count <= 0) ?
                                         <p>Количество конкурсов равно 0</p>
                                         : null
                         }
