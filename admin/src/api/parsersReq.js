@@ -16,15 +16,6 @@ export const getParsers = async (skip, take) => {
     return res.data
 }
 
-export const getCountParsers = async () => {
-    const res = await axios.post(`${serverUrl}v1/parsers/count`, {}, {
-         headers: {
-                ...defaultHeaders
-    }
-    })
-    return res.data.count
-}
-
 export const updateParsers = async (updateData) => {
 
     try {
